@@ -121,7 +121,21 @@ function parseDialogue(title: string, body: string, id: string): Dialogue {
     .split(/\r?\n/)
     .map(parseLine)
     .filter((l): l is Line => !!l)
-  return { id, title, scene: attr(body, 'scene'), roles, lines }
+  const more = attr(body, 'more')
+    ?.split(/\s*;\s*/)
+    .filter(Boolean)
+  const vocab = parseGloss(attr(body, 'vocab'))
+  const grammar = parseGloss(attr(body, 'grammar'))
+  return {
+    id,
+    title,
+    scene: attr(body, 'scene'),
+    roles,
+    lines,
+    ...(vocab.length ? { vocab } : {}),
+    ...(grammar.length ? { grammar } : {}),
+    ...(more?.length ? { more } : {}),
+  }
 }
 
 const titleParts = (t: string) => t.split(/\s*·\s*/).map((x) => x.trim())

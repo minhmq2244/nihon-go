@@ -41,6 +41,9 @@ A: câu || bản dịch
 ## DIALOGUE D01 · Tiêu đề
 @scene: bối cảnh
 @roles: A=Nhân viên; B=Bạn
+@vocab: 語（ご）= nghĩa; …          (tuỳ chọn — từ mới ngoài Bài 1–11, hiện trước khi nghe)
+@grammar: 〜ても いいですか = xin phép; …   (tuỳ chọn — cấu trúc dùng trong bài)
+@more: gợi ý tìm hiểu thêm 1; gợi ý 2   (tuỳ chọn — hiện sau hội thoại)
 A: câu || dịch
 B: câu có ［cụm che］ || dịch >> giải thích cụm ~~ cách nói khác｜cách khác ## nhiệm vụ nói (tiếng Việt)
 ```

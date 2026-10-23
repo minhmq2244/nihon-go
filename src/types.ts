@@ -179,6 +179,11 @@ export interface Dialogue {
   scene?: string
   roles: Record<string, string>
   lines: Line[]
+  /** Words / patterns beyond Bài 1–11 to learn before listening. */
+  vocab?: { jp: string; meaning: string }[]
+  grammar?: { jp: string; meaning: string }[]
+  /** "Tìm hiểu thêm" pointers shown after the dialogue. */
+  more?: string[]
 }
 
 export interface Generated {
