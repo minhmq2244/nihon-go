@@ -8,6 +8,7 @@ import { UnitPage } from './pages/UnitPage'
 import { KaiwaList, KaiwaTopicPage, KaiwaDialoguePage } from './pages/Kaiwa'
 import { ExamList, ExamPage } from './pages/Exams'
 import { SettingsPage } from './pages/Settings'
+import { Review } from './pages/Review'
 import { japaneseVoices, onVoicesChanged } from './lib/speech'
 
 function useAppearance() {
@@ -52,6 +53,7 @@ export default function App() {
           <Route path="kaiwa/:id/:did" element={<KaiwaDialoguePage />} />
           <Route path="exams" element={<ExamList />} />
           <Route path="exams/:id" element={<ExamPage />} />
+          <Route path="review" element={<Review />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

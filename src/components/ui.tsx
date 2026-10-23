@@ -10,14 +10,15 @@ export function Button({
   size = 'md',
   className,
   ...p
-}: ComponentProps<'button'> & { variant?: 'default' | 'primary' | 'ghost' | 'ok' | 'bad'; size?: 'sm' | 'md' }) {
+}: ComponentProps<'button'> & { variant?: 'default' | 'primary' | 'cta' | 'ghost' | 'ok' | 'bad'; size?: 'sm' | 'md' | 'lg' }) {
   return (
     <button
       type="button"
       className={cx(
-        'inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none',
-        size === 'sm' ? 'px-2.5 py-1 text-sm' : 'px-4 py-2',
-        variant === 'primary' && 'bg-accent text-white hover:opacity-90',
+        'inline-flex items-center justify-center gap-1.5 rounded-xl font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none',
+        size === 'sm' ? 'px-3 py-1 text-sm' : size === 'lg' ? 'px-6 py-3 text-base' : 'px-4 py-2',
+        variant === 'primary' && 'bg-accent text-white shadow-sm hover:brightness-110',
+        variant === 'cta' && 'bg-cta text-on-cta shadow-sm hover:brightness-105',
         variant === 'default' && 'border border-line bg-surface hover:bg-muted',
         variant === 'ghost' && 'hover:bg-muted',
         variant === 'ok' && 'bg-ok-soft text-ok border border-ok/30',
@@ -30,7 +31,7 @@ export function Button({
 }
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cx('rounded-xl border border-line bg-surface p-4 sm:p-5', className)}>{children}</div>
+  return <div className={cx('rounded-2xl border border-line bg-surface p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-5', className)}>{children}</div>
 }
 
 export function Chip({ active, className, ...p }: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean }) {
@@ -38,8 +39,8 @@ export function Chip({ active, className, ...p }: ButtonHTMLAttributes<HTMLButto
     <button
       type="button"
       className={cx(
-        'rounded-full border px-3 py-1 text-sm transition whitespace-nowrap',
-        active ? 'border-accent bg-accent-soft text-accent font-medium' : 'border-line bg-surface hover:bg-muted',
+        'rounded-full border px-3.5 py-1.5 text-sm transition whitespace-nowrap',
+        active ? 'border-accent bg-accent text-white font-semibold' : 'border-line bg-surface text-ink hover:border-accent/50 hover:bg-accent-soft',
         className,
       )}
       {...p}
@@ -49,7 +50,7 @@ export function Chip({ active, className, ...p }: ButtonHTMLAttributes<HTMLButto
 
 export function ProgressBar({ value, className }: { value: number; className?: string }) {
   return (
-    <div className={cx('h-1.5 overflow-hidden rounded-full bg-muted', className)}>
+    <div className={cx('h-2 overflow-hidden rounded-full bg-muted', className)}>
       <div className="h-full rounded-full bg-accent transition-all" style={{ width: `${Math.round(Math.min(1, Math.max(0, value)) * 100)}%` }} />
     </div>
   )

@@ -147,3 +147,21 @@ export function cardTest(cards: Card[], typing: Question[], n = 20): Question[] 
     return i % 3 === 1 ? reverseMC(cards, c) : meaningMC(cards, c)
   })
 }
+
+/** Every self-contained question of a unit (used by the global review page). */
+export function allQuestions(u: Unit): Question[] {
+  const g = u.generated
+  return [
+    ...vocabV1(u),
+    ...vocabV2(u),
+    ...vocabV3(u),
+    ...kanjiK1(u),
+    ...kanjiK3(u),
+    ...(g.vocabCloze.flatMap((s) => s.items) as Question[]),
+    ...(g.kanji.flatMap((s) => s.items) as Question[]),
+    ...(g.grammar.flatMap((p) => p.sets.flatMap((s) => s.items)) as Question[]),
+    ...(g.writing.flatMap((s) => s.items) as Question[]),
+  ]
+}
+
+export const unitOfItem = (id: string) => /^(b\d\d|cd\d\d)/.exec(id)?.[1]

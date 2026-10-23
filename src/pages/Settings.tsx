@@ -46,6 +46,13 @@ export function SettingsPage() {
             Ẩn
           </Chip>
         </Row>
+        <Row label="Mục tiêu mỗi ngày" hint="Số câu trả lời đúng mỗi ngày để giữ chuỗi ngày học 🔥.">
+          {[10, 20, 30, 50, 100].map((g) => (
+            <Chip key={g} active={s.dailyGoal === g} onClick={() => s.set({ dailyGoal: g })}>
+              {g} câu
+            </Chip>
+          ))}
+        </Row>
         <Row label="Gõ romaji → kana" hint="Dùng khi máy chưa cài bộ gõ tiếng Nhật: gõ “watashi” sẽ thành “わたし”.">
           <Chip active={s.romaji} onClick={() => s.set({ romaji: !s.romaji })}>
             {s.romaji ? 'Đang bật' : 'Đang tắt'}

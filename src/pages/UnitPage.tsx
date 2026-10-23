@@ -22,8 +22,8 @@ export function UnitPage() {
   const visit = useProgress((s) => s.visit)
   const { tabs } = useUnitProgress(id)
   useEffect(() => {
-    if (unit) visit(id)
-  }, [unit, id, visit])
+    if (unit) visit(id, tab)
+  }, [unit, id, tab, visit])
 
   if (error) return <p className="text-bad">{error}</p>
   if (!unit) return <Loading />
@@ -41,7 +41,8 @@ export function UnitPage() {
             ← Tất cả bài
           </Link>
           <h1 className="text-2xl font-bold leading-snug">
-            <span className="text-accent">{unitLabel(unit.meta)}</span> · <Jp text={unit.meta.title} />
+            <span className="mr-2 rounded-lg bg-accent-soft px-2 py-0.5 text-base font-bold text-accent align-middle">{unitLabel(unit.meta)}</span>
+            <Jp text={unit.meta.title} />
           </h1>
           <p className="text-sub">{unit.meta.subtitle}</p>
         </div>
@@ -58,17 +59,20 @@ export function UnitPage() {
           )}
         </div>
       </div>
-      <nav className="no-print sticky top-[52px] z-20 -mx-4 mb-5 flex gap-1 overflow-x-auto border-b border-line bg-bg/95 px-4 py-2 backdrop-blur md:top-[53px]">
+      <nav className="no-print sticky top-14 z-10 -mx-4 mb-5 flex gap-1.5 overflow-x-auto border-b border-line bg-bg/95 px-4 py-2.5 backdrop-blur">
         {UNIT_TABS.map((x) => (
           <NavLink
             key={x.id}
             to={`/u/${id}/${x.id}`}
             className={({ isActive }) =>
-              cx('relative shrink-0 rounded-lg px-3 py-1.5 text-sm', isActive ? 'bg-accent text-white' : 'text-sub hover:bg-muted')
+              cx(
+                'relative shrink-0 rounded-full px-3.5 py-1.5 text-sm transition',
+                isActive ? 'bg-accent font-semibold text-white shadow-sm' : 'bg-surface text-sub ring-1 ring-line hover:text-ink',
+              )
             }
           >
             {x.label}
-            {tabs.has(x.id) && <span className="ml-1 text-ok">•</span>}
+            {tabs.has(x.id) && <span className="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-ok align-middle" />}
           </NavLink>
         ))}
       </nav>

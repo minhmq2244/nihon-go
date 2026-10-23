@@ -29,6 +29,10 @@ interface ProgressData {
   visited: Record<string, number>
   /** Best times (ms) of timed games such as Match. */
   times: Record<string, number>
+  /** Correct answers per local day (YYYY-MM-DD), for the streak and daily goal. */
+  days: Record<string, number>
+  /** Where the learner was last: unit and tab. */
+  lastPlace?: { unitId: string; tab: string }
 }
 
 interface Progress extends ProgressData {
@@ -39,12 +43,17 @@ interface Progress extends ProgressData {
   saveTest: (id: string, r: Omit<Score, 'at'> & { parts?: Record<string, [number, number]>; wrong?: number[] }) => void
   saveDraft: (id: string, text: string) => void
   saveTime: (id: string, ms: number) => void
-  visit: (unitId: string) => void
+  visit: (unitId: string, tab?: string) => void
   importData: (d: ProgressData) => void
   reset: () => void
 }
 
-const empty: ProgressData = { items: {}, sets: {}, answers: {}, dialogues: {}, tests: {}, drafts: {}, visited: {}, times: {} }
+const empty: ProgressData = { items: {}, sets: {}, answers: {}, dialogues: {}, tests: {}, drafts: {}, visited: {}, times: {}, days: {} }
+
+export const today = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
 
 export const useProgress = create<Progress>()(
   persist(
@@ -53,7 +62,11 @@ export const useProgress = create<Progress>()(
       markItem: (id, ok) =>
         set((s) => {
           const cur = s.items[id] ?? { ok: 0, bad: 0, last: 0 }
-          return { items: { ...s.items, [id]: { ok: cur.ok + (ok ? 1 : 0), bad: cur.bad + (ok ? 0 : 1), last: Date.now() } } }
+          const d = today()
+          return {
+            items: { ...s.items, [id]: { ok: cur.ok + (ok ? 1 : 0), bad: cur.bad + (ok ? 0 : 1), last: Date.now() } },
+            days: ok ? { ...s.days, [d]: (s.days[d] ?? 0) + 1 } : s.days,
+          }
         }),
       saveSet: (id, correct, total) =>
         set((s) => {
@@ -70,7 +83,7 @@ export const useProgress = create<Progress>()(
       saveTest: (id, r) => set((s) => ({ tests: { ...s.tests, [id]: [...(s.tests[id] ?? []), { ...r, at: Date.now() }] } })),
       saveDraft: (id, text) => set((s) => ({ drafts: { ...s.drafts, [id]: text } })),
       saveTime: (id, ms) => set((s) => (s.times[id] && s.times[id] <= ms ? s : { times: { ...s.times, [id]: ms } })),
-      visit: (unitId) => set((s) => ({ visited: { ...s.visited, [unitId]: Date.now() } })),
+      visit: (unitId, tab) => set((s) => ({ visited: { ...s.visited, [unitId]: Date.now() }, lastPlace: tab ? { unitId, tab } : s.lastPlace })),
       importData: (d) => set({ ...empty, ...d }),
       reset: () => set(empty),
     }),
@@ -79,8 +92,8 @@ export const useProgress = create<Progress>()(
 )
 
 export function exportProgress(): ProgressData {
-  const { items, sets, answers, dialogues, tests, drafts, visited, times } = useProgress.getState()
-  return { items, sets, answers, dialogues, tests, drafts, visited, times }
+  const { items, sets, answers, dialogues, tests, drafts, visited, times, days, lastPlace } = useProgress.getState()
+  return { items, sets, answers, dialogues, tests, drafts, visited, times, days, lastPlace }
 }
 
 /** Items answered wrong more often than right, most recent first. */
@@ -90,4 +103,17 @@ export function weakItems(prefix?: string): string[] {
     .filter(([id, s]) => (!prefix || id.startsWith(prefix)) && s.bad > 0 && s.bad >= s.ok)
     .sort((a, b) => b[1].last - a[1].last)
     .map(([id]) => id)
+}
+
+/** Consecutive days (ending today, or yesterday if nothing yet today) with at least one correct answer. */
+export function streakOf(days: Record<string, number>): number {
+  const d = new Date()
+  const key = (x: Date) => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`
+  if (!days[key(d)]) d.setDate(d.getDate() - 1)
+  let n = 0
+  while (days[key(d)]) {
+    n++
+    d.setDate(d.getDate() - 1)
+  }
+  return n
 }
