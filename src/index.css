@@ -1,0 +1,194 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Noto Sans JP', 'Yu Gothic UI', 'Hiragino Sans', Meiryo, system-ui, sans-serif;
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-ink);
+  --color-sub: var(--c-sub);
+  --color-accent: var(--c-accent);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-ok: var(--c-ok);
+  --color-ok-soft: var(--c-ok-soft);
+  --color-bad: var(--c-bad);
+  --color-bad-soft: var(--c-bad-soft);
+  --color-warn-soft: var(--c-warn-soft);
+}
+
+:root {
+  --c-bg: #f6f5f1;
+  --c-surface: #ffffff;
+  --c-muted: #efede6;
+  --c-line: #e2dfd5;
+  --c-ink: #1f1d1a;
+  --c-sub: #6b665c;
+  --c-accent: #c0392b;
+  --c-accent-soft: #fbe9e6;
+  --c-ok: #1e7a4c;
+  --c-ok-soft: #e3f4ea;
+  --c-bad: #b3261e;
+  --c-bad-soft: #fde8e6;
+  --c-warn-soft: #fff4d6;
+  color-scheme: light;
+}
+
+.dark {
+  --c-bg: #15171a;
+  --c-surface: #1e2125;
+  --c-muted: #272b30;
+  --c-line: #343940;
+  --c-ink: #ecebe7;
+  --c-sub: #a19d94;
+  --c-accent: #ef7a6c;
+  --c-accent-soft: #3a2422;
+  --c-ok: #5fcf95;
+  --c-ok-soft: #1c3328;
+  --c-bad: #f08a80;
+  --c-bad-soft: #3b2120;
+  --c-warn-soft: #3a3320;
+  color-scheme: dark;
+}
+
+html {
+  font-size: 16px;
+}
+html.fs-sm {
+  font-size: 14px;
+}
+html.fs-lg {
+  font-size: 18.5px;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+}
+
+rt {
+  font-size: 0.55em;
+  color: var(--c-sub);
+  user-select: none;
+}
+.no-furi rt {
+  display: none;
+}
+
+/* Rendered textbook markdown */
+.prose-jp h1,
+.prose-jp h2,
+.prose-jp h3,
+.prose-jp h4 {
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 1.4em 0 0.6em;
+}
+.prose-jp h3 {
+  font-size: 1.1rem;
+}
+.prose-jp h4 {
+  font-size: 1rem;
+}
+.prose-jp p {
+  margin: 0.6em 0;
+}
+.prose-jp ul,
+.prose-jp ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+.prose-jp ul {
+  list-style: disc;
+}
+.prose-jp ol {
+  list-style: decimal;
+}
+.prose-jp blockquote {
+  border-left: 3px solid var(--c-accent);
+  background: var(--c-muted);
+  margin: 0.8em 0;
+  padding: 0.5em 1em;
+  border-radius: 0 8px 8px 0;
+}
+.prose-jp code {
+  background: var(--c-muted);
+  border-radius: 4px;
+  padding: 0.05em 0.35em;
+  font-family: inherit;
+}
+.prose-jp pre {
+  background: var(--c-muted);
+  border-radius: 8px;
+  padding: 0.8em 1em;
+  overflow-x: auto;
+  line-height: 2;
+}
+.prose-jp pre code {
+  background: none;
+  padding: 0;
+}
+.prose-jp .table-wrap {
+  overflow-x: auto;
+  margin: 0.8em 0;
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+}
+.prose-jp table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95em;
+}
+.prose-jp th,
+.prose-jp td {
+  border-bottom: 1px solid var(--c-line);
+  padding: 0.45em 0.7em;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-jp th {
+  background: var(--c-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.prose-jp tr:last-child td {
+  border-bottom: none;
+}
+.prose-jp hr {
+  border: none;
+  border-top: 1px solid var(--c-line);
+  margin: 1.5em 0;
+}
+.prose-jp [data-speak] {
+  cursor: pointer;
+}
+.prose-jp [data-speak]:hover {
+  color: var(--c-accent);
+}
+
+/* Self-test on vocab tables: hide meaning or word until the cell is clicked */
+.hide-mean td.vm:not(.reveal),
+.hide-word td.vw:not(.reveal) {
+  color: transparent;
+  background: var(--c-muted);
+  cursor: pointer;
+}
+.hide-mean td.vm:not(.reveal) *,
+.hide-word td.vw:not(.reveal) * {
+  color: transparent;
+}
+.hide-mean td.vm:not(.reveal) rt,
+.hide-word td.vw:not(.reveal) rt {
+  visibility: hidden;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
