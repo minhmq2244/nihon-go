@@ -7,7 +7,7 @@ import { renderInline, splitHeadings } from './markdown'
 const list = (v: string | undefined) => (v ?? '').split(/\s*;\s*/).filter(Boolean)
 const attr = (body: string, name: string) => new RegExp(`^@${name}:\s*(.+)$`, 'm').exec(body)?.[1]?.trim()
 
-const clean = (s: string) => s.replace(/\s+/g, '').replace(/[［(（\[].*$/, '')
+const clean = (s: string) => s.replace(/\s+/g, '').replace(/^\*?\([^)]*\)\*?/, '').replace(/[［(（\[].*$/, '')
 /** Plain lookup key: kanji form without readings, spaces or trailing notes like ［返す］(I). */
 export const verbKey = (jp: string) => clean(toBase(jp))
 
