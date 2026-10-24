@@ -7,7 +7,7 @@
 **Ứng dụng web tự học tiếng Nhật theo giáo trình _できる日本語_ (Bài 1–11 · Chủ đề 0–9)**
 Lý thuyết · Thẻ ghi nhớ · Ngữ pháp · Viết · Đọc hiểu · Nghe · Hội thoại · Kaiwa · Kiểm tra
 
-[![CI](https://github.com/minhmq2244/nihon-app/actions/workflows/ci.yml/badge.svg)](https://github.com/minhmq2244/nihon-app/actions/workflows/ci.yml)
+[![CI](https://github.com/minhmq2244/nihon-go/actions/workflows/ci.yml/badge.svg)](https://github.com/minhmq2244/nihon-go/actions/workflows/ci.yml)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
@@ -100,8 +100,8 @@ Nihongo là một **SPA chạy hoàn toàn phía trình duyệt**, biến bộ g
 **Yêu cầu:** Node.js ≥ 24, npm ≥ 10.
 
 ```bash
-git clone https://github.com/minhmq2244/nihon-app.git
-cd nihon-app
+git clone https://github.com/minhmq2244/nihon-go.git
+cd nihon-go
 npm ci
 npm run dev
 ```
@@ -146,7 +146,7 @@ flowchart LR
 ### Cấu trúc thư mục
 
 ```
-nihon-app/
+nihon-go/
 ├── content/
 │   ├── source/            # Giáo trình gốc (Tập 1–4) dạng Markdown
 │   └── generated/         # Bài luyện viết bằng DSL — xem generated/README.md
@@ -201,7 +201,7 @@ Mỗi lần push lên `main`, Vercel tự build và cập nhật; mỗi pull req
 
 ## 🤝 Đóng góp
 
-Báo lỗi nội dung (sai furigana, sai đáp án, dịch chưa đúng) hoặc đề xuất tính năng qua [Issues](https://github.com/minhmq2244/nihon-app/issues) — đã có sẵn mẫu cho từng loại.
+Báo lỗi nội dung (sai furigana, sai đáp án, dịch chưa đúng) hoặc đề xuất tính năng qua [Issues](https://github.com/minhmq2244/nihon-go/issues) — đã có sẵn mẫu cho từng loại.
 
 ## ⚖️ Bản quyền
 
