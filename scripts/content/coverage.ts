@@ -12,7 +12,8 @@ const reading = (s: string) =>
   dropNotes(s.replace(new RegExp(`[\\u4e00-\\u9fff々〆]+（(${KANA}+)(?:／${KANA}+)*）`, 'g'), '$1').replace(READING_PAREN, ''))
 
 function dropNotes(s: string): string {
-  let out = s.replace(/［[^］]*］/g, '').replace(/\((?:I|II|III)\)/g, '').replace(/^\*?\([^)]*\)\*?/, '')
+  // a slot like （〜は） splits the phrase: すみません。（〜は）ちょっと…… needs both halves
+  let out = s.replace(/［[^］]*］/g, '').replace(/\((?:I|II|III)\)/g, '').replace(/^\*?\([^)]*\)\*?/, '').replace(/（〜[^（）]*）/g, '・')
   for (let prev = ''; prev !== out; ) [prev, out] = [out, out.replace(/（[^（）]*）/g, '')]
   return out
 }
