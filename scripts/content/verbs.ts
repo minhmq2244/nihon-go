@@ -93,8 +93,8 @@ function detailHtml(d: VerbDetail): string {
 const cellKeys = (cell: string): [string, string][] => {
   const written = cell.replace(/<rt>[\s\S]*?<\/rt>/g, '').replace(/<[^>]+>/g, '')
   const reading = cell.replace(/<ruby>([\s\S]*?)<rt>([\s\S]*?)<\/rt><\/ruby>/g, '$2').replace(/<[^>]+>/g, '')
-  const w = written.split(/[・／/↔、,]/)
-  const r = reading.split(/[・／/↔、,]/)
+  const w = written.split(/[・／/↔、,]|─+▶/)
+  const r = reading.split(/[・／/↔、,]|─+▶/)
   return w.map((x, i) => [clean(x), clean(r[i] ?? x)] as [string, string]).filter(([x]) => x)
 }
 
