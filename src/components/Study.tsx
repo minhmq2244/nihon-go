@@ -71,23 +71,23 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
           <button
             type="button"
             onClick={() => setFlip(!flip)}
-            className="flex min-h-64 w-full flex-col items-center justify-center rounded-2xl border border-line bg-surface p-6 text-center transition hover:border-accent"
+            className="flex min-h-72 w-full flex-col items-center justify-center rounded-3xl border border-line bg-surface p-8 text-center transition hover:border-accent hover:shadow-md cursor-pointer"
           >
             {(jpFront ? !flip : flip) ? (
-              <span className={cx('font-semibold', big ? 'text-7xl' : 'text-4xl')}>
+              <span className={cx('font-bold tracking-tight', big ? 'text-8xl' : 'text-5xl sm:text-6xl')}>
                 <Jp text={c.front} />
               </span>
             ) : (
               <div>
-                <p className="text-2xl font-semibold">{c.back}</p>
+                <p className="text-3xl font-bold text-ink">{c.back}</p>
                 {c.extra && (
-                  <p className="mt-3 whitespace-pre-line text-sub">
+                  <p className="mt-3 whitespace-pre-line text-lg text-sub font-medium">
                     <Jp text={c.extra} />
                   </p>
                 )}
               </div>
             )}
-            <span className="mt-4 text-xs text-sub">Bấm (hoặc phím cách) để lật thẻ</span>
+            <span className="mt-6 text-sm font-medium text-sub">Bấm (hoặc phím cách) để lật thẻ</span>
           </button>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">

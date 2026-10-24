@@ -103,12 +103,12 @@ export function DrillItem({ d, onAnswered, autoFocus = true }: { d: Question; on
       )}
       {d.prompt}
       {!d.audio && d.type !== 'FILL' && d.type !== 'STAR' && d.type !== 'ORDER' && (
-        <div className="text-lg leading-loose">
+        <div className="text-xl sm:text-2xl leading-loose font-medium">
           {d.type === 'TRANS' && !/[぀-ヿ一-鿿]/.test(d.stem) ? <span>{d.stem}</span> : <Jp text={d.stem} />}
         </div>
       )}
       {d.type === 'FILL' && (
-        <div className="text-lg leading-[2.6]" onKeyDown={onKey}>
+        <div className="text-xl sm:text-2xl leading-[2.8]" onKeyDown={onKey}>
           {d.stem.split(BLANK).map((part, i) =>
             i % 2 === 0 ? (
               <Jp key={i} text={part} />
@@ -122,7 +122,7 @@ export function DrillItem({ d, onAnswered, autoFocus = true }: { d: Question; on
                       }
                     : undefined
                 }
-                className="mx-1 inline-block w-auto align-middle text-base"
+                className="mx-1 inline-block w-auto align-middle text-lg"
                 style={{ width: `${Math.max(4, splitAlternatives(part)[0]!.replace(/（[^）]*）/g, '').length + 2)}em` }}
                 value={vals[(i - 1) / 2] ?? ''}
                 disabled={answered}
@@ -138,15 +138,15 @@ export function DrillItem({ d, onAnswered, autoFocus = true }: { d: Question; on
         </div>
       )}
       {d.type === 'STAR' && (
-        <div className="text-lg leading-loose">
+        <div className="text-xl sm:text-2xl leading-loose font-medium">
           <Jp text={starStem} />
         </div>
       )}
-      {d.hint && d.type !== 'TRANS' && <p className="mt-1 text-sm text-sub">{d.hint}</p>}
-      {d.type === 'TRANS' && d.hint && <p className="mt-1 text-sm text-sub">Gợi ý: {d.hint}</p>}
+      {d.hint && d.type !== 'TRANS' && <p className="mt-2 text-base text-sub font-medium">{d.hint}</p>}
+      {d.type === 'TRANS' && d.hint && <p className="mt-2 text-base text-sub font-medium">Gợi ý: {d.hint}</p>}
 
       {(d.type === 'MC' || d.type === 'STAR' || d.type === 'TF') && (
-        <div className={cx('mt-4 grid gap-2', d.type === 'TF' ? 'grid-cols-2' : 'sm:grid-cols-2')}>
+        <div className={cx('mt-5 grid gap-3', d.type === 'TF' ? 'grid-cols-2' : 'sm:grid-cols-2')}>
           {(d.type === 'TF' ? ['Đúng', 'Sai'] : d.type === 'STAR' ? starOptions.map((i) => d.chunks![i]!) : d.options!).map((o, idx) => {
             const value = d.type === 'STAR' ? starOptions[idx]! : idx
             const correctValue = d.type === 'TF' ? (d.answers[0]!.toLowerCase() === 'đúng' ? 0 : 1) : d.correct
@@ -157,14 +157,14 @@ export function DrillItem({ d, onAnswered, autoFocus = true }: { d: Question; on
                 disabled={answered}
                 onClick={() => check(value)}
                 className={cx(
-                  'rounded-lg border px-4 py-2.5 text-left transition',
-                  !answered && 'border-line bg-surface hover:border-accent hover:bg-accent-soft',
-                  answered && value === correctValue && 'border-ok bg-ok-soft',
+                  'rounded-xl border px-5 py-3.5 text-base sm:text-lg text-left transition-all cursor-pointer',
+                  !answered && 'border-line bg-surface hover:border-accent hover:bg-accent-soft hover:shadow-xs',
+                  answered && value === correctValue && 'border-ok bg-ok-soft font-semibold',
                   answered && pick === value && value !== correctValue && 'border-bad bg-bad-soft',
                   answered && pick !== value && value !== correctValue && 'border-line opacity-60',
                 )}
               >
-                <span className="mr-2 text-sm text-sub">{String.fromCharCode(65 + idx)}.</span>
+                <span className="mr-2.5 text-base font-bold text-accent">{String.fromCharCode(65 + idx)}.</span>
                 {d.type === 'TF' ? o : <Jp text={o} />}
               </button>
             )
@@ -173,22 +173,22 @@ export function DrillItem({ d, onAnswered, autoFocus = true }: { d: Question; on
       )}
 
       {d.type === 'ORDER' && (
-        <div className="mt-2">
-          <div className="min-h-12 rounded-lg border border-dashed border-line p-2 text-lg">
-            {order.length === 0 && <span className="text-sm text-sub">Bấm các mảnh bên dưới theo đúng thứ tự…</span>}
+        <div className="mt-3">
+          <div className="min-h-16 rounded-xl border border-dashed border-line p-3 text-xl">
+            {order.length === 0 && <span className="text-base text-sub">Bấm các mảnh bên dưới theo đúng thứ tự…</span>}
             {order.map((ci, k) => (
               <button
                 key={k}
                 type="button"
                 disabled={answered}
                 onClick={() => setOrder(order.filter((_, j) => j !== k))}
-                className="m-1 rounded-md bg-accent-soft px-2 py-1 text-accent"
+                className="m-1 rounded-lg bg-accent-soft px-3.5 py-1.5 text-accent font-semibold text-lg cursor-pointer"
               >
                 <Jp text={d.chunks![ci]!} />
               </button>
             ))}
           </div>
-          <div className="mt-2 flex flex-wrap">
+          <div className="mt-3 flex flex-wrap">
             {pool.map((ci) => {
               const used = order.filter((x) => x === ci).length > 0
               return (
@@ -197,7 +197,7 @@ export function DrillItem({ d, onAnswered, autoFocus = true }: { d: Question; on
                   type="button"
                   disabled={answered || used}
                   onClick={() => setOrder([...order, ci])}
-                  className={cx('m-1 rounded-md border border-line bg-surface px-2 py-1 text-lg', used && 'opacity-30')}
+                  className={cx('m-1 rounded-lg border border-line bg-surface px-3.5 py-1.5 text-lg font-medium cursor-pointer transition hover:border-accent hover:bg-accent-soft', used && 'opacity-30')}
                 >
                   <Jp text={d.chunks![ci]!} />
                 </button>

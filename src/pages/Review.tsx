@@ -40,12 +40,14 @@ export function Review() {
   if (!index || (unitIds.length && !units)) return <Loading />
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <h1 className="flex items-center gap-2 text-2xl font-bold">
-          <Repeat className="text-warn" /> Ôn tập câu sai
+        <h1 className="flex items-center gap-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
+          <Repeat size={32} className="text-warn" /> Ôn tập câu sai
         </h1>
-        <p className="text-sub">Gom mọi câu bạn từng làm sai (từ vựng, Kanji, ngữ pháp, viết) ở tất cả các bài. Làm đúng nhiều lần thì câu sẽ tự rời khỏi danh sách.</p>
+        <p className="mt-2 text-base sm:text-lg text-sub font-medium">
+          Gom mọi câu bạn từng làm sai (từ vựng, Kanji, ngữ pháp, viết) ở tất cả các bài. Làm đúng nhiều lần thì câu sẽ tự rời khỏi danh sách.
+        </p>
       </div>
       {!byUnit.length ? (
         <Empty title="Chưa có câu sai nào cần ôn 🎉">

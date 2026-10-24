@@ -5,11 +5,43 @@ import { useSettings } from '../store/settings'
 
 let voicesCache: SpeechSynthesisVoice[] = []
 
+export function voiceScore(v: SpeechSynthesisVoice): number {
+  const name = v.name.toLowerCase()
+  let score = 0
+  // Natural / Neural online voices (Edge / Azure / Chrome Neural)
+  if (/natural|neural/i.test(name)) score += 100
+  if (/online/i.test(name)) score += 80
+  // High quality Japanese voices
+  if (/google\s*日本語/i.test(name)) score += 95
+  if (/nanami/i.test(name)) score += 90 // Microsoft Nanami is high quality female voice
+  if (/keita/i.test(name)) score += 85  // Microsoft Keita is high quality male voice
+  if (/kyoko/i.test(name)) score += 80  // Apple Kyoko
+  if (/otoya/i.test(name)) score += 75  // Apple Otoya
+  if (/ayumi|haruka|sayaka|ichir[oo]|naoki/i.test(name)) score += 70
+  if (/premium|enhanced/i.test(name)) score += 60
+  if (v.lang === 'ja-JP' || v.lang === 'ja_JP') score += 20
+  return score
+}
+
+export function friendlyVoiceName(v: SpeechSynthesisVoice): string {
+  const name = v.name
+  if (/nanami/i.test(name)) return 'Nanami (Nữ · Tự nhiên ⭐)'
+  if (/keita/i.test(name)) return 'Keita (Nam · Tự nhiên ⭐)'
+  if (/google\s*日本語/i.test(name)) return 'Google 日本語 (Tự nhiên ⭐)'
+  if (/haruka/i.test(name)) return 'Haruka (Nữ)'
+  if (/ayumi/i.test(name)) return 'Ayumi (Nữ)'
+  if (/ichiro/i.test(name)) return 'Ichiro (Nam)'
+  if (/kyoko/i.test(name)) return 'Kyoko (Nữ · Enhanced)'
+  if (/otoya/i.test(name)) return 'Otoya (Nam)'
+  const clean = name.replace(/\s*\(Japan\)/i, '').replace(/Microsoft\s+/i, '')
+  if (/natural|online/i.test(name)) return `${clean} (Tự nhiên ⭐)`
+  return clean
+}
+
 export function japaneseVoices(): SpeechSynthesisVoice[] {
   if (typeof speechSynthesis === 'undefined') return []
   voicesCache = speechSynthesis.getVoices().filter((v) => /^ja/i.test(v.lang))
-  // Natural (online) voices first: they sound much better.
-  return voicesCache.sort((a, b) => Number(/natural|online/i.test(b.name)) - Number(/natural|online/i.test(a.name)))
+  return voicesCache.sort((a, b) => voiceScore(b) - voiceScore(a))
 }
 
 export function onVoicesChanged(cb: () => void): () => void {
@@ -41,7 +73,10 @@ export function stopSpeaking() {
 }
 
 /** Speak one utterance; resolves when it ends (or is cancelled). */
-export function speak(text: string, opts: { role?: 'A' | 'B'; rate?: number } = {}): Promise<void> {
+export function speak(
+  text: string,
+  opts: { role?: 'A' | 'B'; voiceURI?: string; rate?: number; pitch?: number } = {},
+): Promise<void> {
   if (!ttsSupported()) return Promise.resolve()
   const my = ++seq
   speechSynthesis.cancel()
@@ -49,9 +84,11 @@ export function speak(text: string, opts: { role?: 'A' | 'B'; rate?: number } = 
     const spoken = speechText(text)
     const u = new SpeechSynthesisUtterance(spoken)
     u.lang = 'ja-JP'
-    const v = pickVoice(opts.role ?? 'A')
+    const voices = voicesCache.length ? voicesCache : japaneseVoices()
+    const v = opts.voiceURI ? voices.find((x) => x.voiceURI === opts.voiceURI) : pickVoice(opts.role ?? 'A')
     if (v) u.voice = v
     u.rate = opts.rate ?? useSettings.getState().rate
+    u.pitch = opts.pitch ?? 1.0
     u.onend = u.onerror = () => resolve()
     // Some browsers never fire onend (background tabs, missing voices): don't block the caller forever.
     setTimeout(resolve, 2000 + (spoken.length * 350) / u.rate)
@@ -62,15 +99,28 @@ export function speak(text: string, opts: { role?: 'A' | 'B'; rate?: number } = 
 
 /** Speak lines one after another; returns a function that stops playback. */
 export function playLines(
-  lines: { text: string; role?: 'A' | 'B' }[],
-  opts: { from?: number; onIndex?: (i: number | null) => void; gapMs?: number; rate?: number } = {},
+  lines: { text: string; role?: 'A' | 'B'; voiceURI?: string }[],
+  opts: {
+    from?: number
+    onIndex?: (i: number | null) => void
+    gapMs?: number
+    rate?: number | (() => number)
+    pitch?: number
+    voiceURI?: string
+  } = {},
 ): () => void {
   const token = { cancelled: false }
   stopSpeaking()
   void (async () => {
     for (let i = opts.from ?? 0; i < lines.length && !token.cancelled; i++) {
       opts.onIndex?.(i)
-      await speak(lines[i]!.text, { role: lines[i]!.role, rate: opts.rate })
+      const currentRate = typeof opts.rate === 'function' ? opts.rate() : (opts.rate ?? useSettings.getState().rate)
+      await speak(lines[i]!.text, {
+        role: lines[i]!.role,
+        voiceURI: lines[i]!.voiceURI ?? opts.voiceURI,
+        rate: currentRate,
+        pitch: opts.pitch,
+      })
       if (opts.gapMs && !token.cancelled) await new Promise((r) => setTimeout(r, opts.gapMs))
     }
     if (!token.cancelled) opts.onIndex?.(null)

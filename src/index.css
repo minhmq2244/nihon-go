@@ -69,13 +69,18 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 17px;
+}
+@media (min-width: 1024px) {
+  html {
+    font-size: 18px;
+  }
 }
 html.fs-sm {
-  font-size: 14px;
+  font-size: 15px;
 }
 html.fs-lg {
-  font-size: 18.5px;
+  font-size: 20px;
 }
 
 body {
@@ -84,18 +89,35 @@ body {
   color: var(--c-ink);
   font-family: var(--font-sans);
   line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ruby {
+  ruby-align: center;
+  ruby-position: over;
 }
 
 rt {
-  font-size: 0.55em;
+  font-size: 0.68em;
+  font-weight: 600;
+  line-height: 1.15;
   color: var(--c-sub);
   user-select: none;
+  letter-spacing: 0.02em;
+}
+.dark rt {
+  color: #9cb4dd;
 }
 .no-furi rt {
   display: none;
 }
 
 /* Rendered textbook markdown */
+.prose-jp {
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
 .prose-jp h1,
 .prose-jp h2,
 .prose-jp h3,
@@ -104,11 +126,17 @@ rt {
   line-height: 1.4;
   margin: 1.4em 0 0.6em;
 }
+.prose-jp h1 {
+  font-size: 1.6rem;
+}
+.prose-jp h2 {
+  font-size: 1.35rem;
+}
 .prose-jp h3 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 .prose-jp h4 {
-  font-size: 1rem;
+  font-size: 1.08rem;
 }
 .prose-jp p {
   margin: 0.6em 0;
@@ -157,12 +185,12 @@ rt {
 .prose-jp table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 0.95em;
+  font-size: 1.05rem;
 }
 .prose-jp th,
 .prose-jp td {
   border-bottom: 1px solid var(--c-line);
-  padding: 0.45em 0.7em;
+  padding: 0.65em 0.9em;
   text-align: left;
   vertical-align: top;
 }

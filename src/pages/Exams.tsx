@@ -11,20 +11,24 @@ export function ExamList() {
   const tests = useProgress((s) => s.tests)
   if (!index) return <Loading />
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Đề kiểm tra tổng hợp</h1>
-      <p className="text-sub">Mỗi Tập có một đề tổng hợp. Kiểm tra cuối từng bài nằm trong tab “Kiểm tra cuối bài” của bài đó.</p>
-      <div className="grid gap-3 sm:grid-cols-2">
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">Đề kiểm tra tổng hợp</h1>
+        <p className="mt-2 text-base sm:text-lg text-sub font-medium">
+          Mỗi Tập có một đề tổng hợp. Kiểm tra cuối từng bài nằm trong tab “Kiểm tra cuối bài” của bài đó.
+        </p>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {index.exams.map((e) => {
           const h = tests[e.id] ?? []
           return (
             <Link key={e.id} to={`/exams/${e.id}`}>
-              <Card className="h-full transition hover:border-accent">
-                <p className="text-sm text-accent">{VOL_NAMES[e.vol]}</p>
-                <p className="mt-1 font-semibold">{e.title}</p>
-                <p className="text-sm text-sub">{e.questionCount} câu</p>
+              <Card className="h-full p-5 sm:p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
+                <p className="text-sm font-bold text-accent uppercase tracking-wider">{VOL_NAMES[e.vol]}</p>
+                <p className="mt-2 text-xl sm:text-2xl font-bold leading-snug text-ink">{e.title}</p>
+                <p className="mt-1 text-base text-sub">{e.questionCount} câu hỏi</p>
                 {h.length > 0 && (
-                  <p className="mt-1 text-sm text-ok">
+                  <p className="mt-3 text-base font-bold text-ok">
                     Lần gần nhất: {h[h.length - 1]!.correct}/{h[h.length - 1]!.total}
                   </p>
                 )}
@@ -69,13 +73,13 @@ export function ExamPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <Link to="/exams" className="text-sm text-sub hover:text-accent">
-        ← Tất cả đề
+    <div className="space-y-6">
+      <Link to="/exams" className="inline-flex items-center gap-1 text-base font-semibold text-sub hover:text-accent">
+        ← Tất cả đề kiểm tra
       </Link>
-      <Card>
-        <h1 className="text-xl font-bold">{exam.meta.title}</h1>
-        <Html html={exam.introHtml} className="text-sm text-sub" />
+      <Card className="p-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-ink">{exam.meta.title}</h1>
+        <Html html={exam.introHtml} className="mt-2 text-base text-sub" />
       </Card>
       {checked && (
         <Card className="border-accent">

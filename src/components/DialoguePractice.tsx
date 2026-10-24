@@ -1,10 +1,11 @@
 // The 4-step kaiwa model: listen → shadow → guided roleplay → blind roleplay.
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Dialogue, Line } from '../types'
-import { compareSpeech, listen, playLines, playUrl, record, speak, stopSpeaking, sttSupported, type SpeechMatch } from '../lib/speech'
+import { compareSpeech, listen, playUrl, record, speak, stopSpeaking, sttSupported, type SpeechMatch } from '../lib/speech'
 import { isCorrect } from '../lib/normalize'
 import { useProgress } from '../store/progress'
 import { Jp } from './Jp'
+import { FloatingPlayer, PlayerControls, usePlaylist } from './AudioPlayer'
 import { Button, Chip, JpInput, SpeakButton, cx } from './ui'
 
 const roleOf = (speaker: string): 'A' | 'B' => (speaker === 'B' ? 'B' : 'A')
@@ -60,20 +61,20 @@ function Bubble({ l, mine, active, children, showVn, hidden }: { l: Line; mine: 
     <div className={cx('flex', mine ? 'justify-end' : 'justify-start')}>
       <div
         className={cx(
-          'max-w-[85%] rounded-2xl px-4 py-2',
-          mine ? 'rounded-br-sm bg-accent-soft' : 'rounded-bl-sm border border-line bg-surface',
-          active && 'ring-2 ring-accent',
+          'max-w-[88%] rounded-2xl px-5 py-3.5 shadow-xs',
+          mine ? 'rounded-br-sm bg-accent-soft text-ink' : 'rounded-bl-sm border border-line bg-surface',
+          active && 'ring-2 ring-accent shadow-md',
         )}
       >
-        <p className="text-xs font-semibold text-sub">{l.name ?? l.speaker}</p>
+        <p className="text-xs font-bold uppercase tracking-wider text-accent">{l.name ?? l.speaker}</p>
         {!hidden && (
-          <div className="flex items-start gap-1">
-            <Jp text={clean(l.jp)} className="text-lg leading-loose" />
-            <SpeakButton text={clean(l.jp)} role={roleOf(l.speaker)} className="h-7 w-7" />
+          <div className="flex items-start gap-2 mt-1">
+            <Jp text={clean(l.jp)} className="text-xl sm:text-2xl leading-loose font-medium" />
+            <SpeakButton text={clean(l.jp)} role={roleOf(l.speaker)} className="h-8 w-8 shrink-0 mt-1" />
           </div>
         )}
-        {showVn && !hidden && l.vn && <p className="text-sm text-sub">{l.vn}</p>}
-        {!hidden && l.note && <p className="mt-1 rounded bg-warn-soft px-2 py-0.5 text-xs">💡 {l.note}</p>}
+        {showVn && !hidden && l.vn && <p className="mt-1.5 text-base text-sub font-medium">{l.vn}</p>}
+        {!hidden && l.note && <p className="mt-2 rounded-lg bg-warn-soft px-3 py-1 text-sm font-medium text-warn">💡 {l.note}</p>}
         {children}
       </div>
     </div>
@@ -81,41 +82,26 @@ function Bubble({ l, mine, active, children, showVn, hidden }: { l: Line; mine: 
 }
 
 function Step1({ d, me, onDone }: { d: Dialogue; me: string; onDone: () => void }) {
-  const [cur, setCur] = useState<number | null>(null)
   const [vn, setVn] = useState(true)
-  const stop = useRef<(() => void) | null>(null)
-  useEffect(() => () => stop.current?.(), [])
+  const p = usePlaylist(
+    d.lines.map((l) => ({ text: clean(l.jp), role: roleOf(l.speaker) })),
+    { gapMs: 350, onEnd: onDone },
+  )
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2">
-        {cur === null ? (
-          <Button
-            variant="primary"
-            onClick={() => {
-              stop.current = playLines(
-                d.lines.map((l) => ({ text: clean(l.jp), role: roleOf(l.speaker) })),
-                {
-                  onIndex: (i) => {
-                    setCur(i)
-                    if (i === null) onDone()
-                  },
-                  gapMs: 350,
-                },
-              )
-            }}
-          >
-            ▶ Nghe toàn bộ hội thoại
-          </Button>
-        ) : (
-          <Button onClick={() => stop.current?.()}>■ Dừng</Button>
-        )}
+      <FloatingPlayer p={p} title={d.title} />
+      <div className="flex flex-wrap items-center gap-2">
+        <PlayerControls p={p} startLabel="Nghe toàn bộ hội thoại" />
         <Chip active={vn} onClick={() => setVn(!vn)}>
           Dịch tiếng Việt
         </Chip>
       </div>
+      <p className="text-xs text-sub">Bấm vào một câu để nghe từ câu đó trở đi.</p>
       <div className="space-y-2">
         {d.lines.map((l, i) => (
-          <Bubble key={i} l={l} mine={l.speaker === me} active={cur === i} showVn={vn} />
+          <div key={i} className="cursor-pointer" onClick={() => p.playFrom(i)}>
+            <Bubble l={l} mine={l.speaker === me} active={p.cur === i} showVn={vn} />
+          </div>
         ))}
       </div>
     </div>
@@ -341,6 +327,50 @@ function Summary({ d, me, results }: { d: Dialogue; me: string; results: TurnRes
   )
 }
 
+/** New words and patterns (beyond Bài 1–11) to look at before listening. */
+function Prepare({ d }: { d: Dialogue }) {
+  const [open, setOpen] = useState(true)
+  if (!d.vocab?.length && !d.grammar?.length) return null
+  return (
+    <div className="rounded-2xl border border-line bg-surface p-4">
+      <button type="button" className="flex w-full items-center justify-between text-left font-bold text-ink cursor-pointer" onClick={() => setOpen(!open)}>
+        <span>📝 Chuẩn bị trước khi nghe · {d.vocab?.length ?? 0} từ mới · {d.grammar?.length ?? 0} cấu trúc</span>
+        <span className="text-sub">{open ? '▲' : '▼'}</span>
+      </button>
+      {open && (
+        <div className="mt-3 grid gap-4 md:grid-cols-2">
+          {d.vocab && d.vocab.length > 0 && (
+            <div>
+              <p className="mb-1 text-sm font-semibold text-accent">Từ mới (ngoài Bài 1–11)</p>
+              <ul className="space-y-1">
+                {d.vocab.map((v, i) => (
+                  <li key={i} className="flex flex-wrap items-center gap-x-2">
+                    <Jp text={v.jp} speakable className="text-lg font-semibold" />
+                    <span className="text-sub">— {v.meaning}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {d.grammar && d.grammar.length > 0 && (
+            <div>
+              <p className="mb-1 text-sm font-semibold text-accent">Cấu trúc dùng trong bài</p>
+              <ul className="space-y-1">
+                {d.grammar.map((g, i) => (
+                  <li key={i}>
+                    <Jp text={g.jp} className="text-lg font-semibold" />
+                    <span className="text-sub"> — {g.meaning}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function DialoguePractice({ d }: { d: Dialogue }) {
   const done = useProgress((s) => s.dialogues[d.id]) ?? NONE
   const markStep = useProgress((s) => s.markDialogueStep)
@@ -356,6 +386,7 @@ export function DialoguePractice({ d }: { d: Dialogue }) {
   return (
     <div className="space-y-4">
       {d.scene && <p className="rounded-lg bg-muted px-3 py-2 text-sm">🎬 {d.scene}</p>}
+      <Prepare d={d} />
       <div className="flex flex-wrap items-center gap-2">
         {STEPS.map((s, i) => (
           <Chip key={s} active={step === i + 1} onClick={() => setStep(i + 1)}>
@@ -408,6 +439,18 @@ export function DialoguePractice({ d }: { d: Dialogue }) {
               </Button>
             )}
           </div>
+        </div>
+      )}
+      {d.more && d.more.length > 0 && (
+        <div className="rounded-2xl border border-accent/30 bg-accent-soft/40 p-4">
+          <p className="mb-2 font-bold text-ink">📚 Tìm hiểu thêm sau hội thoại này</p>
+          <ul className="list-disc space-y-1 pl-5 text-base">
+            {d.more.map((m, i) => (
+              <li key={i}>
+                <Jp text={m} />
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       <p className="text-xs text-sub">

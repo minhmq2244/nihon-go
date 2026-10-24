@@ -137,17 +137,6 @@ export function kanjiK3(u: Unit): Question[] {
 }
 
 /** Mixed test over cards: meaning MC, reverse MC and typing. */
-export function cardTest(cards: Card[], typing: Question[], n = 20): Question[] {
-  const picked = sample(cards, Math.min(n, cards.length))
-  return picked.map((c, i) => {
-    if (i % 3 === 2) {
-      const t = typing.find((q) => q.id.startsWith(c.id + ':'))
-      if (t) return { ...t, id: `${c.id}:test` }
-    }
-    return i % 3 === 1 ? reverseMC(cards, c) : meaningMC(cards, c)
-  })
-}
-
 /** Every self-contained question of a unit (used by the global review page). */
 export function allQuestions(u: Unit): Question[] {
   const g = u.generated

@@ -1,5 +1,5 @@
-import { forwardRef, useEffect, useRef, type ButtonHTMLAttributes, type ComponentProps, type InputHTMLAttributes, type ReactNode } from 'react'
-import { bind, unbind } from 'wanakana'
+import { forwardRef, type ButtonHTMLAttributes, type ComponentProps, type InputHTMLAttributes, type ReactNode } from 'react'
+import { toHiragana } from 'wanakana'
 import { speak, stopSpeaking } from '../lib/speech'
 import { useSettings } from '../store/settings'
 
@@ -15,8 +15,8 @@ export function Button({
     <button
       type="button"
       className={cx(
-        'inline-flex items-center justify-center gap-1.5 rounded-xl font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none',
-        size === 'sm' ? 'px-3 py-1 text-sm' : size === 'lg' ? 'px-6 py-3 text-base' : 'px-4 py-2',
+        'inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
+        size === 'sm' ? 'px-3.5 py-1.5 text-sm' : size === 'lg' ? 'px-6 py-3.5 text-lg font-bold' : 'px-5 py-2.5 text-base',
         variant === 'primary' && 'bg-accent text-white shadow-sm hover:brightness-110',
         variant === 'cta' && 'bg-cta text-on-cta shadow-sm hover:brightness-105',
         variant === 'default' && 'border border-line bg-surface hover:bg-muted',
@@ -31,7 +31,7 @@ export function Button({
 }
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cx('rounded-2xl border border-line bg-surface p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)] sm:p-5', className)}>{children}</div>
+  return <div className={cx('rounded-2xl border border-line bg-surface p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] sm:p-6', className)}>{children}</div>
 }
 
 export function Chip({ active, className, ...p }: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean }) {
@@ -39,8 +39,8 @@ export function Chip({ active, className, ...p }: ButtonHTMLAttributes<HTMLButto
     <button
       type="button"
       className={cx(
-        'rounded-full border px-3.5 py-1.5 text-sm transition whitespace-nowrap',
-        active ? 'border-accent bg-accent text-white font-semibold' : 'border-line bg-surface text-ink hover:border-accent/50 hover:bg-accent-soft',
+        'rounded-full border px-4 py-2 text-[15px] font-medium transition whitespace-nowrap cursor-pointer',
+        active ? 'border-accent bg-accent text-white font-semibold shadow-xs' : 'border-line bg-surface text-ink hover:border-accent/50 hover:bg-accent-soft',
         className,
       )}
       {...p}
@@ -79,30 +79,27 @@ export function SpeakButton({ text, role, className, label }: { text: string; ro
 
 /** Text input for Japanese answers; optionally converts romaji to kana while typing. */
 export const JpInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement> & { state?: 'ok' | 'bad' | null }>(function JpInput(
-  { className, state, ...p },
-  outer,
+  { className, state, onChange, ...p },
+  ref,
 ) {
-  const inner = useRef<HTMLInputElement | null>(null)
   const romaji = useSettings((s) => s.romaji)
-  useEffect(() => {
-    const el = inner.current
-    if (!el || !romaji) return
-    bind(el, { IMEMode: 'toHiragana' })
-    return () => unbind(el)
-  }, [romaji])
   return (
     <input
       lang="ja"
       autoComplete="off"
       autoCorrect="off"
       spellCheck={false}
-      ref={(el) => {
-        inner.current = el
-        if (typeof outer === 'function') outer(el)
-        else if (outer) outer.current = el
+      ref={ref}
+      onChange={(e) => {
+        // Convert in the change handler (not via wanakana.bind) so React state receives the kana.
+        if (romaji && !(e.nativeEvent as InputEvent).isComposing) {
+          const kana = toHiragana(e.target.value, { IMEMode: true })
+          if (kana !== e.target.value) e.target.value = kana
+        }
+        onChange?.(e)
       }}
       className={cx(
-        'rounded-lg border bg-surface px-3 py-1.5 outline-none focus:ring-2 focus:ring-accent/30',
+        'rounded-xl border bg-surface px-4 py-2 text-lg outline-none focus:ring-2 focus:ring-accent/30',
         state === 'ok' ? 'border-ok bg-ok-soft' : state === 'bad' ? 'border-bad bg-bad-soft' : 'border-line',
         className,
       )}
@@ -113,22 +110,22 @@ export const JpInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInpu
 
 export function Empty({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="rounded-xl border border-dashed border-line p-8 text-center text-sub">
-      <p className="font-medium text-ink">{title}</p>
-      {children && <div className="mt-1 text-sm">{children}</div>}
+    <div className="rounded-2xl border border-dashed border-line p-10 text-center text-sub">
+      <p className="text-lg font-semibold text-ink">{title}</p>
+      {children && <div className="mt-2 text-base">{children}</div>}
     </div>
   )
 }
 
 export function Loading() {
-  return <div className="p-10 text-center text-sub">Đang tải…</div>
+  return <div className="p-12 text-center text-lg font-medium text-sub">Đang tải…</div>
 }
 
 export function Verdict({ ok, children }: { ok: boolean; children?: ReactNode }) {
   return (
-    <div className={cx('mt-3 rounded-lg px-3 py-2 text-sm', ok ? 'bg-ok-soft text-ok' : 'bg-bad-soft text-bad')}>
-      <span className="font-semibold">{ok ? '✓ Đúng' : '✗ Chưa đúng'}</span>
-      {children && <div className="mt-1 text-ink">{children}</div>}
+    <div className={cx('mt-4 rounded-xl px-4 py-3 text-base', ok ? 'bg-ok-soft text-ok' : 'bg-bad-soft text-bad')}>
+      <span className="font-bold">{ok ? '✓ Đúng' : '✗ Chưa đúng'}</span>
+      {children && <div className="mt-1.5 text-ink">{children}</div>}
     </div>
   )
 }

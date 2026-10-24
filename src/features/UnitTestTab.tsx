@@ -22,8 +22,9 @@ function buildParts(unit: Unit): Part[] {
   const g = unit.generated
   const v4 = g.vocabCloze.flatMap((s) => s.items) as Question[]
   const vocab = [...sample(v4, 10), ...sample(vocabV1(unit), 20 - Math.min(10, v4.length))]
-  const k4 = g.kanji.flatMap((s) => s.items) as Question[]
-  const kanji = [...sample(kanjiK1(unit), 4), ...sample(kanjiK2(unit), 3), ...sample(k4, 3)]
+  // Only the multiple-choice kanji sets: "rewrite in kanji" can't be answered by typing romaji.
+  const k3 = g.kanji.filter((s) => s.code === 'K3').flatMap((s) => s.items) as Question[]
+  const kanji = [...sample(kanjiK1(unit), 4), ...sample(kanjiK2(unit), 3), ...sample(k3, 3)]
   const grammar = sample(g.grammar.flatMap((p) => p.sets.flatMap((s) => s.items)) as Question[], 20)
   const parts: Part[] = [
     { id: 'tv', title: 'Từ vựng', questions: vocab },

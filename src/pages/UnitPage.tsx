@@ -6,8 +6,7 @@ import { useProgress } from '../store/progress'
 import { Jp } from '../components/Jp'
 import { Loading, cx } from '../components/ui'
 import { TheoryTab } from '../features/TheoryTab'
-import { VocabTab } from '../features/VocabTab'
-import { KanjiTab } from '../features/KanjiTab'
+import { FlashcardTab } from '../features/FlashcardTab'
 import { GrammarTab } from '../features/GrammarTab'
 import { WritingTab } from '../features/WritingTab'
 import { ReadingTab } from '../features/ReadingTab'
@@ -35,50 +34,51 @@ export function UnitPage() {
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <Link to="/units" className="text-sm text-sub hover:text-accent">
-            ← Tất cả bài
+          <Link to="/units" className="inline-flex items-center gap-1 text-base font-semibold text-sub hover:text-accent">
+            ← Tất cả bài học
           </Link>
-          <h1 className="text-2xl font-bold leading-snug">
-            <span className="mr-2 rounded-lg bg-accent-soft px-2 py-0.5 text-base font-bold text-accent align-middle">{unitLabel(unit.meta)}</span>
+          <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold leading-tight text-ink">
+            <span className="mr-3 rounded-xl bg-accent-soft px-3 py-1 text-base sm:text-lg font-bold text-accent align-middle">
+              {unitLabel(unit.meta)}
+            </span>
             <Jp text={unit.meta.title} />
           </h1>
-          <p className="text-sub">{unit.meta.subtitle}</p>
+          <p className="mt-1.5 text-base sm:text-lg text-sub font-medium">{unit.meta.subtitle}</p>
         </div>
-        <div className="flex gap-2 text-sm">
+        <div className="flex gap-3 text-base font-semibold">
           {prev && (
-            <Link className="text-sub hover:text-accent" to={`/u/${prev.id}/${tab}`}>
+            <Link className="rounded-lg bg-surface border border-line px-3 py-1 text-sub hover:border-accent hover:text-accent transition" to={`/u/${prev.id}/${tab}`}>
               ← {unitLabel(prev)}
             </Link>
           )}
           {next && (
-            <Link className="text-sub hover:text-accent" to={`/u/${next.id}/${tab}`}>
+            <Link className="rounded-lg bg-surface border border-line px-3 py-1 text-sub hover:border-accent hover:text-accent transition" to={`/u/${next.id}/${tab}`}>
               {unitLabel(next)} →
             </Link>
           )}
         </div>
       </div>
-      <nav className="no-print sticky top-14 z-10 -mx-4 mb-5 flex gap-1.5 overflow-x-auto border-b border-line bg-bg/95 px-4 py-2.5 backdrop-blur">
+      <nav className="no-print sticky top-16 z-10 -mx-4 mb-6 flex gap-2 overflow-x-auto border-b border-line bg-bg/95 px-4 py-3 backdrop-blur-md">
         {UNIT_TABS.map((x) => (
           <NavLink
             key={x.id}
             to={`/u/${id}/${x.id}`}
             className={({ isActive }) =>
               cx(
-                'relative shrink-0 rounded-full px-3.5 py-1.5 text-sm transition',
-                isActive ? 'bg-accent font-semibold text-white shadow-sm' : 'bg-surface text-sub ring-1 ring-line hover:text-ink',
+                'relative shrink-0 rounded-full px-4 py-2 text-[15px] sm:text-base transition',
+                isActive ? 'bg-accent font-bold text-white shadow-sm' : 'bg-surface text-sub ring-1 ring-line hover:text-ink hover:ring-accent/40',
               )
             }
           >
             {x.label}
-            {tabs.has(x.id) && <span className="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-ok align-middle" />}
+            {tabs.has(x.id) && <span className="ml-1.5 inline-block h-2 w-2 rounded-full bg-ok align-middle" />}
           </NavLink>
         ))}
       </nav>
       {t === 'ly-thuyet' && <TheoryTab unit={unit} />}
-      {t === 'tu-vung' && <VocabTab unit={unit} />}
-      {t === 'kanji' && <KanjiTab unit={unit} />}
+      {(t === 'the' || (t as string) === 'tu-vung' || (t as string) === 'kanji') && <FlashcardTab unit={unit} />}
       {t === 'ngu-phap' && <GrammarTab unit={unit} />}
       {t === 'viet' && <WritingTab unit={unit} />}
       {t === 'doc' && <ReadingTab unit={unit} />}

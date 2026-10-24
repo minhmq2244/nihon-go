@@ -2,8 +2,7 @@ import { useProgress } from '../store/progress'
 
 export const UNIT_TABS = [
   { id: 'ly-thuyet', label: 'Lý thuyết' },
-  { id: 'tu-vung', label: 'Từ vựng' },
-  { id: 'kanji', label: 'Kanji' },
+  { id: 'the', label: 'Thẻ ghi nhớ' },
   { id: 'ngu-phap', label: 'Ngữ pháp' },
   { id: 'viet', label: 'Viết' },
   { id: 'doc', label: 'Đọc hiểu' },

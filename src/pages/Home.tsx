@@ -8,24 +8,24 @@ import { Jp } from '../components/Jp'
 import { Button, Card, Loading, ProgressBar, cx } from '../components/ui'
 
 function GoalRing({ value, goal }: { value: number; goal: number }) {
-  const r = 34
+  const r = 35
   const c = 2 * Math.PI * r
   const p = Math.min(1, value / goal)
   return (
-    <svg viewBox="0 0 80 80" className="h-24 w-24">
-      <circle cx="40" cy="40" r={r} fill="none" stroke="var(--c-muted)" strokeWidth="8" />
+    <svg viewBox="0 0 84 84" className="h-28 w-28">
+      <circle cx="42" cy="42" r={r} fill="none" stroke="var(--c-muted)" strokeWidth="7" />
       <circle
-        cx="40"
-        cy="40"
+        cx="42"
+        cy="42"
         r={r}
         fill="none"
         stroke={p >= 1 ? 'var(--c-ok)' : 'var(--c-accent)'}
-        strokeWidth="8"
+        strokeWidth="7"
         strokeLinecap="round"
         strokeDasharray={`${c * p} ${c}`}
-        transform="rotate(-90 40 40)"
+        transform="rotate(-90 42 42)"
       />
-      <text x="40" y="44" textAnchor="middle" fontSize="15" fontWeight="700" fill="var(--c-ink)">
+      <text x="42" y="47" textAnchor="middle" fontSize="16" fontWeight="800" fill="var(--c-ink)">
         {value}/{goal}
       </text>
     </svg>
@@ -58,100 +58,139 @@ export function Home() {
     : null
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <section className="flex flex-wrap items-end justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold">
-            Chào bạn 👋 <span lang="ja" className="text-lg font-medium text-sub">今日も がんばりましょう！</span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
+            Chào bạn 👋{' '}
+            <span lang="ja" className="text-xl sm:text-2xl font-bold text-accent">
+              今日も がんばりましょう！
+            </span>
           </h1>
-          <p className="text-sub">
-            {streak ? `Bạn đã học ${streak} ngày liên tiếp — giữ chuỗi nhé!` : 'Bắt đầu chuỗi ngày học đầu tiên hôm nay.'}
+          <p className="mt-1.5 text-base sm:text-lg text-sub font-medium">
+            {streak ? `Bạn đã học ${streak} ngày liên tiếp — giữ vững phong độ nhé! 🔥` : 'Bắt đầu chuỗi ngày học đầu tiên hôm nay.'}
           </p>
         </div>
       </section>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-3">
         <Link to={`/u/${last.id}/${lastTab?.id ?? 'ly-thuyet'}`} className="md:col-span-2">
-          <div className="h-full rounded-2xl bg-accent p-5 text-white shadow-md transition hover:brightness-110">
-            <p className="text-sm opacity-85">{lastPlace ? 'Tiếp tục học' : 'Bắt đầu học'}</p>
-            <p className="mt-1 text-2xl font-bold leading-snug">
-              {unitLabel(last)} · <Jp text={last.title} />
-            </p>
-            <p className="text-sm opacity-85">
-              {last.subtitle}
-              {lastTab && ` · Đang ở: ${lastTab.label}`}
-            </p>
-            <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/30">
-              <div className="h-full rounded-full bg-cta" style={{ width: `${Math.round((new Set(Object.keys(sets).filter((k) => k.startsWith(last.id + ':')).map((k) => k.split(':')[1])).size / UNIT_TABS.length) * 100)}%` }} />
+          <div className="h-full rounded-3xl bg-gradient-to-r from-accent via-accent to-accent/90 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                  {lastPlace ? 'Tiếp tục bài học' : 'Bắt đầu bài học'}
+                </span>
+                {lastTab && (
+                  <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
+                    Đang ở: {lastTab.label}
+                  </span>
+                )}
+              </div>
+              <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight">
+                {unitLabel(last)} · <Jp text={last.title} />
+              </h2>
+              <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
+                {last.subtitle}
+              </p>
             </div>
-            <span className="mt-4 inline-flex items-center gap-1 rounded-xl bg-cta px-4 py-2 font-semibold text-on-cta">
-              {lastPlace ? 'Học tiếp' : 'Vào học'} <ArrowRight size={16} />
-            </span>
+            <div className="mt-6">
+              <div className="h-2.5 overflow-hidden rounded-full bg-white/25">
+                <div
+                  className="h-full rounded-full bg-cta transition-all"
+                  style={{
+                    width: `${Math.round(
+                      (new Set(
+                        Object.keys(sets)
+                          .filter((k) => k.startsWith(last.id + ':'))
+                          .map((k) => k.split(':')[1]),
+                      ).size /
+                        UNIT_TABS.length) *
+                        100,
+                    )}%`,
+                  }}
+                />
+              </div>
+              <div className="mt-4 flex items-center justify-between">
+                <span className="inline-flex items-center gap-2 rounded-xl bg-cta px-5 py-2.5 text-base font-bold text-on-cta shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
+                  {lastPlace ? 'Học tiếp' : 'Vào học ngay'} <ArrowRight size={18} />
+                </span>
+              </div>
+            </div>
           </div>
         </Link>
-        <Card className="flex flex-col items-center justify-center text-center">
-          <p className="flex items-center gap-1 text-sm font-semibold text-sub">
-            <Target size={16} /> Mục tiêu hôm nay
+        <Card className="flex flex-col items-center justify-center p-6 text-center">
+          <p className="flex items-center gap-2 text-base font-bold text-sub">
+            <Target size={18} className="text-accent" /> Mục tiêu hôm nay
           </p>
-          <GoalRing value={todayCount} goal={goal} />
-          <p className="text-sm text-sub">{todayCount >= goal ? 'Đã đạt mục tiêu 🎉' : `Còn ${goal - todayCount} câu đúng nữa`}</p>
+          <div className="my-3">
+            <GoalRing value={todayCount} goal={goal} />
+          </div>
+          <p className="text-base font-medium text-sub">
+            {todayCount >= goal ? '🎉 Đã đạt mục tiêu hôm nay!' : `Còn ${goal - todayCount} câu đúng nữa`}
+          </p>
         </Card>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <Link to="/review">
-          <Card className="h-full transition hover:border-warn">
-            <p className="flex items-center gap-2 font-semibold text-warn">
-              <Repeat size={18} /> Ôn câu sai
+          <Card className="h-full p-5 sm:p-6 transition-all hover:border-warn hover:shadow-md">
+            <p className="flex items-center gap-2 text-base font-bold text-warn">
+              <Repeat size={20} /> Ôn câu sai
             </p>
-            <p className="mt-1 text-2xl font-bold">{weak}</p>
-            <p className="text-sm text-sub">câu/từ cần ôn lại</p>
+            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-ink">{weak}</p>
+            <p className="mt-1 text-[15px] font-medium text-sub">câu/từ cần ôn lại</p>
           </Card>
         </Link>
         <Link to="/units">
-          <Card className="h-full transition hover:border-accent">
-            <p className="flex items-center gap-2 font-semibold text-accent">
-              <BookOpen size={18} /> Học theo bài
+          <Card className="h-full p-5 sm:p-6 transition-all hover:border-accent hover:shadow-md">
+            <p className="flex items-center gap-2 text-base font-bold text-accent">
+              <BookOpen size={20} /> Học theo bài
             </p>
-            <p className="mt-1 text-2xl font-bold">
+            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-ink">
               {unitsTouched.length}/{index.units.length}
             </p>
-            <ProgressBar value={unitsTouched.length / index.units.length} className="mt-1" />
+            <ProgressBar value={unitsTouched.length / index.units.length} className="mt-2.5 h-2.5" />
           </Card>
         </Link>
         <Link to="/kaiwa">
-          <Card className="h-full transition hover:border-ok">
-            <p className="flex items-center gap-2 font-semibold text-ok">
-              <MessagesSquare size={18} /> Kaiwa
+          <Card className="h-full p-5 sm:p-6 transition-all hover:border-ok hover:shadow-md">
+            <p className="flex items-center gap-2 text-base font-bold text-ok">
+              <MessagesSquare size={20} /> Kaiwa
             </p>
-            <p className="mt-1 text-2xl font-bold">
+            <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-ink">
               {kaiwaDone}/{kaiwaTotal}
             </p>
-            <p className="text-sm text-sub">kịch bản hoàn thành</p>
+            <p className="mt-1 text-[15px] font-medium text-sub">kịch bản hoàn thành</p>
           </Card>
         </Link>
         <Link to="/exams">
-          <Card className="h-full transition hover:border-violet">
-            <p className="flex items-center gap-2 font-semibold text-violet">
-              <ClipboardCheck size={18} /> Kiểm tra gần nhất
+          <Card className="h-full p-5 sm:p-6 transition-all hover:border-violet hover:shadow-md">
+            <p className="flex items-center gap-2 text-base font-bold text-violet">
+              <ClipboardCheck size={20} /> Kiểm tra gần nhất
             </p>
             {recent ? (
               <>
-                <p className="mt-1 text-2xl font-bold">
+                <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-ink">
                   {recent.correct}/{recent.total}
                 </p>
-                <p className="truncate text-sm text-sub">{recentName}</p>
+                <p className="mt-1 truncate text-[15px] font-medium text-sub">{recentName}</p>
               </>
             ) : (
-              <p className="mt-1 text-sm text-sub">Chưa làm bài kiểm tra nào.</p>
+              <p className="mt-2 text-base text-sub">Chưa làm bài kiểm tra nào.</p>
             )}
           </Card>
         </Link>
       </div>
 
-      <Card>
-        <p className="mb-3 font-semibold">Lộ trình của bạn</p>
-        <div className="flex gap-2 overflow-x-auto pb-1">
+      <Card className="p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-lg font-bold text-ink">Lộ trình của bạn</h3>
+          <Link to="/units" className="text-sm font-semibold text-accent hover:underline">
+            Xem tất cả bài →
+          </Link>
+        </div>
+        <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1">
           {index.units.map((u) => {
             const touched = unitsTouched.includes(u)
             const current = u.id === last.id
@@ -160,13 +199,19 @@ export function Home() {
                 key={u.id}
                 to={`/u/${u.id}`}
                 className={cx(
-                  'flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-2xl border-2 text-xs font-bold',
-                  current ? 'border-accent bg-accent text-white' : touched ? 'border-ok bg-ok-soft text-ok' : 'border-line bg-surface text-sub',
+                  'flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl border-2 transition-all hover:scale-105 active:scale-95 shadow-xs',
+                  current
+                    ? 'border-accent bg-accent text-white shadow-md'
+                    : touched
+                      ? 'border-ok bg-ok-soft text-ok font-bold'
+                      : 'border-line bg-surface text-sub hover:border-accent/40 hover:text-ink',
                 )}
                 title={`${unitLabel(u)} · ${u.subtitle}`}
               >
-                <span className="text-[10px] font-medium opacity-80">{u.kind === 'bai' ? 'Bài' : 'CĐ'}</span>
-                {u.num}
+                <span className="text-[11px] font-semibold opacity-85 uppercase tracking-wide">
+                  {u.kind === 'bai' ? 'Bài' : 'CĐ'}
+                </span>
+                <span className="text-lg font-extrabold leading-none mt-0.5">{u.num}</span>
               </Link>
             )
           })}
@@ -174,7 +219,7 @@ export function Home() {
       </Card>
 
       {!lastPlace && (
-        <div className="text-center">
+        <div className="pt-2 text-center">
           <Link to="/u/b01">
             <Button variant="cta" size="lg">
               Bắt đầu từ Bài 1

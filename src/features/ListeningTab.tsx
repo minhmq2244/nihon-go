@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Line, Listening, ListeningType, Unit } from '../types'
 import { setKey } from '../lib/progressInfo'
-import { playLines, stopSpeaking } from '../lib/speech'
 import { useProgress } from '../store/progress'
 import { useSettings } from '../store/settings'
 import { DrillItem, DrillRunner, type Question } from '../components/Drill'
 import { Jp } from '../components/Jp'
+import { SpeedControl } from '../components/SpeedControl'
+import { FloatingPlayer, PlayerControls, usePlaylist } from '../components/AudioPlayer'
 import { Button, Card, Chip, Empty, cx } from '../components/ui'
 
 export const LISTEN_TYPES: Record<ListeningType, string> = {
@@ -66,56 +67,28 @@ export function ListeningTab({ unit }: { unit: Unit }) {
 }
 
 /** Audio controls for a script: play all, speed, auto-pause after each line. */
-export function ScriptPlayer({ lines, showScript, onLine }: { lines: Line[]; showScript: boolean; onLine?: (i: number | null) => void }) {
+export function ScriptPlayer({ lines, showScript, onLine, title }: { lines: Line[]; showScript: boolean; onLine?: (i: number | null) => void; title?: string }) {
   const { rate, set } = useSettings()
   const [autoPause, setAutoPause] = useState(false)
-  const [cur, setCur] = useState<number | null>(null)
-  const [next, setNext] = useState(0)
-  const stop = useRef<(() => void) | null>(null)
-  useEffect(() => () => stopSpeaking(), [])
+  const p = usePlaylist(
+    lines.map((l) => ({ text: l.jp, role: roleOf(l.speaker) })),
+    { gapMs: 300, single: autoPause },
+  )
+  const cur = p.cur
   useEffect(() => onLine?.(cur), [cur])
-
-  const items = lines.map((l) => ({ text: l.jp, role: roleOf(l.speaker) }))
-  const play = (from: number) => {
-    stop.current?.()
-    if (autoPause) {
-      stop.current = playLines(items.slice(from, from + 1), {
-        onIndex: (i) => {
-          setCur(i === null ? null : from + i)
-          if (i === null) setNext(Math.min(from + 1, lines.length))
-        },
-      })
-    } else {
-      stop.current = playLines(items, { from, onIndex: (i) => (setCur(i), i === null && setNext(0)), gapMs: 300 })
-    }
-  }
 
   return (
     <div className="space-y-3">
+      <FloatingPlayer p={p} title={title ?? 'Bài nghe'} />
       <div className="flex flex-wrap items-center gap-2">
-        {cur === null ? (
-          <Button variant="primary" onClick={() => play(autoPause ? next % lines.length : 0)}>
-            ▶ {autoPause ? (next === 0 ? 'Phát câu 1' : next >= lines.length ? 'Nghe lại từ đầu' : `Phát câu ${next + 1}/${lines.length}`) : 'Phát cả bài'}
-          </Button>
-        ) : (
-          <Button onClick={() => stop.current?.()}>■ Dừng</Button>
-        )}
-        {autoPause && next > 0 && cur === null && next < lines.length && (
-          <Button variant="ghost" onClick={() => play(next - 1)}>
-            ↺ Nghe lại câu {next}
-          </Button>
-        )}
+        <PlayerControls p={p} startLabel={autoPause ? 'Phát câu 1' : 'Phát cả bài'} />
         <span className="flex-1" />
-        {[0.7, 0.85, 1].map((r) => (
-          <Chip key={r} active={Math.abs(rate - r) < 0.01} onClick={() => set({ rate: r })}>
-            {r}×
-          </Chip>
-        ))}
+        <SpeedControl rate={rate} onChange={(r) => set({ rate: r })} />
         <Chip
           active={autoPause}
           onClick={() => {
+            p.stop()
             setAutoPause(!autoPause)
-            setNext(0)
           }}
         >
           Tự dừng sau mỗi câu
@@ -171,7 +144,7 @@ function Player({ unit, l, onBack, onNext }: { unit: Unit; l: Listening; onBack:
         {l.intro && <p className="rounded-lg bg-accent-soft px-3 py-2 text-sm">{l.intro}</p>}
         {lineQs.length === 0 && (
           <>
-            <ScriptPlayer lines={l.lines} showScript={script} />
+            <ScriptPlayer lines={l.lines} showScript={script} title={l.title} />
             <Button size="sm" variant="ghost" onClick={() => setScript(!script)}>
               {script ? 'Ẩn' : 'Hiện'} script
             </Button>

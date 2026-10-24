@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSettings, type FontSize, type Theme } from '../store/settings'
 import { exportProgress, useProgress } from '../store/progress'
-import { japaneseVoices, onVoicesChanged, speak, sttSupported, ttsSupported } from '../lib/speech'
+import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak, sttSupported, ttsSupported } from '../lib/speech'
 import { Button, Card, Chip } from '../components/ui'
 
 export function SettingsPage() {
@@ -21,9 +21,9 @@ export function SettingsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold">Cài đặt</h1>
-      <Card className="space-y-4">
+    <div className="max-w-3xl space-y-6">
+      <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">Cài đặt</h1>
+      <Card className="space-y-6 p-6">
         <Row label="Giao diện">
           {(['light', 'dark', 'system'] as Theme[]).map((t) => (
             <Chip key={t} active={s.theme === t} onClick={() => s.set({ theme: t })}>
@@ -53,7 +53,7 @@ export function SettingsPage() {
             </Chip>
           ))}
         </Row>
-        <Row label="Gõ romaji → kana" hint="Dùng khi máy chưa cài bộ gõ tiếng Nhật: gõ “watashi” sẽ thành “わたし”.">
+        <Row label="Gõ romaji → kana" hint="Gõ “yomimasu” sẽ thành “よみます”. Máy chấm theo cách đọc nên không cần gõ Kanji: よみます vẫn đúng với 読みます.">
           <Chip active={s.romaji} onClick={() => s.set({ romaji: !s.romaji })}>
             {s.romaji ? 'Đang bật' : 'Đang tắt'}
           </Chip>
@@ -72,7 +72,7 @@ export function SettingsPage() {
               <option value="">Tự chọn</option>
               {voices.map((v) => (
                 <option key={v.voiceURI} value={v.voiceURI}>
-                  {v.name}
+                  {friendlyVoiceName(v)}
                 </option>
               ))}
             </select>
@@ -123,9 +123,9 @@ export function SettingsPage() {
 function Row({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="mb-1 text-sm font-medium">{label}</p>
+      <p className="mb-2 text-base font-bold text-ink">{label}</p>
       <div className="flex flex-wrap items-center gap-2">{children}</div>
-      {hint && <p className="mt-1 text-xs text-sub">{hint}</p>}
+      {hint && <p className="mt-1.5 text-sm text-sub font-medium">{hint}</p>}
     </div>
   )
 }

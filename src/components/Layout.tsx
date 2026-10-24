@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, Flame, Home, MessagesSquare, Moon, Repeat, Settings, Sun } from 'lucide-react'
+import { BookOpen, ClipboardCheck, Flame, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
@@ -21,10 +21,13 @@ function FuriganaToggle() {
     <button
       type="button"
       onClick={() => set({ furigana: !furigana })}
-      className={cx('rounded-full px-3 py-1 text-xs font-semibold transition', furigana ? 'bg-accent-soft text-accent' : 'bg-muted text-sub')}
+      className={cx(
+        'flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-semibold transition shadow-xs',
+        furigana ? 'bg-accent-soft text-accent ring-1 ring-accent/30' : 'bg-muted text-sub hover:text-ink',
+      )}
       title="Bật/tắt furigana"
     >
-      <span lang="ja">ふりがな</span> {furigana ? 'ON' : 'OFF'}
+      <span lang="ja" className="font-bold">ふりがな</span> {furigana ? 'ON' : 'OFF'}
     </button>
   )
 }
@@ -36,11 +39,11 @@ function ThemeToggle() {
     <button
       type="button"
       onClick={() => set({ theme: dark ? 'light' : 'dark' })}
-      className="flex h-8 w-8 items-center justify-center rounded-full text-sub hover:bg-muted"
+      className="flex h-9 w-9 items-center justify-center rounded-full text-sub hover:bg-muted transition"
       title="Sáng / tối"
       aria-label="Đổi giao diện sáng / tối"
     >
-      {dark ? <Sun size={17} /> : <Moon size={17} />}
+      {dark ? <Sun size={19} /> : <Moon size={19} />}
     </button>
   )
 }
@@ -50,77 +53,138 @@ function Streak() {
   const n = streakOf(days)
   return (
     <span
-      className={cx('flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold', n ? 'bg-warn-soft text-warn' : 'bg-muted text-sub')}
+      className={cx(
+        'flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold',
+        n ? 'bg-warn-soft text-warn ring-1 ring-warn/30' : 'bg-muted text-sub',
+      )}
       title="Số ngày học liên tiếp"
     >
-      <Flame size={14} /> {n}
+      <Flame size={16} /> {n}
     </span>
   )
 }
 
 export function Layout() {
   const { pathname } = useLocation()
+  const { sidebarCollapsed, set } = useSettings()
+  const toggleSidebar = () => set({ sidebarCollapsed: !sidebarCollapsed })
+
   useEffect(() => {
     stopSpeaking()
     window.scrollTo(0, 0)
   }, [pathname])
 
   return (
-    <div className="min-h-screen md:pl-60">
-      <aside className="no-print fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-line bg-surface px-3 py-4 md:flex">
-        <NavLink to="/" className="mb-6 flex items-center gap-2 px-3 text-lg font-bold text-accent">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white" lang="ja">
-            日
-          </span>
-          Nihongo
-        </NavLink>
-        <nav className="flex flex-1 flex-col gap-1">
+    <div className={cx('min-h-screen transition-[padding] duration-300 ease-in-out', sidebarCollapsed ? 'md:pl-20' : 'md:pl-64')}>
+      <aside
+        className={cx(
+          'no-print fixed inset-y-0 left-0 z-30 hidden flex-col border-r border-line bg-surface py-5 transition-[width,padding] duration-300 ease-in-out md:flex',
+          sidebarCollapsed ? 'w-20 px-3 items-center' : 'w-64 px-4',
+        )}
+      >
+        <div className={cx('mb-6 flex items-center', sidebarCollapsed ? 'flex-col gap-3 justify-center' : 'gap-2.5 px-0.5')}>
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface hover:bg-muted text-sub hover:text-ink transition cursor-pointer shadow-xs active:scale-95"
+            title={sidebarCollapsed ? 'Mở rộng menu' : 'Thu gọn menu'}
+            aria-label={sidebarCollapsed ? 'Mở rộng menu' : 'Thu gọn menu'}
+          >
+            <Menu size={20} />
+          </button>
+          {!sidebarCollapsed ? (
+            <NavLink to="/" className="flex min-w-0 items-center gap-2.5 overflow-hidden transition-all">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 text-xl font-bold text-white shadow-sm" lang="ja">
+                日
+              </span>
+              <div className="min-w-0">
+                <span className="block text-xl font-extrabold tracking-tight text-accent truncate">Nihongo</span>
+                <span className="block text-[11px] font-medium text-sub truncate">Luyện N5 → N4</span>
+              </div>
+            </NavLink>
+          ) : (
+            <NavLink to="/" title="Nihongo - Trang chủ" className="transition-transform hover:scale-105">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 text-xl font-bold text-white shadow-sm" lang="ja">
+                日
+              </span>
+            </NavLink>
+          )}
+        </div>
+        <nav className={cx('flex flex-1 flex-col gap-1.5', sidebarCollapsed ? 'w-full items-center' : '')}>
           {NAV.map((n) => (
             <NavLink
               key={n.to}
               to={n.to}
               end={n.end}
+              title={sidebarCollapsed ? n.label : undefined}
               className={({ isActive }) =>
                 cx(
-                  'flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] transition',
-                  isActive ? 'bg-accent-soft font-semibold text-accent' : 'text-sub hover:bg-muted hover:text-ink',
+                  'group relative flex items-center rounded-xl transition-all',
+                  sidebarCollapsed
+                    ? 'h-11 w-11 justify-center'
+                    : 'w-full gap-3.5 px-3.5 py-3 text-[16px] font-medium',
+                  isActive ? 'bg-accent-soft font-semibold text-accent shadow-xs' : 'text-sub hover:bg-muted/80 hover:text-ink',
                 )
               }
             >
-              <n.icon size={19} />
-              {n.label}
+              <n.icon size={21} className="shrink-0" />
+              {!sidebarCollapsed && <span className="truncate">{n.label}</span>}
+              {sidebarCollapsed && (
+                <span className="pointer-events-none absolute left-full ml-3 hidden rounded-lg bg-surface border border-line px-2.5 py-1 text-xs font-semibold text-ink shadow-lg group-hover:block z-50 whitespace-nowrap">
+                  {n.label}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
         <NavLink
           to="/settings"
+          title={sidebarCollapsed ? 'Cài đặt' : undefined}
           className={({ isActive }) =>
-            cx('flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px]', isActive ? 'bg-accent-soft font-semibold text-accent' : 'text-sub hover:bg-muted')
+            cx(
+              'group relative flex items-center rounded-xl transition-all',
+              sidebarCollapsed
+                ? 'h-11 w-11 justify-center'
+                : 'w-full gap-3.5 px-3.5 py-3 text-[16px] font-medium',
+              isActive ? 'bg-accent-soft font-semibold text-accent shadow-xs' : 'text-sub hover:bg-muted/80 hover:text-ink',
+            )
           }
         >
-          <Settings size={19} /> Cài đặt
+          <Settings size={21} className="shrink-0" />
+          {!sidebarCollapsed && <span>Cài đặt</span>}
+          {sidebarCollapsed && (
+            <span className="pointer-events-none absolute left-full ml-3 hidden rounded-lg bg-surface border border-line px-2.5 py-1 text-xs font-semibold text-ink shadow-lg group-hover:block z-50 whitespace-nowrap">
+              Cài đặt
+            </span>
+          )}
         </NavLink>
       </aside>
 
-      <header className="no-print sticky top-0 z-20 border-b border-line bg-surface/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-2 px-4">
-          <NavLink to="/" className="flex items-center gap-2 font-bold text-accent md:hidden">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white" lang="ja">
+      <header className="no-print sticky top-0 z-20 border-b border-line bg-surface/85 backdrop-blur-md">
+        <div className="flex h-16 w-full items-center justify-between px-6 md:px-10 lg:px-12">
+          <NavLink to="/" className="flex items-center gap-2.5 font-bold text-accent md:hidden">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-lg text-white" lang="ja">
               日
             </span>
-            Nihongo
+            <span className="text-xl font-extrabold">Nihongo</span>
           </NavLink>
-          <span className="flex-1" />
-          <Streak />
-          <FuriganaToggle />
-          <ThemeToggle />
-          <NavLink to="/settings" className="flex h-8 w-8 items-center justify-center rounded-full text-sub hover:bg-muted md:hidden" aria-label="Cài đặt">
-            <Settings size={17} />
-          </NavLink>
+          <div className="hidden md:block" />
+          <div className="flex items-center gap-2.5">
+            <Streak />
+            <FuriganaToggle />
+            <ThemeToggle />
+            <NavLink
+              to="/settings"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-sub hover:bg-muted md:hidden"
+              aria-label="Cài đặt"
+            >
+              <Settings size={19} />
+            </NavLink>
+          </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 pt-5 pb-28 md:pb-10">
+      <main className="w-full max-w-[1440px] px-6 md:px-10 lg:px-12 pt-6 pb-28 md:pb-12">
         <ErrorBoundary resetKey={pathname}>
           <Outlet />
         </ErrorBoundary>
@@ -132,9 +196,9 @@ export function Layout() {
             key={n.to}
             to={n.to}
             end={n.end}
-            className={({ isActive }) => cx('flex flex-col items-center gap-0.5 py-2 text-[11px]', isActive ? 'font-semibold text-accent' : 'text-sub')}
+            className={({ isActive }) => cx('flex flex-col items-center gap-0.5 py-2.5 text-xs', isActive ? 'font-bold text-accent' : 'text-sub')}
           >
-            <n.icon size={21} />
+            <n.icon size={22} />
             {n.short}
           </NavLink>
         ))}

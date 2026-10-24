@@ -43,15 +43,15 @@ function ItemView({ item, a, set, checked }: { item: SourceItem; a: Answers; set
   const self = a[`${item.n}.self`]
   const ok = auto ?? (self === undefined ? null : self === '1')
   return (
-    <div className={cx('rounded-lg border p-3', checked && ok === true && 'border-ok/40 bg-ok-soft/40', checked && ok === false && 'border-bad/40 bg-bad-soft/40', (!checked || ok === null) && 'border-line')}>
-      <div className="flex gap-2">
-        <span className="w-6 shrink-0 text-right font-semibold text-sub">{item.n}.</span>
+    <div className={cx('rounded-xl border p-4 sm:p-5', checked && ok === true && 'border-ok/40 bg-ok-soft/40', checked && ok === false && 'border-bad/40 bg-bad-soft/40', (!checked || ok === null) && 'border-line')}>
+      <div className="flex gap-3">
+        <span className="w-7 shrink-0 text-right font-bold text-sub text-lg">{item.n}.</span>
         <div className="min-w-0 flex-1">
-          <Html html={item.html} className="leading-loose [&_p]:m-0" />
+          <Html html={item.html} className="text-lg leading-loose [&_p]:m-0" />
           {item.kind === 'choice' &&
             item.groups!.map((g, gi) => (
-              <div key={gi} className="mt-2 flex flex-wrap items-center gap-2">
-                {item.groups!.length > 1 && <span className="text-sm text-sub">{MARKS[gi]}</span>}
+              <div key={gi} className="mt-3 flex flex-wrap items-center gap-2.5">
+                {item.groups!.length > 1 && <span className="text-base font-semibold text-sub">{MARKS[gi]}</span>}
                 {g.options.map((o, oi) => {
                   const chosen = a[`${item.n}.${gi}`] === String(oi)
                   const right = checked && g.correct === oi
@@ -62,14 +62,14 @@ function ItemView({ item, a, set, checked }: { item: SourceItem; a: Answers; set
                       disabled={checked}
                       onClick={() => set(`${item.n}.${gi}`, String(oi))}
                       className={cx(
-                        'rounded-lg border px-3 py-1 text-left',
-                        chosen && !checked && 'border-accent bg-accent-soft',
-                        right && 'border-ok bg-ok-soft',
+                        'rounded-xl border px-4 py-2 text-base text-left transition cursor-pointer',
+                        chosen && !checked && 'border-accent bg-accent-soft font-semibold',
+                        right && 'border-ok bg-ok-soft font-semibold',
                         checked && chosen && g.correct !== oi && 'border-bad bg-bad-soft',
-                        !chosen && !right && 'border-line bg-surface hover:border-accent',
+                        !chosen && !right && 'border-line bg-surface hover:border-accent hover:bg-accent-soft/50',
                       )}
                     >
-                      {g.options.length > 2 && <span className="mr-1 text-xs text-sub">{String.fromCharCode(65 + oi)}.</span>}
+                      {g.options.length > 2 && <span className="mr-1.5 text-sm font-bold text-accent">{String.fromCharCode(65 + oi)}.</span>}
                       <Jp text={o} />
                     </button>
                   )
