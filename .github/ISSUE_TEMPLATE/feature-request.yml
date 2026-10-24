@@ -1,0 +1,21 @@
+name: ✨ Đề xuất tính năng
+description: Ý tưởng giúp việc học hiệu quả hơn
+title: "[Đề xuất] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Vấn đề khi học hiện nay
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Giải pháp đề xuất
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Cách khác đã cân nhắc

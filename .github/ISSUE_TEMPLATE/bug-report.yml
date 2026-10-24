@@ -1,0 +1,30 @@
+name: 🐛 Báo lỗi
+description: Ứng dụng hoạt động không như mong đợi
+title: "[Lỗi] "
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Mô tả lỗi
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Các bước tái hiện
+      placeholder: |
+        1. Vào Bài 10 → tab Nghe
+        2. Bấm Nghe ở bài L13
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Kết quả mong đợi
+  - type: input
+    id: env
+    attributes:
+      label: Thiết bị / trình duyệt
+      placeholder: "Windows 11 · Edge 155 / iPhone · Safari"

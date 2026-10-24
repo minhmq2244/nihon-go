@@ -1,0 +1,27 @@
+name: 📝 Lỗi nội dung
+description: Sai furigana, sai đáp án, dịch chưa đúng, thiếu từ…
+title: "[Nội dung] "
+labels: [content]
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Vị trí
+      description: Bài / tab / mã bài tập
+      placeholder: "Bài 11 · Ngữ pháp · 5.2 G3 câu 4"
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Nội dung hiện tại
+      placeholder: Chép nguyên câu đang sai
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Nội dung đúng
+      description: Kèm giải thích hoặc nguồn tham khảo nếu có
+    validations:
+      required: true
