@@ -35,7 +35,8 @@ export function parseVerbs(md: string): Map<string, VerbDetail> {
     }
     // する-verbs are often listed as just the noun: 結婚（けっこん）（します）
     const stem = /する$/.test(verbKey(dict)) ? verbKey(dict).replace(/する$/, '') : ''
-    for (const k of [verbKey(dict), verbKey(masu), stem]) if (k) map.set(k, d)
+    const aliases = (attr(sec.body, 'alias') ?? '').split(/\s*[;,、]\s*/).map(verbKey)
+    for (const k of [verbKey(dict), verbKey(masu), stem, ...aliases]) if (k) map.set(k, d)
   }
   return map
 }

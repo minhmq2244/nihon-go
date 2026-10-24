@@ -50,3 +50,22 @@ B: câu có ［cụm che］ || dịch >> giải thích cụm ~~ cách nói khác
 
 Loại bài nghe: `task` (nhiệm vụ), `point` (điểm chính), `response` (phản hồi nhanh), `expression` (chọn câu nói),
 `dictation` (chính tả — mỗi câu là 1 câu chép), `cloze` (điền khuyết — chỗ trống ghi `［…］` trong câu), `numbers` (số/giờ/giá), `tf` (đúng/sai).
+
+## Sổ tay động từ (`verbs/*.md`)
+
+Mỗi động từ một mục; web chèn phần giải thích ngay dưới dòng động từ trong bảng từ vựng (tab Lý thuyết) ở mọi bài có động từ đó.
+
+```
+## 通（かよ）う · 通（かよ）います
+@type: Nhóm I · Tự động từ
+@particle: に — [Nơi] に 通う; で — [Phương tiện] で 通う; KHÔNG dùng を
+@meaning: nghĩa đầy đủ, khi nào dùng
+@pattern: mẫu 1; mẫu 2
+@nuance: sắc thái, lưu ý (tuỳ chọn)
+@compare: phân biệt với từ dễ nhầm
+@mistake: ✗ câu sai → ✓ câu đúng
+@alias: cách viết khác trong bảng từ vựng (tuỳ chọn), ví dụ 試験に合格します
+- ví dụ 1 || dịch
+- ví dụ 2 || dịch
+- ví dụ 3 || dịch
+```

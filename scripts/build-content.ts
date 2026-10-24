@@ -1,6 +1,6 @@
 // Builds public/data/*.json from content/source (textbook) and content/generated (practice).
 // Run: npx tsx scripts/build-content.ts
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ContentIndex, Generated, KaiwaTopic, Unit, UnitMeta, VerbDetail } from '../src/types'
 import { parseExam, parsePractice, parseTheory, splitVolume } from './content/source'
@@ -23,8 +23,15 @@ export function buildContent(): { units: number; errors: string[] } {
 
   const index: ContentIndex = { units: [], exams: [], kaiwa: [], overview: { vol4Html: '' } }
   const cdTitles: Record<string, { title: string; subtitle: string }> = {}
-  const verbsPath = join(ROOT, 'content', 'generated', 'verbs.md')
-  const verbs = existsSync(verbsPath) ? parseVerbs(readFileSync(verbsPath, 'utf8')) : new Map()
+  const verbsDir = join(ROOT, 'content', 'generated', 'verbs')
+  const verbs = existsSync(verbsDir)
+    ? parseVerbs(
+        readdirSync(verbsDir)
+          .filter((f) => f.endsWith('.md'))
+          .map((f) => readFileSync(join(verbsDir, f), 'utf8'))
+          .join('\n\n'),
+      )
+    : new Map()
 
   for (const vol of [1, 2, 3, 4] as const) {
     const md = readFileSync(join(ROOT, 'content', 'source', `tap${vol}.md`), 'utf8')
@@ -59,7 +66,8 @@ export function buildContent(): { units: number; errors: string[] } {
       const unit: Unit = {
         meta,
         info: render(headerLines.filter((l) => !/^\*\*.+\*\*$/.test(l.trim()) && l.trim() !== '---').join('\n')),
-        theory: theory.sections.map((sec) => ({ ...sec, html: injectVerbDetails(sec.html, verbs, usedVerbs) })),
+        // verb notes go only into the vocabulary section (2)
+        theory: theory.sections.map((sec) => (sec.id === '2' ? { ...sec, html: injectVerbDetails(sec.html, verbs, usedVerbs) } : sec)),
         grammarPoints: theory.grammarPoints,
         vocab: theory.vocab,
         kanji: theory.kanji,
