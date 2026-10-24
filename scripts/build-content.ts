@@ -6,7 +6,7 @@ import type { ContentIndex, Generated, KaiwaTopic, Unit, UnitMeta, VerbDetail } 
 import { parseExam, parsePractice, parseTheory, splitVolume } from './content/source'
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
-import { injectVerbDetails, parseVerbs } from './content/verbs'
+import { VerbBook, injectVerbDetails, parseVerbs } from './content/verbs'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -31,7 +31,7 @@ export function buildContent(): { units: number; errors: string[] } {
           .map((f) => readFileSync(join(verbsDir, f), 'utf8'))
           .join('\n\n'),
       )
-    : new Map()
+    : new VerbBook()
 
   for (const vol of [1, 2, 3, 4] as const) {
     const md = readFileSync(join(ROOT, 'content', 'source', `tap${vol}.md`), 'utf8')

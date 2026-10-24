@@ -3,7 +3,7 @@ import { parseVerbs } from './content/verbs'
 const files = process.argv.slice(2)
 for (const f of files.length ? files : readdirSync('content/generated/verbs')) {
   const m = parseVerbs(readFileSync('content/generated/verbs/' + f, 'utf8'))
-  const ds = [...new Set(m.values())]
+  const ds = [...m.values()]
   const bad = ds.filter((d) => d.examples.length !== 3 || !d.particles.length || !d.mistakes.length || !d.compare.length)
   console.log(f, ds.length, 'entries', bad.length ? 'PROBLEMS: ' + bad.map((d) => d.dict + ' ex' + d.examples.length + ' p' + d.particles.length).join(', ') : 'ok')
 }

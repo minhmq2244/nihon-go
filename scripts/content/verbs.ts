@@ -1,17 +1,44 @@
 // Parses content/generated/verbs.md (detailed verb notes) and inserts them into the theory
 // vocabulary tables: under each verb row, an expandable row with particles, usage and 3 examples.
 import type { VerbDetail } from '../../src/types'
-import { toBase } from '../../src/lib/furigana'
+import { toBase, toReading } from '../../src/lib/furigana'
 import { renderInline, splitHeadings } from './markdown'
 
 const list = (v: string | undefined) => (v ?? '').split(/\s*;\s*/).filter(Boolean)
 const attr = (body: string, name: string) => new RegExp(`^@${name}:\s*(.+)$`, 'm').exec(body)?.[1]?.trim()
 
+const clean = (s: string) => s.replace(/\s+/g, '').replace(/[［(（\[].*$/, '')
 /** Plain lookup key: kanji form without readings, spaces or trailing notes like ［返す］(I). */
-export const verbKey = (jp: string) => toBase(jp).replace(/\s+/g, '').replace(/[［(（\[].*$/, '')
+export const verbKey = (jp: string) => clean(toBase(jp))
 
-export function parseVerbs(md: string): Map<string, VerbDetail> {
-  const map = new Map<string, VerbDetail>()
+/**
+ * Lookup by written form + reading, so 降（お）ります (get off) and 降（ふ）ります (rain falls) stay apart.
+ * Falls back to the written form alone when only one verb has it (cells written without readings).
+ */
+export class VerbBook {
+  private full = new Map<string, VerbDetail>()
+  private base = new Map<string, Set<VerbDetail>>()
+  add(base: string, reading: string, d: VerbDetail) {
+    if (!base) return
+    this.full.set(`${base}|${reading}`, d)
+    this.base.set(base, (this.base.get(base) ?? new Set()).add(d))
+  }
+  get(base: string, reading: string): VerbDetail | undefined {
+    const hit = this.full.get(`${base}|${reading}`)
+    if (hit) return hit
+    const cands = this.base.get(base)
+    return cands && cands.size === 1 ? [...cands][0] : undefined
+  }
+  get size() {
+    return new Set(this.full.values()).size
+  }
+  values() {
+    return new Set(this.full.values()).values()
+  }
+}
+
+export function parseVerbs(md: string): VerbBook {
+  const book = new VerbBook()
   for (const sec of splitHeadings(md, 2).blocks) {
     const [dict = '', masu = ''] = sec.title.split(/\s*·\s*/)
     if (!attr(sec.body, 'meaning')) continue
@@ -33,12 +60,12 @@ export function parseVerbs(md: string): Map<string, VerbDetail> {
           return { jp: jp.trim(), vn: vn.trim() }
         }),
     }
+    const forms = [dict, masu, ...(attr(sec.body, 'alias') ?? '').split(/\s*[;,、]\s*/)].filter(Boolean)
     // する-verbs are often listed as just the noun: 結婚（けっこん）（します）
-    const stem = /する$/.test(verbKey(dict)) ? verbKey(dict).replace(/する$/, '') : ''
-    const aliases = (attr(sec.body, 'alias') ?? '').split(/\s*[;,、]\s*/).map(verbKey)
-    for (const k of [verbKey(dict), verbKey(masu), stem, ...aliases]) if (k) map.set(k, d)
+    if (/する$/.test(clean(toBase(dict)))) forms.push(dict.replace(/する\s*$/, ''))
+    for (const f of forms) book.add(clean(toBase(f)), clean(toReading(f)), d)
   }
-  return map
+  return book
 }
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
@@ -62,24 +89,24 @@ function detailHtml(d: VerbDetail): string {
   ].join('')
 }
 
-/** A cell may hold several verbs: 行きます・来ます, 集めます / 貯めます, 太ります ↔ 痩せます. */
-const cellKeys = (cell: string) =>
-  cell
-    .replace(/<rt>[\s\S]*?<\/rt>/g, '')
-    .replace(/<[^>]+>/g, '')
-    .split(/[・／/↔、,]/)
-    .map((x) => x.replace(/\s+/g, '').replace(/[［(（\[].*$/, ''))
-    .filter(Boolean)
+/** A cell may hold several verbs: 行きます・来ます, 集めます / 貯めます, 太ります ↔ 痩せます. Returns [written, reading] pairs. */
+const cellKeys = (cell: string): [string, string][] => {
+  const written = cell.replace(/<rt>[\s\S]*?<\/rt>/g, '').replace(/<[^>]+>/g, '')
+  const reading = cell.replace(/<ruby>([\s\S]*?)<rt>([\s\S]*?)<\/rt><\/ruby>/g, '$2').replace(/<[^>]+>/g, '')
+  const w = written.split(/[・／/↔、,]/)
+  const r = reading.split(/[・／/↔、,]/)
+  return w.map((x, i) => [clean(x), clean(r[i] ?? x)] as [string, string]).filter(([x]) => x)
+}
 
 /** Insert a detail row after each table row that contains a known verb (once per verb per unit). */
-export function injectVerbDetails(html: string, verbs: Map<string, VerbDetail>, used: Set<VerbDetail>): string {
+export function injectVerbDetails(html: string, verbs: VerbBook, used: Set<VerbDetail>): string {
   return html.replace(/<tr(?:\s[^>]*)?>([\s\S]*?)<\/tr>/g, (row, inner: string) => {
     const cells = [...inner.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((m) => m[1]!)
     if (!cells.length) return row
     const found: VerbDetail[] = []
     for (const c of cells)
-      for (const k of cellKeys(c)) {
-        const d = verbs.get(k)
+      for (const [w, r] of cellKeys(c)) {
+        const d = verbs.get(w, r)
         if (d && !used.has(d) && !found.includes(d)) found.push(d)
       }
     found.forEach((d) => used.add(d))
