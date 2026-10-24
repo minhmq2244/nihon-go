@@ -7,6 +7,7 @@ import { parseExam, parsePractice, parseTheory, splitVolume } from './content/so
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
 import { VerbBook, injectVerbDetails, parseVerbs } from './content/verbs'
+import { missingVocab } from './content/coverage'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -16,8 +17,10 @@ function write(path: string, data: unknown) {
   writeFileSync(join(OUT, path), JSON.stringify(data))
 }
 
-export function buildContent(): { units: number; errors: string[] } {
+export function buildContent(): { units: number; errors: string[]; gaps: string[] } {
   const errors: string[] = []
+  // vocab of a unit that never shows up in its readings / listenings
+  const gaps: string[] = []
   rmSync(OUT, { recursive: true, force: true })
   for (const d of ['unit', 'exam', 'kaiwa']) mkdirSync(join(OUT, d), { recursive: true })
 
@@ -75,6 +78,11 @@ export function buildContent(): { units: number; errors: string[] } {
         ...practice,
         generated,
       }
+      if (generated !== EMPTY)
+        for (const [part, items] of [['Đọc', generated.readings], ['Nghe', generated.listenings]] as const) {
+          const miss = missingVocab(theory.vocab, items.flatMap((x) => x.lines))
+          if (miss.length) gaps.push(`${raw.id} · ${part} thiếu ${miss.length}: ${miss.join(' ; ')}`)
+        }
       index.units.push(meta)
       write(`unit/${raw.id}.json`, unit)
     }
@@ -101,12 +109,13 @@ export function buildContent(): { units: number; errors: string[] } {
   }
 
   write('index.json', index)
-  return { units: index.units.length, errors }
+  return { units: index.units.length, errors, gaps }
 }
 
 if (process.argv[1]?.endsWith('build-content.ts')) {
   const t = Date.now()
-  const { units, errors } = buildContent()
+  const { units, errors, gaps } = buildContent()
   for (const e of errors) console.error('  ✗ ' + e)
+  for (const g of gaps) console.warn('  ⚠ ' + g)
   console.log(`content: ${units} units built in ${Date.now() - t}ms${errors.length ? `, ${errors.length} lỗi` : ''}`)
 }
