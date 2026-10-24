@@ -6,6 +6,7 @@ import type { ContentIndex, Generated, KaiwaTopic, Unit, UnitMeta } from '../src
 import { parseExam, parsePractice, parseTheory, splitVolume } from './content/source'
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
+import { attachVerbs, parseVerbs } from './content/verbs'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -22,6 +23,8 @@ export function buildContent(): { units: number; errors: string[] } {
 
   const index: ContentIndex = { units: [], exams: [], kaiwa: [], overview: { vol4Html: '' } }
   const cdTitles: Record<string, { title: string; subtitle: string }> = {}
+  const verbsPath = join(ROOT, 'content', 'generated', 'verbs.md')
+  const verbs = existsSync(verbsPath) ? parseVerbs(readFileSync(verbsPath, 'utf8')) : new Map()
 
   for (const vol of [1, 2, 3, 4] as const) {
     const md = readFileSync(join(ROOT, 'content', 'source', `tap${vol}.md`), 'utf8')
@@ -57,7 +60,7 @@ export function buildContent(): { units: number; errors: string[] } {
         info: render(headerLines.filter((l) => !/^\*\*.+\*\*$/.test(l.trim()) && l.trim() !== '---').join('\n')),
         theory: theory.sections,
         grammarPoints: theory.grammarPoints,
-        vocab: theory.vocab,
+        vocab: attachVerbs(theory.vocab, verbs),
         kanji: theory.kanji,
         confuse: theory.confuse,
         ...practice,

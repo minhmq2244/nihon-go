@@ -1,0 +1,183 @@
+# Sổ tay động từ — giải thích chi tiết
+
+Mỗi động từ một mục `## Thể từ điển · Thể ます`. Web tự gắn mục này vào từ vựng có cùng động từ (ở mọi bài).
+
+```
+## 通（かよ）う · 通（かよ）います
+@type: Nhóm I · Tự động từ
+@particle: に — [Nơi đến đều đặn] に 通（かよ）う; で — [Phương tiện] で 通（かよ）う; から〜まで — [Nơi A] から [Nơi B] まで; KHÔNG dùng を cho nơi đến
+@meaning: nghĩa đầy đủ, khi nào dùng
+@pattern: mẫu câu / trợ từ đi kèm; mẫu khác
+@nuance: sắc thái, lưu ý cách dùng
+@compare: phân biệt với từ dễ nhầm
+@mistake: ✗ câu sai → ✓ câu đúng (giải thích); lỗi khác
+- 3 câu ví dụ có furigana || dịch
+```
+
+## 終（お）わる · 終（お）わります
+@type: Nhóm I · Tự động từ (cặp tha động từ: 終（お）える)
+@particle: が — [Sự việc] が 終（お）わる (sự việc là chủ ngữ, tự kết thúc); に — [Thời gian] に 終（お）わる (kết thúc lúc ~); KHÔNG dùng を
+@meaning: (Sự việc) kết thúc, xong. Chủ ngữ là bản thân sự việc: giờ học, công việc, phim, kỳ nghỉ… tự đi đến điểm kết thúc.
+@pattern: [Sự việc] が 終（お）わる; [Sự việc] は 〜時（じ）に 終（お）わる; V-ます（bỏ ます）＋ 終（お）わる = làm xong V (食（た）べ終（お）わる: ăn xong)
+@nuance: Vì là tự động từ nên đi với が, không nhấn mạnh ai làm cho kết thúc. Nói "tôi làm xong bài tập" tự nhiên nhất là 宿題（しゅくだい）が 終（お）わりました, hoặc dùng V-終わる: 宿題（しゅくだい）を やり終（お）わりました.
+@compare: 終（お）わる (tự, việc tự kết thúc) ↔ 終（お）える (tha, ai đó kết thúc việc gì — trang trọng hơn); 始（はじ）まる ↔ 終（お）わる (cặp đối nghĩa tự động từ); 終（お）わる (kết thúc) ≠ 止（や）める (bỏ, ngừng giữa chừng)
+@mistake: ✗ 授業（じゅぎょう）を 終（お）わりました → ✓ 授業（じゅぎょう）が 終（お）わりました (tự động từ dùng が); ✗ 夏休（なつやす）みが 終（お）わるまで、あと 1週間（いっしゅうかん）を あります → ✓ あと 1週間（いっしゅうかん） あります
+- 授業（じゅぎょう）は 4時（よじ）に 終（お）わります。 || Giờ học kết thúc lúc 4 giờ.
+- アルバイトが 終（お）わったら、電話（でんわ）します。 || Làm thêm xong tôi sẽ gọi điện.
+- 夏休（なつやす）みが もう すぐ 終（お）わります。 || Kỳ nghỉ hè sắp hết rồi.
+
+## 通（かよ）う · 通（かよ）います
+@type: Nhóm I · Tự động từ
+@particle: に — [Nơi đến đều đặn] に 通（かよ）う; で — [Phương tiện] で 通（かよ）う; から〜まで — [Nơi A] から [Nơi B] まで; KHÔNG dùng を cho nơi đến
+@meaning: Đi lại đều đặn, đi đi về về đến một nơi cố định trong một thời gian dài (trường học, công ty, lớp học thêm, phòng tập, bệnh viện để điều trị lâu dài…). Không chỉ là "đi học / đi làm" một lần, mà là hoạt động mang tính thói quen, lặp lại theo lịch.
+@pattern: [Nơi] に 通（かよ）う; [Phương tiện] で 通（かよ）う; [Nơi A] から [Nơi B] まで 通（かよ）う; [Tần suất] 通（かよ）う (週（しゅう）に 3回（さんかい） 通（かよ）う); thường dùng 〜に 通（かよ）って います (đang đi đều đặn)
+@nuance: Vì diễn tả thói quen kéo dài nên hay đi với 〜て います, 毎日（まいにち）, 週（しゅう）に 〜回（かい）, 〜年間（ねんかん）. Dùng được cho nơi học tập, làm việc, tập luyện, khám chữa bệnh định kỳ — không dùng cho nơi chỉ ghé một lần như đi chơi, đi du lịch.
+@compare: 行（い）く = đi (một lần cụ thể, có thể chỉ một lần) / 通（かよ）う = đi đều đặn nhiều lần trong thời gian dài; 通（かよ）う（かよう） ≠ 通（とお）る（とおる, cùng chữ Hán: đi qua, chạy qua một chỗ: 公園（こうえん）を 通（とお）る）; 通学（つうがく）する = đi học (từ Hán, trang trọng), 通勤（つうきん）する = đi làm
+@mistake: ✗ 明日（あした）、病院（びょういん）に 通（かよ）います (chỉ đi 1 lần) → ✓ 明日（あした）、病院（びょういん）に 行（い）きます; ✗ 大学（だいがく）を 通（かよ）って います → ✓ 大学（だいがく）に 通（かよ）って います (nơi đến dùng に); ✗ 週末（しゅうまつ）、京都（きょうと）に 通（かよ）いました (đi chơi 1 lần) → ✓ 京都（きょうと）へ 行（い）きました
+- 毎日（まいにち） 自転車（じてんしゃ）で 学校（がっこう）に 通（かよ）って います。 || Hằng ngày tôi đi học bằng xe đạp.
+- 週（しゅう）に 3回（さんかい）、ジムに 通（かよ）って います。 || Mỗi tuần tôi đi tập gym 3 lần.
+- 家（いえ）から 会社（かいしゃ）まで 電車（でんしゃ）で 1時間（いちじかん） かけて 通（かよ）って います。 || Tôi đi làm từ nhà đến công ty mất 1 tiếng bằng tàu điện.
+
+## ひく · ひきます
+@type: Nhóm I · Tha động từ
+@particle: を — [Nhạc cụ] を 弾（ひ）く; 風邪（かぜ）を ひく (cụm cố định, luôn を); を — 辞書（じしょ）を 引（ひ）く
+@meaning: Một âm "ひく" nhưng có nhiều chữ Hán và nghĩa khác nhau: ① 弾（ひ）く: chơi nhạc cụ bằng cách bấm phím / gảy dây (piano, guitar, violin); ② 引（ひ）く: kéo; tra (từ điển); ③ 風邪（かぜ）を ひく: bị cảm (thành ngữ cố định).
+@pattern: [Nhạc cụ] を 弾（ひ）く; 風邪（かぜ）を ひく; [Cửa] を 引（ひ）く (kéo cửa); 辞書（じしょ）を 引（ひ）く (tra từ điển)
+@nuance: "Chơi" trong tiếng Việt dùng chung cho mọi thứ, nhưng tiếng Nhật tách theo cách chơi: bấm/gảy → 弾（ひ）く, thổi → 吹（ふ）く, đánh trống → 叩（たた）く, chơi thể thao/game → する. 風邪（かぜ）を ひく là cụm cố định, phải dùng を; "đang bị cảm" nói 風邪（かぜ）を ひいて います.
+@compare: 弾（ひ）く (piano, guitar) ↔ 吹（ふ）く (sáo, kèn: フルートを 吹く) ↔ 叩（たた）く (trống: ドラムを 叩く); 引（ひ）く (kéo) ↔ 押（お）す (đẩy) — trên cửa ghi 引 / 押; 風邪（かぜ）を ひく (bị cảm) — không dùng なる
+@mistake: ✗ サッカーを ひきます → ✓ サッカーを します (thể thao dùng する); ✗ フルートを ひきます → ✓ フルートを 吹（ふ）きます; ✗ 風邪（かぜ）に なりました → ✓ 風邪（かぜ）を ひきました
+- 姉（あね）は ピアノを 弾（ひ）くのが 上手（じょうず）です。 || Chị tôi chơi piano giỏi.
+- 週末（しゅうまつ）は ギターを 弾（ひ）いたり、歌（うた）を 歌（うた）ったり します。 || Cuối tuần tôi nào chơi guitar, nào hát.
+- 昨日（きのう）から 風邪（かぜ）を ひいて、のどが 痛（いた）いです。 || Từ hôm qua tôi bị cảm, đau họng.
+
+## 休（やす）む · 休（やす）みます
+@type: Nhóm I · Tự động từ (dùng với を khi nói "nghỉ, vắng mặt ở đâu")
+@particle: を — [Trường / công ty / lớp] を 休（やす）む (vắng mặt ở đâu dùng を, KHÔNG dùng に); で — [Lý do] で 休（やす）む; が — [Cửa hàng] は 〜曜日（ようび）が 休（やす）み
+@meaning: ① Nghỉ ngơi (cho đỡ mệt); ② Nghỉ, vắng mặt (không đi học / đi làm); ③ (Cửa hàng) nghỉ, đóng cửa. Danh từ: 休（やす）み = ngày nghỉ, kỳ nghỉ.
+@pattern: [Trường / công ty / lớp] を 休（やす）む = vắng mặt ở ~; 少（すこ）し 休（やす）む = nghỉ một chút; [Lý do] で 休（やす）む (風邪（かぜ）で 休む); [Cửa hàng] は 〜曜日（ようび）が 休（やす）みです
+@nuance: Khi nói "nghỉ học / nghỉ làm", nơi mình vắng mặt đi với を (rời khỏi, bỏ qua nó), không dùng に. Xin phép nghỉ lịch sự: 休（やす）ませて いただけませんか. "Ngày nghỉ của tôi là thứ Bảy" nói 休（やす）みは 土曜日（どようび）です.
+@compare: 休（やす）む (nghỉ, không làm) ≠ 寝（ね）る (ngủ); 休（やす）む (nghỉ tạm, sẽ quay lại) ≠ 辞（や）める (nghỉ hẳn, bỏ việc/bỏ học); 休（やす）み (ngày nghỉ) ↔ 休憩（きゅうけい） (nghỉ giải lao ngắn trong giờ làm)
+@mistake: ✗ 学校（がっこう）に 休（やす）みました → ✓ 学校（がっこう）を 休（やす）みました; ✗ 会社（かいしゃ）を 休（やす）みます (ý: nghỉ việc hẳn) → ✓ 会社（かいしゃ）を 辞（や）めます
+- 熱（ねつ）が あったので、昨日（きのう）は 学校（がっこう）を 休（やす）みました。 || Vì bị sốt nên hôm qua tôi nghỉ học.
+- 疲（つか）れたね。少（すこ）し 休（やす）もう。 || Mệt rồi nhỉ. Nghỉ một chút đi.
+- あの 店（みせ）は 毎週（まいしゅう） 月曜日（げつようび）が 休（やす）みです。 || Quán đó nghỉ thứ Hai hằng tuần.
+
+## 慣（な）れる · 慣（な）れます
+@type: Nhóm II · Tự động từ
+@particle: に — [Đối tượng / môi trường] に 慣（な）れる (luôn に, KHÔNG dùng を); のに — V-る のに 慣（な）れる
+@meaning: Quen với (một môi trường, công việc, thói quen…) sau một thời gian tiếp xúc; dần dần không còn thấy lạ hay khó nữa.
+@pattern: [Đối tượng] に 慣（な）れる; 〜に 慣（な）れて きました (đã dần quen); 〜に 慣（な）れて います (đã quen rồi); まだ 〜に 慣（な）れて いません (vẫn chưa quen); V-る のに 慣（な）れる (quen với việc làm V)
+@nuance: Nhấn mạnh quá trình theo thời gian, nên hay dùng 〜て きました, だんだん, もう / まだ. Khi người khác hỏi thăm 日本（にほん）の 生活（せいかつ）に 慣（な）れましたか, câu trả lời tự nhiên: はい、だいぶ 慣（な）れました / まだ 慣（な）れません.
+@compare: 慣（な）れる (quen, thích nghi) ≠ 知（し）る (biết thông tin); 慣（な）れる ≠ 習（なら）う (học từ người khác); 慣（な）れる (quen với việc) ≠ 知（し）り合（あ）う (làm quen với người)
+@mistake: ✗ 日本（にほん）の 生活（せいかつ）を 慣（な）れました → ✓ 日本（にほん）の 生活（せいかつ）に 慣（な）れました (dùng に); ✗ 新（あたら）しい 友達（ともだち）に 慣（な）れました (ý: làm quen bạn mới) → ✓ 新（あたら）しい 友達（ともだち）が できました
+- 日本（にほん）の 生活（せいかつ）に もう 慣（な）れましたか。 || Bạn đã quen với cuộc sống ở Nhật chưa?
+- 最初（さいしょ）は 大変（たいへん）でしたが、だんだん 仕事（しごと）に 慣（な）れて きました。 || Ban đầu vất vả nhưng tôi đã dần quen với công việc.
+- まだ 朝（あさ） 早（はや）く 起（お）きるのに 慣（な）れて いません。 || Tôi vẫn chưa quen với việc dậy sớm.
+
+## 忘（わす）れる · 忘（わす）れます
+@type: Nhóm II · Tha động từ
+@particle: を — [Điều / vật] を 忘（わす）れる; に — [Nơi để quên] に [Vật] を 忘（わす）れる (nơi chốn dùng に, KHÔNG dùng で); のを — V-る のを 忘（わす）れる
+@meaning: ① Quên (không nhớ ra điều gì: tên, lời hứa, việc phải làm); ② Để quên đồ vật ở đâu đó.
+@pattern: [Điều / vật] を 忘（わす）れる; [Nơi] に [Vật] を 忘（わす）れる (để quên đồ ở ~); V-る のを 忘（わす）れる (quên làm V); 忘（わす）れないで ください (đừng quên)
+@nuance: Nói "để quên đồ ở đâu" thì nơi chốn dùng に (vật nằm lại ở đó), không dùng で. Hay đi với 〜て しまいました để thể hiện tiếc nuối: 傘（かさ）を 忘（わす）れて しまいました. Danh từ 忘（わす）れ物（もの） = đồ để quên.
+@compare: 忘（わす）れる (để quên — vật vẫn còn ở nơi đó) ≠ なくす (làm mất — không biết ở đâu) ≠ 落（お）とす (đánh rơi); 忘（わす）れる ↔ 覚（おぼ）える (nhớ, ghi nhớ) / 思（おも）い出（だ）す (nhớ ra)
+@mistake: ✗ 電車（でんしゃ）で 傘（かさ）を 忘（わす）れました → ✓ 電車（でんしゃ）に 傘（かさ）を 忘（わす）れました; ✗ 宿題（しゅくだい）を 出（だ）すを 忘（わす）れました → ✓ 宿題（しゅくだい）を 出（だ）すのを 忘（わす）れました (cần の)
+- 電車（でんしゃ）に 傘（かさ）を 忘（わす）れて しまいました。 || Tôi lỡ để quên ô trên tàu điện.
+- 先生（せんせい）の 名前（なまえ）を 忘（わす）れました。 || Tôi quên tên thầy rồi.
+- 窓（まど）を 閉（し）めるのを 忘（わす）れないで ください。 || Đừng quên đóng cửa sổ nhé.
+
+## 散歩（さんぽ）する · 散歩（さんぽ）します
+@type: Nhóm III · Tự động từ (dùng を chỉ nơi đi qua)
+@particle: を — [Nơi đi qua] を 散歩（さんぽ）する (を chỉ nơi di chuyển qua); で — [Nơi] で 散歩（さんぽ）する (cũng dùng được); に — 散歩（さんぽ）に 行（い）く (mục đích)
+@meaning: Đi dạo, đi bộ thong thả cho thư giãn hoặc cho khỏe, không có đích đến cụ thể.
+@pattern: [Nơi] を 散歩（さんぽ）する (đi dạo khắp/dọc ~); [Nơi] で 散歩（さんぽ）する (đi dạo ở ~, cũng dùng được); 散歩（さんぽ）に 行（い）く (đi dạo); [Chó] を 散歩（さんぽ）に 連（つ）れて 行（い）く (dắt chó đi dạo)
+@nuance: を ở đây là "nơi di chuyển qua" (giống 道（みち）を 歩（ある）く, 川（かわ）を 渡（わた）る), nhấn mạnh việc đi khắp con đường / công viên. で cũng tự nhiên khi chỉ nơi diễn ra hoạt động. Thường dùng 毎朝（まいあさ）, 食後（しょくご）に… để nói thói quen.
+@compare: 散歩（さんぽ）する (đi dạo thư giãn) ≠ 歩（ある）く (đi bộ nói chung, có mục đích) ≠ ジョギングする (chạy bộ); 散歩（さんぽ） ≠ 旅行（りょこう） (đi du lịch)
+@mistake: ✗ 公園（こうえん）に 散歩（さんぽ）します → ✓ 公園（こうえん）を 散歩（さんぽ）します / 公園（こうえん）へ 散歩（さんぽ）に 行（い）きます; ✗ 犬（いぬ）を 散歩（さんぽ）します (ít tự nhiên) → ✓ 犬（いぬ）を 散歩（さんぽ）に 連（つ）れて 行（い）きます
+- 毎朝（まいあさ）、家（いえ）の 近（ちか）くの 公園（こうえん）を 散歩（さんぽ）します。 || Sáng nào tôi cũng đi dạo công viên gần nhà.
+- 晩（ばん）ご飯（はん）の 後（あと）で、川（かわ）の そばを 散歩（さんぽ）しました。 || Sau bữa tối tôi đi dạo dọc bờ sông.
+- 天気（てんき）が いいから、散歩（さんぽ）に 行（い）きませんか。 || Trời đẹp, đi dạo không?
+
+## 始（はじ）める · 始（はじ）めます
+@type: Nhóm II · Tha động từ (cặp tự động từ: 始（はじ）まる)
+@particle: を — [Việc] を 始（はじ）める (tha động từ); が — người bắt đầu: 私（わたし）が 始（はじ）める; so sánh: [Việc] が 始（はじ）まる (tự động từ)
+@meaning: Bắt đầu (làm) một việc gì đó — có người chủ động bắt đầu.
+@pattern: [Người] が [Việc] を 始（はじ）める; V-ます（bỏ ます）＋ 始（はじ）める = bắt đầu V (雨（あめ）が 降（ふ）り始（はじ）める); 〜を 始（はじ）めて から = từ khi bắt đầu ~
+@nuance: Tha động từ nên đi với を và có người thực hiện. Nếu chỉ nói "cái gì đó bắt đầu" (giờ học, phim, lễ hội) thì dùng tự động từ 始（はじ）まる với が. Hay gặp trong cấu trúc kể chuyện: 日本語（にほんご）を 勉強（べんきょう）し始（はじ）めて、2年（にねん）に なります.
+@compare: 始（はじ）める (tha: ai bắt đầu việc gì, を) ↔ 始（はじ）まる (tự: việc tự bắt đầu, が); 始（はじ）める ↔ 終（お）える / やめる; 始（はじ）めて (thể て của 始める) ≠ 初（はじ）めて (lần đầu tiên — chữ 初)
+@mistake: ✗ 授業（じゅぎょう）を 始（はじ）まります → ✓ 授業（じゅぎょう）が 始（はじ）まります / 先生（せんせい）が 授業（じゅぎょう）を 始（はじ）めます; ✗ 始（はじ）めて 日本（にほん）へ 来（き）ました (ý: lần đầu) → ✓ 初（はじ）めて 日本（にほん）へ 来（き）ました
+- 去年（きょねん）から 日本語（にほんご）の 勉強（べんきょう）を 始（はじ）めました。 || Tôi bắt đầu học tiếng Nhật từ năm ngoái.
+- では、会議（かいぎ）を 始（はじ）めましょう。 || Vậy, chúng ta bắt đầu cuộc họp thôi.
+- 先月（せんげつ）から コンビニで アルバイトを 始（はじ）めました。 || Từ tháng trước tôi bắt đầu làm thêm ở konbini.
+
+## 別（わか）れる · 別（わか）れます
+@type: Nhóm II · Tự động từ
+@particle: と — [Người] と 別（わか）れる (KHÔNG dùng を); で — [Nơi] で 別（わか）れる (chia tay nhau ở ~); に — 二（ふた）つに 別（わか）れる (tách thành ~)
+@meaning: ① Chia tay, rời nhau (sau khi gặp gỡ, ở một nơi nào đó); ② Chia tay (người yêu, vợ chồng — kết thúc quan hệ); ③ Chia ra, tách ra (道（みち）が 二（ふた）つに 別（わか）れる).
+@pattern: [Người] と 別（わか）れる; [Nơi] で [Người] と 別（わか）れる (chia tay nhau ở ~); 恋人（こいびと）と 別（わか）れる (chia tay người yêu)
+@nuance: Đối tượng chia tay đi với と (hành động hai phía), không dùng を. Nghĩa ① (tạm biệt sau buổi gặp) rất hay gặp: 駅（えき）で 友達（ともだち）と 別（わか）れて、家（いえ）に 帰（かえ）りました. Nói "chia tay người yêu" bằng tiếng thân mật: 彼（かれ）と 別（わか）れた.
+@compare: 別（わか）れる (chia tay nhau) ≠ 離（はな）れる (rời xa, cách xa — khoảng cách); 別（わか）れる ↔ 会（あ）う / 出会（であ）う; 別（わか）れる (tự) ↔ 分（わ）ける (tha: chia cái gì ra)
+@mistake: ✗ 友達（ともだち）を 別（わか）れました → ✓ 友達（ともだち）と 別（わか）れました; ✗ 家族（かぞく）と 別（わか）れて、寂（さび）しいです (ý: sống xa gia đình) → ✓ 家族（かぞく）と 離（はな）れて 暮（く）らして いるので、寂（さび）しいです
+- 駅（えき）の 前（まえ）で 友達（ともだち）と 別（わか）れて、一人（ひとり）で 帰（かえ）りました。 || Tôi chia tay bạn trước ga rồi về một mình.
+- 卒業式（そつぎょうしき）の 日（ひ）、クラスメイトと 別（わか）れるのが 悲（かな）しかったです。 || Ngày lễ tốt nghiệp, chia tay các bạn cùng lớp thật buồn.
+- 姉（あね）は 去年（きょねん） 恋人（こいびと）と 別（わか）れました。 || Chị tôi chia tay người yêu năm ngoái.
+
+## 卒業（そつぎょう）する · 卒業（そつぎょう）します
+@type: Nhóm III · Tự động từ (dùng を chỉ nơi rời khỏi)
+@particle: を — [Trường] を 卒業（そつぎょう）する (を = nơi rời khỏi, KHÔNG dùng に); に — [Năm] に 卒業（そつぎょう）する
+@meaning: Tốt nghiệp, hoàn thành chương trình học và rời khỏi trường.
+@pattern: [Trường] を 卒業（そつぎょう）する; [Năm] に 卒業（そつぎょう）する; 卒業（そつぎょう）したら、〜 (tốt nghiệp xong thì ~); 卒業（そつぎょう）して から 〜
+@nuance: を ở đây là "điểm xuất phát / nơi rời khỏi" (giống 家（いえ）を 出（で）る, 電車（でんしゃ）を 降（お）りる). Danh từ: 卒業（そつぎょう）, 卒業式（そつぎょうしき） (lễ tốt nghiệp), 卒業生（そつぎょうせい） (người tốt nghiệp). Rất hay đi với kế hoạch tương lai: 卒業（そつぎょう）したら、日本（にほん）で 働（はたら）く つもりです.
+@compare: 卒業（そつぎょう）する (〜を: rời trường) ↔ 入学（にゅうがく）する (〜に: vào trường); 卒業（そつぎょう）する (học xong) ≠ 終（お）わる (một sự việc kết thúc)
+@mistake: ✗ 大学（だいがく）に 卒業（そつぎょう）しました → ✓ 大学（だいがく）を 卒業（そつぎょう）しました; ✗ 大学（だいがく）が 卒業（そつぎょう）しました → ✓ 私（わたし）は 大学（だいがく）を 卒業（そつぎょう）しました
+- 2020年（にせんにじゅうねん）に 高校（こうこう）を 卒業（そつぎょう）しました。 || Tôi tốt nghiệp cấp 3 năm 2020.
+- 大学（だいがく）を 卒業（そつぎょう）したら、日本（にほん）の 会社（かいしゃ）で 働（はたら）きたいです。 || Tốt nghiệp đại học xong tôi muốn làm ở công ty Nhật.
+- 兄（あに）は 卒業（そつぎょう）して から、ずっと 東京（とうきょう）に 住（す）んで います。 || Anh tôi từ khi tốt nghiệp vẫn sống ở Tokyo.
+
+## 入学（にゅうがく）する · 入学（にゅうがく）します
+@type: Nhóm III · Tự động từ (dùng に chỉ nơi đi vào)
+@particle: に — [Trường] に 入学（にゅうがく）する (に = nơi đi vào, KHÔNG dùng を); に — [Thời gian] に 入学（にゅうがく）する
+@meaning: Nhập học, vào học ở một trường (chính thức trở thành học sinh/sinh viên của trường).
+@pattern: [Trường] に 入学（にゅうがく）する; [Năm / tháng] に 入学（にゅうがく）する; 入学（にゅうがく）試験（しけん） (thi đầu vào), 入学式（にゅうがくしき） (lễ nhập học), 入学金（にゅうがくきん） (tiền nhập học)
+@nuance: に chỉ điểm đến, giống 部屋（へや）に 入（はい）る. Ở Nhật năm học bắt đầu tháng 4 nên hay nói 4月（しがつ）に 入学（にゅうがく）しました. Văn nói thường dùng 大学（だいがく）に 入（はい）る với nghĩa tương tự.
+@compare: 入学（にゅうがく）する (〜に) ↔ 卒業（そつぎょう）する (〜を); 入学（にゅうがく）する (vào học chính thức) ≠ 入（はい）る (vào nói chung: 部屋に入る, cũng dùng 大学に入る); 入学（にゅうがく）する (vào trường) ≠ 入社（にゅうしゃ）する (vào công ty)
+@mistake: ✗ 大学（だいがく）を 入学（にゅうがく）しました → ✓ 大学（だいがく）に 入学（にゅうがく）しました; ✗ 日本語学校（にほんごがっこう）に 入学（にゅうがく）して います (ý: đang theo học) → ✓ 日本語学校（にほんごがっこう）に 通（かよ）って います
+- 去年（きょねん）の 4月（しがつ）に 日本語学校（にほんごがっこう）に 入学（にゅうがく）しました。 || Tôi nhập học trường tiếng Nhật tháng 4 năm ngoái.
+- 妹（いもうと）は 来年（らいねん） 大学（だいがく）に 入学（にゅうがく）します。 || Em gái tôi năm sau vào đại học.
+- 入学式（にゅうがくしき）で 初（はじ）めて クラスメイトに 会（あ）いました。 || Tôi gặp các bạn cùng lớp lần đầu ở lễ nhập học.
+
+## 消（け）す · 消（け）します
+@type: Nhóm I · Tha động từ (cặp tự động từ: 消（き）える)
+@particle: を — [Đèn / thiết bị / chữ] を 消（け）す (tha động từ); で — [Dụng cụ] で 消（け）す (消しゴムで); so sánh: [Đèn] が 消（き）える (tự động từ)
+@meaning: ① Tắt (đèn, đồ điện, TV, điều hòa); ② Xóa (chữ bằng tẩy, dữ liệu); ③ Dập (lửa).
+@pattern: [Thiết bị / đèn] を 消（け）す; [Chữ] を 消（け）しゴムで 消（け）す; 火（ひ）を 消（け）す; 消（け）して ください / 消（け）さないで ください
+@nuance: Tha động từ: có người tắt, đi với を. Khi chỉ nói "đèn đã tắt" (không quan tâm ai tắt) dùng tự động từ: 電気（でんき）が 消（き）えました. Trạng thái "đèn đang tắt (do ai đó đã tắt)": 電気（でんき）が 消（け）して あります.
+@compare: 消（け）す (tha: ai tắt, を) ↔ 消（き）える (tự: tự tắt/biến mất, が); 消（け）す ↔ つける (bật); 消（け）す (tắt đồ điện) ≠ 閉（し）める (đóng cửa, đóng nắp)
+@mistake: ✗ 電気（でんき）が 消（け）しました → ✓ 電気（でんき）を 消（け）しました / 電気（でんき）が 消（き）えました; ✗ テレビを 閉（し）めて ください → ✓ テレビを 消（け）して ください
+- 寝（ね）る 前（まえ）に、エアコンを 消（け）して ください。 || Trước khi ngủ hãy tắt điều hòa.
+- 教室（きょうしつ）を 出（で）る 時（とき）は、電気（でんき）を 消（け）しましょう。 || Khi ra khỏi lớp hãy tắt điện.
+- 間違（まちが）えた 字（じ）を 消（け）しゴムで 消（け）しました。 || Tôi xóa chữ viết sai bằng tẩy.
+
+## つける · つけます
+@type: Nhóm II · Tha động từ (cặp tự động từ: つく)
+@particle: を — [Thiết bị] を つける (tha động từ); に — [Vật] に [Thứ] を つける (gắn/chấm vào ~); so sánh: [Đèn] が つく (tự động từ)
+@meaning: ① Bật (đèn, đồ điện: TV, điều hòa, máy sưởi); ② Gắn, đính, đeo (付（つ）ける: 名札（なふだ）を つける); ③ Chấm, phết (しょうゆを つける).
+@pattern: [Thiết bị] を つける; [Vật] に [Thứ] を つける (gắn ~ vào ~); 〜を つけた まま (cứ để ~ bật mà...)
+@nuance: Người Việt hay nói "mở điều hòa / mở TV" nên dễ dùng nhầm 開（あ）ける. Trong tiếng Nhật, bật đồ điện luôn là つける, tắt là 消（け）す. "Đèn đang bật": 電気（でんき）が ついて います (tự động từ), hoặc 電気（でんき）が つけて あります (ai đó đã bật sẵn).
+@compare: つける (tha: bật, を) ↔ つく (tự: đèn sáng lên, が); つける ↔ 消（け）す; つける (bật đồ điện) ≠ 開（あ）ける (mở cửa, mở hộp); 気（き）を つける = cẩn thận (cụm cố định)
+@mistake: ✗ エアコンを 開（あ）けて ください → ✓ エアコンを つけて ください; ✗ 電気（でんき）が つけました → ✓ 電気（でんき）を つけました / 電気（でんき）が つきました
+- 暑（あつ）いですね。エアコンを つけましょうか。 || Nóng nhỉ. Bật điều hòa nhé?
+- 部屋（へや）が 暗（くら）いので、電気（でんき）を つけて ください。 || Phòng tối nên hãy bật đèn lên.
+- テレビを つけた まま、寝（ね）て しまいました。 || Tôi lỡ ngủ quên mà vẫn để TV bật.
+
+## 引越（ひっこ）しする · 引越（ひっこ）しします
+@type: Nhóm III · Tự động từ (cũng nói 引（ひ）っ越（こ）す, Nhóm I)
+@particle: に／へ — [Nơi mới] に／へ 引越（ひっこ）しする; から — [Nơi cũ] から; KHÔNG dùng を cho nơi chuyển đến
+@meaning: Chuyển nhà, dọn nhà (chuyển chỗ ở sang nơi khác).
+@pattern: [Nơi mới] に／へ 引越（ひっこ）しする; [Nơi cũ] から [Nơi mới] に 引越（ひっこ）しする; 引越（ひっこ）しの 準備（じゅんび） (chuẩn bị chuyển nhà); 引越（ひっこ）しを 手伝（てつだ）う (giúp chuyển nhà)
+@nuance: Nơi chuyển đến dùng に／へ, nơi rời đi dùng から. Danh từ 引越（ひっこ）し dùng nhiều: 来週（らいしゅう）、引越（ひっこ）しが あります. Ở Nhật chuyển nhà xong phải nộp 転入届（てんにゅうとどけ） ở tòa thị chính trong 14 ngày.
+@compare: 引越（ひっこ）しする (chuyển chỗ ở) ≠ 移（うつ）る (chuyển nói chung, cả chỗ làm, chỗ ngồi); 引越（ひっこ）しする ≠ 住（す）む (sống ở — trạng thái)
+@mistake: ✗ 新（あたら）しい アパートを 引越（ひっこ）しします → ✓ 新（あたら）しい アパートに 引越（ひっこ）しします; ✗ 大阪（おおさか）に 引越（ひっこ）して います (ý: đang sống ở Osaka) → ✓ 大阪（おおさか）に 住（す）んで います
+- 来月（らいげつ）、駅（えき）の 近（ちか）くの アパートに 引越（ひっこ）しします。 || Tháng sau tôi chuyển đến căn hộ gần ga.
+- 去年（きょねん） 大阪（おおさか）から 東京（とうきょう）に 引越（ひっこ）ししました。 || Năm ngoái tôi chuyển từ Osaka lên Tokyo.
+- 友達（ともだち）が 引越（ひっこ）しを 手伝（てつだ）って くれました。 || Bạn tôi đã giúp tôi chuyển nhà.

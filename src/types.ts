@@ -40,12 +40,26 @@ export interface Section {
   html: string
 }
 
+export interface VerbDetail {
+  dict: string // dictionary form, furigana notation
+  masu: string
+  type: string // group · transitive / intransitive
+  particles: string[] // which particle (に・を・が…) and why
+  meaning: string
+  patterns: string[]
+  nuance?: string
+  compare: string[]
+  mistakes: string[]
+  examples: { jp: string; vn: string }[]
+}
+
 export interface VocabItem {
   id: string
   jp: string // with furigana notation
   meaning: string
   note?: string
   group: string
+  detail?: VerbDetail // from content/generated/verbs.md
 }
 
 export interface KanjiCompound {

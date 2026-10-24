@@ -4,11 +4,14 @@ import { kanjiCards, vocabCards, vocabV1 } from '../lib/questions'
 import { setKey } from '../lib/progressInfo'
 import { Flashcards, Learn, Match } from '../components/Study'
 import { Card, Chip, Empty } from '../components/ui'
+import { Jp } from '../components/Jp'
+import { VerbDetailCard } from '../components/VerbDetail'
 
 const MODES = [
   { id: 'cards', label: 'Lật thẻ' },
   { id: 'learn', label: 'Learn' },
   { id: 'match', label: 'Match' },
+  { id: 'verbs', label: 'Động từ chi tiết' },
 ] as const
 
 /** Quizlet-style study: pick the vocabulary deck or the kanji deck, then flip cards / learn / match. */
@@ -20,6 +23,7 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
   const kanji = useMemo(() => kanjiCards(unit.kanji), [unit])
   const v1 = useMemo(() => vocabV1(unit), [unit])
   const cards = deck === 'vocab' ? vocab : kanji
+  const verbs = useMemo(() => unit.vocab.filter((v) => v.detail), [unit])
 
   return (
     <div className="space-y-4">
@@ -34,7 +38,10 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
             <button
               key={k}
               type="button"
-              onClick={() => setDeck(k)}
+              onClick={() => {
+                setDeck(k)
+                if (k === 'kanji' && mode === 'verbs') setMode('cards')
+              }}
               className={`rounded-xl px-5 py-2 text-base font-semibold transition cursor-pointer ${deck === k ? 'bg-surface text-accent shadow-sm' : 'text-sub hover:text-ink'}`}
             >
               {label}
@@ -42,13 +49,27 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
           ))}
         </div>
         <span className="flex-1" />
-        {MODES.map((m) => (
+        {MODES.filter((m) => m.id !== 'verbs' || (deck === 'vocab' && verbs.length > 0)).map((m) => (
           <Chip key={m.id} active={mode === m.id} onClick={() => setMode(m.id)}>
             {m.label}
           </Chip>
         ))}
       </div>
-      {!cards.length ? (
+      {mode === 'verbs' && deck === 'vocab' ? (
+        <div className="space-y-3">
+          <p className="text-sm text-sub">
+            {verbs.length} động từ của bài · bấm vào từng động từ để xem trợ từ đi kèm, cách dùng, lỗi hay gặp và 3 ví dụ.
+          </p>
+          {verbs.map((v) => (
+            <details key={v.id} className="rounded-2xl border border-line bg-surface px-4 py-3">
+              <summary className="cursor-pointer text-lg">
+                <Jp text={v.detail!.dict} className="font-bold" /> <span className="text-sub">— {v.meaning}</span>
+              </summary>
+              <VerbDetailCard d={v.detail!} className="mt-3 border-0 p-0" />
+            </details>
+          ))}
+        </div>
+      ) : !cards.length ? (
         <Empty title={deck === 'vocab' ? 'Bài này chưa có bảng từ vựng.' : 'Bài này chưa có bảng Kanji.'} />
       ) : (
         <Card key={`${deck}-${mode}`}>

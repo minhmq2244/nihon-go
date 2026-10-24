@@ -7,6 +7,7 @@ import { speak } from '../lib/speech'
 import { useProgress } from '../store/progress'
 import { DrillItem, type Question } from './Drill'
 import { Jp } from './Jp'
+import { VerbDetailCard } from './VerbDetail'
 import { Button, Chip, ProgressBar, SpeakButton, cx } from './ui'
 
 export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }) {
@@ -89,6 +90,12 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
             )}
             <span className="mt-6 text-sm font-medium text-sub">Bấm (hoặc phím cách) để lật thẻ</span>
           </button>
+          {c.detail && (
+            <details className="mt-3 rounded-2xl border border-accent/30 bg-accent-soft/30 px-4 py-2" open={flip}>
+              <summary className="cursor-pointer py-1 font-semibold text-accent">📘 Giải thích chi tiết động từ (trợ từ, cách dùng, 3 ví dụ)</summary>
+              <VerbDetailCard d={c.detail} className="mt-2" />
+            </details>
+          )}
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <Button onClick={() => go(-1)} disabled={i === 0}>
