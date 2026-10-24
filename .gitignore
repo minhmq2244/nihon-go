@@ -25,3 +25,6 @@ dist-ssr
 
 # generated content data
 public/data
+
+# local tool config
+.claude/
