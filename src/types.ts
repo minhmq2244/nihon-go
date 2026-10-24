@@ -59,7 +59,6 @@ export interface VocabItem {
   meaning: string
   note?: string
   group: string
-  detail?: VerbDetail // from content/generated/verbs.md
 }
 
 export interface KanjiCompound {

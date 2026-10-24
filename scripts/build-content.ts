@@ -2,11 +2,11 @@
 // Run: npx tsx scripts/build-content.ts
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ContentIndex, Generated, KaiwaTopic, Unit, UnitMeta } from '../src/types'
+import type { ContentIndex, Generated, KaiwaTopic, Unit, UnitMeta, VerbDetail } from '../src/types'
 import { parseExam, parsePractice, parseTheory, splitVolume } from './content/source'
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
-import { attachVerbs, parseVerbs } from './content/verbs'
+import { injectVerbDetails, parseVerbs } from './content/verbs'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -32,6 +32,7 @@ export function buildContent(): { units: number; errors: string[] } {
     if (vol === 4) index.overview.vol4Html = render(preface)
     for (const raw of units) {
       const theory = parseTheory(raw.theory, raw.id)
+      const usedVerbs = new Set<VerbDetail>()
       const practice = parsePractice(raw.practice, raw.answers)
       const genPath = join(ROOT, 'content', 'generated', `${raw.id}.md`)
       let generated = EMPTY
@@ -58,9 +59,9 @@ export function buildContent(): { units: number; errors: string[] } {
       const unit: Unit = {
         meta,
         info: render(headerLines.filter((l) => !/^\*\*.+\*\*$/.test(l.trim()) && l.trim() !== '---').join('\n')),
-        theory: theory.sections,
+        theory: theory.sections.map((sec) => ({ ...sec, html: injectVerbDetails(sec.html, verbs, usedVerbs) })),
         grammarPoints: theory.grammarPoints,
-        vocab: attachVerbs(theory.vocab, verbs),
+        vocab: theory.vocab,
         kanji: theory.kanji,
         confuse: theory.confuse,
         ...practice,

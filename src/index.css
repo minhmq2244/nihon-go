@@ -235,3 +235,85 @@ rt {
     display: none !important;
   }
 }
+
+/* Detailed verb notes injected under verb rows in theory tables */
+tr.verb-detail > td {
+  padding-top: 0;
+  background: transparent;
+}
+details.vd > summary {
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--c-accent);
+  padding: 0.25rem 0;
+}
+details.vd > summary:hover {
+  text-decoration: underline;
+}
+.vd-body {
+  margin: 0.5rem 0 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--c-line);
+  border-radius: 1rem;
+  background: var(--c-surface);
+  white-space: normal;
+}
+.vd-body .vd-type {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.vd-body .vd-h {
+  margin-top: 0.85rem;
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--c-accent);
+}
+.vd-body .vd-h.vd-bad {
+  color: var(--c-bad);
+}
+.vd-body ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.vd-body .vd-particle {
+  margin-top: 0.75rem;
+  padding: 0.6rem 1rem;
+  border: 2px solid color-mix(in srgb, var(--c-warn) 40%, transparent);
+  border-radius: 0.75rem;
+  background: var(--c-warn-soft);
+}
+.vd-body .vd-particle .vd-h {
+  margin-top: 0;
+  color: var(--c-warn);
+}
+.vd-body .vd-ex {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+.vd-body .vd-ex li {
+  margin: 0.4rem 0;
+}
+.vd-body .vd-jp {
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+.vd-body .vd-jp:hover {
+  color: var(--c-accent);
+}
+.vd-body .vd-vn {
+  color: var(--c-sub);
+  font-size: 0.9rem;
+}
+/* keep the verb note as wide as the visible table area, even when the table scrolls sideways */
+.prose-jp .table-wrap {
+  container-type: inline-size;
+}
+details.vd {
+  position: sticky;
+  left: 0;
+  width: calc(100cqw - 1.5rem);
+  max-width: 52rem;
+}

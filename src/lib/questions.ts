@@ -1,5 +1,5 @@
 // Builds practice questions from a unit's vocab and kanji tables.
-import type { KanjiItem, Unit, VerbDetail, VocabItem } from '../types'
+import type { KanjiItem, Unit, VocabItem } from '../types'
 import type { Question } from '../components/Drill'
 import { parseFurigana, toBase, toReading } from './furigana'
 import { sample, shuffle } from './data'
@@ -11,7 +11,6 @@ export interface Card {
   back: string
   extra?: string
   speak: string
-  detail?: VerbDetail
 }
 
 const hasKanji = (s: string) => /[一-鿿々]/.test(s)
@@ -40,7 +39,7 @@ export function vocabAnswers(jp: string): string[] {
 }
 
 export const vocabCards = (vocab: VocabItem[]): Card[] =>
-  vocab.map((v) => ({ id: v.id, front: vocabForm(v.jp), back: v.meaning, extra: v.note, speak: vocabForm(v.jp), detail: v.detail }))
+  vocab.map((v) => ({ id: v.id, front: vocabForm(v.jp), back: v.meaning, extra: v.note, speak: vocabForm(v.jp) }))
 
 export const kanjiCards = (kanji: KanjiItem[]): Card[] =>
   kanji.map((k) => ({
