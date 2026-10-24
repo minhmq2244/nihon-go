@@ -36,24 +36,26 @@ function keys(word: string): string[] {
   return out
 }
 
-/** Words of one vocab entry; each must appear (alternatives that only differ in kanji count once). */
-function words(jp: string): { w: string; r: string }[] {
+/**
+ * Words of one vocab entry, each with the forms that count as using it (the ［dictionary form］ too).
+ * Every word must appear; alternatives read the same (〜歳／〜才) count once.
+ */
+function words(jp: string): string[][] {
   const ws = written(jp).split(SEP)
   const rs = reading(jp).split(SEP)
   const dict = jp.match(/［([^］]*)］/)?.[1]
-  const seen = new Set<string>()
-  return ws
-    .map((w, i) => ({ w: w.trim(), r: (rs[i] ?? w).trim() + (dict && ws.length === 1 ? '|' + written(dict) + '|' + reading(dict) : '') }))
-    .filter(({ w, r }) => norm(w) && !seen.has(norm(r)) && seen.add(norm(r)))
+  const byReading = new Map<string, string[]>()
+  ws.forEach((w, i) => {
+    if (!norm(w)) return
+    const r = norm(rs[i] ?? w)
+    byReading.set(r, [...(byReading.get(r) ?? []), w.trim()])
+  })
+  return [...byReading.values()].map((forms) => (dict && ws.length === 1 ? [...forms, written(dict)] : forms))
 }
 
 export function missingVocab(vocab: VocabItem[], lines: Line[]): string[] {
-  const text = lines.map((l) => l.jp).join('\n')
-  const hay = [norm(written(text)), norm(reading(text))]
-  const found = (k: string) => k.length > 0 && hay.some((h) => h.includes(k))
-  return vocab
-    .filter((v) =>
-      words(v.jp).some(({ w, r }) => ![w, ...r.split('|')].some((x) => keys(x).some(found))),
-    )
-    .map((v) => v.jp)
+  // written text only (a reading like おとし would match お年（とし）), lines kept apart by ｜
+  const hay = norm(written(lines.map((l) => l.jp).join('｜')))
+  const used = (forms: string[]) => forms.some((f) => keys(f).some((k) => hay.includes(k)))
+  return vocab.filter((v) => !words(v.jp).every(used)).map((v) => v.jp)
 }
