@@ -1,3 +1,4 @@
+import { cpSync, existsSync } from 'node:fs'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, type Plugin } from 'vite'
@@ -23,9 +24,22 @@ function contentWatcher(): Plugin {
   }
 }
 
+/** Copy the font maps and decoders pdf.js loads at runtime into public/pdfjs (gitignored). */
+function pdfjsAssets(): Plugin {
+  return {
+    name: 'pdfjs-assets',
+    buildStart() {
+      for (const dir of ['cmaps', 'standard_fonts', 'wasm', 'iccs']) {
+        const to = `public/pdfjs/${dir}`
+        if (!existsSync(to)) cpSync(`node_modules/pdfjs-dist/${dir}`, to, { recursive: true })
+      }
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   base: './',
-  plugins: [react(), tailwindcss(), contentWatcher()],
+  plugins: [react(), tailwindcss(), contentWatcher(), pdfjsAssets()],
   server: { watch: { ignored: ['**/public/data/**'] } },
 })

@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, Flame, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun } from 'lucide-react'
+import { BookOpen, ClipboardCheck, FileText, Flame, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
@@ -13,6 +13,7 @@ const NAV = [
   { to: '/kaiwa', label: 'Kaiwa', short: 'Kaiwa', icon: MessagesSquare },
   { to: '/review', label: 'Ôn tập', short: 'Ôn tập', icon: Repeat },
   { to: '/exams', label: 'Kiểm tra', short: 'Kiểm tra', icon: ClipboardCheck },
+  { to: '/docs', label: 'Tài liệu PDF', short: 'Tài liệu', icon: FileText },
 ]
 
 function FuriganaToggle() {
@@ -190,7 +191,7 @@ export function Layout() {
         </ErrorBoundary>
       </main>
 
-      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         {NAV.map((n) => (
           <NavLink
             key={n.to}

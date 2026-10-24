@@ -75,6 +75,7 @@ Nihongo là một **SPA chạy hoàn toàn phía trình duyệt**, biến bộ g
 <td valign="top">
 
 **🎨 Trải nghiệm**
+- **Tài liệu PDF**: nhập file PDF (giáo trình, bài tập) và đọc ngay trên web bằng pdf.js — phóng to, nhảy trang, nhớ trang đang đọc; file lưu trong IndexedDB của trình duyệt
 - Giao diện sáng / tối, sidebar trên desktop và bottom nav trên mobile
 - Bật / tắt furigana, chọn giọng đọc (Web Speech API)
 - In bài tập ra giấy
@@ -91,6 +92,7 @@ Nihongo là một **SPA chạy hoàn toàn phía trình duyệt**, biến bộ g
 | Trạng thái | [Zustand 5](https://zustand.docs.pmnd.rs) + `persist` |
 | Giao diện | [Tailwind CSS 4](https://tailwindcss.com) |
 | Tiếng Nhật | [WanaKana](https://wanakana.com) (romaji ↔ kana), Web Speech API (TTS) |
+| Tài liệu | [pdf.js](https://mozilla.github.io/pdf.js/) + IndexedDB |
 | Build | [Vite 8](https://vite.dev), [TypeScript 6](https://www.typescriptlang.org), [tsx](https://tsx.is) cho script nội dung, [marked](https://marked.js.org) |
 | Chất lượng | [Vitest](https://vitest.dev), [Oxlint](https://oxc.rs), GitHub Actions |
 | Hosting | [Vercel](https://vercel.com) (static) |

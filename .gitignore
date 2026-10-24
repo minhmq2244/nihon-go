@@ -28,3 +28,6 @@ public/data
 
 # local tool config
 .claude/
+
+# pdf.js runtime assets (copied by vite.config.ts)
+public/pdfjs

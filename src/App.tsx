@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { useSettings } from './store/settings'
@@ -9,7 +9,12 @@ import { KaiwaList, KaiwaTopicPage, KaiwaDialoguePage } from './pages/Kaiwa'
 import { ExamList, ExamPage } from './pages/Exams'
 import { SettingsPage } from './pages/Settings'
 import { Review } from './pages/Review'
+import { Loading } from './components/ui'
 import { japaneseVoices, onVoicesChanged } from './lib/speech'
+
+// pdf.js is large: load the PDF pages only when they are opened
+const DocsList = lazy(() => import('./pages/Docs').then((m) => ({ default: m.DocsList })))
+const DocReader = lazy(() => import('./pages/Docs').then((m) => ({ default: m.DocReader })))
 
 function useAppearance() {
   const { theme, fontSize, furigana } = useSettings()
@@ -54,6 +59,8 @@ export default function App() {
           <Route path="exams" element={<ExamList />} />
           <Route path="exams/:id" element={<ExamPage />} />
           <Route path="review" element={<Review />} />
+          <Route path="docs" element={<Suspense fallback={<Loading />}><DocsList /></Suspense>} />
+          <Route path="docs/:id" element={<Suspense fallback={<Loading />}><DocReader /></Suspense>} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
