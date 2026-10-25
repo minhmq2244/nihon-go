@@ -10,7 +10,7 @@ import { ExamList, ExamPage } from './pages/Exams'
 import { SettingsPage } from './pages/Settings'
 import { Review } from './pages/Review'
 import { Loading } from './components/ui'
-import { japaneseVoices, onVoicesChanged } from './lib/speech'
+import { japaneseVoices, onVoicesChanged, unlockSpeechOnFirstTap } from './lib/speech'
 
 // pdf.js is large: load the PDF pages only when they are opened
 const DocsList = lazy(() => import('./pages/Docs').then((m) => ({ default: m.DocsList })))
@@ -41,6 +41,7 @@ function useAppearance() {
     japaneseVoices()
     return onVoicesChanged(() => japaneseVoices())
   }, [])
+  useEffect(() => unlockSpeechOnFirstTap(), [])
 }
 
 export default function App() {

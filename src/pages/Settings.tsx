@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSettings, type FontSize, type Theme } from '../store/settings'
 import { exportProgress, useProgress } from '../store/progress'
-import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak, sttSupported, ttsSupported } from '../lib/speech'
+import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak, sttSupported, ttsSupported, voiceHelp } from '../lib/speech'
 import { Button, Card, Chip } from '../components/ui'
 
 export function SettingsPage() {
@@ -64,7 +64,7 @@ export function SettingsPage() {
         <p className="font-semibold">Giọng đọc</p>
         {!ttsSupported() && <p className="text-sm text-bad">Trình duyệt không hỗ trợ đọc văn bản.</p>}
         {ttsSupported() && voices.length === 0 && (
-          <p className="text-sm text-bad">Không tìm thấy giọng tiếng Nhật. Trên Windows: Cài đặt → Thời gian & Ngôn ngữ → Giọng nói → thêm Japanese, hoặc dùng trình duyệt Edge.</p>
+          <p className="text-sm text-bad">Không tìm thấy giọng tiếng Nhật. {voiceHelp()}</p>
         )}
         {(['voiceA', 'voiceB'] as const).map((k) => (
           <Row key={k} label={k === 'voiceA' ? 'Nhân vật A / người đọc' : 'Nhân vật B'}>

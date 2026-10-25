@@ -6,6 +6,7 @@ import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
 import { cx } from './ui'
 import { ErrorBoundary } from './ErrorBoundary'
+import { VoiceNotice } from './VoiceNotice'
 
 const NAV = [
   { to: '/', label: 'Trang chủ', short: 'Chủ', icon: Home, end: true },
@@ -186,6 +187,7 @@ export function Layout() {
       </header>
 
       <main className="w-full px-6 md:px-10 lg:px-12 pt-6 pb-28 md:pb-12">
+        <VoiceNotice />
         <ErrorBoundary resetKey={pathname}>
           <Outlet />
         </ErrorBoundary>

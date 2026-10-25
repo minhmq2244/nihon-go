@@ -52,6 +52,36 @@ export function onVoicesChanged(cb: () => void): () => void {
 
 export const ttsSupported = () => typeof speechSynthesis !== 'undefined'
 
+/** How to get a Japanese voice on the device this page is open on. */
+export function voiceHelp(): string {
+  const ua = navigator.userAgent
+  if (/iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1))
+    return 'iPad/iPhone: Cài đặt → Trợ năng → Nội dung được đọc → Giọng nói → Tiếng Nhật → tải Kyoko hoặc Otoya, rồi mở lại trình duyệt. Kiểm tra cả nút gạt im lặng và âm lượng.'
+  if (/Android/.test(ua))
+    return 'Android: Cài đặt → Quản lý chung (Hệ thống) → Ngôn ngữ → Chuyển văn bản thành giọng nói → chọn Google → Cài đặt → Cài đặt dữ liệu giọng nói → tải Tiếng Nhật, rồi mở lại Chrome.'
+  if (/Windows/.test(ua)) return 'Windows: Cài đặt → Thời gian & Ngôn ngữ → Giọng nói → thêm Japanese, hoặc dùng trình duyệt Edge.'
+  return 'Hãy cài giọng đọc tiếng Nhật trong phần chuyển văn bản thành giọng nói của máy, rồi mở lại trình duyệt.'
+}
+
+/**
+ * iPad/iPhone Safari only lets speech start inside a tap. Speak a silent utterance on the
+ * first tap so later playback (auto-play, the next line of a dialogue) is allowed too.
+ */
+export function unlockSpeechOnFirstTap(): () => void {
+  if (!ttsSupported()) return () => {}
+  const events = ['touchend', 'click'] as const
+  // Bubble phase: runs after the tapped button's own handler, so a tap that already started speech is left alone.
+  const unlock = () => {
+    events.forEach((e) => document.removeEventListener(e, unlock))
+    if (speechSynthesis.speaking || speechSynthesis.pending) return
+    const u = new SpeechSynthesisUtterance(' ')
+    u.volume = 0
+    speechSynthesis.speak(u)
+  }
+  events.forEach((e) => document.addEventListener(e, unlock))
+  return () => events.forEach((e) => document.removeEventListener(e, unlock))
+}
+
 function pickVoice(role: 'A' | 'B'): SpeechSynthesisVoice | undefined {
   const voices = voicesCache.length ? voicesCache : japaneseVoices()
   const { voiceA, voiceB } = useSettings.getState()
@@ -66,10 +96,19 @@ export const speechText = (text: string) =>
     .replace(/［|］|〔|〕|\*\*/g, '')
 
 let seq = 0
+let lastCut = 0 // when playing speech was last cancelled
+
+/** Cancel whatever is playing; true if speech was playing just now. */
+function cut(): boolean {
+  const busy = speechSynthesis.speaking || speechSynthesis.pending
+  if (busy) lastCut = Date.now()
+  speechSynthesis.cancel()
+  return busy || Date.now() - lastCut < 100
+}
 
 export function stopSpeaking() {
   seq++
-  if (ttsSupported()) speechSynthesis.cancel()
+  if (ttsSupported()) cut()
 }
 
 /** Speak one utterance; resolves when it ends (or is cancelled). */
@@ -79,7 +118,9 @@ export function speak(
 ): Promise<void> {
   if (!ttsSupported()) return Promise.resolve()
   const my = ++seq
-  speechSynthesis.cancel()
+  const busy = cut()
+  // iOS Safari can be left paused after a cancel and then stays silent.
+  if (speechSynthesis.paused) speechSynthesis.resume()
   return new Promise((resolve) => {
     const spoken = speechText(text)
     const u = new SpeechSynthesisUtterance(spoken)
@@ -92,8 +133,10 @@ export function speak(
     u.onend = u.onerror = () => resolve()
     // Some browsers never fire onend (background tabs, missing voices): don't block the caller forever.
     setTimeout(resolve, 2000 + (spoken.length * 350) / u.rate)
-    // Chrome sometimes drops an utterance queued right after cancel().
-    setTimeout(() => (my === seq ? speechSynthesis.speak(u) : resolve()), 30)
+    // Chrome sometimes drops an utterance queued right after cancelling one that was playing, so wait a
+    // moment then. Otherwise speak now: Safari on iPad only plays speech started inside the tap itself.
+    if (busy) setTimeout(() => (my === seq ? speechSynthesis.speak(u) : resolve()), 30)
+    else speechSynthesis.speak(u)
   })
 }
 
