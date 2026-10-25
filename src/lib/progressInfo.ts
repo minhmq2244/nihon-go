@@ -11,7 +11,10 @@ export const UNIT_TABS = [
   { id: 'kiem-tra', label: 'Kiểm tra cuối bài' },
 ] as const
 
-export type UnitTab = (typeof UNIT_TABS)[number]['id']
+/** Only units with speaking content show this tab (after Hội thoại). */
+export const SPEAK_TAB = { id: 'noi', label: 'Luyện nói' } as const
+
+export type UnitTab = (typeof UNIT_TABS)[number]['id'] | typeof SPEAK_TAB.id
 
 export const setKey = (unitId: string, tab: UnitTab, sub: string) => `${unitId}:${tab}:${sub}`
 
@@ -22,5 +25,6 @@ export function useUnitProgress(unitId: string): { tabs: Set<string>; ratio: num
   for (const k of Object.keys(sets)) {
     if (k.startsWith(unitId + ':')) tabs.add(k.split(':')[1]!)
   }
-  return { tabs, ratio: tabs.size / UNIT_TABS.length }
+  const counted = UNIT_TABS.filter((t) => tabs.has(t.id)).length
+  return { tabs, ratio: counted / UNIT_TABS.length }
 }

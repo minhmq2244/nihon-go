@@ -2,12 +2,13 @@
 // Run: npx tsx scripts/build-content.ts
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ContentIndex, Generated, KaiwaTopic, Unit, UnitMeta, VerbDetail } from '../src/types'
+import type { ContentIndex, Generated, KaiwaTopic, Speaking, Unit, UnitMeta, VerbDetail } from '../src/types'
 import { parseExam, parsePractice, parseTheory, splitVolume } from './content/source'
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
 import { VerbBook, injectVerbDetails, parseVerbs } from './content/verbs'
 import { missingVocab } from './content/coverage'
+import { parseSpeaking } from './content/speaking'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -54,6 +55,16 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
           errors.push(`${raw.id}.md: ${e.message}`)
         }
       }
+      const speakPath = join(ROOT, 'content', 'generated', 'speaking', `${raw.id}.md`)
+      let speaking: Speaking | undefined
+      if (existsSync(speakPath)) {
+        try {
+          speaking = parseSpeaking(readFileSync(speakPath, 'utf8'), raw.id)
+        } catch (e) {
+          if (!(e instanceof DslError)) throw e
+          errors.push(`speaking/${raw.id}.md: ${e.message}`)
+        }
+      }
       const headerLines = raw.header.split(/\r?\n/)
       const subtitle = stripMd(headerLines.find((l) => /^\*\*.+\*\*$/.test(l.trim())) ?? '')
       const meta: UnitMeta = {
@@ -77,6 +88,7 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
         confuse: theory.confuse,
         ...practice,
         generated,
+        ...(speaking ? { speaking } : {}),
       }
       if (generated !== EMPTY)
         for (const [part, items] of [['Đọc', generated.readings], ['Nghe', generated.listenings]] as const) {

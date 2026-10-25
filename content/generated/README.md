@@ -69,3 +69,28 @@ Mỗi động từ một mục; web chèn phần giải thích ngay dưới dòn
 - ví dụ 2 || dịch
 - ví dụ 3 || dịch
 ```
+
+## Luyện nói (`speaking/<bài>.md`)
+
+Bài nào có file này thì hiện thêm tab **Luyện nói** (sau tab Hội thoại). Gồm 3 loại phần:
+
+```
+## QA 5.1 · Tên mẫu ngữ pháp
+@tip: nhắc cách trả lời (tuỳ chọn)
+- câu hỏi || dịch
+  ? gợi ý ý trả lời (tuỳ chọn)
+  = câu trả lời mẫu 1 || dịch
+  = câu trả lời mẫu 2 || dịch        (ít nhất 1 dòng "=")
+  + câu hỏi nối tiếp || dịch         (tuỳ chọn)
+
+## DIALOGUE D01 · Tên hội thoại
+@scene: bối cảnh
+@roles: A=Tên vai A; B=Bạn
+A[名前]: câu || dịch
+B[あなた]: ＊câu nói theo ý bạn || dịch     (＊ ở đầu = lượt tự do, câu chỉ là mẫu)
+
+## TALK T1 · Tên đề nói tự do
+@prompt: yêu cầu của đề
+@must: mẫu bắt buộc 1; mẫu 2
+> câu của bài nói mẫu || dịch
+```

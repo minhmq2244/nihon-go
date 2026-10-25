@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { useIndex, useUnit, unitLabel } from '../lib/data'
-import { UNIT_TABS, useUnitProgress, type UnitTab } from '../lib/progressInfo'
+import { SPEAK_TAB, UNIT_TABS, useUnitProgress, type UnitTab } from '../lib/progressInfo'
 import { useProgress } from '../store/progress'
 import { Jp } from '../components/Jp'
 import { Loading, cx } from '../components/ui'
@@ -13,6 +13,7 @@ import { ReadingTab } from '../features/ReadingTab'
 import { ListeningTab } from '../features/ListeningTab'
 import { DialogueTab } from '../features/DialogueTab'
 import { UnitTestTab } from '../features/UnitTestTab'
+import { SpeakingTab } from '../features/SpeakingTab'
 
 export function UnitPage() {
   const { id = '', tab = 'ly-thuyet' } = useParams()
@@ -31,6 +32,7 @@ export function UnitPage() {
   const prev = pos > 0 ? index!.units[pos - 1] : undefined
   const next = index && pos >= 0 && pos < index.units.length - 1 ? index.units[pos + 1] : undefined
   const t = tab as UnitTab
+  const unitTabs: readonly { id: UnitTab; label: string }[] = unit.speaking ? UNIT_TABS.flatMap<{ id: UnitTab; label: string }>((x) => (x.id === 'hoi-thoai' ? [x, SPEAK_TAB] : [x])) : UNIT_TABS
 
   return (
     <div>
@@ -61,7 +63,7 @@ export function UnitPage() {
         </div>
       </div>
       <nav className="no-print sticky top-16 z-10 -mx-4 mb-6 flex gap-2 overflow-x-auto border-b border-line bg-bg/95 px-4 py-3 backdrop-blur-md">
-        {UNIT_TABS.map((x) => (
+        {unitTabs.map((x) => (
           <NavLink
             key={x.id}
             to={`/u/${id}/${x.id}`}
@@ -84,6 +86,7 @@ export function UnitPage() {
       {t === 'doc' && <ReadingTab unit={unit} />}
       {t === 'nghe' && <ListeningTab unit={unit} />}
       {t === 'hoi-thoai' && <DialogueTab unit={unit} />}
+      {t === 'noi' && <SpeakingTab unit={unit} />}
       {t === 'kiem-tra' && <UnitTestTab unit={unit} />}
     </div>
   )

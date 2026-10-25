@@ -163,6 +163,8 @@ export interface Line {
   note?: string // key chunk explanation
   alts?: string[] // natural alternatives (Kaiwa summary)
   task?: string // blind roleplay mission (VN)
+  /** Speaking roleplay: answer in your own words; the line is only a model. */
+  free?: boolean
 }
 
 export interface Reading {
@@ -199,6 +201,41 @@ export interface Dialogue {
   more?: string[]
 }
 
+/** One question of the speaking Q&A drill. */
+export interface SpeakQuestion {
+  id: string
+  q: string
+  vn: string
+  hint?: string
+  answers: { jp: string; vn: string }[]
+  /** Follow-up question to keep the conversation going. */
+  next?: { jp: string; vn: string }
+}
+
+/** Questions that make you use one grammar pattern. */
+export interface SpeakSet {
+  id: string
+  code: string
+  title: string
+  tip?: string
+  questions: SpeakQuestion[]
+}
+
+/** Free talk topic: speak for a minute using the listed patterns. */
+export interface SpeakTalk {
+  id: string
+  title: string
+  prompt: string
+  must: string[]
+  model: Line[]
+}
+
+export interface Speaking {
+  sets: SpeakSet[]
+  dialogues: Dialogue[]
+  talks: SpeakTalk[]
+}
+
 export interface Generated {
   vocabCloze: DrillSet[]
   kanji: DrillSet[]
@@ -222,6 +259,8 @@ export interface Unit {
   writingTasks: WritingTask[]
   rubricHtml?: string
   generated: Generated
+  /** Luyện nói tab (only some units have it). */
+  speaking?: Speaking
 }
 
 export interface Exam {

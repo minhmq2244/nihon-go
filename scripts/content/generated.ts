@@ -73,13 +73,13 @@ function drillSets(body: string, idPrefix: string): DrillSet[] {
   })
 }
 
-function parseLine(raw: string): Line | null {
+export function parseLine(raw: string): Line | null {
   const m = /^([A-Za-zＡ-Ｚ]{1,2})(?:\[([^\]]+)\])?\s*[:：]\s*(.+)$/.exec(raw.trim())
   if (!m) return null
   return { speaker: m[1]!, name: m[2], ...lineBody(m[3]!) }
 }
 
-function lineBody(s: string): Omit<Line, 'speaker'> {
+export function lineBody(s: string): Omit<Line, 'speaker'> {
   let rest = s
   let task: string | undefined
   let alts: string[] | undefined
@@ -97,7 +97,7 @@ function lineBody(s: string): Omit<Line, 'speaker'> {
   return { jp: head, vn: hint ?? '', note: explain, alts, task }
 }
 
-const attr = (body: string, name: string) => new RegExp(`^@${name}:\\s*(.+)$`, 'm').exec(body)?.[1]?.trim()
+export const attr = (body: string, name: string) => new RegExp(`^@${name}:\\s*(.+)$`, 'm').exec(body)?.[1]?.trim()
 
 function parseGloss(s: string | undefined) {
   if (!s) return []
@@ -109,9 +109,9 @@ function parseGloss(s: string | undefined) {
 }
 
 /** Body before the first ### (story / script lines). */
-const headBody = (body: string) => body.split(/^### /m)[0]!
+export const headBody = (body: string) => body.split(/^### /m)[0]!
 
-function parseDialogue(title: string, body: string, id: string): Dialogue {
+export function parseDialogue(title: string, body: string, id: string): Dialogue {
   const roles: Record<string, string> = {}
   for (const r of (attr(body, 'roles') ?? '').split(/\s*;\s*/)) {
     const [k, v] = r.split(/\s*=\s*/)
