@@ -96,6 +96,7 @@ export const speechText = (text: string) =>
     .replace(/［|］|〔|〕|\*\*/g, '')
 
 let seq = 0
+let skipVoice = false // the chosen voice failed on this device: let the browser pick its default Japanese voice
 let lastCut = 0 // when playing speech was last cancelled
 
 /** Cancel whatever is playing; true if speech was playing just now. */
@@ -127,15 +128,53 @@ export function speak(
     u.lang = 'ja-JP'
     const voices = voicesCache.length ? voicesCache : japaneseVoices()
     const v = opts.voiceURI ? voices.find((x) => x.voiceURI === opts.voiceURI) : pickVoice(opts.role ?? 'A')
-    if (v) u.voice = v
+    if (v && !skipVoice) u.voice = v
     u.rate = opts.rate ?? useSettings.getState().rate
     u.pitch = opts.pitch ?? 1.0
-    u.onend = u.onerror = () => resolve()
+    u.onend = () => resolve()
+    u.onerror = (e) => {
+      // Android can list a voice whose data is not installed: retry once with the default voice.
+      if (u.voice && my === seq && !['interrupted', 'canceled'].includes(e.error)) {
+        skipVoice = true
+        const again = new SpeechSynthesisUtterance(spoken)
+        again.lang = 'ja-JP'
+        again.rate = u.rate
+        again.pitch = u.pitch
+        again.onend = again.onerror = () => resolve()
+        speechSynthesis.speak(again)
+      } else resolve()
+    }
     // Some browsers never fire onend (background tabs, missing voices): don't block the caller forever.
     setTimeout(resolve, 2000 + (spoken.length * 350) / u.rate)
     // Chrome sometimes drops an utterance queued right after cancelling one that was playing, so wait a
     // moment then. Otherwise speak now: Safari on iPad only plays speech started inside the tap itself.
     if (busy) setTimeout(() => (my === seq ? speechSynthesis.speak(u) : resolve()), 30)
+    else speechSynthesis.speak(u)
+  })
+}
+
+export interface ProbeResult {
+  started: boolean
+  ended: boolean
+  error?: string
+}
+
+/** Speak a test sentence and report what the browser did (for the sound check in Settings). */
+export function probeSpeech(text: string, lang: string, voice?: SpeechSynthesisVoice): Promise<ProbeResult> {
+  if (!ttsSupported()) return Promise.resolve({ started: false, ended: false, error: 'không hỗ trợ' })
+  seq++
+  const busy = cut()
+  if (speechSynthesis.paused) speechSynthesis.resume()
+  return new Promise((resolve) => {
+    const r: ProbeResult = { started: false, ended: false }
+    const u = new SpeechSynthesisUtterance(text)
+    u.lang = lang
+    if (voice) u.voice = voice
+    u.onstart = () => (r.started = true)
+    u.onend = () => resolve({ ...r, ended: true })
+    u.onerror = (e) => resolve({ ...r, error: e.error })
+    setTimeout(() => resolve({ ...r, error: r.error ?? 'hết giờ chờ' }), 8000)
+    if (busy) setTimeout(() => speechSynthesis.speak(u), 30)
     else speechSynthesis.speak(u)
   })
 }

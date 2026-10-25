@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSettings, type FontSize, type Theme } from '../store/settings'
 import { exportProgress, useProgress } from '../store/progress'
-import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak, sttSupported, ttsSupported, voiceHelp } from '../lib/speech'
+import { friendlyVoiceName, japaneseVoices, onVoicesChanged, probeSpeech, speak, sttSupported, ttsSupported, voiceHelp, type ProbeResult } from '../lib/speech'
 import { Button, Card, Chip } from '../components/ui'
 
 export function SettingsPage() {
@@ -89,6 +89,8 @@ export function SettingsPage() {
         </p>
       </Card>
 
+      <SoundCheck />
+
       <Card className="space-y-3">
         <p className="font-semibold">Tiến độ học</p>
         <p className="text-sm text-sub">Tiến độ chỉ lưu trong trình duyệt này. Hãy sao lưu ra file để chuyển sang máy khác hoặc phòng khi xoá dữ liệu trình duyệt.</p>
@@ -117,6 +119,68 @@ export function SettingsPage() {
         </div>
       </Card>
     </div>
+  )
+}
+
+const PROBES = [
+  { label: '1. Tiếng Nhật · giọng đang chọn', text: 'こんにちは。音（おと）の テストです。', lang: 'ja-JP', chosen: true },
+  { label: '2. Tiếng Nhật · giọng mặc định của máy', text: 'こんにちは。音（おと）の テストです。', lang: 'ja-JP', chosen: false },
+  { label: '3. Tiếng Anh', text: 'Hello. This is a sound test.', lang: 'en-US', chosen: false },
+]
+
+/** Plays a few test sentences and shows what the browser reported, to find out why a device stays silent. */
+function SoundCheck() {
+  const voiceA = useSettings((s) => s.voiceA)
+  const [results, setResults] = useState<(ProbeResult | null)[]>([])
+  const [running, setRunning] = useState(false)
+
+  const run = async () => {
+    setRunning(true)
+    setResults([])
+    const ja = japaneseVoices()
+    const chosen = ja.find((v) => v.voiceURI === voiceA) ?? ja[0]
+    const out: (ProbeResult | null)[] = []
+    for (const p of PROBES) {
+      if (p.chosen && !chosen) out.push(null)
+      else out.push(await probeSpeech(p.text.replace(/（[^）]*）/g, ''), p.lang, p.chosen ? chosen : undefined))
+      setResults([...out])
+      await new Promise((r) => setTimeout(r, 600))
+    }
+    setRunning(false)
+  }
+
+  const all = ttsSupported() ? speechSynthesis.getVoices() : []
+  const ja = all.filter((v) => /^ja/i.test(v.lang))
+  return (
+    <Card className="space-y-3">
+      <p className="font-semibold">Kiểm tra âm thanh</p>
+      <p className="text-sm text-sub">Bấm nút rồi để ý nghe sau mỗi bước. Nếu vẫn im lặng, chụp màn hình phần này gửi lại và cho biết bước nào nghe được tiếng.</p>
+      <Button size="sm" onClick={run} disabled={running}>
+        {running ? 'Đang kiểm tra…' : 'Chạy kiểm tra'}
+      </Button>
+      <ul className="space-y-1 text-sm">
+        {PROBES.map((p, i) => {
+          const r = results[i]
+          const status =
+            i >= results.length ? (running && i === results.length ? 'đang đọc…' : '—')
+            : r === null ? 'bỏ qua (không có giọng Nhật)'
+            : r.ended ? 'máy báo đã đọc xong'
+            : `lỗi: ${r.error}${r.started ? ' (đã bắt đầu)' : ' (không bắt đầu)'}`
+          return (
+            <li key={p.label}>
+              <b>{p.label}:</b> <span className={r && r.ended ? 'text-ok' : r ? 'text-bad' : 'text-sub'}>{status}</span>
+            </li>
+          )
+        })}
+      </ul>
+      <div className="rounded-xl bg-muted px-3 py-2 text-xs text-sub break-words">
+        <p>Giọng trong máy: {all.length} · tiếng Nhật: {ja.length ? ja.map((v) => `${v.name} [${v.lang}${v.localService ? ', trong máy' : ', mạng'}]`).join(' · ') : 'không có'}</p>
+        <p>Trình duyệt: {navigator.userAgent}</p>
+      </div>
+      <p className="text-xs text-sub">
+        Máy báo "đã đọc xong" mà không nghe gì: tăng âm lượng media (bấm nút tăng âm lượng khi đang phát) và kiểm tra tai nghe Bluetooth. Trên Android, vào Cài đặt → Chuyển văn bản thành giọng nói, chọn bộ đọc của Google làm mặc định và tải dữ liệu Tiếng Nhật.
+      </p>
+    </Card>
   )
 }
 
