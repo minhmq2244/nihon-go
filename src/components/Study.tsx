@@ -19,11 +19,23 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
   const [onlyUnknown, setOnlyUnknown] = useState(false)
   const [direction, setDirection] = useState<'next' | 'prev' | null>(null)
 
+  // Drag / swipe gesture state for finger on mobile and mouse on desktop
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [isAnimatingOut, setIsAnimatingOut] = useState<'left' | 'right' | null>(null)
+
+  const touchStartRef = useRef<{ x: number; y: number; time: number; lock: 'h' | 'v' | null } | null>(null)
+  const isMouseDownRef = useRef(false)
+  const mouseStartRef = useRef<{ x: number; time: number } | null>(null)
+  const didDragRef = useRef(false)
+
   useEffect(() => {
     setOrder(cards)
     setI(0)
     setFlip(false)
     setDirection(null)
+    setDragOffset(0)
+    setIsAnimatingOut(null)
   }, [cards])
 
   const known = (c: StudyCard) => (items[`${c.id}:card`]?.ok ?? 0) > (items[`${c.id}:card`]?.bad ?? 0)
@@ -35,6 +47,8 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
     setI(0)
     setFlip(false)
     setDirection(null)
+    setDragOffset(0)
+    setIsAnimatingOut(null)
   }, [onlyUnknown, order])
 
   const go = (d: number) => {
@@ -53,6 +67,164 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
     } else {
       setFlip(false)
     }
+  }
+
+  // Touch handlers for mobile fingers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (isAnimatingOut) return
+    const touch = e.touches[0]
+    if (!touch) return
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now(),
+      lock: null,
+    }
+    didDragRef.current = false
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current || isAnimatingOut) return
+    const touch = e.touches[0]
+    if (!touch) return
+    const dx = touch.clientX - touchStartRef.current.x
+    const dy = touch.clientY - touchStartRef.current.y
+
+    if (!touchStartRef.current.lock) {
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 7) {
+        touchStartRef.current.lock = 'v'
+        return
+      }
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 7) {
+        touchStartRef.current.lock = 'h'
+        setIsDragging(true)
+        didDragRef.current = true
+      }
+    }
+
+    if (touchStartRef.current.lock === 'h') {
+      let offset = dx
+      const atStart = i === 0 && dx > 0
+      const atEnd = i >= list.length - 1 && dx < 0
+      if (atStart || atEnd) {
+        offset = dx * 0.25
+      }
+      setDragOffset(offset)
+    }
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartRef.current) return
+    const lock = touchStartRef.current.lock
+    const startTime = touchStartRef.current.time
+    const elapsed = Date.now() - startTime
+    const velocity = Math.abs(dragOffset) / Math.max(elapsed, 1)
+
+    touchStartRef.current = null
+    setIsDragging(false)
+
+    if (lock === 'h') {
+      const SWIPE_THRESHOLD = 50
+      const VELOCITY_THRESHOLD = 0.25
+
+      const swipedLeft = dragOffset < -SWIPE_THRESHOLD || (dragOffset < -20 && velocity > VELOCITY_THRESHOLD)
+      const swipedRight = dragOffset > SWIPE_THRESHOLD || (dragOffset > 20 && velocity > VELOCITY_THRESHOLD)
+
+      if (swipedLeft && i < list.length - 1) {
+        setIsAnimatingOut('left')
+        setTimeout(() => {
+          setDragOffset(0)
+          setIsAnimatingOut(null)
+          go(1)
+        }, 180)
+        return
+      } else if (swipedRight && i > 0) {
+        setIsAnimatingOut('right')
+        setTimeout(() => {
+          setDragOffset(0)
+          setIsAnimatingOut(null)
+          go(-1)
+        }, 180)
+        return
+      }
+    }
+
+    setDragOffset(0)
+  }
+
+  // Mouse handlers for desktop dragging
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0 || isAnimatingOut) return
+    isMouseDownRef.current = true
+    mouseStartRef.current = { x: e.clientX, time: Date.now() }
+    didDragRef.current = false
+
+    const onMouseMove = (moveEv: MouseEvent) => {
+      if (!isMouseDownRef.current || !mouseStartRef.current) return
+      const dx = moveEv.clientX - mouseStartRef.current.x
+      if (Math.abs(dx) > 6) {
+        didDragRef.current = true
+        setIsDragging(true)
+        let offset = dx
+        const atStart = i === 0 && dx > 0
+        const atEnd = i >= list.length - 1 && dx < 0
+        if (atStart || atEnd) {
+          offset = dx * 0.25
+        }
+        setDragOffset(offset)
+      }
+    }
+
+    const onMouseUp = (upEv: MouseEvent) => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+      if (!isMouseDownRef.current) return
+      isMouseDownRef.current = false
+      setIsDragging(false)
+      if (!mouseStartRef.current) return
+
+      const elapsed = Date.now() - mouseStartRef.current.time
+      const dx = upEv.clientX - mouseStartRef.current.x
+      const velocity = Math.abs(dx) / Math.max(elapsed, 1)
+      mouseStartRef.current = null
+
+      const SWIPE_THRESHOLD = 50
+      const VELOCITY_THRESHOLD = 0.25
+
+      const swipedLeft = dx < -SWIPE_THRESHOLD || (dx < -20 && velocity > VELOCITY_THRESHOLD)
+      const swipedRight = dx > SWIPE_THRESHOLD || (dx > 20 && velocity > VELOCITY_THRESHOLD)
+
+      if (swipedLeft && i < list.length - 1) {
+        setIsAnimatingOut('left')
+        setTimeout(() => {
+          setDragOffset(0)
+          setIsAnimatingOut(null)
+          go(1)
+        }, 180)
+        return
+      } else if (swipedRight && i > 0) {
+        setIsAnimatingOut('right')
+        setTimeout(() => {
+          setDragOffset(0)
+          setIsAnimatingOut(null)
+          go(-1)
+        }, 180)
+        return
+      }
+
+      setDragOffset(0)
+    }
+
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+  }
+
+  const handleCardClick = () => {
+    if (didDragRef.current) {
+      didDragRef.current = false
+      return
+    }
+    setFlip((f) => !f)
   }
 
   useEffect(() => {
@@ -132,154 +304,218 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
         </div>
       ) : (
         <div className="space-y-4">
-          {/* Card Viewport with 3D perspective and directional slide */}
-          <div
-            key={`${c.id}-${direction}`}
-            className={cx(
-              'quizlet-perspective w-full cursor-pointer select-none',
-              direction === 'next' && 'quizlet-slide-next',
-              direction === 'prev' && 'quizlet-slide-prev',
-            )}
-            onClick={() => setFlip(!flip)}
-            role="button"
-            tabIndex={0}
-            aria-label="Lật thẻ ghi nhớ"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                setFlip(!flip)
-              }
-            }}
-          >
-            <div className={cx('quizlet-card-inner', flip && 'is-flipped')}>
-              {/* Mặt trước (Front Face - rotateY 0deg) */}
-              <div className="quizlet-card-face quizlet-card-face-front">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-line/50 px-5 py-3 sm:px-6 sm:py-4">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
-                      <span className="h-2 w-2 rounded-full bg-accent" />
-                      {jpFront ? 'Tiếng Nhật' : 'Tiếng Việt'}
-                    </span>
-                    {isKnown && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
-                        <Check className="h-3 w-3" /> Đã thuộc
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <SpeakButton
-                      text={c.speak}
-                      className="h-8 w-8 bg-muted text-sub hover:bg-accent-soft hover:text-accent transition"
-                      label="Nghe phát âm"
-                    />
-                    <span
-                      title="Lật thẻ"
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sub hover:bg-muted hover:text-accent transition"
-                    >
-                      <RotateCw className="h-4 w-4" />
-                    </span>
-                  </div>
+          {/* Card Viewport with 3D perspective and touch swipe container */}
+          <div className="quizlet-perspective relative w-full overflow-hidden py-1">
+            {/* Interactive draggable wrapper */}
+            <div
+              key={`${c.id}-${direction}`}
+              className={cx(
+                'quizlet-drag-container relative w-full select-none',
+                !isDragging && !isAnimatingOut && direction === 'next' && 'quizlet-slide-next',
+                !isDragging && !isAnimatingOut && direction === 'prev' && 'quizlet-slide-prev',
+              )}
+              style={{
+                transform:
+                  isAnimatingOut === 'left'
+                    ? 'translateX(-120%) rotate(-10deg)'
+                    : isAnimatingOut === 'right'
+                    ? 'translateX(120%) rotate(10deg)'
+                    : dragOffset !== 0
+                    ? `translateX(${dragOffset}px) rotate(${dragOffset * 0.04}deg)`
+                    : undefined,
+                transition: isDragging
+                  ? 'none'
+                  : isAnimatingOut
+                  ? 'transform 0.2s cubic-bezier(0.2, 0.8, 0.25, 1), opacity 0.2s ease'
+                  : 'transform 0.32s cubic-bezier(0.2, 0.8, 0.25, 1)',
+                opacity: isAnimatingOut ? 0 : 1,
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onTouchCancel={handleTouchEnd}
+              onMouseDown={handleMouseDown}
+              onClick={handleCardClick}
+              role="button"
+              tabIndex={0}
+              aria-label="Lật thẻ hoặc vuốt sang để chuyển thẻ"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setFlip(!flip)
+                }
+              }}
+            >
+              {/* Floating Swipe Direction Indicators */}
+              {dragOffset < -25 && (
+                <div
+                  className="pointer-events-none absolute right-4 top-1/2 z-30 flex -translate-y-1/2 items-center gap-1 rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-white shadow-lg transition-opacity"
+                  style={{ opacity: Math.min(1, (Math.abs(dragOffset) - 25) / 45) }}
+                >
+                  <span>Thẻ tiếp</span>
+                  <ChevronRight className="h-4 w-4" />
                 </div>
+              )}
+              {dragOffset > 25 && (
+                <div
+                  className="pointer-events-none absolute left-4 top-1/2 z-30 flex -translate-y-1/2 items-center gap-1 rounded-full bg-accent px-3 py-1.5 text-xs font-bold text-white shadow-lg transition-opacity"
+                  style={{ opacity: Math.min(1, (Math.abs(dragOffset) - 25) / 45) }}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span>Thẻ trước</span>
+                </div>
+              )}
 
-                {/* Center Content */}
-                <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
-                  {jpFront ? (
-                    <span className={cx('font-bold tracking-tight text-ink', big ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
-                      <Jp text={c.front} />
-                    </span>
-                  ) : (
-                    <div className="max-w-xl space-y-2">
-                      <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
-                      {c.extra && (
-                        <p className="mt-2 whitespace-pre-line text-base text-sub font-medium">
-                          <Jp text={c.extra} />
-                        </p>
+              {/* 3D Flipping Card */}
+              <div className={cx('quizlet-card-inner', flip && 'is-flipped')}>
+                {/* Mặt trước (Front Face - rotateY 0deg) */}
+                <div className="quizlet-card-face quizlet-card-face-front">
+                  {/* Header */}
+                  <div className="flex items-center justify-between border-b border-line/50 px-5 py-3 sm:px-6 sm:py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
+                        <span className="h-2 w-2 rounded-full bg-accent" />
+                        {jpFront ? 'Tiếng Nhật' : 'Tiếng Việt'}
+                      </span>
+                      {isKnown && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
+                          <Check className="h-3 w-3" /> Đã thuộc
+                        </span>
                       )}
                     </div>
-                  )}
-                </div>
-
-                {/* Footer Hint */}
-                <div className="flex items-center justify-between border-t border-line/40 px-5 py-2.5 sm:px-6 text-xs font-medium text-sub/70">
-                  <span className="flex items-center gap-1.5">
-                    <RotateCw className="h-3.5 w-3.5 text-accent" />
-                    <span>Bấm thẻ để lật</span>
-                  </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-sub border border-line">
-                    Phím cách [Space]
-                  </span>
-                </div>
-              </div>
-
-              {/* Mặt sau (Back Face - rotateY 180deg) */}
-              <div className="quizlet-card-face quizlet-card-face-back">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-line/50 px-5 py-3 sm:px-6 sm:py-4">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
-                      <span className="h-2 w-2 rounded-full bg-ok" />
-                      {jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
-                    </span>
-                    {isKnown && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
-                        <Check className="h-3 w-3" /> Đã thuộc
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <SpeakButton
-                      text={c.speak}
-                      className="h-8 w-8 bg-muted text-sub hover:bg-accent-soft hover:text-accent transition"
-                      label="Nghe phát âm"
-                    />
-                    <span
-                      title="Lật thẻ"
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sub hover:bg-muted hover:text-accent transition"
-                    >
-                      <RotateCw className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-
-                {/* Center Content */}
-                <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
-                  {jpFront ? (
-                    <div className="w-full max-w-xl space-y-4">
-                      <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
-                      {c.extra && (
-                        <div className="rounded-2xl border border-line bg-muted/50 p-4 text-left text-base sm:text-lg font-medium">
-                          <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1.5">
-                            Ví dụ & Ngữ cảnh
-                          </p>
-                          <div className="whitespace-pre-line text-ink leading-relaxed">
-                            <Jp text={c.extra} />
-                          </div>
-                        </div>
-                      )}
+                    <div className="flex items-center gap-1.5">
+                      <div onMouseDown={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()}>
+                        <SpeakButton
+                          text={c.speak}
+                          className="h-8 w-8 bg-muted text-sub hover:bg-accent-soft hover:text-accent transition"
+                          label="Nghe phát âm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        title="Lật thẻ"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sub hover:bg-muted hover:text-accent transition cursor-pointer"
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setFlip((f) => !f)
+                        }}
+                      >
+                        <RotateCw className="h-4 w-4" />
+                      </button>
                     </div>
-                  ) : (
-                    <div className="space-y-3">
+                  </div>
+
+                  {/* Center Content */}
+                  <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
+                    {jpFront ? (
                       <span className={cx('font-bold tracking-tight text-ink', big ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
                         <Jp text={c.front} />
                       </span>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="max-w-xl space-y-2">
+                        <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
+                        {c.extra && (
+                          <p className="mt-2 whitespace-pre-line text-base text-sub font-medium">
+                            <Jp text={c.extra} />
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer Hint */}
+                  <div className="flex items-center justify-between border-t border-line/40 px-5 py-2.5 sm:px-6 text-xs font-medium text-sub/70">
+                    <span className="flex items-center gap-1.5">
+                      <RotateCw className="h-3.5 w-3.5 text-accent" />
+                      <span>Vuốt ngang để đổi thẻ · Bấm để lật</span>
+                    </span>
+                    <span className="hidden sm:inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-sub border border-line">
+                      Phím cách [Space]
+                    </span>
+                  </div>
                 </div>
 
-                {/* Footer Hint */}
-                <div className="flex items-center justify-between border-t border-line/40 px-5 py-2.5 sm:px-6 text-xs font-medium text-sub/70">
-                  <span className="flex items-center gap-1.5">
-                    <RotateCw className="h-3.5 w-3.5 text-accent" />
-                    <span>Bấm thẻ để lật</span>
-                  </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-sub border border-line">
-                    Phím cách [Space]
-                  </span>
+                {/* Mặt sau (Back Face - rotateY 180deg) */}
+                <div className="quizlet-card-face quizlet-card-face-back">
+                  {/* Header */}
+                  <div className="flex items-center justify-between border-b border-line/50 px-5 py-3 sm:px-6 sm:py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
+                        <span className="h-2 w-2 rounded-full bg-ok" />
+                        {jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
+                      </span>
+                      {isKnown && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
+                          <Check className="h-3 w-3" /> Đã thuộc
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div onMouseDown={(e) => e.stopPropagation()} onTouchStart={(e) => e.stopPropagation()}>
+                        <SpeakButton
+                          text={c.speak}
+                          className="h-8 w-8 bg-muted text-sub hover:bg-accent-soft hover:text-accent transition"
+                          label="Nghe phát âm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        title="Lật thẻ"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sub hover:bg-muted hover:text-accent transition cursor-pointer"
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setFlip((f) => !f)
+                        }}
+                      >
+                        <RotateCw className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Center Content */}
+                  <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
+                    {jpFront ? (
+                      <div className="w-full max-w-xl space-y-4">
+                        <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
+                        {c.extra && (
+                          <div className="rounded-2xl border border-line bg-muted/50 p-4 text-left text-base sm:text-lg font-medium">
+                            <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1.5">
+                              Ví dụ & Ngữ cảnh
+                            </p>
+                            <div className="whitespace-pre-line text-ink leading-relaxed">
+                              <Jp text={c.extra} />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <span className={cx('font-bold tracking-tight text-ink', big ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
+                          <Jp text={c.front} />
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer Hint */}
+                  <div className="flex items-center justify-between border-t border-line/40 px-5 py-2.5 sm:px-6 text-xs font-medium text-sub/70">
+                    <span className="flex items-center gap-1.5">
+                      <RotateCw className="h-3.5 w-3.5 text-accent" />
+                      <span>Vuốt ngang để đổi thẻ · Bấm để lật</span>
+                    </span>
+                    <span className="hidden sm:inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-sub border border-line">
+                      Phím cách [Space]
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
 
           {/* Controls Bar */}
           <div className="space-y-3 pt-1">

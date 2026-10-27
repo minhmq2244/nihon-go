@@ -412,3 +412,15 @@ details.vd {
 .quizlet-slide-prev {
   animation: quizletSlideLeft 0.26s cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
+
+.quizlet-drag-container {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.quizlet-drag-container:active {
+  cursor: grabbing;
+}
