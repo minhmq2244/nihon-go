@@ -198,13 +198,27 @@ function parseKanji(md: string, unitId: string): KanjiItem[] {
 }
 
 function splitCompounds(cell: string) {
-  return stripMd(cell)
-    .split(/\s*·\s*/)
-    .map((p) => {
-      const m = /^(\S+)\s*(.*)$/.exec(p.trim())
-      return m ? { jp: m[1]!, meaning: m[2]!.trim() } : null
+  return cell
+    .split(/<br\s*\/?>|\n|·|•/i)
+    .map((raw) => {
+      const s = stripMd(raw).trim()
+      if (!s) return null
+      let jp = ''
+      let meaning = ''
+      if (/[:：]/.test(s)) {
+        const idx = s.search(/[:：]/)
+        jp = s.slice(0, idx).trim()
+        meaning = s.slice(idx + 1).trim()
+      } else {
+        const m = /^(\S+)\s*(.*)$/.exec(s)
+        if (m) {
+          jp = m[1]!.trim()
+          meaning = m[2]!.trim()
+        }
+      }
+      return jp && /[一-鿿]/.test(jp) ? { jp, meaning } : null
     })
-    .filter((x): x is { jp: string; meaning: string } => !!x && /[一-鿿]/.test(x.jp))
+    .filter((x): x is { jp: string; meaning: string } => !!x)
 }
 
 function parseConfuse(md: string): ConfuseGroup[] {

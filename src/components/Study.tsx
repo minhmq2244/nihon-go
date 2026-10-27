@@ -582,7 +582,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                   {/* Center Content */}
                   <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
                     {jpFront ? (
-                      <span className={cx('font-bold tracking-tight text-ink', big ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
+                      <span className={cx('font-bold tracking-tight text-ink', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
                         <Jp text={c.front} />
                       </span>
                     ) : (
@@ -656,7 +656,11 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         {c.extra && (
                           <div className="rounded-2xl border border-line bg-muted/50 p-4 text-left text-base sm:text-lg font-medium">
                             <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1.5">
-                              Ví dụ & Ngữ cảnh
+                              {c.extra.startsWith('Chữ Hán:')
+                                ? 'Thông tin Kanji'
+                                : c.extra.startsWith('Âm')
+                                ? 'Âm On/Kun & Từ ghép'
+                                : 'Ví dụ & Ngữ cảnh'}
                             </p>
                             <div className="whitespace-pre-line text-ink leading-relaxed">
                               <Jp text={c.extra} />
@@ -666,7 +670,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                       </div>
                     ) : (
                       <div className="space-y-3">
-                        <span className={cx('font-bold tracking-tight text-ink', big ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
+                        <span className={cx('font-bold tracking-tight text-ink', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
                           <Jp text={c.front} />
                         </span>
                       </div>

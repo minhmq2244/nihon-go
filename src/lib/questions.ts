@@ -41,14 +41,97 @@ export function vocabAnswers(jp: string): string[] {
 export const vocabCards = (vocab: VocabItem[]): Card[] =>
   vocab.map((v) => ({ id: v.id, front: vocabForm(v.jp), back: v.meaning, extra: v.note, speak: vocabForm(v.jp) }))
 
-export const kanjiCards = (kanji: KanjiItem[]): Card[] =>
+export const kanjiCharCards = (kanji: KanjiItem[]): Card[] =>
   kanji.map((k) => ({
     id: k.id,
     front: k.char,
     back: `${k.hanviet}`,
-    extra: [k.onkun, k.compounds.map((c) => `${c.jp} ${c.meaning}`).join(' · ')].filter(Boolean).join('\n'),
+    extra: [
+      k.onkun ? `Âm On/Kun: ${k.onkun}` : '',
+      k.compounds.length ? `Từ ghép: ${k.compounds.map((c) => `${c.jp} (${c.meaning})`).join(' · ')}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n'),
     speak: k.compounds[0]?.jp ?? k.char,
   }))
+
+export const kanjiCompoundCards = (kanji: KanjiItem[]): Card[] => {
+  const cards: Card[] = []
+  const seen = new Map<string, Card>()
+
+  for (const k of kanji) {
+    for (let i = 0; i < k.compounds.length; i++) {
+      const comp = k.compounds[i]!
+      const key = comp.jp.trim()
+      const existing = seen.get(key)
+      if (existing) {
+        const kanjiTag = `${k.char} (${k.hanviet})`
+        if (existing.extra && !existing.extra.includes(k.char)) {
+          existing.extra += ` · ${kanjiTag}`
+        }
+        continue
+      }
+
+      const card: Card = {
+        id: `${k.id}:comp:${i}`,
+        front: comp.jp,
+        back: comp.meaning,
+        extra: `Chữ Hán: ${k.char} (${k.hanviet})`,
+        speak: comp.jp,
+      }
+      seen.set(key, card)
+      cards.push(card)
+    }
+  }
+
+  return cards
+}
+
+export const kanjiCards = (kanji: KanjiItem[]): Card[] => {
+  const cards: Card[] = []
+  const seenCompounds = new Map<string, Card>()
+
+  for (const k of kanji) {
+    // 1. Single character card
+    cards.push({
+      id: k.id,
+      front: k.char,
+      back: `${k.hanviet}`,
+      extra: [
+        k.onkun ? `Âm On/Kun: ${k.onkun}` : '',
+        k.compounds.length ? `Từ ghép: ${k.compounds.map((c) => `${c.jp} (${c.meaning})`).join(' · ')}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n'),
+      speak: k.compounds[0]?.jp ?? k.char,
+    })
+
+    // 2. Its compound cards
+    for (let i = 0; i < k.compounds.length; i++) {
+      const comp = k.compounds[i]!
+      const key = comp.jp.trim()
+      const existing = seenCompounds.get(key)
+      if (existing) {
+        const kanjiTag = `${k.char} (${k.hanviet})`
+        if (existing.extra && !existing.extra.includes(k.char)) {
+          existing.extra += ` · ${kanjiTag}`
+        }
+        continue
+      }
+      const compCard: Card = {
+        id: `${k.id}:comp:${i}`,
+        front: comp.jp,
+        back: comp.meaning,
+        extra: `Chữ Hán: ${k.char} (${k.hanviet})`,
+        speak: comp.jp,
+      }
+      seenCompounds.set(key, compCard)
+      cards.push(compCard)
+    }
+  }
+
+  return cards
+}
 
 export function vocabV1(u: Unit): Question[] {
   return u.vocab.map((v) => ({
@@ -116,7 +199,7 @@ export function kanjiK1(u: Unit): Question[] {
 }
 
 export function kanjiK2(u: Unit): Question[] {
-  const cards = kanjiCards(u.kanji)
+  const cards = kanjiCharCards(u.kanji)
   return cards.flatMap((c, i) => (i % 2 === 0 ? [reverseMC(cards, c)] : [{ ...meaningMC(cards, c, 'hv'), stem: c.front }]))
 }
 
