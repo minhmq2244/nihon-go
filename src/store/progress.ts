@@ -37,6 +37,7 @@ interface ProgressData {
 
 interface Progress extends ProgressData {
   markItem: (id: string, ok: boolean) => void
+  resetItems: (ids: string[]) => void
   saveSet: (id: string, correct: number, total: number) => void
   saveAnswers: (id: string, answers: Record<string, string>) => void
   markDialogueStep: (id: string, step: number) => void
@@ -67,6 +68,14 @@ export const useProgress = create<Progress>()(
             items: { ...s.items, [id]: { ok: cur.ok + (ok ? 1 : 0), bad: cur.bad + (ok ? 0 : 1), last: Date.now() } },
             days: ok ? { ...s.days, [d]: (s.days[d] ?? 0) + 1 } : s.days,
           }
+        }),
+      resetItems: (ids) =>
+        set((s) => {
+          const next = { ...s.items }
+          for (const id of ids) {
+            delete next[id]
+          }
+          return { items: next }
         }),
       saveSet: (id, correct, total) =>
         set((s) => {

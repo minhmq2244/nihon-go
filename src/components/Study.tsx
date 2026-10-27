@@ -1,6 +1,6 @@
 // Quizlet-style study modes shared by the vocab and kanji tabs.
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Check, ChevronLeft, ChevronRight, RotateCw, Shuffle } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight, RotateCcw, RotateCw, Shuffle, Trophy } from 'lucide-react'
 import type { Card as StudyCard } from '../lib/questions'
 import { meaningMC } from '../lib/questions'
 import { sample, shuffle } from '../lib/data'
@@ -11,13 +11,14 @@ import { Jp } from './Jp'
 import { Button, Chip, ProgressBar, SpeakButton, cx } from './ui'
 
 export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }) {
-  const { items, markItem } = useProgress()
+  const { items, markItem, resetItems } = useProgress()
   const [order, setOrder] = useState(cards)
   const [i, setI] = useState(0)
   const [flip, setFlip] = useState(false)
   const [jpFront, setJpFront] = useState(true)
   const [onlyUnknown, setOnlyUnknown] = useState(false)
   const [direction, setDirection] = useState<'next' | 'prev' | null>(null)
+  const [finished, setFinished] = useState(false)
 
   // Drag / swipe gesture state for finger on mobile and mouse on desktop
   const [dragOffset, setDragOffset] = useState(0)
@@ -36,6 +37,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
     setDirection(null)
     setDragOffset(0)
     setIsAnimatingOut(null)
+    setFinished(false)
   }, [cards])
 
   const known = (c: StudyCard) => (items[`${c.id}:card`]?.ok ?? 0) > (items[`${c.id}:card`]?.bad ?? 0)
@@ -49,9 +51,14 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
     setDirection(null)
     setDragOffset(0)
     setIsAnimatingOut(null)
+    setFinished(false)
   }, [onlyUnknown, order])
 
   const go = (d: number) => {
+    if (d > 0 && i >= list.length - 1) {
+      setFinished(true)
+      return
+    }
     const nextI = Math.max(0, Math.min(list.length - 1, i + d))
     if (nextI === i) return
     setDirection(d > 0 ? 'next' : 'prev')
@@ -65,13 +72,34 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
     if (i < list.length - 1) {
       go(1)
     } else {
-      setFlip(false)
+      setFinished(true)
     }
+  }
+
+  const handleRestart = (shuffleDeck = false) => {
+    if (shuffleDeck) setOrder(shuffle(cards))
+    setI(0)
+    setFlip(false)
+    setDirection(null)
+    setDragOffset(0)
+    setIsAnimatingOut(null)
+    setFinished(false)
+  }
+
+  const handleResetProgress = () => {
+    const ids = cards.map((item) => `${item.id}:card`)
+    resetItems(ids)
+    setI(0)
+    setFlip(false)
+    setDirection(null)
+    setDragOffset(0)
+    setIsAnimatingOut(null)
+    setFinished(false)
   }
 
   // Touch handlers for mobile fingers
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (isAnimatingOut) return
+    if (isAnimatingOut || finished) return
     const touch = e.touches[0]
     if (!touch) return
     touchStartRef.current = {
@@ -84,7 +112,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!touchStartRef.current || isAnimatingOut) return
+    if (!touchStartRef.current || isAnimatingOut || finished) return
     const touch = e.touches[0]
     if (!touch) return
     const dx = touch.clientX - touchStartRef.current.x
@@ -114,7 +142,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
   }
 
   const handleTouchEnd = () => {
-    if (!touchStartRef.current) return
+    if (!touchStartRef.current || finished) return
     const lock = touchStartRef.current.lock
     const startTime = touchStartRef.current.time
     const elapsed = Date.now() - startTime
@@ -130,14 +158,24 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
       const swipedLeft = dragOffset < -SWIPE_THRESHOLD || (dragOffset < -20 && velocity > VELOCITY_THRESHOLD)
       const swipedRight = dragOffset > SWIPE_THRESHOLD || (dragOffset > 20 && velocity > VELOCITY_THRESHOLD)
 
-      if (swipedLeft && i < list.length - 1) {
-        setIsAnimatingOut('left')
-        setTimeout(() => {
-          setDragOffset(0)
-          setIsAnimatingOut(null)
-          go(1)
-        }, 180)
-        return
+      if (swipedLeft) {
+        if (i < list.length - 1) {
+          setIsAnimatingOut('left')
+          setTimeout(() => {
+            setDragOffset(0)
+            setIsAnimatingOut(null)
+            go(1)
+          }, 180)
+          return
+        } else {
+          setIsAnimatingOut('left')
+          setTimeout(() => {
+            setDragOffset(0)
+            setIsAnimatingOut(null)
+            setFinished(true)
+          }, 180)
+          return
+        }
       } else if (swipedRight && i > 0) {
         setIsAnimatingOut('right')
         setTimeout(() => {
@@ -154,7 +192,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
 
   // Mouse handlers for desktop dragging
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0 || isAnimatingOut) return
+    if (e.button !== 0 || isAnimatingOut || finished) return
     isMouseDownRef.current = true
     mouseStartRef.current = { x: e.clientX, time: Date.now() }
     didDragRef.current = false
@@ -194,14 +232,24 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
       const swipedLeft = dx < -SWIPE_THRESHOLD || (dx < -20 && velocity > VELOCITY_THRESHOLD)
       const swipedRight = dx > SWIPE_THRESHOLD || (dx > 20 && velocity > VELOCITY_THRESHOLD)
 
-      if (swipedLeft && i < list.length - 1) {
-        setIsAnimatingOut('left')
-        setTimeout(() => {
-          setDragOffset(0)
-          setIsAnimatingOut(null)
-          go(1)
-        }, 180)
-        return
+      if (swipedLeft) {
+        if (i < list.length - 1) {
+          setIsAnimatingOut('left')
+          setTimeout(() => {
+            setDragOffset(0)
+            setIsAnimatingOut(null)
+            go(1)
+          }, 180)
+          return
+        } else {
+          setIsAnimatingOut('left')
+          setTimeout(() => {
+            setDragOffset(0)
+            setIsAnimatingOut(null)
+            setFinished(true)
+          }, 180)
+          return
+        }
       } else if (swipedRight && i > 0) {
         setIsAnimatingOut('right')
         setTimeout(() => {
@@ -230,6 +278,13 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return
+      if (finished) {
+        if (e.key === ' ' || e.code === 'Space' || e.key === 'Enter') {
+          e.preventDefault()
+          handleRestart(false)
+        }
+        return
+      }
       if (e.key === ' ' || e.code === 'Space') {
         e.preventDefault()
         setFlip((f) => !f)
@@ -245,7 +300,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [i, list.length, c])
+  }, [i, list.length, c, finished])
 
   const knownCount = cards.filter(known).length
 
@@ -280,27 +335,144 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
             setI(0)
             setFlip(false)
             setDirection(null)
+            setFinished(false)
           }}
           className="flex items-center gap-1.5"
+          title="Trộn ngẫu nhiên thứ tự thẻ"
         >
           <Shuffle className="h-4 w-4" />
           <span>Trộn thẻ</span>
+        </Button>
+        <Button
+          size="sm"
+          onClick={() => handleRestart(false)}
+          className="flex items-center gap-1.5"
+          title="Học lại từ thẻ đầu tiên"
+        >
+          <RotateCcw className="h-4 w-4" />
+          <span>Học lại</span>
         </Button>
         <span className="ml-auto text-sm font-medium text-sub">
           Đã thuộc <span className="font-semibold text-ok">{knownCount}</span>/{cards.length}
         </span>
       </div>
 
-      {!c ? (
-        <div className="py-12 text-center space-y-3">
+      {finished ? (
+        <div className="rounded-3xl border border-line bg-surface p-6 sm:p-10 text-center shadow-sm space-y-6">
+          <div className="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-accent-soft text-accent shadow-sm">
+            <Trophy className="h-10 w-10 text-accent animate-bounce" />
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight">
+              Hoàn thành phiên học thẻ! 🎉
+            </h3>
+            <p className="text-sm sm:text-base text-sub">
+              Bạn đã xem và ôn tập xong toàn bộ {cards.length} thẻ ghi nhớ.
+            </p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="mx-auto grid max-w-md grid-cols-2 gap-3 sm:gap-4 text-left">
+            <div className="rounded-2xl border border-ok/20 bg-ok-soft/50 p-4">
+              <div className="flex items-center gap-2 text-ok">
+                <Check className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">Đã thuộc</span>
+              </div>
+              <p className="mt-1 text-2xl sm:text-3xl font-extrabold text-ok">
+                {knownCount} <span className="text-sm font-medium opacity-75">/ {cards.length}</span>
+              </p>
+              <p className="text-xs text-ok/80 mt-0.5">
+                {Math.round((knownCount / cards.length) * 100)}% hoàn thành
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-bad/20 bg-bad-soft/50 p-4">
+              <div className="flex items-center gap-2 text-bad">
+                <RotateCw className="h-4 w-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">Chưa thuộc</span>
+              </div>
+              <p className="mt-1 text-2xl sm:text-3xl font-extrabold text-bad">
+                {cards.length - knownCount} <span className="text-sm font-medium opacity-75">/ {cards.length}</span>
+              </p>
+              <p className="text-xs text-bad/80 mt-0.5">
+                {cards.length - knownCount === 0 ? 'Xuất sắc!' : 'Cần ôn thêm'}
+              </p>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="mx-auto flex max-w-lg flex-col sm:flex-row flex-wrap items-center justify-center gap-2.5 pt-2">
+            <Button
+              variant="primary"
+              size="md"
+              onClick={() => handleRestart(false)}
+              className="w-full sm:w-auto flex items-center justify-center gap-2"
+            >
+              <RotateCcw className="h-4 w-4" />
+              <span>Học lại từ đầu</span>
+            </Button>
+
+            <Button
+              variant="default"
+              size="md"
+              onClick={() => handleRestart(true)}
+              className="w-full sm:w-auto flex items-center justify-center gap-2"
+            >
+              <Shuffle className="h-4 w-4" />
+              <span>Trộn & học lại</span>
+            </Button>
+
+            {cards.length - knownCount > 0 && (
+              <Button
+                variant="default"
+                size="md"
+                onClick={() => {
+                  setOnlyUnknown(true)
+                  handleRestart(false)
+                }}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 text-accent border-accent/40 bg-accent-soft/30 hover:bg-accent-soft"
+              >
+                <RotateCw className="h-4 w-4" />
+                <span>Chỉ ôn {cards.length - knownCount} thẻ chưa thuộc</span>
+              </Button>
+            )}
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleResetProgress}
+              className="w-full sm:w-auto text-sub hover:text-bad flex items-center justify-center gap-1.5 text-xs mt-2"
+              title="Đặt lại toàn bộ trạng thái đã thuộc / chưa thuộc của bộ thẻ này"
+            >
+              <span>Đặt lại toàn bộ tiến độ</span>
+            </Button>
+          </div>
+        </div>
+      ) : !c ? (
+        <div className="py-12 text-center space-y-4">
           <p className="text-4xl">🎉</p>
           <p className="text-xl font-bold text-ink">Bạn đã thuộc hết tất cả các thẻ!</p>
-          <p className="text-sm text-sub">Hãy tiếp tục phát huy hoặc tắt bộ lọc để ôn lại toàn bộ thẻ.</p>
-          {onlyUnknown && (
-            <Button variant="primary" onClick={() => setOnlyUnknown(false)} className="mt-2">
+          <p className="text-sm text-sub">Hãy tiếp tục phát huy hoặc đặt lại tiến độ để bắt đầu ôn lại.</p>
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+            <Button
+              variant="primary"
+              onClick={() => {
+                setOnlyUnknown(false)
+                handleRestart(false)
+              }}
+            >
               Xem lại tất cả {cards.length} thẻ
             </Button>
-          )}
+            <Button
+              variant="default"
+              onClick={handleResetProgress}
+              className="flex items-center gap-1.5"
+            >
+              <RotateCcw className="h-4 w-4" />
+              <span>Đặt lại tiến độ & học lại</span>
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="space-y-4">
@@ -547,12 +719,15 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                 </span>
                 <Button
                   onClick={() => go(1)}
-                  disabled={i >= list.length - 1}
-                  aria-label="Thẻ tiếp theo"
+                  aria-label={i >= list.length - 1 ? 'Hoàn thành' : 'Thẻ tiếp theo'}
                   className="px-4"
-                  title="Thẻ tiếp theo (→)"
+                  title={i >= list.length - 1 ? 'Hoàn thành phiên học' : 'Thẻ tiếp theo (→)'}
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  {i >= list.length - 1 ? (
+                    <span className="text-xs font-bold text-accent">Xong</span>
+                  ) : (
+                    <ChevronRight className="h-5 w-5" />
+                  )}
                 </Button>
                 <SpeakButton text={c.speak} className="h-10 w-10 border border-line bg-surface" />
               </div>
