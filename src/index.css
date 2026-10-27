@@ -317,6 +317,202 @@ details.vd {
   width: calc(100cqw - 1.5rem);
 }
 
+/* Verb Story (Inside details.vd) */
+.vd-body .vd-story {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1.5px solid color-mix(in srgb, var(--c-accent) 35%, transparent);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--c-accent-soft) 40%, var(--c-surface));
+}
+.vd-body .vd-story-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.vd-body .vd-story-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--c-accent);
+}
+.vd-body .vd-story-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-accent);
+  background: var(--c-accent-soft);
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--c-accent) 25%, transparent);
+}
+.vd-body .vd-story-jp {
+  font-size: 1.1rem;
+  line-height: 1.85;
+  color: var(--c-ink);
+  cursor: pointer;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.6rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.vd-body .vd-story-jp:hover {
+  border-color: var(--c-accent);
+}
+.vd-body .vd-story-jp strong {
+  color: var(--c-accent);
+  font-weight: 800;
+  background: color-mix(in srgb, var(--c-accent) 15%, transparent);
+  padding: 0.05rem 0.35rem;
+  border-radius: 0.35rem;
+  margin: 0 0.1rem;
+}
+.vd-body .vd-story-vn {
+  margin-top: 0.5rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--c-sub);
+}
+.vd-audio-btn {
+  display: inline-block;
+  margin-left: 0.35rem;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  vertical-align: middle;
+}
+.vd-body .vd-story-jp:hover .vd-audio-btn {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Verb Summary Stories Section (at the end of vocabulary section) */
+.vd-summary-section {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  border: 1.5px solid color-mix(in srgb, var(--c-accent) 30%, var(--c-line));
+  border-radius: 1.25rem;
+  background: var(--c-surface);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+}
+.vd-summary-header {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--c-line);
+}
+.vd-summary-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-accent);
+  background: var(--c-accent-soft);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  margin-bottom: 0.4rem;
+}
+.vd-summary-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--c-ink);
+  margin-top: 0.2rem;
+}
+.vd-summary-desc {
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  color: var(--c-sub);
+  line-height: 1.5;
+}
+.vd-summary-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .vd-summary-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+}
+.vd-summary-card {
+  padding: 1.15rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--c-line);
+  background: var(--c-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.vd-summary-card:hover {
+  border-color: var(--c-accent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+.vd-summary-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.vd-summary-card-verb {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--c-ink);
+}
+.vd-summary-card-type {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--c-sub);
+  background: var(--c-muted);
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+.vd-summary-card-meaning {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--c-accent);
+}
+.vd-summary-card-particles {
+  font-size: 0.84rem;
+  color: var(--c-sub);
+  background: var(--c-warn-soft);
+  border-left: 3px solid var(--c-warn);
+  padding: 0.4rem 0.65rem;
+  border-radius: 0.35rem;
+  line-height: 1.45;
+}
+.vd-particle-tag {
+  font-weight: 700;
+  color: var(--c-warn);
+  margin-right: 0.25rem;
+}
+.vd-summary-card-jp {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--c-ink);
+  cursor: pointer;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.6rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  transition: border-color 0.15s ease;
+}
+.vd-summary-card-jp:hover {
+  border-color: var(--c-accent);
+}
+.vd-summary-card-jp strong {
+  color: var(--c-accent);
+  font-weight: 800;
+  background: color-mix(in srgb, var(--c-accent) 15%, transparent);
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.3rem;
+}
+.vd-summary-card-vn {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--c-sub);
+}
+
 /* ==========================================================================
    Quizlet-style 3D Flashcard Animations
    ========================================================================== */

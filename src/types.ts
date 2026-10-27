@@ -51,6 +51,7 @@ export interface VerbDetail {
   compare: string[]
   mistakes: string[]
   examples: { jp: string; vn: string }[]
+  story?: { jp: string; vn: string }
 }
 
 export interface VocabItem {
