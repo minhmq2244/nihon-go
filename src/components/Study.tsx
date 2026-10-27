@@ -588,11 +588,6 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                     ) : (
                       <div className="max-w-xl space-y-2">
                         <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
-                        {c.extra && (
-                          <p className="mt-2 whitespace-pre-line text-base text-sub font-medium">
-                            <Jp text={c.extra} />
-                          </p>
-                        )}
                       </div>
                     )}
                   </div>
@@ -669,10 +664,20 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         )}
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <span className={cx('font-bold tracking-tight text-ink', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
+                      <div className="w-full max-w-xl space-y-4">
+                        <span className={cx('font-bold tracking-tight text-ink block', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
                           <Jp text={c.front} />
                         </span>
+                        {c.extra && (
+                          <div className="rounded-2xl border border-line bg-muted/50 p-4 text-left text-base sm:text-lg font-medium">
+                            <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1.5">
+                              {c.extra.startsWith('Chữ Hán:') ? 'Thông tin Kanji' : 'Ghi chú & Ngữ cảnh'}
+                            </p>
+                            <div className="whitespace-pre-line text-ink leading-relaxed">
+                              <Jp text={c.extra} />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

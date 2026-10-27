@@ -46,12 +46,6 @@ export const kanjiCharCards = (kanji: KanjiItem[]): Card[] =>
     id: k.id,
     front: k.char,
     back: `${k.hanviet}`,
-    extra: [
-      k.onkun ? `Âm On/Kun: ${k.onkun}` : '',
-      k.compounds.length ? `Từ ghép: ${k.compounds.map((c) => `${c.jp} (${c.meaning})`).join(' · ')}` : '',
-    ]
-      .filter(Boolean)
-      .join('\n'),
     speak: k.compounds[0]?.jp ?? k.char,
   }))
 
@@ -92,17 +86,11 @@ export const kanjiCards = (kanji: KanjiItem[]): Card[] => {
   const seenCompounds = new Map<string, Card>()
 
   for (const k of kanji) {
-    // 1. Single character card
+    // 1. Single character card: only Hán-Việt meaning
     cards.push({
       id: k.id,
       front: k.char,
       back: `${k.hanviet}`,
-      extra: [
-        k.onkun ? `Âm On/Kun: ${k.onkun}` : '',
-        k.compounds.length ? `Từ ghép: ${k.compounds.map((c) => `${c.jp} (${c.meaning})`).join(' · ')}` : '',
-      ]
-        .filter(Boolean)
-        .join('\n'),
       speak: k.compounds[0]?.jp ?? k.char,
     })
 
