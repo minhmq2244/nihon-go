@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Unit } from '../types'
 import { Html } from '../components/Jp'
+import { KanjiReadingPractice } from '../components/KanjiReadingPractice'
 import { Card, Chip, cx } from '../components/ui'
 import { useProgress } from '../store/progress'
 import { setKey } from '../lib/progressInfo'
@@ -16,11 +17,29 @@ export function TheoryTab({ unit }: { unit: Unit }) {
     <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
       <aside className="no-print hidden lg:block">
         <div className="sticky top-32 space-y-1.5 text-base">
-          {unit.theory.map((s) => (
-            <a key={s.id} href={`#sec-${s.id}`} onClick={(e) => scrollTo(e, s.id)} className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition">
-              {s.title}
-            </a>
-          ))}
+          {unit.theory.map((s) => {
+            const isKanjiSec = s.id === '3' || /kanji|chữ hán/i.test(s.title)
+            return (
+              <div key={s.id} className="space-y-1">
+                <a
+                  href={`#sec-${s.id}`}
+                  onClick={(e) => scrollTo(e, s.id)}
+                  className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition"
+                >
+                  {s.title}
+                </a>
+                {isKanjiSec && unit.kanji && unit.kanji.length > 0 && (
+                  <a
+                    href="#sec-kanji-readings"
+                    onClick={(e) => scrollTo(e, 'kanji-readings')}
+                    className="ml-3 flex items-center gap-1.5 rounded-lg bg-accent-soft/60 px-2.5 py-1 text-xs font-bold text-accent hover:bg-accent hover:text-white transition"
+                  >
+                    <span>📖 3 Đoạn văn Kanji</span>
+                  </a>
+                )}
+              </div>
+            )
+          })}
         </div>
       </aside>
       <div className="min-w-0 space-y-6">
@@ -49,26 +68,38 @@ export function TheoryTab({ unit }: { unit: Unit }) {
             </Link>
           </Card>
         )}
-        {unit.theory.map((s) => (
-          <Card key={s.id} className="scroll-mt-32 p-6 sm:p-7">
-            <div id={`sec-${s.id}`} className="scroll-mt-32" />
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-2xl font-bold text-ink">{s.title}</h2>
-              {s.id === '2' && (
-                <div className="no-print flex gap-2">
-                  <Chip active={hideMean} onClick={() => setHideMean(!hideMean)}>
-                    Che nghĩa
-                  </Chip>
-                  <Chip active={hideWord} onClick={() => setHideWord(!hideWord)}>
-                    Che từ
-                  </Chip>
+        {unit.theory.map((s) => {
+          const isKanjiSec = s.id === '3' || /kanji|chữ hán/i.test(s.title)
+          return (
+            <div key={s.id} className="space-y-6">
+              <Card className="scroll-mt-32 p-6 sm:p-7">
+                <div id={`sec-${s.id}`} className="scroll-mt-32" />
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h2 className="text-2xl font-bold text-ink">{s.title}</h2>
+                  {s.id === '2' && (
+                    <div className="no-print flex gap-2">
+                      <Chip active={hideMean} onClick={() => setHideMean(!hideMean)}>
+                        Che nghĩa
+                      </Chip>
+                      <Chip active={hideWord} onClick={() => setHideWord(!hideWord)}>
+                        Che từ
+                      </Chip>
+                    </div>
+                  )}
+                </div>
+                {s.id === '2' && (hideMean || hideWord) && <p className="mt-2 text-sm text-sub">Bấm vào ô bị che để xem đáp án.</p>}
+                <Html html={s.html} className={cx('mt-4', s.id === '2' && hideMean && 'hide-mean', s.id === '2' && hideWord && 'hide-word')} />
+              </Card>
+
+              {/* 3 ĐOẠN VĂN LUYỆN ĐỌC KANJI NGAY SAU PHẦN HỌC KANJI */}
+              {isKanjiSec && unit.kanji && unit.kanji.length > 0 && (
+                <div id="sec-kanji-readings" className="scroll-mt-32">
+                  <KanjiReadingPractice unit={unit} />
                 </div>
               )}
             </div>
-            {s.id === '2' && (hideMean || hideWord) && <p className="mt-2 text-sm text-sub">Bấm vào ô bị che để xem đáp án.</p>}
-            <Html html={s.html} className={cx('mt-4', s.id === '2' && hideMean && 'hide-mean', s.id === '2' && hideWord && 'hide-word')} />
-          </Card>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
