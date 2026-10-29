@@ -260,6 +260,8 @@ export interface Unit {
   writingTasks: WritingTask[]
   rubricHtml?: string
   generated: Generated
+  /** Verbs parsed for this unit (from content/generated/verbs/*.md). */
+  verbs?: VerbDetail[]
   /** Luyện nói tab (only some units have it). */
   speaking?: Speaking
 }

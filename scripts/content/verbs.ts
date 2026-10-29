@@ -53,8 +53,8 @@ function parseStory(body: string): { jp: string; vn: string } | undefined {
   return undefined
 }
 
-export function parseVerbs(md: string): VerbBook {
-  const book = new VerbBook()
+export function parseVerbList(md: string): { detail: VerbDetail; forms: string[] }[] {
+  const result: { detail: VerbDetail; forms: string[] }[] = []
   for (const sec of splitHeadings(md, 2).blocks) {
     const [dict = '', masu = ''] = sec.title.split(/\s*·\s*/)
     if (!attr(sec.body, 'meaning')) continue
@@ -81,10 +81,23 @@ export function parseVerbs(md: string): VerbBook {
     const forms = [dict, masu, ...(attr(sec.body, 'alias') ?? '').split(/\s*[;,、]\s*/)].filter(Boolean)
     // する-verbs are often listed as just the noun: 結婚（けっこん）（します）
     if (/する$/.test(clean(toBase(dict)))) forms.push(dict.replace(/する\s*$/, ''))
+    result.push({ detail: d, forms })
+  }
+  return result
+}
+
+export function parseUnitVerbs(md: string): VerbDetail[] {
+  return parseVerbList(md).map((x) => x.detail)
+}
+
+export function parseVerbs(md: string): VerbBook {
+  const book = new VerbBook()
+  for (const { detail: d, forms } of parseVerbList(md)) {
     for (const f of forms) book.add(clean(toBase(f)), clean(toReading(f)), d)
   }
   return book
 }
+
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 const ul = (title: string, items: string[], cls = '') =>

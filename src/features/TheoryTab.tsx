@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { Unit } from '../types'
 import { Html } from '../components/Jp'
 import { Card, Chip, cx } from '../components/ui'
@@ -27,6 +28,27 @@ export function TheoryTab({ unit }: { unit: Unit }) {
           <Html html={unit.info} className="text-base text-sub leading-relaxed" />
           <p className="mt-3 text-sm font-medium text-sub">💡 Mẹo: bấm vào từ tiếng Nhật trong bảng từ vựng để nghe phát âm.</p>
         </Card>
+        {unit.verbs && unit.verbs.length > 0 && (
+          <Card className="border-2 border-accent/40 bg-gradient-to-r from-accent-soft/40 to-surface p-5 flex flex-wrap items-center justify-between gap-4 shadow-xs">
+            <div>
+              <span className="inline-block rounded-full bg-accent text-white text-xs font-bold px-2.5 py-0.5 mb-1.5">
+                Ôn tập chuyên sâu
+              </span>
+              <h3 className="text-lg font-extrabold text-ink">
+                Luyện Trợ Từ & Biến Đổi Thể Động Từ ({unit.verbs.length} động từ)
+              </h3>
+              <p className="text-sm text-sub mt-0.5">
+                Tạo câu hỏi điền trợ từ, cơ chế che/hiện nghĩa và thực hành chọn thể của động từ.
+              </p>
+            </div>
+            <Link
+              to={`/u/${unit.meta.id}/dong-tu`}
+              className="inline-flex items-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-white shadow-xs hover:brightness-110 transition cursor-pointer"
+            >
+              Vào ôn tập động từ ngay →
+            </Link>
+          </Card>
+        )}
         {unit.theory.map((s) => (
           <Card key={s.id} className="scroll-mt-32 p-6 sm:p-7">
             <div id={`sec-${s.id}`} className="scroll-mt-32" />

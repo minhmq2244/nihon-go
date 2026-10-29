@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { useIndex, useUnit, unitLabel } from '../lib/data'
-import { SPEAK_TAB, UNIT_TABS, useUnitProgress, type UnitTab } from '../lib/progressInfo'
+import { SPEAK_TAB, UNIT_TABS, VERB_TAB, useUnitProgress, type UnitTab } from '../lib/progressInfo'
 import { useProgress } from '../store/progress'
 import { Jp } from '../components/Jp'
 import { Loading, cx } from '../components/ui'
 import { TheoryTab } from '../features/TheoryTab'
 import { FlashcardTab } from '../features/FlashcardTab'
+import { VerbTab } from '../features/VerbTab'
 import { GrammarTab } from '../features/GrammarTab'
 import { WritingTab } from '../features/WritingTab'
 import { ReadingTab } from '../features/ReadingTab'
@@ -32,7 +33,18 @@ export function UnitPage() {
   const prev = pos > 0 ? index!.units[pos - 1] : undefined
   const next = index && pos >= 0 && pos < index.units.length - 1 ? index.units[pos + 1] : undefined
   const t = tab as UnitTab
-  const unitTabs: readonly { id: UnitTab; label: string }[] = unit.speaking ? UNIT_TABS.flatMap<{ id: UnitTab; label: string }>((x) => (x.id === 'hoi-thoai' ? [x, SPEAK_TAB] : [x])) : UNIT_TABS
+  const unitTabs: readonly { id: UnitTab; label: string }[] = (() => {
+    let tabs: { id: UnitTab; label: string }[] = [...UNIT_TABS]
+    if (unit.verbs && unit.verbs.length > 0) {
+      const idx = tabs.findIndex((x) => x.id === 'the')
+      tabs.splice(idx >= 0 ? idx + 1 : 2, 0, VERB_TAB)
+    }
+    if (unit.speaking) {
+      const idx = tabs.findIndex((x) => x.id === 'hoi-thoai')
+      tabs.splice(idx >= 0 ? idx + 1 : tabs.length - 1, 0, SPEAK_TAB)
+    }
+    return tabs
+  })()
 
   return (
     <div>
@@ -81,6 +93,7 @@ export function UnitPage() {
       </nav>
       {t === 'ly-thuyet' && <TheoryTab unit={unit} />}
       {(t === 'the' || (t as string) === 'tu-vung' || (t as string) === 'kanji') && <FlashcardTab unit={unit} />}
+      {t === 'dong-tu' && <VerbTab unit={unit} />}
       {t === 'ngu-phap' && <GrammarTab unit={unit} />}
       {t === 'viet' && <WritingTab unit={unit} />}
       {t === 'doc' && <ReadingTab unit={unit} />}

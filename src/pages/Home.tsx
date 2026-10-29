@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, ClipboardCheck, MessagesSquare, Repeat, Target } from 'lucide-react'
 import { useIndex, unitLabel } from '../lib/data'
-import { UNIT_TABS } from '../lib/progressInfo'
+import { ALL_UNIT_TABS, UNIT_TABS } from '../lib/progressInfo'
 import { streakOf, today, useProgress } from '../store/progress'
 import { useSettings } from '../store/settings'
 import { Jp } from '../components/Jp'
@@ -40,7 +40,7 @@ export function Home() {
 
   const unitsTouched = index.units.filter((u) => Object.keys(sets).some((k) => k.startsWith(u.id + ':')))
   const last = index.units.find((u) => u.id === lastPlace?.unitId) ?? index.units[0]!
-  const lastTab = UNIT_TABS.find((t) => t.id === lastPlace?.tab)
+  const lastTab = ALL_UNIT_TABS.find((t) => t.id === lastPlace?.tab)
   const kaiwaTotal = index.kaiwa.reduce((s, k) => s + k.dialogueCount, 0)
   const kaiwaDone = Object.entries(dialogues).filter(([id, steps]) => id.startsWith('k') && steps.includes(4)).length
   // Flashcard self-marks and randomly built quiz items are not replayable on the review page.

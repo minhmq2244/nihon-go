@@ -6,7 +6,7 @@ import type { ContentIndex, Generated, KaiwaTopic, Speaking, Unit, UnitMeta, Ver
 import { parseExam, parsePractice, parseTheory, splitVolume } from './content/source'
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
-import { VerbBook, injectVerbDetails, parseVerbs } from './content/verbs'
+import { VerbBook, injectVerbDetails, parseUnitVerbs, parseVerbs } from './content/verbs'
 import { missingVocab } from './content/coverage'
 import { parseSpeaking } from './content/speaking'
 
@@ -77,6 +77,13 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
         hasGenerated: generated !== EMPTY,
       }
       if (raw.kind === 'cd') cdTitles[raw.id] = { title: raw.heading, subtitle }
+      const verbFile = join(ROOT, 'content', 'generated', 'verbs', `${raw.id}.md`)
+      let unitVerbs: VerbDetail[] = []
+      if (existsSync(verbFile)) {
+        unitVerbs = parseUnitVerbs(readFileSync(verbFile, 'utf8'))
+      } else if (usedVerbs.size > 0) {
+        unitVerbs = Array.from(usedVerbs)
+      }
       const unit: Unit = {
         meta,
         info: render(headerLines.filter((l) => !/^\*\*.+\*\*$/.test(l.trim()) && l.trim() !== '---').join('\n')),
@@ -88,6 +95,7 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
         confuse: theory.confuse,
         ...practice,
         generated,
+        ...(unitVerbs.length ? { verbs: unitVerbs } : {}),
         ...(speaking ? { speaking } : {}),
       }
       if (generated !== EMPTY)

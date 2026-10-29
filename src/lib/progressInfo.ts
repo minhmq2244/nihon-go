@@ -14,7 +14,12 @@ export const UNIT_TABS = [
 /** Only units with speaking content show this tab (after Hội thoại). */
 export const SPEAK_TAB = { id: 'noi', label: 'Luyện nói' } as const
 
-export type UnitTab = (typeof UNIT_TABS)[number]['id'] | typeof SPEAK_TAB.id
+/** Units with verbs show this tab (after Thẻ ghi nhớ). */
+export const VERB_TAB = { id: 'dong-tu', label: 'Ôn tập động từ' } as const
+
+export const ALL_UNIT_TABS = [...UNIT_TABS, SPEAK_TAB, VERB_TAB] as const
+
+export type UnitTab = (typeof ALL_UNIT_TABS)[number]['id']
 
 export const setKey = (unitId: string, tab: UnitTab, sub: string) => `${unitId}:${tab}:${sub}`
 
