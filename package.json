@@ -15,11 +15,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^1.61.0",
+    "lucide-react": "^1.65.0",
     "pdfjs-dist": "^6.4.299",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.4",
+    "react-router-dom": "^7.18.5",
     "wanakana": "^5.3.1",
     "zustand": "^5.0.16"
   },
@@ -29,8 +29,8 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
-    "marked": "^18.1.1",
-    "oxlint": "^1.88.0",
+    "marked": "^18.1.2",
+    "oxlint": "^1.90.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
