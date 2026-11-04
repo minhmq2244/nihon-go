@@ -8,7 +8,7 @@ import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
 import { VerbBook, injectVerbDetails, parseUnitVerbs, parseVerbs } from './content/verbs'
 import { missingVocab } from './content/coverage'
-import { parseSpeaking } from './content/speaking'
+import { attachReadingQuestions, parseSpeaking } from './content/speaking'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -53,6 +53,15 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
         } catch (e) {
           if (!(e instanceof DslError)) throw e
           errors.push(`${raw.id}.md: ${e.message}`)
+        }
+      }
+      const askPath = join(ROOT, 'content', 'generated', 'reading-qa', `${raw.id}.md`)
+      if (existsSync(askPath)) {
+        try {
+          generated = { ...generated, readings: attachReadingQuestions(readFileSync(askPath, 'utf8'), generated.readings, raw.id) }
+        } catch (e) {
+          if (!(e instanceof DslError)) throw e
+          errors.push(`reading-qa/${raw.id}.md: ${e.message}`)
         }
       }
       const speakPath = join(ROOT, 'content', 'generated', 'speaking', `${raw.id}.md`)

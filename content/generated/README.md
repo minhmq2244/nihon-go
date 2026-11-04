@@ -72,7 +72,7 @@ Mỗi động từ một mục; web chèn phần giải thích ngay dưới dòn
 
 ## Luyện nói (`speaking/<bài>.md`)
 
-Bài nào có file này thì hiện thêm tab **Luyện nói** (sau tab Hội thoại). Gồm 3 loại phần:
+Tab **Luyện nói** (sau tab Hội thoại) có ở mọi bài: phần **Phản xạ nhanh** tự tạo câu từ động từ, tính từ, danh từ của bài (`src/lib/reflex.ts`). Bài nào có file này thì thêm 3 loại phần:
 
 ```
 ## QA 5.1 · Tên mẫu ngữ pháp
@@ -93,4 +93,16 @@ B[あなた]: ＊câu nói theo ý bạn || dịch     (＊ ở đầu = lượt
 @prompt: yêu cầu của đề
 @must: mẫu bắt buộc 1; mẫu 2
 > câu của bài nói mẫu || dịch
+```
+
+## Câu hỏi tự luận cho bài đọc (`reading-qa/<bài>.md`)
+
+Mỗi bài đọc có **đúng 12 câu** (web ra 4 câu một lần, có nút đổi câu). Câu hỏi viết ở thể lịch sự như cô giáo hỏi;
+câu trả lời mẫu là câu đầy đủ lấy ý từ bài đọc. Bạn trả lời bằng miệng (đọc câu hỏi hoặc nghe câu hỏi) rồi mới xem đáp án.
+
+```
+## R01
+- câu hỏi || dịch
+  = câu trả lời mẫu || dịch
+  = cách trả lời khác || dịch   (tuỳ chọn)
 ```

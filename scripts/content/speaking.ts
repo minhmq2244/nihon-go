@@ -1,5 +1,5 @@
-// Parses content/generated/speaking/<unit>.md (Luyện nói tab). Format: content/generated/README.md.
-import type { Line, SpeakQuestion, SpeakSet, SpeakTalk, Speaking } from '../../src/types'
+// Parses content/generated/speaking/<unit>.md (Luyện nói tab) and reading-qa/<unit>.md. Format: content/generated/README.md.
+import type { Line, Reading, SpeakQuestion, SpeakSet, SpeakTalk, Speaking } from '../../src/types'
 import { DslError, attr, headBody, lineBody, parseDialogue } from './generated'
 import { splitHeadings } from './markdown'
 
@@ -13,7 +13,7 @@ function pair(s: string): { jp: string; vn: string } {
  * Questions are "- question || vn" lines, each followed by indented
  * "? hint", "= model answer || vn" (one or more) and "+ follow-up || vn".
  */
-function parseQuestions(body: string, setId: string): SpeakQuestion[] {
+export function parseQuestions(body: string, setId: string): SpeakQuestion[] {
   const out: SpeakQuestion[] = []
   for (const raw of body.split(/\r?\n/)) {
     const line = raw.trim()
@@ -69,4 +69,21 @@ export function parseSpeaking(md: string, unitId: string): Speaking {
     }
   }
   return sp
+}
+
+/** Questions a reading passage must have (shown 4 at a time). */
+export const READING_ASK_COUNT = 12
+
+/** reading-qa/<unit>.md: "## R01" sections of questions, attached to the unit's readings. */
+export function attachReadingQuestions(md: string, readings: Reading[], unitId: string): Reading[] {
+  const asks = new Map<string, Reading['ask']>()
+  for (const sec of splitHeadings(md, 2).blocks) {
+    const code = sec.title.trim().split(/\s+/)[0]!.toLowerCase()
+    const id = `${unitId}-${code}`
+    if (!readings.some((r) => r.id === id)) throw new DslError(`Không có bài đọc ${code.toUpperCase()} cho "## ${sec.title}"`)
+    const qs = parseQuestions(sec.body, `${id}-ask`)
+    if (qs.length !== READING_ASK_COUNT) throw new DslError(`${code.toUpperCase()} cần đúng ${READING_ASK_COUNT} câu hỏi, đang có ${qs.length}`)
+    asks.set(id, qs)
+  }
+  return readings.map((r) => (asks.has(r.id) ? { ...r, ask: asks.get(r.id) } : r))
 }

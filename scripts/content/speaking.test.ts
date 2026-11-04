@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseSpeaking } from './speaking'
+import { attachReadingQuestions, parseSpeaking } from './speaking'
 import { DslError } from './generated'
 
 const md = `# b11 · Luyện nói
@@ -52,5 +52,23 @@ describe('parseSpeaking', () => {
 
   it('rejects a question without a model answer', () => {
     expect(() => parseSpeaking('## QA 1 · x\n- 何（なに）？ || Gì?\n', 'b11')).toThrow(DslError)
+  })
+})
+
+describe('attachReadingQuestions', () => {
+  const reading = (id: string) => ({ id, genre: '', title: '', titleVn: '', lines: [], gloss: [], questions: [] })
+  const qs = (n: number) =>
+    Array.from({ length: n }, (_, i) => `- 質問（しつもん）${i + 1}ですか。 || Câu hỏi ${i + 1}?\n  = はい、そうです。 || Vâng.`).join('\n')
+
+  it('attaches 12 questions to the matching passage', () => {
+    const out = attachReadingQuestions(`# b11\n\n## R02\n${qs(12)}\n`, [reading('b11-r01'), reading('b11-r02')], 'b11')
+    expect(out[0]!.ask).toBeUndefined()
+    expect(out[1]!.ask).toHaveLength(12)
+    expect(out[1]!.ask![0]!.answers[0]!.jp).toBe('はい、そうです。')
+  })
+
+  it('rejects an unknown passage or the wrong number of questions', () => {
+    expect(() => attachReadingQuestions(`## R09\n${qs(12)}`, [reading('b11-r01')], 'b11')).toThrow(DslError)
+    expect(() => attachReadingQuestions(`## R01\n${qs(11)}`, [reading('b11-r01')], 'b11')).toThrow(/12/)
   })
 })

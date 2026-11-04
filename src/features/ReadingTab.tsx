@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Reading, Unit } from '../types'
+import type { Reading, SpeakQuestion, Unit } from '../types'
 import { setKey } from '../lib/progressInfo'
-import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak } from '../lib/speech'
+import { shuffle } from '../lib/data'
+import { toBase } from '../lib/furigana'
+import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak, stopSpeaking } from '../lib/speech'
 import { useProgress } from '../store/progress'
 import { useSettings } from '../store/settings'
 import { DrillItem, type Question } from '../components/Drill'
@@ -10,6 +12,12 @@ import { SpeedControl } from '../components/SpeedControl'
 import { Button, Card, Chip, Empty, SpeakButton, cx } from '../components/ui'
 import { Play, Volume2 } from 'lucide-react'
 import { FloatingPlayer, PlayerControls, usePlaylist } from '../components/AudioPlayer'
+
+/** Lines that start a new speaker or block (キム:「…」, 【…】) keep their own line inside the passage. */
+const NEW_LINE = /^(【|[^\s、。「」]{1,10}[:：]「)/
+
+/** Questions shown at a time; the 12 are cycled in shuffled groups of 4. */
+const ASK_SHOWN = 4
 
 export function ReadingTab({ unit }: { unit: Unit }) {
   const [sel, setSel] = useState<number | null>(null)
@@ -50,7 +58,7 @@ export function ReadingTab({ unit }: { unit: Unit }) {
 function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: () => void; onNext?: () => void }) {
   const { rate, voiceA, set } = useSettings()
   const [showVn, setShowVn] = useState<'none' | 'tap' | 'all'>('tap')
-  const [shown, setShown] = useState<Set<number>>(new Set())
+  const [sel, setSel] = useState<number | null>(null)
   const [quiz, setQuiz] = useState(true)
   const [voices, setVoices] = useState(() => japaneseVoices())
   const [results, setResults] = useState<Record<string, boolean>>({})
@@ -69,7 +77,7 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
 
   useEffect(() => {
     setResults({})
-    setShown(new Set())
+    setSel(null)
     p.stop()
     top.current?.scrollIntoView({ behavior: 'smooth' })
   }, [r])
@@ -80,6 +88,7 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
   }, [results, questions.length, r.id, saveSet, unit.meta.id])
 
   const at = (p.cur ?? p.pos) + 1
+  const line = sel !== null ? r.lines[sel] : undefined
 
   return (
     <div ref={top} className="scroll-mt-32 space-y-5">
@@ -90,7 +99,7 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
         </Button>
         <span className="flex-1" />
         <Chip active={showVn === 'tap'} onClick={() => setShowVn('tap')}>
-          Bấm câu để dịch
+          Bấm câu để xem nghĩa
         </Chip>
         <Chip active={showVn === 'all'} onClick={() => setShowVn('all')}>
           Hiện bản dịch
@@ -99,7 +108,7 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
           Không dịch
         </Chip>
         <Chip active={quiz} onClick={() => setQuiz(!quiz)}>
-          Câu hỏi: {quiz ? 'bật' : 'tắt'}
+          Trắc nghiệm: {quiz ? 'bật' : 'tắt'}
         </Chip>
       </div>
 
@@ -165,54 +174,64 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
           </h2>
           <p className="mt-1 text-base text-sub font-medium">{r.titleVn}</p>
         </div>
-        <div className="space-y-2">
+        <p className="text-xl leading-[2.5] font-medium text-ink">
           {r.lines.map((l, i) => (
-            <div
-              key={i}
-              className={cx(
-                'group rounded-xl p-3 transition-all',
-                playing === i
-                  ? 'bg-accent/15 border-l-4 border-accent pl-4 ring-1 ring-accent/30 shadow-xs'
-                  : 'hover:bg-muted/70',
-                showVn === 'tap' && 'cursor-pointer',
-              )}
-              onClick={() => {
-                if (showVn !== 'tap') return
-                const s = new Set(shown)
-                if (s.has(i)) s.delete(i)
-                else s.add(i)
-                setShown(s)
-              }}
-            >
-              <div className="flex items-start gap-2.5">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    p.playFrom(i)
-                  }}
-                  className={cx(
-                    'mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-semibold transition cursor-pointer',
-                    playing === i
-                      ? 'bg-accent text-white shadow-xs'
-                      : 'bg-muted text-sub hover:bg-accent-soft hover:text-accent opacity-60 group-hover:opacity-100',
-                  )}
-                  title={`Phát bài đọc từ câu ${i + 1}`}
-                  aria-label={`Phát bài đọc từ câu ${i + 1}`}
-                >
-                  {playing === i ? <Volume2 size={15} /> : <Play size={13} />}
-                </button>
-                <p className="flex-1 text-xl leading-[2.3] font-medium text-ink">
-                  <Jp text={l.jp} />
-                </p>
-                <SpeakButton text={l.jp} className="opacity-40 group-hover:opacity-100 shrink-0 mt-0.5" />
-              </div>
-              {(showVn === 'all' || (showVn === 'tap' && shown.has(i))) && (
-                <p className="mt-1 pl-9 text-base text-sub font-medium">{l.vn}</p>
-              )}
-            </div>
+            <span key={i}>
+              {i > 0 && NEW_LINE.test(toBase(l.jp)) && <br />}
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={() => setSel(sel === i ? null : i)}
+                onKeyDown={(e) => {
+                  if (e.key !== 'Enter' && e.key !== ' ') return
+                  e.preventDefault()
+                  setSel(sel === i ? null : i)
+                }}
+                className={cx(
+                  'cursor-pointer rounded-md px-0.5 transition',
+                  playing === i ? 'bg-accent/20 ring-1 ring-accent/40' : sel === i ? 'bg-cta/35' : 'hover:bg-muted',
+                )}
+                title={`Câu ${i + 1} · bấm để xem nghĩa / nghe lại`}
+              >
+                <Jp text={l.jp} />
+              </span>{' '}
+            </span>
           ))}
-        </div>
+        </p>
+        {line && (
+          <div className="sticky bottom-24 z-10 mt-4 rounded-2xl border border-accent/40 bg-surface p-4 shadow-md">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <span className="text-xs font-bold text-accent">
+                Câu {sel! + 1}/{r.lines.length}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" onClick={() => void speak(line.jp, { voiceURI: voiceA || undefined, rate })}>
+                  🔊 Nghe câu này
+                </Button>
+                <Button size="sm" onClick={() => p.playFrom(sel!)}>
+                  <Play size={13} /> Đọc từ câu này
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setSel(null)} aria-label="Đóng">
+                  ✕
+                </Button>
+              </div>
+            </div>
+            <p className="mt-1 text-lg text-ink">
+              <Jp text={line.jp} />
+            </p>
+            {showVn !== 'none' && <p className="mt-1 text-base font-medium text-sub">{line.vn}</p>}
+          </div>
+        )}
+        {showVn === 'all' && (
+          <div className="mt-5 rounded-2xl bg-muted/60 p-4 text-base leading-relaxed text-sub">
+            {r.lines.map((l, i) => (
+              <span key={i}>
+                {i > 0 && NEW_LINE.test(toBase(l.jp)) && <br />}
+                {l.vn}{' '}
+              </span>
+            ))}
+          </div>
+        )}
         {r.gloss.length > 0 && (
           <div className="mt-6 rounded-2xl bg-muted/70 p-4 text-base">
             <p className="mb-2 font-bold text-ink">Từ mới trong bài</p>
@@ -226,6 +245,7 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
           </div>
         )}
       </Card>
+      {r.ask && r.ask.length > 0 && <AskPart key={r.id} r={r} />}
       {quiz && questions.length > 0 && (
         <Card className="space-y-6">
           <p className="font-semibold">
@@ -247,6 +267,112 @@ function Reader({ unit, r, onBack, onNext }: { unit: Unit; r: Reading; onBack: (
             Bài đọc tiếp →
           </Button>
         </div>
+      )}
+    </div>
+  )
+}
+
+/** "Cô giáo hỏi": answer out loud (read or listen to the question), then compare with the model answer. */
+function AskPart({ r }: { r: Reading }) {
+  const ask = r.ask!
+  const [mode, setMode] = useState<'read' | 'listen'>('read')
+  const [round, setRound] = useState(0)
+  const groups = Math.max(1, Math.ceil(ask.length / ASK_SHOWN))
+  const cycle = Math.floor(round / groups)
+  // reshuffle every full cycle so each question comes up once before any repeats
+  const order = useMemo(() => shuffle(ask), [ask, cycle])
+  const from = (round % groups) * ASK_SHOWN
+  const shown = order.slice(from, from + ASK_SHOWN)
+  useEffect(() => () => stopSpeaking(), [])
+  return (
+    <Card className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-lg font-bold text-ink">🗣 Cô giáo hỏi — trả lời bằng miệng</p>
+          <p className="text-sm text-sub">
+            Nói câu trả lời đầy đủ thành tiếng rồi mới xem câu trả lời mẫu · Bộ {(round % groups) + 1}/{groups} ({ask.length} câu hỏi)
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Chip active={mode === 'read'} onClick={() => setMode('read')}>
+            📖 Đọc câu hỏi
+          </Chip>
+          <Chip active={mode === 'listen'} onClick={() => setMode('listen')}>
+            🎧 Nghe câu hỏi
+          </Chip>
+          <Button
+            size="sm"
+            variant="primary"
+            onClick={() => {
+              stopSpeaking()
+              setRound((n) => n + 1)
+            }}
+          >
+            🔀 Đổi câu hỏi
+          </Button>
+        </div>
+      </div>
+      <div className="space-y-3">
+        {shown.map((q, i) => (
+          <AskCard key={`${q.id}-${mode}-${round}`} q={q} n={i + 1} listen={mode === 'listen'} />
+        ))}
+      </div>
+    </Card>
+  )
+}
+
+function AskCard({ q, n, listen }: { q: SpeakQuestion; n: number; listen: boolean }) {
+  const [revealed, setRevealed] = useState(false)
+  const [showText, setShowText] = useState(!listen)
+  const textVisible = showText || revealed
+  return (
+    <div className="rounded-xl border border-line p-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-sm font-bold text-accent">{n}</span>
+        {listen && (
+          <Button size="sm" variant="primary" onClick={() => void speak(q.q)}>
+            🔊 Nghe câu hỏi
+          </Button>
+        )}
+        {textVisible ? (
+          <span className="flex flex-1 items-center gap-1 text-lg font-medium text-ink">
+            <Jp text={q.q} />
+            {!listen && <SpeakButton text={q.q} label="Nghe câu hỏi" />}
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowText(true)}
+            className="cursor-pointer text-sm text-sub underline-offset-2 hover:text-accent hover:underline"
+          >
+            Hiện chữ câu hỏi
+          </button>
+        )}
+      </div>
+      {revealed ? (
+        <div className="mt-3 space-y-2 border-t border-line pt-3">
+          <p className="text-sm text-sub">{q.vn}</p>
+          {q.answers.map((a, i) => (
+            <div key={i} className="rounded-lg bg-ok-soft px-3 py-2">
+              <div className="flex items-center gap-1 text-lg font-semibold text-ink">
+                <Jp text={a.jp} />
+                <SpeakButton text={a.jp} />
+              </div>
+              <p className="text-sm text-sub">{a.vn}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Button
+          className="mt-3"
+          size="sm"
+          onClick={() => {
+            stopSpeaking()
+            setRevealed(true)
+          }}
+        >
+          Tôi đã trả lời · xem câu trả lời mẫu
+        </Button>
       )}
     </div>
   )

@@ -176,6 +176,8 @@ export interface Reading {
   lines: Line[]
   gloss: { jp: string; meaning: string }[]
   questions: DrillSet[]
+  /** Open questions you answer out loud (12 per passage, 4 shown at a time). */
+  ask?: SpeakQuestion[]
 }
 
 export type ListeningType = 'task' | 'point' | 'response' | 'expression' | 'dictation' | 'cloze' | 'numbers' | 'tf'
