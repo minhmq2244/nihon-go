@@ -11,7 +11,7 @@ export const UNIT_TABS = [
   { id: 'kiem-tra', label: 'Kiểm tra cuối bài' },
 ] as const
 
-/** Only units with speaking content show this tab (after Hội thoại). */
+/** Luyện nói tab (after Hội thoại): reflex drill in every unit, more parts where speaking content exists. */
 export const SPEAK_TAB = { id: 'noi', label: 'Luyện nói' } as const
 
 /** Units with verbs show this tab (after Thẻ ghi nhớ). */

@@ -39,10 +39,8 @@ export function UnitPage() {
       const idx = tabs.findIndex((x) => x.id === 'the')
       tabs.splice(idx >= 0 ? idx + 1 : 2, 0, VERB_TAB)
     }
-    if (unit.speaking) {
-      const idx = tabs.findIndex((x) => x.id === 'hoi-thoai')
-      tabs.splice(idx >= 0 ? idx + 1 : tabs.length - 1, 0, SPEAK_TAB)
-    }
+    const idx = tabs.findIndex((x) => x.id === 'hoi-thoai')
+    tabs.splice(idx >= 0 ? idx + 1 : tabs.length - 1, 0, SPEAK_TAB)
     return tabs
   })()
 

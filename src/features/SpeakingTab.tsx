@@ -1,4 +1,4 @@
-// Luyện nói: grammar Q&A drills, long roleplay dialogues and free talk topics.
+// Luyện nói: reflex drill (every unit), grammar Q&A drills, long roleplay dialogues and free talk topics.
 // No pronunciation scoring — you speak, compare with the model answer and rate yourself.
 import { useEffect, useMemo, useState } from 'react'
 import type { Dialogue, Line, SpeakQuestion, SpeakTalk, Unit } from '../types'
@@ -8,7 +8,8 @@ import { shuffle } from '../lib/data'
 import { playUrl, record, speak, stopSpeaking } from '../lib/speech'
 import { Jp } from '../components/Jp'
 import { FloatingPlayer, PlayerControls, usePlaylist } from '../components/AudioPlayer'
-import { Button, Card, Chip, Empty, ProgressBar, SpeakButton, cx } from '../components/ui'
+import { Button, Card, Chip, ProgressBar, SpeakButton, cx } from '../components/ui'
+import { ReflexPart } from './ReflexPart'
 
 const roleOf = (speaker: string): 'A' | 'B' => (speaker === 'B' ? 'B' : 'A')
 const THINK_SECONDS = 8
@@ -675,10 +676,9 @@ function TalkCard({ t, unitId }: { t: SpeakTalk; unitId: string }) {
 
 export function SpeakingTab({ unit }: { unit: Unit }) {
   const sp = unit.speaking
-  const [part, setPart] = useState<'qa' | 'dlg' | 'talk'>('qa')
+  const [part, setPart] = useState<'reflex' | 'qa' | 'dlg' | 'talk'>('reflex')
   useEffect(() => () => stopSpeaking(), [])
-  if (!sp) return <Empty title="Bài này chưa có phần luyện nói" />
-  const nq = sp.sets.reduce((n, s) => n + s.questions.length, 0)
+  const nq = sp ? sp.sets.reduce((n, s) => n + s.questions.length, 0) : 0
   return (
     <div className="space-y-6">
       <Card className="space-y-2 p-5">
@@ -687,20 +687,26 @@ export function SpeakingTab({ unit }: { unit: Unit }) {
           Nói thành tiếng mọi câu, càng nhiều lần càng tốt. Không chấm phát âm: bạn tự nói, so với câu mẫu rồi tự đánh giá. Có thể ghi âm để nghe lại giọng mình.
         </p>
       </Card>
-      <div className="flex flex-wrap gap-2">
-        <Chip active={part === 'qa'} onClick={() => setPart('qa')}>
-          1. Hỏi đáp theo mẫu ({nq} câu)
-        </Chip>
-        <Chip active={part === 'dlg'} onClick={() => setPart('dlg')}>
-          2. Hội thoại đóng vai ({sp.dialogues.length})
-        </Chip>
-        <Chip active={part === 'talk'} onClick={() => setPart('talk')}>
-          3. Nói tự do ({sp.talks.length} đề)
-        </Chip>
-      </div>
-      {part === 'qa' && <QaPart unit={unit} />}
-      {part === 'dlg' && <DialoguePart unit={unit} />}
-      {part === 'talk' && (
+      {sp && (
+        <div className="flex flex-wrap gap-2">
+          <Chip active={part === 'reflex'} onClick={() => setPart('reflex')}>
+            1. Phản xạ nhanh
+          </Chip>
+          <Chip active={part === 'qa'} onClick={() => setPart('qa')}>
+            2. Hỏi đáp theo mẫu ({nq} câu)
+          </Chip>
+          <Chip active={part === 'dlg'} onClick={() => setPart('dlg')}>
+            3. Hội thoại đóng vai ({sp.dialogues.length})
+          </Chip>
+          <Chip active={part === 'talk'} onClick={() => setPart('talk')}>
+            4. Nói tự do ({sp.talks.length} đề)
+          </Chip>
+        </div>
+      )}
+      {(part === 'reflex' || !sp) && <ReflexPart unit={unit} />}
+      {sp && part === 'qa' && <QaPart unit={unit} />}
+      {sp && part === 'dlg' && <DialoguePart unit={unit} />}
+      {sp && part === 'talk' && (
         <div className="grid gap-4 xl:grid-cols-2">
           {sp.talks.map((t) => (
             <TalkCard key={t.id} t={t} unitId={unit.meta.id} />
