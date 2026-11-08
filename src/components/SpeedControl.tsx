@@ -1,6 +1,8 @@
 import { Gauge } from 'lucide-react'
 import { cx } from './ui'
+import { VoicePicker } from './VoicePicker'
 
+/** Speed slider plus the voice picker: shown wherever the app reads Japanese aloud. */
 export function SpeedControl({
   rate,
   onChange,
@@ -63,6 +65,7 @@ export function SpeedControl({
           })}
         </div>
       )}
+      <VoicePicker />
     </div>
   )
 }

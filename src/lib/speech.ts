@@ -30,6 +30,7 @@ export function friendlyVoiceName(v: SpeechSynthesisVoice): string {
   if (/google\s*日本語/i.test(name)) return 'Google 日本語 (Tự nhiên ⭐)'
   if (/haruka/i.test(name)) return 'Haruka (Nữ)'
   if (/ayumi/i.test(name)) return 'Ayumi (Nữ)'
+  if (/sayaka/i.test(name)) return 'Sayaka (Nữ)'
   if (/ichiro/i.test(name)) return 'Ichiro (Nam)'
   if (/kyoko/i.test(name)) return 'Kyoko (Nữ · Enhanced)'
   if (/otoya/i.test(name)) return 'Otoya (Nam)'
