@@ -233,10 +233,68 @@ export interface SpeakTalk {
   model: Line[]
 }
 
+/** Phản xạ hội thoại: a short chain of questions on one topic, asked one after another. */
+export interface SpeakChain {
+  id: string
+  title: string
+  scene?: string
+  questions: SpeakQuestion[]
+}
+
+/** Luyện nói nấc 4: one sentence grown step by step; each step adds one chunk (`add`). */
+export interface SpeakBuild {
+  id: string
+  /** Grammar point id (5.1) or MIX for chains that join several patterns. */
+  code: string
+  title: string
+  steps: { jp: string; vn: string; add?: string }[]
+}
+
 export interface Speaking {
   sets: SpeakSet[]
   dialogues: Dialogue[]
   talks: SpeakTalk[]
+  /** Phản xạ hỏi đơn: hear a question, answer fast. */
+  reflex: SpeakQuestion[]
+  chains: SpeakChain[]
+  build: SpeakBuild[]
+}
+
+// ---- Luyện nghe / Luyện nói ladders (assembled at build time) ----
+
+/** One card of a ladder: Japanese, Vietnamese, and what to speak when it differs from jp. */
+export interface PracticeCard {
+  id: string
+  jp: string
+  vn: string
+  say?: string
+  /** Unit words heard in this sentence. */
+  words?: string[]
+}
+
+export interface SpeakPoint {
+  id: string // grammar point id, 5.1
+  title: string
+  /** Nấc 1 (nhại lại) and nấc 2 (tự nói từ tiếng Việt). */
+  sentences: PracticeCard[]
+  /** Nấc 3: questions to answer with this pattern. */
+  ask: SpeakQuestion[]
+  /** Nấc 4: sentences grown chunk by chunk. */
+  build: SpeakBuild[]
+}
+
+export interface Practice {
+  listen: {
+    words: PracticeCard[]
+    sentences: PracticeCard[]
+    /** Ids of generated listenings used as short conversations. */
+    talks: string[]
+  }
+  speak: {
+    points: SpeakPoint[]
+    /** Nấc 4 chains that join several patterns of the unit. */
+    mixed: SpeakBuild[]
+  }
 }
 
 export interface Generated {
@@ -266,6 +324,7 @@ export interface Unit {
   verbs?: VerbDetail[]
   /** Luyện nói tab (only some units have it). */
   speaking?: Speaking
+  practice: Practice
 }
 
 export interface Exam {

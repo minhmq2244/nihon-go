@@ -24,6 +24,18 @@ B[あなた]: ＊うん、元気（げんき）。 || Ừ, khỏe.
 @prompt: Nói 1 phút về cuộc sống bây giờ.
 @must: 〜て います; 〜たり〜たり します
 > 私（わたし）は 毎朝（まいあさ） 走（はし）って います。 || Sáng nào tôi cũng chạy.
+
+## REFLEX · Hỏi đơn
+- 暇（ひま）な とき、何（なに）を しますか。 || Khi rảnh bạn làm gì?
+  ? な-Adj ＋ な とき
+  = 暇（ひま）な とき、散歩（さんぽ）します。 || Tôi đi dạo.
+
+## CHAIN C01 · Hỏi thăm
+@scene: Ở hành lang.
+- 今（いま）、どこに 住（す）んで いますか。 || Em sống ở đâu?
+  = 寮（りょう）に 住（す）んで います。 || Em sống ở ký túc xá.
+- 学校（がっこう）まで 何（なん）で 来（き）て いますか。 || Em đến trường bằng gì?
+  = 自転車（じてんしゃ）で 来（き）て います。 || Bằng xe đạp.
 `
 
 describe('parseSpeaking', () => {
@@ -48,6 +60,18 @@ describe('parseSpeaking', () => {
   it('reads talk topics', () => {
     expect(sp.talks[0]).toMatchObject({ prompt: 'Nói 1 phút về cuộc sống bây giờ.', must: ['〜て います', '〜たり〜たり します'] })
     expect(sp.talks[0]!.model).toHaveLength(1)
+  })
+
+  it('reads quick-answer questions and question chains', () => {
+    expect(sp.reflex).toHaveLength(1)
+    expect(sp.reflex[0]).toMatchObject({ id: 'b11-reflex-1', hint: 'な-Adj ＋ な とき' })
+    expect(sp.chains).toHaveLength(1)
+    expect(sp.chains[0]).toMatchObject({ id: 'b11-speak-c01', title: 'Hỏi thăm', scene: 'Ở hành lang.' })
+    expect(sp.chains[0]!.questions.map((q) => q.id)).toEqual(['b11-speak-c01-1', 'b11-speak-c01-2'])
+  })
+
+  it('rejects a one-question chain', () => {
+    expect(() => parseSpeaking('## CHAIN C01 · x\n- 何（なに）？ || Gì?\n  = これ。 || Cái này.\n', 'b11')).toThrow(DslError)
   })
 
   it('rejects a question without a model answer', () => {

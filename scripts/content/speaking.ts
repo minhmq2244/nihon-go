@@ -1,5 +1,5 @@
 // Parses content/generated/speaking/<unit>.md (Luyện nói tab) and reading-qa/<unit>.md. Format: content/generated/README.md.
-import type { Line, Reading, SpeakQuestion, SpeakSet, SpeakTalk, Speaking } from '../../src/types'
+import type { Line, Reading, SpeakChain, SpeakQuestion, SpeakSet, SpeakTalk, Speaking } from '../../src/types'
 import { DslError, attr, headBody, lineBody, parseDialogue } from './generated'
 import { splitHeadings } from './markdown'
 
@@ -38,7 +38,7 @@ export function parseQuestions(body: string, setId: string): SpeakQuestion[] {
 const freeLine = (l: Line): Line => (l.jp.startsWith('＊') ? { ...l, jp: l.jp.slice(1).trim(), free: true } : l)
 
 export function parseSpeaking(md: string, unitId: string): Speaking {
-  const sp: Speaking = { sets: [], dialogues: [], talks: [] }
+  const sp: Speaking = { sets: [], dialogues: [], talks: [], reflex: [], chains: [], build: [] }
   for (const sec of splitHeadings(md, 2).blocks) {
     const [head = '', ...rest] = sec.title.split(/\s*·\s*/)
     const [kind, code = ''] = head.trim().split(/\s+/)
@@ -51,6 +51,26 @@ export function parseSpeaking(md: string, unitId: string): Speaking {
       const d = parseDialogue(title, sec.body, id)
       if (d.lines.length < 2) throw new DslError(`Hội thoại "${title}" quá ngắn`)
       sp.dialogues.push({ ...d, lines: d.lines.map(freeLine) })
+    } else if (kind === 'REFLEX') {
+      if (sp.reflex.length) throw new DslError(`Chỉ được có một phần "## REFLEX" trong luyện nói ${unitId}`)
+      sp.reflex = parseQuestions(sec.body, `${unitId}-reflex`)
+    } else if (kind === 'CHAIN') {
+      const chain: SpeakChain = { id, title, scene: attr(sec.body, 'scene'), questions: parseQuestions(sec.body, id) }
+      if (chain.questions.length < 2) throw new DslError(`Chuỗi hỏi "${title}" cần ít nhất 2 câu`)
+      sp.chains.push(chain)
+    } else if (kind === 'BUILD') {
+      if (!code) throw new DslError(`"## BUILD" cần mã mẫu (5.1) hoặc MIX: ${sec.title}`)
+      const steps = headBody(sec.body)
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter((l) => l.startsWith('- '))
+        .map((l) => {
+          const { jp, vn, note } = lineBody(l.slice(2))
+          return note ? { jp, vn, add: note } : { jp, vn }
+        })
+      if (steps.length < 3) throw new DslError(`Chuỗi kéo dài câu "${title}" cần ít nhất 3 bước`)
+      if (steps.some((s) => !s.vn)) throw new DslError(`Chuỗi kéo dài câu "${title}" thiếu nghĩa tiếng Việt (||)`)
+      sp.build.push({ id: `${unitId}-build-${sp.build.length + 1}`, code, title, steps })
     } else if (kind === 'TALK') {
       const talk: SpeakTalk = {
         id,

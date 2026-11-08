@@ -11,6 +11,7 @@ describe('kanjiReadingsData', () => {
       theory: [],
       grammarPoints: [],
       vocab: [],
+      practice: { listen: { words: [], sentences: [], talks: [] }, speak: { points: [], mixed: [] } },
       kanji: [
         { id: '1', char: '食', hanviet: 'THỰC', strokes: '9', onkun: '', compounds: [] },
         { id: '2', char: '飲', hanviet: 'ẨM', strokes: '12', onkun: '', compounds: [] },
@@ -51,6 +52,7 @@ describe('kanjiReadingsData', () => {
       theory: [],
       grammarPoints: [],
       vocab: [],
+      practice: { listen: { words: [], sentences: [], talks: [] }, speak: { points: [], mixed: [] } },
       kanji: [
         { id: '1', char: '山', hanviet: 'SƠN', strokes: '3', onkun: 'サン / やま', compounds: [{ jp: '山（やま）', meaning: 'núi' }] },
         { id: '2', char: '川', hanviet: 'XUYÊN', strokes: '3', onkun: 'セン / かわ', compounds: [{ jp: '川（かわ）', meaning: 'sông' }] },

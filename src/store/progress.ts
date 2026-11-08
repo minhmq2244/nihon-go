@@ -33,6 +33,8 @@ interface ProgressData {
   days: Record<string, number>
   /** Where the learner was last: unit and tab. */
   lastPlace?: { unitId: string; tab: string }
+  /** Luyện nghe / Luyện nói cards the learner marked as mastered (self-assessed), keyed by card key. */
+  marks?: Record<string, number>
 }
 
 interface Progress extends ProgressData {
@@ -44,12 +46,16 @@ interface Progress extends ProgressData {
   saveTest: (id: string, r: Omit<Score, 'at'> & { parts?: Record<string, [number, number]>; wrong?: number[] }) => void
   saveDraft: (id: string, text: string) => void
   saveTime: (id: string, ms: number) => void
+  /** Mark a card as mastered (counts toward the daily goal). */
+  mark: (key: string) => void
+  /** Forget the marks whose key starts with prefix (practise a level again). */
+  clearMarks: (prefix: string) => void
   visit: (unitId: string, tab?: string) => void
   importData: (d: ProgressData) => void
   reset: () => void
 }
 
-const empty: ProgressData = { items: {}, sets: {}, answers: {}, dialogues: {}, tests: {}, drafts: {}, visited: {}, times: {}, days: {} }
+const empty: ProgressData = { items: {}, sets: {}, answers: {}, dialogues: {}, tests: {}, drafts: {}, visited: {}, times: {}, days: {}, marks: {} }
 
 export const today = () => {
   const d = new Date()
@@ -92,6 +98,13 @@ export const useProgress = create<Progress>()(
       saveTest: (id, r) => set((s) => ({ tests: { ...s.tests, [id]: [...(s.tests[id] ?? []), { ...r, at: Date.now() }] } })),
       saveDraft: (id, text) => set((s) => ({ drafts: { ...s.drafts, [id]: text } })),
       saveTime: (id, ms) => set((s) => (s.times[id] && s.times[id] <= ms ? s : { times: { ...s.times, [id]: ms } })),
+      mark: (key) =>
+        set((s) => {
+          const d = today()
+          return { marks: { ...s.marks, [key]: Date.now() }, days: { ...s.days, [d]: (s.days[d] ?? 0) + 1 } }
+        }),
+      clearMarks: (prefix) =>
+        set((s) => ({ marks: Object.fromEntries(Object.entries(s.marks ?? {}).filter(([k]) => !k.startsWith(prefix))) })),
       visit: (unitId, tab) => set((s) => ({ visited: { ...s.visited, [unitId]: Date.now() }, lastPlace: tab ? { unitId, tab } : s.lastPlace })),
       importData: (d) => set({ ...empty, ...d }),
       reset: () => set(empty),
@@ -101,8 +114,8 @@ export const useProgress = create<Progress>()(
 )
 
 export function exportProgress(): ProgressData {
-  const { items, sets, answers, dialogues, tests, drafts, visited, times, days, lastPlace } = useProgress.getState()
-  return { items, sets, answers, dialogues, tests, drafts, visited, times, days, lastPlace }
+  const { items, sets, answers, dialogues, tests, drafts, visited, times, days, lastPlace, marks } = useProgress.getState()
+  return { items, sets, answers, dialogues, tests, drafts, visited, times, days, lastPlace, marks }
 }
 
 /** Items answered wrong more often than right, most recent first. */

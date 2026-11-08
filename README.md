@@ -5,7 +5,7 @@
 # Nihongo · N5 → N4
 
 **Ứng dụng web tự học tiếng Nhật theo giáo trình _できる日本語_ (Bài 1–11 · Chủ đề 0–9)**
-Lý thuyết · Thẻ ghi nhớ · Ngữ pháp · Viết · Đọc hiểu · Nghe · Hội thoại · Kaiwa · Kiểm tra
+① Học → ② Luyện nghe → ③ Luyện nói → ④ Hội thoại → ⑤ Đọc hiểu · Bài tập thêm · Kaiwa · Kiểm tra
 
 [![CI](https://github.com/minhmq2244/nihon-go/actions/workflows/ci.yml/badge.svg)](https://github.com/minhmq2244/nihon-go/actions/workflows/ci.yml)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
@@ -47,7 +47,7 @@ Nihongo là một **SPA chạy hoàn toàn phía trình duyệt**, biến bộ g
 <tr>
 <td width="50%" valign="top">
 
-**📖 Học theo bài**
+**📖 Học theo bài** — mỗi bài đi theo 5 bước đánh số, các bài tập ôn thi gom vào mục **Bài tập thêm**
 - **Lý thuyết** với furigana, bảng từ vựng và ghi chú động từ mở rộng (trợ từ đi kèm, so sánh, lỗi hay gặp, 3 ví dụ có audio)
 - **Thẻ ghi nhớ** kiểu Quizlet: Lật thẻ · Learn · Match, tách riêng bộ Từ vựng và Kanji
 - **Ngữ pháp** theo từng mẫu với 7 dạng bài: điền, trắc nghiệm, sắp xếp, sửa lỗi, dịch, câu ★ JLPT
@@ -57,6 +57,7 @@ Nihongo là một **SPA chạy hoàn toàn phía trình duyệt**, biến bộ g
 <td width="50%" valign="top">
 
 **🎧 Nghe – Đọc – Nói**
+- **Luyện nghe** 3 nấc (từ → câu → hội thoại ngắn) và **Luyện nói** 4 nấc (nhại lại → tự nói từ tiếng Việt → trả lời câu hỏi → kéo dài câu): mỗi lần một thẻ, tự đánh giá "trôi rồi / chưa trôi", không trắc nghiệm
 - **Đọc hiểu** và **Nghe** — mỗi từ mới của bài đều xuất hiện ít nhất một lần trong mỗi phần (được kiểm tra tự động khi build)
 - **Thanh điều khiển audio nổi**: tạm dừng, tua câu, chỉnh tốc độ, luôn hiển thị khi cuộn
 - **Hội thoại** đóng vai A/B và **Kaiwa** theo chủ đề (konbini, tàu xe, nhà ở, bệnh viện, việc làm…)
@@ -114,6 +115,8 @@ Mở http://localhost:5173. Lệnh `dev` tự biên dịch nội dung trước k
 
 | Lệnh | Mô tả |
 |---|---|
+| `start.bat` (Windows) | Tự kiểm tra môi trường, cài đặt dependencies, chạy dev server và mở trình duyệt |
+| `stop.bat` (Windows) | Dừng dev server và giải phóng cổng 5173 |
 | `npm run dev` | Biên dịch nội dung rồi chạy dev server |
 | `npm run content` | Chỉ biên dịch `content/` → `public/data/*.json` (in cảnh báo độ phủ từ vựng) |
 | `npm run build` | Biên dịch nội dung, kiểm tra kiểu, build production vào `dist/` |

@@ -72,9 +72,36 @@ Mỗi động từ một mục; web chèn phần giải thích ngay dưới dòn
 
 ## Luyện nói (`speaking/<bài>.md`)
 
-Tab **Luyện nói** (sau tab Hội thoại) có ở mọi bài: phần **Phản xạ nhanh** tự tạo câu từ động từ, tính từ, danh từ của bài (`src/lib/reflex.ts`). Bài nào có file này thì thêm 3 loại phần:
+Mỗi bài có một file. Hai phần dùng cho tab **③ Luyện nói** (4 nấc):
+
+- Nấc 1–2 (nhại lại, tự nói từ tiếng Việt) lấy tự động từ các câu `TRANS` của phần ngữ pháp, không cần viết thêm.
+- Nấc 3 (trả lời) lấy 5 câu đầu của mỗi `## QA <mã mẫu>`.
+- Nấc 4 (kéo dài câu) lấy các `## BUILD <mã mẫu>` và đúng 2 `## BUILD MIX` (ghép nhiều mẫu của bài).
+
+Tab **② Luyện nghe** (3 nấc) tự lấy từ vựng của bài, các câu có chứa từ của bài (từ bài đọc, bài nghe, hội thoại, câu dịch) và 6 bài nghe có nhiều từ của bài nhất.
+Các phần còn lại (`REFLEX`, `CHAIN`, `DIALOGUE`, `TALK`) hiện ở **Bài tập thêm → Phản xạ nói**.
 
 ```
+## BUILD 5.1 · Tên chuỗi              (mỗi bước dài hơn bước trước đúng một cụm; ≥ 3 bước)
+- câu ngắn nhất || dịch
+- câu dài hơn || dịch >> cụm vừa thêm
+- câu dài hơn nữa || dịch >> cụm vừa thêm
+
+## BUILD MIX · Tên chuỗi             (nối nhiều mẫu ngữ pháp của bài thành câu / đoạn dài)
+```
+
+```
+## REFLEX · Hỏi đơn                 (Phản xạ hỏi đáp — chỉ một phần, ~30 câu; app đọc câu hỏi, ẩn chữ)
+- câu hỏi || dịch
+  ? gợi ý ý trả lời + mẫu cần dùng
+  = câu trả lời mẫu || dịch          (1–2 dòng)
+
+## CHAIN C01 · Tên đoạn hội thoại    (Phản xạ hội thoại — 5–6 đoạn, mỗi đoạn 4–6 câu hỏi nối tiếp, hỏi theo thứ tự)
+@scene: bối cảnh
+- câu hỏi || dịch
+  ? gợi ý
+  = câu trả lời mẫu || dịch
+
 ## QA 5.1 · Tên mẫu ngữ pháp
 @tip: nhắc cách trả lời (tuỳ chọn)
 - câu hỏi || dịch

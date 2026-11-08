@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, ClipboardCheck, MessagesSquare, Repeat, Target } from 'lucide-react'
 import { useIndex, unitLabel } from '../lib/data'
-import { ALL_UNIT_TABS, UNIT_TABS } from '../lib/progressInfo'
+import { sectionOf, tabLabel, unitRatio } from '../lib/progressInfo'
 import { streakOf, today, useProgress } from '../store/progress'
 import { useSettings } from '../store/settings'
 import { Jp } from '../components/Jp'
@@ -40,7 +40,7 @@ export function Home() {
 
   const unitsTouched = index.units.filter((u) => Object.keys(sets).some((k) => k.startsWith(u.id + ':')))
   const last = index.units.find((u) => u.id === lastPlace?.unitId) ?? index.units[0]!
-  const lastTab = ALL_UNIT_TABS.find((t) => t.id === lastPlace?.tab)
+  const lastTab = lastPlace && tabLabel(lastPlace.tab) ? { id: lastPlace.tab, label: tabLabel(lastPlace.tab)! } : undefined
   const kaiwaTotal = index.kaiwa.reduce((s, k) => s + k.dialogueCount, 0)
   const kaiwaDone = Object.entries(dialogues).filter(([id, steps]) => id.startsWith('k') && steps.includes(4)).length
   // Flashcard self-marks and randomly built quiz items are not replayable on the review page.
@@ -83,7 +83,7 @@ export function Home() {
                 </span>
                 {lastTab && (
                   <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
-                    Đang ở: {lastTab.label}
+                    Đang ở: {sectionOf(lastTab.id).tabs.length > 1 ? `${sectionOf(lastTab.id).label} · ${lastTab.label}` : lastTab.label}
                   </span>
                 )}
               </div>
@@ -99,15 +99,7 @@ export function Home() {
                 <div
                   className="h-full rounded-full bg-cta transition-all"
                   style={{
-                    width: `${Math.round(
-                      (new Set(
-                        Object.keys(sets)
-                          .filter((k) => k.startsWith(last.id + ':'))
-                          .map((k) => k.split(':')[1]),
-                      ).size /
-                        UNIT_TABS.length) *
-                        100,
-                    )}%`,
+                    width: `${Math.round(unitRatio(sets, last.id) * 100)}%`,
                   }}
                 />
               </div>

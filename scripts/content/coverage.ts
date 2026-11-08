@@ -53,6 +53,20 @@ function words(jp: string): string[][] {
   return [...byReading.values()].map((forms) => (dict && ws.length === 1 ? [...forms, written(dict)] : forms))
 }
 
+/** Does this Japanese sentence (furigana notation) use the vocab entry? */
+export function usesVocab(v: VocabItem, jp: string): boolean {
+  const hay = norm(written(jp.replace(/［|］/g, '')))
+  return words(v.jp).every((forms) => forms.some((f) => keys(f).some((k) => hay.includes(k))))
+}
+
+/** What to speak for a vocab entry: its kana reading, without notes; alternatives joined by 、. */
+export const vocabSpeech = (jp: string) =>
+  reading(jp)
+    .split(SEP)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join('、')
+
 export function missingVocab(vocab: VocabItem[], lines: Line[]): string[] {
   // written text only (a reading like おとし would match お年（とし）), lines kept apart by ｜
   const hay = norm(written(lines.map((l) => l.jp).join('｜')))

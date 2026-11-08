@@ -9,6 +9,7 @@ import { render, stripMd } from './content/markdown'
 import { VerbBook, injectVerbDetails, parseUnitVerbs, parseVerbs } from './content/verbs'
 import { missingVocab } from './content/coverage'
 import { attachReadingQuestions, parseSpeaking } from './content/speaking'
+import { buildPractice } from './content/practice'
 
 const ROOT = process.cwd()
 const OUT = join(ROOT, 'public', 'data')
@@ -106,6 +107,7 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
         generated,
         ...(unitVerbs.length ? { verbs: unitVerbs } : {}),
         ...(speaking ? { speaking } : {}),
+        practice: buildPractice(theory.vocab, generated, speaking),
       }
       if (generated !== EMPTY)
         for (const [part, items] of [['Đọc', generated.readings], ['Nghe', generated.listenings]] as const) {
