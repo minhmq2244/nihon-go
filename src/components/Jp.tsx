@@ -1,9 +1,21 @@
 import { memo, type MouseEvent } from 'react'
-import { parseFurigana } from '../lib/furigana'
+import { parseFurigana, type Seg } from '../lib/furigana'
 import { speak } from '../lib/speech'
+import { useFuriBlockStore } from '../store/furiBlock'
 
 /** Japanese text written with 漢字（かな） notation, rendered as ruby. */
-export const Jp = memo(function Jp({ text, className, speakable }: { text: string; className?: string; speakable?: boolean }) {
+export const Jp = memo(function Jp({
+  text,
+  className,
+  speakable,
+  onRubyClick,
+}: {
+  text: string
+  className?: string
+  speakable?: boolean
+  onRubyClick?: (seg: Seg, e: MouseEvent) => void
+}) {
+  const isBlocked = useFuriBlockStore((s) => s.isBlocked)
   const segs = parseFurigana(text.replace(/［|］|〔|〕/g, ''))
   const onClick = speakable
     ? (e: MouseEvent) => {
@@ -13,16 +25,29 @@ export const Jp = memo(function Jp({ text, className, speakable }: { text: strin
     : undefined
   return (
     <span lang="ja" className={(speakable ? 'cursor-pointer hover:text-accent ' : '') + (className ?? '')} onClick={onClick}>
-      {segs.map((s, i) =>
-        s.r === undefined ? (
-          <span key={i}>{s.t}</span>
-        ) : (
-          <ruby key={i}>
+      {segs.map((s, i) => {
+        if (s.r === undefined) {
+          return <span key={i}>{s.t}</span>
+        }
+        const blocked = isBlocked(s.t)
+        return (
+          <ruby
+            key={i}
+            className={(blocked ? 'keep-furi ' : '') + (onRubyClick ? 'ruby-interactive ' : '')}
+            onClick={
+              onRubyClick
+                ? (e) => {
+                    e.stopPropagation()
+                    onRubyClick(s, e)
+                  }
+                : undefined
+            }
+          >
             {s.t}
-            <rt>{s.r}</rt>
+            <rt className={blocked ? 'keep-furi' : undefined}>{s.r}</rt>
           </ruby>
-        ),
-      )}
+        )
+      })}
     </span>
   )
 })

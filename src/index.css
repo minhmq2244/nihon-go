@@ -112,6 +112,25 @@ rt {
 .no-furi rt {
   display: none;
 }
+.no-furi rt.keep-furi,
+.no-furi .keep-furi rt,
+.no-furi ruby.keep-furi rt {
+  display: ruby-text !important;
+}
+
+ruby.keep-furi {
+  border-bottom: 2px dotted var(--c-accent);
+  padding-bottom: 1px;
+}
+
+ruby.ruby-interactive {
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+ruby.ruby-interactive:hover {
+  background-color: var(--c-accent-soft);
+}
 
 /* Rendered textbook markdown */
 .prose-jp {
