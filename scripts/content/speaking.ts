@@ -1,5 +1,5 @@
 // Parses content/generated/speaking/<unit>.md (Luyện nói tab) and reading-qa/<unit>.md. Format: content/generated/README.md.
-import type { Line, Reading, SpeakChain, SpeakQuestion, SpeakSet, SpeakTalk, Speaking } from '../../src/types'
+import type { Line, Reading, SpeakChain, SpeakCover, SpeakQuestion, SpeakSet, SpeakTalk, Speaking } from '../../src/types'
 import { DslError, attr, headBody, lineBody, parseDialogue } from './generated'
 import { splitHeadings } from './markdown'
 
@@ -34,6 +34,45 @@ export function parseQuestions(body: string, setId: string): SpeakQuestion[] {
   return out
 }
 
+/** Text compared by @cover: no readings （…）, no spaces, no ［］. */
+export const plainJp = (jp: string) => jp.replace(/（[^（）]*）|［|］|\s/g, '')
+
+/**
+ * "@cover: label = a+b|c; label 2 = d" → sub-structures of a QA section.
+ * | separates alternatives, + joins pieces that must all appear, ?piece is looked for in the question.
+ */
+export function parseCover(s: string, where: string): SpeakCover[] {
+  const out: SpeakCover[] = []
+  for (const item of s.split(/\s*;\s*/).filter(Boolean)) {
+    const eq = item.lastIndexOf('=')
+    if (eq < 0) throw new DslError(`@cover của ${where} thiếu "=" (nhãn = mẫu so khớp): ${item}`)
+    const label = item.slice(0, eq).trim()
+    const match = item
+      .slice(eq + 1)
+      .split('|')
+      .map((alt) =>
+        alt.split('+').map((p) => {
+          const piece = p.trim()
+          return piece.startsWith('?') ? '?' + plainJp(piece.slice(1)) : plainJp(piece)
+        }),
+      )
+    if (!label) throw new DslError(`@cover của ${where} có mục thiếu nhãn: ${item}`)
+    if (match.some((alt) => alt.some((p) => !p || p === '?'))) throw new DslError(`@cover của ${where} có mảnh so khớp rỗng: ${item}`)
+    if (out.some((c) => c.label === label)) throw new DslError(`@cover của ${where} trùng nhãn "${label}"`)
+    out.push({ label, match })
+  }
+  if (!out.length) throw new DslError(`@cover của ${where} không có mục nào`)
+  return out
+}
+
+/** Labels of `cover` whose structure the question's model answers (or, for ?pieces, the question) use. */
+export function coverUses(cover: SpeakCover[], q: SpeakQuestion): string[] {
+  const ans = q.answers.map((a) => plainJp(a.jp)).join('\n')
+  const ask = plainJp(q.q)
+  const has = (p: string) => (p.startsWith('?') ? ask.includes(p.slice(1)) : ans.includes(p))
+  return cover.filter((c) => c.match.some((alt) => alt.every(has))).map((c) => c.label)
+}
+
 /** A leading ＊ marks a roleplay line you say in your own words. */
 const freeLine = (l: Line): Line => (l.jp.startsWith('＊') ? { ...l, jp: l.jp.slice(1).trim(), free: true } : l)
 
@@ -46,6 +85,8 @@ export function parseSpeaking(md: string, unitId: string): Speaking {
     const id = `${unitId}-speak-${code.toLowerCase()}`
     if (kind === 'QA') {
       const set: SpeakSet = { id, code, title, tip: attr(sec.body, 'tip'), questions: parseQuestions(sec.body, id) }
+      const cover = attr(sec.body, 'cover')
+      if (cover !== undefined) set.cover = parseCover(cover, `QA ${code}`)
       sp.sets.push(set)
     } else if (kind === 'DIALOGUE') {
       const d = parseDialogue(title, sec.body, id)

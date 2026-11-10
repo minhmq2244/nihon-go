@@ -213,6 +213,18 @@ export interface SpeakQuestion {
   answers: { jp: string; vn: string }[]
   /** Follow-up question to keep the conversation going. */
   next?: { jp: string; vn: string }
+  /** Nấc 3: labels of the sub-structures (SpeakSet.cover) the model answer uses. */
+  uses?: string[]
+}
+
+/**
+ * One sub-structure of a grammar pattern that nấc 3 must practise.
+ * `match` is a list of alternatives (|), each a list of pieces (+) that must all appear;
+ * a piece starting with ? is looked for in the question instead of the model answers.
+ */
+export interface SpeakCover {
+  label: string
+  match: string[][]
 }
 
 /** Questions that make you use one grammar pattern. */
@@ -221,6 +233,8 @@ export interface SpeakSet {
   code: string
   title: string
   tip?: string
+  /** @cover: sub-structures of the pattern, each needing ≥ 2 questions. */
+  cover?: SpeakCover[]
   questions: SpeakQuestion[]
 }
 

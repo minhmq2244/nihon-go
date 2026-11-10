@@ -75,8 +75,31 @@ Mỗi động từ một mục; web chèn phần giải thích ngay dưới dòn
 Mỗi bài có một file. Hai phần dùng cho tab **③ Luyện nói** (4 nấc):
 
 - Nấc 1–2 (nhại lại, tự nói từ tiếng Việt) lấy tự động từ các câu `TRANS` của phần ngữ pháp, không cần viết thêm.
-- Nấc 3 (trả lời) lấy 5 câu đầu của mỗi `## QA <mã mẫu>`.
+- Nấc 3 (trả lời) lấy câu hỏi của mỗi `## QA <mã mẫu>` theo dòng `@cover` (xem dưới).
 - Nấc 4 (kéo dài câu) lấy các `## BUILD <mã mẫu>` và đúng 2 `## BUILD MIX` (ghép nhiều mẫu của bài).
+
+### `@cover`: cấu trúc con mà nấc 3 phải luyện
+
+Mỗi `## QA` có một dòng `@cover` liệt kê các cấu trúc con nằm trong tên mẫu (tách theo `·`, `・`, `／`, `và`, `,` của tên mẫu
+và theo phần lý thuyết). Mỗi mục là `nhãn = bộ so khớp`, các mục cách nhau bằng `;`:
+
+```
+## QA 5.3 · 前（まえ）は 〜が、今（いま）は 〜 · なかなか · だんだん · それで
+@cover: 前は〜が、今は〜 = 前は+今は; なかなか 〜ません = なかなか; だんだん = だんだん; それで = それで
+```
+
+- **Nhãn** hiện cho người học trên thẻ câu hỏi ("Dùng: …") trước khi trả lời, nên viết ngắn, đúng cách giáo trình gọi cấu trúc.
+- **Bộ so khớp**: `|` là "hoặc"; trong mỗi nhánh, `+` là "phải có đủ các mảnh". Mảnh được tìm như chuỗi con trong
+  **câu trả lời mẫu** (mọi dòng `=` của câu hỏi) sau khi bỏ cách đọc `（…）`, dấu cách và `［］`.
+- Mảnh bắt đầu bằng `?` được tìm trong **câu hỏi**, dùng cho cấu trúc người học nghe rồi trả lời
+  (ví dụ `どんな N ですか = ?どんな`, `どう すれば いいですか = ?どうすれば`).
+- Chọn mảnh đủ đặc trưng để không khớp nhầm (`とき` khớp cả `ときどき`; dùng `とき、|ときは|ときに`…).
+- Mỗi nhãn cần **ít nhất 2 câu hỏi** khớp (test `scripts/content/speaking-cover.test.ts` kiểm tra).
+
+Nấc 3 chọn câu như sau: với từng nhãn theo thứ tự trong `@cover`, lấy tối đa 2 câu khớp nhãn đó (ưu tiên câu chưa được chọn,
+theo thứ tự trong file); nếu chưa đủ 5 câu thì thêm các câu còn lại có khớp ít nhất một nhãn, theo thứ tự file.
+Câu được giữ đúng thứ tự trong file và mang theo danh sách nhãn mình dùng. Phần không có `@cover` lấy 5 câu đầu.
+Câu hỏi mới luôn **thêm vào cuối** phần `## QA`: id câu hỏi theo vị trí, chèn giữa sẽ làm lệch tiến độ đã lưu.
 
 Tab **② Luyện nghe** (3 nấc) tự lấy từ vựng của bài, các câu có chứa từ của bài (từ bài đọc, bài nghe, hội thoại, câu dịch) và 6 bài nghe có nhiều từ của bài nhất.
 Các phần còn lại (`REFLEX`, `CHAIN`, `DIALOGUE`, `TALK`) hiện ở **Bài tập thêm → Phản xạ nói**.
@@ -104,8 +127,9 @@ Các phần còn lại (`REFLEX`, `CHAIN`, `DIALOGUE`, `TALK`) hiện ở **Bài
 
 ## QA 5.1 · Tên mẫu ngữ pháp
 @tip: nhắc cách trả lời (tuỳ chọn)
+@cover: nhãn 1 = mảnh|mảnh+mảnh; nhãn 2 = ?mảnh trong câu hỏi   (bắt buộc, xem trên)
 - câu hỏi || dịch
-  ? gợi ý ý trả lời (tuỳ chọn)
+  ? ý trả lời gợi ý (tuỳ chọn; app hiện là "Ý trả lời")
   = câu trả lời mẫu 1 || dịch
   = câu trả lời mẫu 2 || dịch        (ít nhất 1 dòng "=")
   + câu hỏi nối tiếp || dịch         (tuỳ chọn)

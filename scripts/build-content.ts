@@ -7,7 +7,7 @@ import { parseExam, parsePractice, parseTheory, splitVolume } from './content/so
 import { DslError, parseGenerated, parseKaiwa } from './content/generated'
 import { render, stripMd } from './content/markdown'
 import { VerbBook, injectVerbDetails, parseUnitVerbs, parseVerbs } from './content/verbs'
-import { missingVocab } from './content/coverage'
+import { missingKanji, missingVocab } from './content/coverage'
 import { attachReadingQuestions, parseSpeaking } from './content/speaking'
 import { buildPractice } from './content/practice'
 
@@ -23,6 +23,8 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
   const errors: string[] = []
   // vocab of a unit that never shows up in its readings / listenings
   const gaps: string[] = []
+  // kanji of Bài 1–7, which Bài 8–11 readings must all use
+  const reviewKanji: string[] = []
   rmSync(OUT, { recursive: true, force: true })
   for (const d of ['unit', 'exam', 'kaiwa']) mkdirSync(join(OUT, d), { recursive: true })
 
@@ -114,6 +116,12 @@ export function buildContent(): { units: number; errors: string[]; gaps: string[
           const miss = missingVocab(theory.vocab, items.flatMap((x) => x.lines))
           if (miss.length) gaps.push(`${raw.id} · ${part} thiếu ${miss.length}: ${miss.join(' ; ')}`)
         }
+      // Tập 1–2 kanji are kept for review in Tập 3 (Bài 8–11) readings
+      if (vol <= 2) reviewKanji.push(...theory.kanji.map((k) => k.char))
+      else if (vol === 3 && generated !== EMPTY) {
+        const miss = missingKanji(reviewKanji, generated.readings.flatMap((r) => r.lines))
+        if (miss.length) gaps.push(`${raw.id} · Đọc thiếu ${miss.length} kanji Tập 1–2: ${miss.join(' ')}`)
+      }
       index.units.push(meta)
       write(`unit/${raw.id}.json`, unit)
     }

@@ -73,3 +73,9 @@ export function missingVocab(vocab: VocabItem[], lines: Line[]): string[] {
   const used = (forms: string[]) => forms.some((f) => keys(f).some((k) => hay.includes(k)))
   return vocab.filter((v) => !words(v.jp).every(used)).map((v) => v.jp)
 }
+
+/** Kanji (single characters) that never appear in the lines, readings （…） ignored. */
+export function missingKanji(kanji: string[], lines: Line[]): string[] {
+  const hay = lines.map((l) => l.jp.replace(/（[^（）]*）/g, '')).join('｜')
+  return kanji.filter((k) => !hay.includes(k))
+}

@@ -72,3 +72,49 @@ describe('BUILD sections', () => {
     expect(() => parseSpeaking('## BUILD 5.1 · Ngắn\n- 本（ほん）です。 || Sách.\n- 私（わたし）の 本（ほん）です。 || Sách của tôi.\n', 'b11')).toThrow(DslError)
   })
 })
+
+describe('QA @cover (nấc 3)', () => {
+  const md = `## QA 5.3 · 前は 〜が、今は 〜 · それで
+@cover: 前は〜が、今は〜 = 前（まえ）は+今（いま）は; それで = それで; どう = ?どう|どうですか
+- q1 || v
+  = 前（まえ）は 好（す）きでしたが、今（いま）は 好（す）きじゃ ありません。 || v
+- q2 || v
+  = 雨（あめ）でした。 || v
+- q3 || v
+  = 前（まえ）は 遠（とお）かったですが、今（いま）は 近（ちか）いです。 || v
+- q4 || v
+  = 前（まえ）は 寒（さむ）かったですが、今（いま）は 暖（あたた）かいです。 || v
+- 今日（きょう）は どうですか。 || v
+  = 暑（あつ）いです。それで、アイスを 食（た）べました。 || v
+- q6 || v
+  = 疲（つか）れました。それで、早（はや）く 寝（ね）ました。 || v
+- q7 || v
+  = それで、帰（かえ）りました。 || v
+`
+  const sp = parseSpeaking(md, 'b11')
+  const g: Generated = { vocabCloze: [], kanji: [], writing: [], readings: [], listenings: [], dialogues: [], grammar: [{ id: '5.3', title: 't', sets: [] }] }
+
+  it('parses labels, alternatives and pieces', () => {
+    expect(sp.sets[0]!.cover).toEqual([
+      { label: '前は〜が、今は〜', match: [['前は', '今は']] },
+      { label: 'それで', match: [['それで']] },
+      { label: 'どう', match: [['?どう'], ['どうですか']] },
+    ])
+  })
+
+  it('picks 2 questions per label, tops up to 5 with questions that use a label, keeps file order', () => {
+    const ask = buildPractice([], g, sp).speak.points[0]!.ask
+    expect(ask.map((q) => q.id)).toEqual(['b11-speak-5.3-1', 'b11-speak-5.3-3', 'b11-speak-5.3-4', 'b11-speak-5.3-5', 'b11-speak-5.3-6'])
+    expect(ask[3]!.uses).toEqual(['それで', 'どう'])
+  })
+
+  it('keeps the first 5 questions when there is no @cover', () => {
+    const plain = parseSpeaking(md.replace(/^@cover.*$/m, ''), 'b11')
+    expect(buildPractice([], g, plain).speak.points[0]!.ask.map((q) => q.id.split('-').pop())).toEqual(['1', '2', '3', '4', '5'])
+  })
+
+  it('rejects broken @cover lines', () => {
+    for (const bad of ['それで', '= それで', 'a = x+', 'a = x; a = y'])
+      expect(() => parseSpeaking(`## QA 5.1 · t\n@cover: ${bad}\n- q || v\n  = a || v\n`, 'b11')).toThrow(DslError)
+  })
+})

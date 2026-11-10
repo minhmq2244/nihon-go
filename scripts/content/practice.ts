@@ -1,15 +1,38 @@
 // Assembles the Luyện nghe / Luyện nói ladders of a unit from content it already has.
-import type { Generated, PracticeCard, Practice, Speaking, VocabItem } from '../../src/types'
+import type { Generated, PracticeCard, Practice, SpeakQuestion, SpeakSet, Speaking, VocabItem } from '../../src/types'
 import { usesVocab, vocabSpeech } from './coverage'
+import { coverUses } from './speaking'
 
 /** Sentences picked for nghe nấc 2 (enough to cover the unit's words). */
 export const LISTEN_SENTENCES_MAX = 32
 /** Short conversations for nghe nấc 3. */
 export const LISTEN_TALKS = 6
-/** Questions per grammar point for nói nấc 3. */
+/** Questions per grammar point for nói nấc 3 (more when the pattern has many sub-structures). */
 export const ASK_PER_POINT = 5
+/** Questions picked for each sub-structure (@cover label) of a pattern. */
+export const ASK_PER_COVER = 2
 
 const plain = (jp: string) => jp.replace(/（[^（）]*）|［|］|\s/g, '')
+
+/**
+ * Nấc 3 questions of one pattern: up to 2 per @cover label (unpicked ones first), topped up to
+ * ASK_PER_POINT with other questions that use a label; file order kept, each tagged with `uses`.
+ * Without @cover: the first ASK_PER_POINT questions.
+ */
+export function pickAsks(set: SpeakSet | undefined): SpeakQuestion[] {
+  if (!set) return []
+  if (!set.cover?.length) return set.questions.slice(0, ASK_PER_POINT)
+  const cover = set.cover
+  const qs = set.questions.map((q) => ({ ...q, uses: coverUses(cover, q) }))
+  const picked = new Set<number>()
+  for (const c of cover) {
+    const hits = qs.flatMap((q, i) => (q.uses.includes(c.label) ? [i] : []))
+    const order = [...hits.filter((i) => !picked.has(i)), ...hits.filter((i) => picked.has(i))]
+    order.slice(0, ASK_PER_COVER).forEach((i) => picked.add(i))
+  }
+  for (let i = 0; i < qs.length && picked.size < ASK_PER_POINT; i++) if (qs[i]!.uses.length) picked.add(i)
+  return qs.filter((_, i) => picked.has(i))
+}
 
 /**
  * Greedy cover: keep taking the sentence that adds the most unheard unit words (shorter wins a tie),
@@ -76,7 +99,7 @@ export function buildPractice(vocab: VocabItem[], g: Generated, sp?: Speaking): 
           .flatMap((s) => s.items)
           .filter((d) => d.answers[0])
           .map((d) => ({ id: d.id, jp: d.answers[0]!, vn: d.stem })),
-        ask: (sp?.sets.find((s) => s.code === p.id)?.questions ?? []).slice(0, ASK_PER_POINT),
+        ask: pickAsks(sp?.sets.find((s) => s.code === p.id)),
         build: sp?.build.filter((b) => b.code === p.id) ?? [],
       })),
       mixed: sp?.build.filter((b) => b.code === 'MIX') ?? [],

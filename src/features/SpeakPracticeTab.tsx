@@ -163,6 +163,15 @@ function AskCard({ a, shown, onPlay }: { a: Ask; shown: boolean; onPlay: () => v
   return (
     <div className="space-y-4">
       <Tag>{pointName(a.point)}</Tag>
+      {!!a.q.uses?.length && (
+        <div className="flex flex-wrap justify-center gap-2">
+          {a.q.uses.map((u) => (
+            <span key={u} className="rounded-xl bg-accent-soft px-3 py-1.5 text-lg font-bold text-accent">
+              Dùng: <Jp text={u} />
+            </span>
+          ))}
+        </div>
+      )}
       <PlayBig onClick={onPlay} label="Nghe câu hỏi" />
       {text || shown ? (
         <div>
@@ -176,7 +185,7 @@ function AskCard({ a, shown, onPlay }: { a: Ask; shown: boolean; onPlay: () => v
           Không nghe kịp? Hiện câu hỏi
         </button>
       )}
-      {a.q.hint && !shown && <p className="text-base text-sub">Gợi ý: {a.q.hint}</p>}
+      {a.q.hint && !shown && <p className="text-base text-sub">Ý trả lời: {a.q.hint}</p>}
       {shown && (
         <div className="space-y-2 rounded-2xl bg-muted p-4 text-left">
           <p className="text-sm font-bold text-sub">Câu trả lời mẫu</p>
