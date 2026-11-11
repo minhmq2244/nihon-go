@@ -14,6 +14,7 @@ interface Settings {
   voiceB: string
   rate: number
   dailyGoal: number // correct answers per day
+  learnerName: string // user name or 'あなた' for speaking questions
   set: (p: Partial<Omit<Settings, 'set'>>) => void
 }
 
@@ -29,6 +30,7 @@ export const useSettings = create<Settings>()(
       voiceB: '',
       rate: 0.9,
       dailyGoal: 20,
+      learnerName: 'あなた',
       set: (p) => set(p),
     }),
     {

@@ -58,6 +58,15 @@ export function SettingsPage() {
             {s.romaji ? 'Đang bật' : 'Đang tắt'}
           </Chip>
         </Row>
+        <Row label="Tên gọi khi luyện nói" hint="Được máy đọc khi hỏi câu có 〜さん (mặc định: あなた, hoặc điền tên bạn như フン, ナム, マイ...)">
+          <input
+            type="text"
+            className="w-48 rounded-lg border border-line bg-surface px-3 py-1.5 text-sm font-medium"
+            placeholder="あなた"
+            value={s.learnerName ?? 'あなた'}
+            onChange={(e) => s.set({ learnerName: e.target.value })}
+          />
+        </Row>
       </Card>
 
       <Card className="space-y-4">

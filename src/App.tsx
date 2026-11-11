@@ -7,6 +7,7 @@ import { Units } from './pages/Units'
 import { UnitPage } from './pages/UnitPage'
 import { KaiwaList, KaiwaTopicPage, KaiwaDialoguePage } from './pages/Kaiwa'
 import { ExamList, ExamPage } from './pages/Exams'
+import { SpeedSpeakingPage } from './pages/SpeedSpeaking'
 import { SettingsPage } from './pages/Settings'
 import { Review } from './pages/Review'
 import { Loading } from './components/ui'
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="units" element={<Units />} />
           <Route path="u/:id" element={<Navigate to="ly-thuyet" replace />} />
           <Route path="u/:id/:tab" element={<UnitPage />} />
+          <Route path="speed-speaking" element={<SpeedSpeakingPage />} />
           <Route path="kaiwa" element={<KaiwaList />} />
           <Route path="kaiwa/:id" element={<KaiwaTopicPage />} />
           <Route path="kaiwa/:id/:did" element={<KaiwaDialoguePage />} />

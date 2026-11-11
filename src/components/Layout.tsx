@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, FileText, Flame, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun } from 'lucide-react'
+import { BookOpen, ClipboardCheck, FileText, Flame, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun, Zap } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
@@ -11,6 +11,7 @@ import { VoiceNotice } from './VoiceNotice'
 const NAV = [
   { to: '/', label: 'Trang chủ', short: 'Chủ', icon: Home, end: true },
   { to: '/units', label: 'Học theo bài', short: 'Bài học', icon: BookOpen },
+  { to: '/speed-speaking', label: 'Luyện nói cấp tốc', short: 'Nói nhanh', icon: Zap },
   { to: '/kaiwa', label: 'Kaiwa', short: 'Kaiwa', icon: MessagesSquare },
   { to: '/review', label: 'Ôn tập', short: 'Ôn tập', icon: Repeat },
   { to: '/exams', label: 'Kiểm tra', short: 'Kiểm tra', icon: ClipboardCheck },
@@ -193,7 +194,7 @@ export function Layout() {
         </ErrorBoundary>
       </main>
 
-      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-6 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-7 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         {NAV.map((n) => (
           <NavLink
             key={n.to}
