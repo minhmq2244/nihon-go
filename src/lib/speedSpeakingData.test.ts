@@ -1,17 +1,29 @@
 import { describe, expect, it } from 'vitest'
 import {
+  GRAMMAR_SPEAKING_TOPICS,
+  READING_COMPREHENSION_TOPICS,
   SPEED_SPEAKING_TOPICS,
   formatQuestionDisplay,
   formatQuestionSpeech,
 } from './speedSpeakingData'
 
 describe('speedSpeakingData', () => {
-  it('has all 9 topics defined', () => {
-    expect(SPEED_SPEAKING_TOPICS).toHaveLength(9)
+  it('has all 20 topics defined (11 reading comprehension + 9 grammar)', () => {
+    expect(SPEED_SPEAKING_TOPICS).toHaveLength(20)
+    expect(READING_COMPREHENSION_TOPICS).toHaveLength(11)
+    expect(GRAMMAR_SPEAKING_TOPICS).toHaveLength(9)
   })
 
   it('contains expected question counts per topic', () => {
-    const counts = SPEED_SPEAKING_TOPICS.map((t) => ({ id: t.id, count: t.questions.length }))
+    // 11 reading topics have 12 questions each (total 132)
+    for (const rt of READING_COMPREHENSION_TOPICS) {
+      expect(rt.questions).toHaveLength(12)
+      expect(rt.category).toBe('comprehension')
+      expect(rt.passage?.jp).toBeTruthy()
+    }
+
+    // 9 grammar topics
+    const counts = GRAMMAR_SPEAKING_TOPICS.map((t) => ({ id: t.id, count: t.questions.length }))
     expect(counts).toEqual([
       { id: 'tari-tari', count: 4 },
       { id: 'narimasu', count: 4 },
@@ -52,8 +64,17 @@ describe('speedSpeakingData', () => {
 
   it('properly formats question for display', () => {
     const rawQ = '～さんは日曜日、なにをしますか。'
-    expect(formatQuestionDisplay(rawQ)).toBe('～さん(Bạn)は日曜日、なにをしますか。')
+    expect(formatQuestionDisplay(rawQ)).toBe('～さんは日曜日、なにをしますか。')
     expect(formatQuestionDisplay(rawQ, 'フン')).toBe('フンさんは日曜日、なにをしますか。')
+  })
+
+  it('does not contain bracket furigana in question or answer texts', () => {
+    for (const topic of SPEED_SPEAKING_TOPICS) {
+      for (const q of topic.questions) {
+        expect(q.q).not.toMatch(/\[.*\]/)
+        expect(q.aJp).not.toMatch(/\[.*\]/)
+      }
+    }
   })
 })
 

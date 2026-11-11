@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { ArrowLeft, CheckCircle2, ChevronRight, Lightbulb, RotateCcw, Volume2, Zap } from 'lucide-react'
+import { ArrowLeft, BookOpen, CheckCircle2, ChevronRight, Lightbulb, RotateCcw, Volume2, Zap } from 'lucide-react'
 import {
+  GRAMMAR_SPEAKING_TOPICS,
+  READING_COMPREHENSION_TOPICS,
   SPEED_SPEAKING_TOPICS,
   formatQuestionDisplay,
   formatQuestionSpeech,
@@ -10,7 +12,6 @@ import {
 import { shuffle } from '../lib/data'
 import { speak, stopSpeaking } from '../lib/speech'
 import { useSettings } from '../store/settings'
-import { Jp } from '../components/Jp'
 import { SpeedControl } from '../components/SpeedControl'
 import { Button, Card, ProgressBar, cx } from '../components/ui'
 
@@ -25,6 +26,7 @@ export function SpeedSpeakingPage() {
   const [activeTopic, setActiveTopic] = useState<SpeedSpeakingTopic | null>(null)
   const [editingName, setEditingName] = useState(false)
   const [tempName, setTempName] = useState(learnerName || 'あなた')
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'comprehension' | 'grammar'>('all')
 
   // Prepare questions
   const startTopic = (topic: SpeedSpeakingTopic) => {
@@ -32,19 +34,42 @@ export function SpeedSpeakingPage() {
     setActiveTopic(topic)
   }
 
-  const startMixedAll = () => {
+  const startMixed = (category: 'all' | 'comprehension' | 'grammar') => {
     stopSpeaking()
-    const all = SPEED_SPEAKING_TOPICS.flatMap((t) => t.questions)
+    const pool =
+      category === 'all'
+        ? SPEED_SPEAKING_TOPICS
+        : SPEED_SPEAKING_TOPICS.filter((t) => t.category === category)
+    const all = pool.flatMap((t) => t.questions)
+    const title =
+      category === 'comprehension'
+        ? 'Luyện ngẫu nhiên 132 câu hiểu bài đọc'
+        : category === 'grammar'
+        ? 'Luyện ngẫu nhiên 66 câu phản xạ mẫu câu'
+        : 'Luyện ngẫu nhiên tất cả 198 câu hỏi'
+    const badge = `${all.length} câu ngẫu nhiên`
+    const description =
+      category === 'comprehension'
+        ? 'Xáo trộn toàn bộ câu hỏi kiểm tra độ hiểu nội dung từ 11 câu chuyện bài đọc Bài 11.'
+        : category === 'grammar'
+        ? 'Xáo trộn toàn bộ câu hỏi từ tất cả 9 chủ đề mẫu câu ngữ pháp thông dụng N5 → N4.'
+        : 'Xáo trộn toàn bộ câu hỏi từ cả bài đọc hiểu và phản xạ mẫu câu.'
+
     const mixedTopic: SpeedSpeakingTopic = {
-      id: 'mixed-all',
-      title: 'Luyện ngẫu nhiên tất cả chủ đề',
-      shortTitle: 'Tất cả chủ đề',
-      badge: 'Ngẫu nhiên 66 câu',
-      description: 'Tổng hợp ngẫu nhiên các câu hỏi từ tất cả 9 mẫu câu thông dụng.',
+      id: `mixed-${category}`,
+      title,
+      shortTitle: 'Tổng hợp ngẫu nhiên',
+      badge,
+      description,
+      category: category === 'all' ? 'comprehension' : category,
       questions: shuffle(all),
     }
     setActiveTopic(mixedTopic)
   }
+
+  const visibleTopics = SPEED_SPEAKING_TOPICS.filter(
+    (t) => selectedCategory === 'all' || t.category === selectedCategory,
+  )
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -128,6 +153,48 @@ export function SpeedSpeakingPage() {
             <p className="text-xs text-sub">Máy sẽ tự động thay thế “～さん” bằng tên này khi đọc câu hỏi.</p>
           </div>
 
+          {/* Category Tabs */}
+          <div className="flex flex-wrap items-center gap-2 border-b border-line pb-2">
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('all')}
+              className={cx(
+                'rounded-xl px-4 py-2 text-sm font-bold transition cursor-pointer',
+                selectedCategory === 'all'
+                  ? 'bg-accent text-white shadow-xs'
+                  : 'bg-surface text-sub hover:bg-muted hover:text-ink border border-line',
+              )}
+            >
+              Tất cả ({SPEED_SPEAKING_TOPICS.length} chủ đề)
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('comprehension')}
+              className={cx(
+                'rounded-xl px-4 py-2 text-sm font-bold transition cursor-pointer flex items-center gap-2',
+                selectedCategory === 'comprehension'
+                  ? 'bg-accent text-white shadow-xs'
+                  : 'bg-surface text-sub hover:bg-muted hover:text-ink border border-line',
+              )}
+            >
+              <BookOpen size={16} />
+              Hiểu nội dung bài đọc ({READING_COMPREHENSION_TOPICS.length} bài · 132 câu)
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('grammar')}
+              className={cx(
+                'rounded-xl px-4 py-2 text-sm font-bold transition cursor-pointer flex items-center gap-2',
+                selectedCategory === 'grammar'
+                  ? 'bg-accent text-white shadow-xs'
+                  : 'bg-surface text-sub hover:bg-muted hover:text-ink border border-line',
+              )}
+            >
+              <Zap size={16} />
+              Phản xạ mẫu câu ({GRAMMAR_SPEAKING_TOPICS.length} chủ đề · 66 câu)
+            </button>
+          </div>
+
           {/* Special Card: Mixed All */}
           <div className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-surface to-accent/5 p-6 shadow-sm transition hover:shadow-md">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -136,30 +203,52 @@ export function SpeedSpeakingPage() {
                   <span className="rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white shadow-xs">
                     TỔNG HỢP SIÊU TỐC
                   </span>
-                  <span className="text-xs font-medium text-sub">66 câu hỏi chọn lọc</span>
+                  <span className="text-xs font-medium text-sub">
+                    {selectedCategory === 'comprehension'
+                      ? '132 câu hỏi đọc hiểu'
+                      : selectedCategory === 'grammar'
+                      ? '66 câu hỏi ngữ pháp'
+                      : '198 câu hỏi chọn lọc'}
+                  </span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-ink">Luyện ngẫu nhiên tất cả 9 chủ đề</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-ink">
+                  {selectedCategory === 'comprehension'
+                    ? 'Luyện ngẫu nhiên 11 bài đọc hiểu'
+                    : selectedCategory === 'grammar'
+                    ? 'Luyện ngẫu nhiên tất cả 9 mẫu câu'
+                    : 'Luyện ngẫu nhiên tất cả 20 chủ đề'}
+                </h2>
                 <p className="text-sm text-sub max-w-xl">
-                  Xáo trộn toàn bộ câu hỏi từ các chủ đề ngữ pháp N5 → N4. Thử thách phản xạ toàn diện mà không biết trước mẫu câu!
+                  {selectedCategory === 'comprehension'
+                    ? 'Xáo trộn toàn bộ câu hỏi kiểm tra độ hiểu câu chuyện từ 11 bài đọc Bài 11. Trả lời sự việc, nguyên nhân, số liệu và tình huống trong bài!'
+                    : selectedCategory === 'grammar'
+                    ? 'Xáo trộn toàn bộ câu hỏi từ các chủ đề ngữ pháp N5 → N4. Thử thách phản xạ nhanh mà không biết trước mẫu câu!'
+                    : 'Trộn đều toàn bộ câu hỏi đọc hiểu và câu hỏi phản xạ ngữ pháp để thử thách toàn diện!'}
                 </p>
               </div>
-              <Button
-                variant="cta"
-                size="lg"
-                onClick={startMixedAll}
-                className="shrink-0 gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:brightness-105"
-              >
-                <Zap size={20} className="fill-white" />
-                Bắt đầu ngay
-              </Button>
+              <div className="flex flex-wrap gap-2 shrink-0">
+                <Button
+                  variant="cta"
+                  size="lg"
+                  onClick={() => startMixed(selectedCategory)}
+                  className="gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:brightness-105"
+                >
+                  <Zap size={20} className="fill-white" />
+                  Bắt đầu ngẫu nhiên
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Grid of 9 topics */}
+          {/* Grid of topics */}
           <div>
-            <h2 className="mb-4 text-lg font-bold text-ink">Chọn chủ đề muốn luyện tập</h2>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-bold text-ink">
+                Danh sách bài luyện tập ({visibleTopics.length} chủ đề)
+              </h2>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {SPEED_SPEAKING_TOPICS.map((topic, idx) => (
+              {visibleTopics.map((topic, idx) => (
                 <div
                   key={topic.id}
                   onClick={() => startTopic(topic)}
@@ -167,9 +256,23 @@ export function SpeedSpeakingPage() {
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="rounded-lg bg-accent-soft px-2.5 py-1 text-xs font-bold text-accent">
-                        {topic.badge}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={cx(
+                            'rounded-lg px-2.5 py-1 text-xs font-bold',
+                            topic.category === 'comprehension'
+                              ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                              : 'bg-accent-soft text-accent',
+                          )}
+                        >
+                          {topic.badge}
+                        </span>
+                        {topic.category === 'comprehension' && (
+                          <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-semibold text-sub">
+                            Hiểu bài
+                          </span>
+                        )}
+                      </div>
                       <span className="text-xs font-semibold text-sub">
                         {topic.questions.length} câu
                       </span>
@@ -185,7 +288,7 @@ export function SpeedSpeakingPage() {
                   </div>
 
                   <div className="mt-4 flex items-center justify-between border-t border-line/60 pt-3 text-sm font-semibold text-accent">
-                    <span>Luyện chủ đề này</span>
+                    <span>Luyện bài này</span>
                     <ChevronRight size={18} className="transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
@@ -222,9 +325,22 @@ function SessionPlayer({
   const [stage, setStage] = useState<number>(STAGE_LISTEN)
   const [firstRatings, setFirstRatings] = useState<Record<string, 'ok' | 'retry'>>({})
   const [isPlayingAudio, setIsPlayingAudio] = useState(false)
+  const [showPassage, setShowPassage] = useState(false)
+  const [isPlayingPassage, setIsPlayingPassage] = useState(false)
 
   const currentQ = queue[currentIndex]
   const isDone = !currentQ
+
+  // Speak passage
+  const playPassageAudio = async () => {
+    if (!topic.passage) return
+    setIsPlayingPassage(true)
+    try {
+      await speak(topic.passage.jp)
+    } finally {
+      setIsPlayingPassage(false)
+    }
+  }
 
   // Speak question
   const playQuestionAudio = async () => {
@@ -457,6 +573,52 @@ function SessionPlayer({
         </div>
       </div>
 
+      {/* Passage Preview Card if Topic has Reading Passage */}
+      {topic.passage && (
+        <div className="rounded-2xl border border-line bg-surface p-4 sm:p-5 shadow-xs transition">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 ring-1 ring-blue-500/20">
+                <BookOpen size={18} />
+              </span>
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-ink">Nội dung câu chuyện bài đọc</h3>
+                <p className="text-xs text-sub">Bấm xem hoặc nghe lại câu chuyện để trả lời câu hỏi</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={playPassageAudio}
+                className="gap-1.5 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-500/10"
+              >
+                <Volume2 size={14} className={isPlayingPassage ? 'animate-pulse text-blue-600' : ''} />
+                {isPlayingPassage ? 'Đang đọc...' : 'Nghe câu chuyện'}
+              </Button>
+              <Button
+                size="sm"
+                variant="default"
+                onClick={() => setShowPassage(!showPassage)}
+                className="text-xs"
+              >
+                {showPassage ? 'Thu gọn ▲' : 'Xem câu chuyện ▼'}
+              </Button>
+            </div>
+          </div>
+          {showPassage && (
+            <div className="mt-4 space-y-3 border-t border-line/60 pt-3 text-sm">
+              <div className="rounded-xl bg-muted/40 p-3.5 leading-relaxed text-ink font-medium" lang="ja">
+                {topic.passage.jp}
+              </div>
+              <div className="text-xs sm:text-sm text-sub leading-relaxed px-1">
+                {topic.passage.vn}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Main Practice Card */}
       <Card className="space-y-6">
         {/* Stage 0: Listen Only Mode */}
@@ -538,8 +700,8 @@ function SessionPlayer({
               </div>
 
               <div className="space-y-2">
-                <p className="text-2xl sm:text-3xl font-extrabold leading-loose text-ink">
-                  <Jp text={formatQuestionDisplay(currentQ.q, learnerName)} />
+                <p className="text-2xl sm:text-3xl font-extrabold leading-loose text-ink" lang="ja">
+                  {formatQuestionDisplay(currentQ.q, learnerName)}
                 </p>
                 <p className="text-base sm:text-lg text-sub font-medium">
                   {currentQ.qVn}
@@ -625,8 +787,8 @@ function SessionPlayer({
                   </div>
 
                   <div className="space-y-2">
-                    <p className="text-2xl sm:text-3xl font-extrabold leading-loose text-ok">
-                      <Jp text={currentQ.aJp} />
+                    <p className="text-2xl sm:text-3xl font-extrabold leading-loose text-ok" lang="ja">
+                      {currentQ.aJp}
                     </p>
                     <p className="text-base text-sub font-medium">
                       {currentQ.aVn}
