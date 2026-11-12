@@ -36,28 +36,8 @@ export const stripMd = (s: string) =>
     .replace(/^\*(.*)\*$/, '$1')
     .trim()
 
-const isMeaningHeader = (h: string) => /nghĩa/i.test(h)
-
-/** Work out which table columns hold a word and which its meaning (vocab tables vary a lot). */
-export function vocabColumns(headers: string[]): { word: number; meaning: number; notes: number[] }[] {
-  const means = headers.map((h, i) => (isMeaningHeader(h) ? i : -1)).filter((i) => i >= 0)
-  const groups: { word: number; meaning: number; notes: number[] }[] = []
-  let start = 0
-  means.forEach((m, gi) => {
-    let word = start
-    while (word < m && /^#?$/.test(headers[word]!.trim())) word++
-    if (word >= m) {
-      start = m + 1
-      return
-    }
-    const notes: number[] = []
-    for (let c = word + 1; c < m; c++) notes.push(c)
-    if (gi === means.length - 1) for (let c = m + 1; c < headers.length; c++) notes.push(c)
-    groups.push({ word, meaning: m, notes })
-    start = m + 1
-  })
-  return groups
-}
+import { vocabColumns } from '../../src/lib/vocabFilter'
+export { vocabColumns }
 
 const escAttr = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 

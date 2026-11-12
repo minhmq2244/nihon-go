@@ -32,10 +32,14 @@ const stripOptional = (f: string) =>
     .trim()
 
 /** All accepted ways of writing a vocab word. */
-export function vocabAnswers(jp: string): string[] {
-  const cleaned = jp.replace(/［[^］]*］/g, '').replace(/\((?:I|II|III|N|い|な)\)/g, '')
-  const forms = splitTopLevel(cleaned, '／↔').map((f) => f.replace(/^〜/, '').trim())
-  return [...new Set(forms.flatMap((f) => [f, stripOptional(f)]).filter(Boolean))]
+export function vocabAnswers(jp: string, rawJp?: string): string[] {
+  const sources = [jp, ...(rawJp && rawJp !== jp ? [rawJp] : [])]
+  const allForms = sources.flatMap((source) => {
+    const cleaned = source.replace(/［[^］]*］/g, '').replace(/\((?:I|II|III|N|い|な)\)/g, '')
+    const forms = splitTopLevel(cleaned, '／↔').map((f) => f.replace(/^〜/, '').trim())
+    return forms.flatMap((f) => [f, stripOptional(f)]).filter(Boolean)
+  })
+  return [...new Set(allForms)]
 }
 
 export const vocabCards = (vocab: VocabItem[]): Card[] =>
@@ -126,7 +130,7 @@ export function vocabV1(u: Unit): Question[] {
     id: `${v.id}:v1`,
     type: 'SHORT',
     stem: v.meaning,
-    answers: vocabAnswers(v.jp),
+    answers: vocabAnswers(v.jp, v.rawJp),
   }))
 }
 
@@ -148,7 +152,7 @@ export function vocabV3(u: Unit): Question[] {
     type: 'SHORT',
     stem: '',
     audio: vocabForm(v.jp),
-    answers: vocabAnswers(v.jp),
+    answers: vocabAnswers(v.jp, v.rawJp),
     hint: 'Nghe và gõ lại từ (chữ Hán hoặc hiragana)',
   }))
 }

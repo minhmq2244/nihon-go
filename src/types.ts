@@ -60,6 +60,7 @@ export interface VocabItem {
   meaning: string
   note?: string
   group: string
+  rawJp?: string
 }
 
 export interface KanjiCompound {

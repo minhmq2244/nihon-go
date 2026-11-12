@@ -56,7 +56,8 @@ function words(jp: string): string[][] {
 /** Does this Japanese sentence (furigana notation) use the vocab entry? */
 export function usesVocab(v: VocabItem, jp: string): boolean {
   const hay = norm(written(jp.replace(/［|］/g, '')))
-  return words(v.jp).every((forms) => forms.some((f) => keys(f).some((k) => hay.includes(k))))
+  const matches = (target: string) => words(target).every((forms) => forms.some((f) => keys(f).some((k) => hay.includes(k))))
+  return matches(v.jp) || (v.rawJp ? matches(v.rawJp) : false)
 }
 
 /** What to speak for a vocab entry: its kana reading, without notes; alternatives joined by 、. */
@@ -71,7 +72,8 @@ export function missingVocab(vocab: VocabItem[], lines: Line[]): string[] {
   // written text only (a reading like おとし would match お年（とし）), lines kept apart by ｜
   const hay = norm(written(lines.map((l) => l.jp).join('｜')))
   const used = (forms: string[]) => forms.some((f) => keys(f).some((k) => hay.includes(k)))
-  return vocab.filter((v) => !words(v.jp).every(used)).map((v) => v.jp)
+  const isUsed = (target: string) => words(target).every(used)
+  return vocab.filter((v) => !isUsed(v.jp) && !(v.rawJp && isUsed(v.rawJp))).map((v) => v.jp)
 }
 
 /** Kanji (single characters) that never appear in the lines, readings （…） ignored. */

@@ -1,4 +1,7 @@
 // Parses the textbook volumes (content/source/tapN.md) into units and exams.
+import { existsSync, readFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type {
   ConfuseGroup,
   FillTable,
@@ -14,7 +17,10 @@ import type {
 } from '../../src/types'
 import { toBase } from '../../src/lib/furigana'
 import { norm } from '../../src/lib/normalize'
+import { filterVocabSectionMd } from '../../src/lib/vocabFilter'
 import { lexer, render, renderInline, splitHeadings, stripMd, vocabColumns, type Block } from './markdown'
+
+const ROOT = resolve(fileURLToPath(import.meta.url), '../../..')
 
 export interface RawUnit {
   id: string
@@ -98,21 +104,58 @@ const secId = (title: string) => /^(\d+)\./.exec(title)?.[1] ?? title
 
 // ---------------- Theory ----------------
 
-export function parseTheory(theory: string, unitId: string) {
+let cumulativeKanjiMap: Map<string, Set<string>> | null = null
+
+export function getCumulativeKanji(unitId: string): Set<string> {
+  if (!cumulativeKanjiMap) {
+    cumulativeKanjiMap = new Map()
+    const running = new Set<string>()
+    for (const vol of [1, 2, 3, 4] as const) {
+      const p = join(ROOT, 'content', 'source', `tap${vol}.md`)
+      if (!existsSync(p)) continue
+      const raw = readFileSync(p, 'utf8')
+      const { units } = splitVolume(raw, vol)
+      for (const u of units) {
+        const { blocks } = splitHeadings(u.theory, 2)
+        for (const b of blocks) {
+          if (/^3\./.test(b.title) && /Kanji/.test(b.title)) {
+            for (const k of parseKanji(b.body, u.id)) running.add(k.char)
+          }
+        }
+        cumulativeKanjiMap.set(u.id, new Set(running))
+      }
+    }
+  }
+  return cumulativeKanjiMap.get(unitId) ?? new Set()
+}
+
+export function parseTheory(theory: string, unitId: string, learnedKanji?: Set<string>) {
   const { blocks } = splitHeadings(theory, 2)
   const sections: Section[] = []
   const grammarPoints: Section[] = []
   let vocab: VocabItem[] = []
   let kanji: KanjiItem[] = []
   let confuse: ConfuseGroup[] = []
+
+  // Extract kanji first so current unit's kanji are included in the cumulative set
   for (const b of blocks) {
-    const id = secId(b.title)
-    const isVocab = /Từ vựng/.test(b.title) && id === '2'
-    sections.push({ id, title: b.title, html: render(b.body, { vocab: isVocab }) })
-    if (isVocab) vocab = parseVocab(b.body, unitId)
     if (/^3\./.test(b.title) && /Kanji/.test(b.title)) {
       kanji = parseKanji(b.body, unitId)
       confuse = parseConfuse(b.body)
+    }
+  }
+
+  const effectiveKanji = new Set([...(learnedKanji ?? getCumulativeKanji(unitId)), ...kanji.map((k) => k.char)])
+
+  for (const b of blocks) {
+    const id = secId(b.title)
+    const isVocab = /Từ vựng/.test(b.title) && id === '2'
+    if (isVocab) {
+      const filteredBody = filterVocabSectionMd(b.body, effectiveKanji)
+      sections.push({ id, title: b.title, html: render(filteredBody, { vocab: true }) })
+      vocab = parseVocab(b.body, filteredBody, unitId)
+    } else {
+      sections.push({ id, title: b.title, html: render(b.body, { vocab: isVocab }) })
     }
     if (/^5\./.test(b.title) && /Ngữ pháp/.test(b.title)) {
       for (const g of splitHeadings(b.body, 3).blocks) {
@@ -136,14 +179,24 @@ function tables(md: string): { group: string; t: { header: string[]; rows: strin
   return out
 }
 
-function parseVocab(md: string, unitId: string): VocabItem[] {
+function parseVocab(rawMd: string, filteredMdOrUnitId: string, maybeUnitId?: string): VocabItem[] {
+  const filteredMd = maybeUnitId ? filteredMdOrUnitId : rawMd
+  const unitId = maybeUnitId ?? filteredMdOrUnitId
   const items: VocabItem[] = []
   const seen = new Set<string>()
-  for (const { group, t } of tables(md)) {
+  const rawTables = tables(rawMd)
+  const filteredTables = tables(filteredMd)
+
+  for (let ti = 0; ti < filteredTables.length; ti++) {
+    const { group, t } = filteredTables[ti]!
+    const rawT = rawTables[ti]?.t
     const groups = vocabColumns(t.header)
-    for (const row of t.rows) {
+    for (let ri = 0; ri < t.rows.length; ri++) {
+      const row = t.rows[ri]!
+      const rawRow = rawT?.rows[ri]
       for (const g of groups) {
         const jp = stripMd(row[g.word] ?? '')
+        const rawJp = rawRow ? stripMd(rawRow[g.word] ?? '') : undefined
         // Editorial marks like *(bổ sung)* or *(chú ý: び)* go to the note, not the meaning.
         const marks: string[] = []
         const meaning = stripMd((row[g.meaning] ?? '').replace(/\*\(([^)]*)\)\*/g, (_, m: string) => (marks.push(m), ''))).trim()
@@ -159,7 +212,9 @@ function parseVocab(md: string, unitId: string): VocabItem[] {
           .concat(marks.filter((m) => !/^bổ sung|ghi chép/i.test(m)))
           .filter(Boolean)
           .join(' · ')
-        items.push({ id: `${unitId}-v${items.length + 1}`, jp, meaning, note: note || undefined, group })
+        const item: VocabItem = { id: `${unitId}-v${items.length + 1}`, jp, meaning, note: note || undefined, group }
+        if (rawJp && rawJp !== jp) item.rawJp = rawJp
+        items.push(item)
       }
     }
   }
