@@ -85,3 +85,4 @@ describe('vocabFilter', () => {
     expect(filterVocabWord('軽（かる）い ↔ 重（おも）い', b01Kanji)).toBe('かるい ↔ おもい')
   })
 })
+
