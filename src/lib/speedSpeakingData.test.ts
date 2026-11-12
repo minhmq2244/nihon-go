@@ -8,10 +8,10 @@ import {
 } from './speedSpeakingData'
 
 describe('speedSpeakingData', () => {
-  it('has all 20 topics defined (11 reading comprehension + 9 grammar)', () => {
-    expect(SPEED_SPEAKING_TOPICS).toHaveLength(20)
+  it('has all 21 topics defined (11 reading comprehension + 10 grammar)', () => {
+    expect(SPEED_SPEAKING_TOPICS).toHaveLength(21)
     expect(READING_COMPREHENSION_TOPICS).toHaveLength(11)
-    expect(GRAMMAR_SPEAKING_TOPICS).toHaveLength(9)
+    expect(GRAMMAR_SPEAKING_TOPICS).toHaveLength(10)
   })
 
   it('contains expected question counts per topic', () => {
@@ -22,7 +22,7 @@ describe('speedSpeakingData', () => {
       expect(rt.passage?.jp).toBeTruthy()
     }
 
-    // 9 grammar topics
+    // 10 grammar topics
     const counts = GRAMMAR_SPEAKING_TOPICS.map((t) => ({ id: t.id, count: t.questions.length }))
     expect(counts).toEqual([
       { id: 'tari-tari', count: 4 },
@@ -34,6 +34,7 @@ describe('speedSpeakingData', () => {
       { id: 'te-iru', count: 6 },
       { id: 'shumi-kikou', count: 8 },
       { id: 'cho-nhan', count: 6 },
+      { id: 'te-kara', count: 6 },
     ])
   })
 

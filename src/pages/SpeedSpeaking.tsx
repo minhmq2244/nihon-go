@@ -21,6 +21,9 @@ const STAGE_SCRIPT = 1 // Hiện chữ câu hỏi (script)
 const STAGE_HINT = 2 // Hiện gợi ý ý trả lời
 const STAGE_ANSWER = 3 // Hiện câu trả lời mẫu
 
+const readingTotalQuestions = READING_COMPREHENSION_TOPICS.reduce((sum, t) => sum + t.questions.length, 0)
+const grammarTotalQuestions = GRAMMAR_SPEAKING_TOPICS.reduce((sum, t) => sum + t.questions.length, 0)
+
 export function SpeedSpeakingPage() {
   const { learnerName, rate, set } = useSettings()
   const [activeTopic, setActiveTopic] = useState<SpeedSpeakingTopic | null>(null)
@@ -43,16 +46,16 @@ export function SpeedSpeakingPage() {
     const all = pool.flatMap((t) => t.questions)
     const title =
       category === 'comprehension'
-        ? 'Luyện ngẫu nhiên 132 câu hiểu bài đọc'
+        ? `Luyện ngẫu nhiên ${all.length} câu hiểu bài đọc`
         : category === 'grammar'
-        ? 'Luyện ngẫu nhiên 66 câu phản xạ mẫu câu'
-        : 'Luyện ngẫu nhiên tất cả 198 câu hỏi'
+        ? `Luyện ngẫu nhiên ${all.length} câu phản xạ mẫu câu`
+        : `Luyện ngẫu nhiên tất cả ${all.length} câu hỏi`
     const badge = `${all.length} câu ngẫu nhiên`
     const description =
       category === 'comprehension'
-        ? 'Xáo trộn toàn bộ câu hỏi kiểm tra độ hiểu nội dung từ 11 câu chuyện bài đọc Bài 11.'
+        ? `Xáo trộn toàn bộ câu hỏi kiểm tra độ hiểu nội dung từ ${READING_COMPREHENSION_TOPICS.length} câu chuyện bài đọc.`
         : category === 'grammar'
-        ? 'Xáo trộn toàn bộ câu hỏi từ tất cả 9 chủ đề mẫu câu ngữ pháp thông dụng N5 → N4.'
+        ? `Xáo trộn toàn bộ câu hỏi từ tất cả ${GRAMMAR_SPEAKING_TOPICS.length} chủ đề mẫu câu ngữ pháp thông dụng N5 → N4.`
         : 'Xáo trộn toàn bộ câu hỏi từ cả bài đọc hiểu và phản xạ mẫu câu.'
 
     const mixedTopic: SpeedSpeakingTopic = {
@@ -178,7 +181,7 @@ export function SpeedSpeakingPage() {
               )}
             >
               <BookOpen size={16} />
-              Hiểu nội dung bài đọc ({READING_COMPREHENSION_TOPICS.length} bài · 132 câu)
+              Hiểu nội dung bài đọc ({READING_COMPREHENSION_TOPICS.length} bài · {readingTotalQuestions} câu)
             </button>
             <button
               type="button"
@@ -191,7 +194,7 @@ export function SpeedSpeakingPage() {
               )}
             >
               <Zap size={16} />
-              Phản xạ mẫu câu ({GRAMMAR_SPEAKING_TOPICS.length} chủ đề · 66 câu)
+              Phản xạ mẫu câu ({GRAMMAR_SPEAKING_TOPICS.length} chủ đề · {grammarTotalQuestions} câu)
             </button>
           </div>
 

@@ -1854,6 +1854,64 @@ export const GRAMMAR_SPEAKING_TOPICS: SpeedSpeakingTopic[] = [
       }
     ],
     "category": "grammar"
+  },
+  {
+    "id": "te-kara",
+    "title": "Chuỗi hành động và Trình tự thời gian（〜て、〜／〜てから）",
+    "shortTitle": "Trình tự hành động て・てから",
+    "badge": "〜て、〜／〜てから",
+    "description": "Luyện phản xạ nghe hiểu các câu hỏi đưa ra hành động làm tiền đề và hỏi hành động tiếp theo.",
+    "category": "grammar",
+    "questions": [
+      {
+        "id": "tekara-1",
+        "q": "～さんは映画を見て、なにをしますか。",
+        "qVn": "Bạn xem phim xong thì làm gì?",
+        "hint": "Đi ăn cơm với bạn ở nhà hàng",
+        "aJp": "友達とレストランへ行って、ご飯を食べます。",
+        "aVn": "Tôi đi đến nhà hàng với bạn rồi ăn cơm."
+      },
+      {
+        "id": "tekara-2",
+        "q": "～さんは授業が終わってから、どこへ行きますか。",
+        "qVn": "Sau khi hết giờ học bạn đi đâu?",
+        "hint": "Về nhà rồi nấu ăn",
+        "aJp": "うちへ帰ってから、料理を作ります。",
+        "aVn": "Sau khi về nhà thì tôi nấu ăn."
+      },
+      {
+        "id": "tekara-3",
+        "q": "～さんは朝起きてから、なにをしますか。",
+        "qVn": "Buổi sáng thức dậy xong bạn làm gì?",
+        "hint": "Chạy bộ rồi tắm",
+        "aJp": "ジョギングをしてから、シャワーを浴びます。",
+        "aVn": "Chạy bộ xong rồi tôi đi tắm."
+      },
+      {
+        "id": "tekara-4",
+        "q": "～さんは映画を見てから、すぐうちに帰りますか。",
+        "qVn": "Xem phim xong bạn có về nhà ngay không?",
+        "hint": "Không, đi uống cà phê với bạn",
+        "aJp": "いいえ、友達とお茶を飲んでから帰ります。",
+        "aVn": "Không, tôi uống trà với bạn xong rồi mới về."
+      },
+      {
+        "id": "tekara-5",
+        "q": "～さんはスーパーで買い物をして、なにをしますか。",
+        "qVn": "Đi siêu thị mua sắm xong bạn làm gì?",
+        "hint": "Về nhà cất đồ vào tủ lạnh",
+        "aJp": "うちへ帰って、冷蔵庫に入れます。",
+        "aVn": "Tôi về nhà rồi cất vào tủ lạnh."
+      },
+      {
+        "id": "tekara-6",
+        "q": "～さんは国へ帰ってから、なにをしたいですか。",
+        "qVn": "Sau khi về nước bạn muốn làm gì?",
+        "hint": "Làm việc ở công ty Nhật",
+        "aJp": "日本の会社で働きたいです。",
+        "aVn": "Tôi muốn làm việc ở công ty Nhật."
+      }
+    ]
   }
 ]
 
