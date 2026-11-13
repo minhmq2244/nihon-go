@@ -1,16 +1,21 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, FileText, Flame, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun, Zap } from 'lucide-react'
+import { BookOpen, ClipboardCheck, FileText, Flame, Headphones, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun, Zap } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
 import { cx } from './ui'
 import { ErrorBoundary } from './ErrorBoundary'
 import { VoiceNotice } from './VoiceNotice'
+import { usePassiveEngine } from '../lib/passiveEngine'
+import { usePassivePlayer } from '../store/passivePlayer'
+import { PassiveMiniPlayer } from './PassiveMiniPlayer'
+import { PassiveFullPlayer } from './PassiveFullPlayer'
 
 const NAV = [
   { to: '/', label: 'Trang chủ', short: 'Chủ', icon: Home, end: true },
   { to: '/units', label: 'Học theo bài', short: 'Bài học', icon: BookOpen },
+  { to: '/passive-listening', label: 'Nghe thụ động', short: 'Nghe', icon: Headphones },
   { to: '/speed-speaking', label: 'Luyện nói cấp tốc', short: 'Nói nhanh', icon: Zap },
   { to: '/kaiwa', label: 'Kaiwa', short: 'Kaiwa', icon: MessagesSquare },
   { to: '/review', label: 'Ôn tập', short: 'Ôn tập', icon: Repeat },
@@ -72,8 +77,12 @@ export function Layout() {
   const { sidebarCollapsed, set } = useSettings()
   const toggleSidebar = () => set({ sidebarCollapsed: !sidebarCollapsed })
 
+  usePassiveEngine()
+
   useEffect(() => {
-    stopSpeaking()
+    if (!usePassivePlayer.getState().isPlaying) {
+      stopSpeaking()
+    }
     window.scrollTo(0, 0)
   }, [pathname])
 
@@ -194,7 +203,10 @@ export function Layout() {
         </ErrorBoundary>
       </main>
 
-      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-7 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+      <PassiveMiniPlayer />
+      <PassiveFullPlayer />
+
+      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-8 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         {NAV.map((n) => (
           <NavLink
             key={n.to}
