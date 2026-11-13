@@ -1,41 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Unit, VocabItem } from '../types'
+import { toBase } from '../lib/furigana'
 import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak } from '../lib/speech'
 import { useSettings } from '../store/settings'
 import { FloatingPlayer, PlayerControls, usePlaylist } from './AudioPlayer'
 import { Jp } from './Jp'
 import { SpeedControl } from './SpeedControl'
-import { Card, Chip, SpeakButton, cx } from './ui'
-import {
-  BookOpen,
-  CheckCircle2,
-  MessageSquare,
-  Play,
-  Sparkles,
-  Volume2,
-} from 'lucide-react'
-import {
-  getVocabStory,
-  getVocabStoryCoverage,
-  type VocabStoryPart,
-} from '../lib/vocabStoryData'
+import { Button, Card, Chip, SpeakButton, cx } from './ui'
+import { BookOpen, CheckCircle2, Play, Sparkles, Volume2 } from 'lucide-react'
+import { getVocabStory, getVocabStoryCoverage } from '../lib/vocabStoryData'
 
-const SPEAKER_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  ナム: { bg: 'bg-blue-500/10 text-blue-700 dark:text-blue-300', text: 'text-blue-600', border: 'border-blue-500/30' },
-  田中先生: { bg: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300', text: 'text-emerald-600', border: 'border-emerald-500/30' },
-  マイク: { bg: 'bg-amber-500/10 text-amber-700 dark:text-amber-300', text: 'text-amber-600', border: 'border-amber-500/30' },
-  'マルコ & ジョン': { bg: 'bg-purple-500/10 text-purple-700 dark:text-purple-300', text: 'text-purple-600', border: 'border-purple-500/30' },
-  'キム & レック': { bg: 'bg-pink-500/10 text-pink-700 dark:text-pink-300', text: 'text-pink-600', border: 'border-pink-500/30' },
-  'ワン & イワン': { bg: 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300', text: 'text-indigo-600', border: 'border-indigo-500/30' },
-  'カルロス & ハンス': { bg: 'bg-teal-500/10 text-teal-700 dark:text-teal-300', text: 'text-teal-600', border: 'border-teal-500/30' },
-  'ピエール & エヴァ': { bg: 'bg-rose-500/10 text-rose-700 dark:text-rose-300', text: 'text-rose-600', border: 'border-rose-500/30' },
-}
+/** Lines that start a new speaker or block keep their own line inside the passage */
+const NEW_LINE = /^(【|[^\s、。「」]{1,10}[:：]「|「)/
 
 export function VocabStorySection({ unit }: { unit: Unit }) {
   const story = useMemo(() => getVocabStory(unit.meta.id), [unit.meta.id])
-  const [activeTab, setActiveTab] = useState(0)
   const [showVn, setShowVn] = useState<'none' | 'tap' | 'all'>('tap')
-  const [shownLines, setShownLines] = useState<Set<number>>(new Set())
+  const [sel, setSel] = useState<number | null>(null)
   const [selectedVocabId, setSelectedVocabId] = useState<string | null>(null)
   const [voices, setVoices] = useState(() => japaneseVoices())
 
@@ -54,15 +35,12 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
     return getVocabStoryCoverage(story, unit.vocab)
   }, [story, unit.vocab])
 
-  const curPart: VocabStoryPart | undefined = story?.parts[activeTab]
-
-  // Audio tracks for the current part
   const playlistTracks = useMemo(() => {
-    if (!curPart) return []
-    return curPart.lines.map((l) => ({ text: l.jp }))
-  }, [curPart])
+    if (!story) return []
+    return story.lines.map((l) => ({ text: l.jp }))
+  }, [story])
 
-  const p = usePlaylist(playlistTracks, { gapMs: 400, voiceURI: voiceA || undefined })
+  const p = usePlaylist(playlistTracks, { gapMs: 380, voiceURI: voiceA || undefined })
   const playing = p.cur
   const at = (p.cur ?? p.pos) + 1
 
@@ -70,136 +48,80 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
     return onVoicesChanged(() => setVoices(japaneseVoices()))
   }, [])
 
-  // Reset audio & line highlights on part change
+  // When story changes or unit changes, reset audio & selection
   useEffect(() => {
     p.stop()
-    setShownLines(new Set())
+    setSel(null)
     setSelectedVocabId(null)
-  }, [activeTab])
+  }, [unit.meta.id])
 
-  if (!story || !curPart) return null
+  if (!story) return null
 
-  // Vocab items covered in this current scene
-  const partVocabs = curPart.vocabCovered
-    .map((id) => vocabMap.get(id))
-    .filter((v): v is VocabItem => Boolean(v))
-
+  const line = sel !== null ? story.lines[sel] : undefined
   const selectedVocab = selectedVocabId ? vocabMap.get(selectedVocabId) : null
 
   return (
-    <Card className="border-2 border-emerald-500/30 bg-surface p-5 sm:p-6 shadow-sm space-y-5">
-      <FloatingPlayer p={p} title={`Câu chuyện Từ vựng · ${curPart.titleVn}`} />
+    <div className="scroll-mt-32 space-y-4">
+      <FloatingPlayer p={p} title={`Đoạn văn Từ vựng · ${story.titleVn}`} />
 
-      {/* Top Banner Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-line">
-        <div>
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-            <BookOpen size={14} />
-            <span>Đoạn văn ngữ cảnh Từ vựng</span>
-            <span>·</span>
-            <span>{story.parts.length} cảnh hội thoại</span>
-          </div>
-          <h3 className="mt-1.5 text-xl sm:text-2xl font-black text-ink">
-            {story.titleVn}
-          </h3>
-          <p className="mt-0.5 text-xs sm:text-sm text-sub">
-            {story.subtitle}
-          </p>
+      {/* Top Header & Translation Control Chips */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+          <BookOpen size={14} />
+          <span>Đoạn văn ngữ cảnh Từ vựng</span>
+          <span>·</span>
+          <span>{story.lines.length} câu</span>
         </div>
 
-        {/* Coverage Badge */}
-        <div className="flex items-center gap-2 rounded-xl bg-ok-soft/70 border border-ok/40 px-3.5 py-2 text-xs">
-          <CheckCircle2 size={20} className="text-ok shrink-0" />
-          <div>
-            <p className="font-bold text-ok">Phủ 100% Từ vựng bài học</p>
-            <p className="text-[11px] text-sub">
-              Đã kết nối {coverage.covered.length}/{unit.vocab.length} từ vào văn cảnh
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Scene Tabs Switcher & Translation controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5">
-        <div className="no-print flex gap-2 overflow-x-auto pb-1 text-xs sm:text-sm">
-          {story.parts.map((part, idx) => (
-            <Chip
-              key={part.id}
-              active={activeTab === idx}
-              onClick={() => setActiveTab(idx)}
-              className={cx(
-                'py-1.5 px-3 transition cursor-pointer',
-                activeTab === idx && 'bg-emerald-600 text-white border-emerald-600 shadow-xs',
-              )}
-            >
-              <span className="font-bold mr-1">Cảnh {part.num}:</span>
-              <span>{part.title.replace(/（[^）]*）/g, '')}</span>
-              <span className="ml-1.5 rounded-full bg-black/15 px-1.5 py-0.2 text-[10px] font-semibold">
-                {part.vocabCovered.length} từ
-              </span>
-            </Chip>
-          ))}
-        </div>
-
-        {/* Translation Mode Buttons */}
-        <div className="flex items-center gap-1 text-xs">
-          <Chip active={showVn === 'tap'} onClick={() => setShowVn('tap')} className="text-xs py-1">
-            Bấm câu để dịch
+        <div className="flex items-center gap-1 text-xs sm:text-sm">
+          <Chip active={showVn === 'tap'} onClick={() => setShowVn('tap')}>
+            Bấm câu để xem nghĩa
           </Chip>
-          <Chip active={showVn === 'all'} onClick={() => setShowVn('all')} className="text-xs py-1">
+          <Chip active={showVn === 'all'} onClick={() => setShowVn('all')}>
             Hiện bản dịch
           </Chip>
-          <Chip active={showVn === 'none'} onClick={() => setShowVn('none')} className="text-xs py-1">
+          <Chip active={showVn === 'none'} onClick={() => setShowVn('none')}>
             Không dịch
           </Chip>
         </div>
       </div>
 
-      {/* Scene Intro & Context */}
-      <div className="rounded-xl border border-line/70 bg-muted/20 p-3 text-xs sm:text-sm text-sub flex items-start gap-2.5">
-        <MessageSquare size={16} className="text-emerald-500 shrink-0 mt-0.5" />
-        <div>
-          <span className="font-bold text-ink mr-1.5">Bối cảnh Cảnh {curPart.num}:</span>
-          <span>{curPart.scene}</span>
-        </div>
-      </div>
-
-      {/* Audio Control Bar */}
-      <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3.5 space-y-3">
+      {/* Audio Player Card (styled identically to ReadingTab) */}
+      <Card className="p-5 border-emerald-500/30 bg-gradient-to-br from-surface via-surface to-emerald-500/10 shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-3">
             <div
               className={cx(
-                'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all',
-                playing !== null ? 'bg-emerald-600 text-white shadow-xs' : 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400',
+                'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl shadow-xs transition-all',
+                playing !== null ? 'bg-emerald-600 text-white shadow-md' : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400',
               )}
             >
-              <Volume2 size={20} className={playing !== null ? 'animate-pulse' : ''} />
+              <Volume2 size={24} className={playing !== null ? 'animate-pulse' : ''} />
             </div>
             <div>
-              <span className="text-sm font-bold text-ink">Luyện nghe câu chuyện ngữ cảnh</span>
-              <p className="text-xs text-sub">
+              <span className="text-base sm:text-lg font-bold text-ink">Đọc cả đoạn văn</span>
+              <p className="text-xs sm:text-sm text-sub mt-0.5">
                 {p.active
-                  ? `${playing !== null ? 'Đang đọc' : 'Tạm dừng ở'} câu ${at}/${curPart.lines.length}`
-                  : `Gồm ${curPart.lines.length} lượt thoại · bấm nút để nghe liên tục hoặc từng câu`}
+                  ? `${playing !== null ? 'Đang đọc' : 'Tạm dừng ở'} câu ${at}/${story.lines.length} · thanh điều khiển luôn hiện ở cuối màn hình khi bạn cuộn`
+                  : `Đoạn văn kết nối toàn bộ từ mới gồm ${story.lines.length} câu · bấm số câu để phát từ câu đó`}
               </p>
             </div>
           </div>
-          <PlayerControls p={p} startLabel="Nghe toàn bộ cảnh này" />
+          <PlayerControls p={p} startLabel="Đọc cả đoạn" />
         </div>
 
-        {/* Speed and Voice controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-line/60 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line/60 pt-3">
           <SpeedControl rate={rate} onChange={(newRate) => set({ rate: newRate })} />
-
-          <div className="flex items-center gap-2">
-            <span className="text-sub font-medium">Giọng:</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-semibold text-sub">Giọng đọc:</span>
             <select
               value={voiceA}
               onChange={(e) => set({ voiceA: e.target.value })}
-              className="rounded-lg border border-line bg-surface px-2.5 py-1 text-xs font-medium text-ink focus:border-emerald-500 focus:outline-none"
+              className="max-w-[230px] sm:max-w-[280px] truncate rounded-xl border border-line bg-surface px-3 py-1.5 text-xs sm:text-sm font-medium text-ink outline-none focus:ring-2 focus:ring-emerald-500/30 cursor-pointer shadow-xs"
+              aria-label="Chọn giọng đọc tiếng Nhật"
+              title="Chọn giọng đọc tiếng Nhật"
             >
-              <option value="">Tự động ⭐</option>
+              <option value="">Tự động (Tự nhiên nhất ⭐)</option>
               {voices.map((v) => (
                 <option key={v.voiceURI} value={v.voiceURI}>
                   {friendlyVoiceName(v)}
@@ -209,213 +131,215 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
             <button
               type="button"
               onClick={() => speak('こんにちは。単語のストーリーです。', { voiceURI: voiceA || undefined, rate })}
-              className="rounded-lg border border-line bg-surface hover:bg-muted px-2 py-1 text-xs font-semibold text-sub hover:text-emerald-600 transition cursor-pointer"
+              className="rounded-xl border border-line bg-surface hover:bg-muted px-2.5 py-1.5 text-xs font-semibold text-sub hover:text-emerald-600 transition cursor-pointer shadow-xs"
+              title="Thử phát âm giọng đọc này"
             >
               Thử giọng
             </button>
           </div>
         </div>
-      </div>
+      </Card>
 
-      {/* Vocab Palette in this Scene */}
-      <div className="rounded-xl border border-line bg-muted/30 p-3 space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-sub flex items-center gap-1.5">
-            <Sparkles size={13} className="text-emerald-500" />
-            <span>Từ vựng xuất hiện trong cảnh này ({partVocabs.length} từ):</span>
-          </span>
-          {selectedVocabId && (
-            <button
-              type="button"
-              onClick={() => setSelectedVocabId(null)}
-              className="text-[11px] text-sub hover:text-emerald-600 cursor-pointer"
-            >
-              Bỏ chọn ✕
-            </button>
-          )}
+      {/* Main Text Card (Continuous single passage, identical layout to ReadingTab) */}
+      <Card className="p-6 sm:p-7 space-y-4">
+        <div>
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              {story.genre}
+            </p>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-ok bg-ok-soft/70 border border-ok/30 px-2.5 py-0.5 rounded-full">
+              <CheckCircle2 size={14} />
+              <span>Phủ {coverage.covered.length}/{unit.vocab.length} từ vựng ({Math.round(coverage.ratio * 100)}%)</span>
+            </div>
+          </div>
+          <h2 className="mt-1 text-2xl sm:text-3xl font-extrabold text-ink">
+            <Jp text={story.title} />
+          </h2>
+          <p className="mt-1 text-base text-sub font-medium">{story.titleVn}</p>
         </div>
 
-        <div className="flex flex-wrap gap-1.5">
-          {partVocabs.map((v) => {
-            const isSelected = selectedVocabId === v.id
+        {/* Continuous Flowing Paragraph with clickable sentences */}
+        <p className="text-xl leading-[2.5] font-medium text-ink">
+          {story.lines.map((l, i) => {
+            const isPlaying = playing === i
+            const isSelected = sel === i
+            const containsSelectedVocab = selectedVocabId ? l.vocabIds.includes(selectedVocabId) : false
+
             return (
-              <button
-                key={v.id}
-                type="button"
-                onClick={() => setSelectedVocabId(isSelected ? null : v.id)}
-                className={cx(
-                  'flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-bold transition cursor-pointer select-none active:scale-95',
-                  isSelected
-                    ? 'border-emerald-500 bg-emerald-600 text-white shadow-xs scale-105'
-                    : 'border-line bg-surface text-ink hover:border-emerald-500/60 hover:text-emerald-600',
-                )}
-                title={`${v.jp}: ${v.meaning}`}
-              >
-                <span>{v.jp.replace(/（[^）]*）/g, '')}</span>
-                <span className="text-[10px] opacity-75 font-normal">({v.meaning})</span>
-              </button>
+              <span key={i}>
+                {i > 0 && NEW_LINE.test(toBase(l.jp)) && <br />}
+                <span
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSel(sel === i ? null : i)}
+                  onKeyDown={(e) => {
+                    if (e.key !== 'Enter' && e.key !== ' ') return
+                    e.preventDefault()
+                    setSel(sel === i ? null : i)
+                  }}
+                  className={cx(
+                    'cursor-pointer rounded-md px-1 py-0.5 transition',
+                    isPlaying
+                      ? 'bg-emerald-500/20 ring-1 ring-emerald-500/40 text-emerald-950 dark:text-emerald-100 font-semibold'
+                      : isSelected
+                        ? 'bg-cta/35'
+                        : containsSelectedVocab
+                          ? 'bg-emerald-500/10 underline decoration-emerald-500 underline-offset-4'
+                          : 'hover:bg-muted',
+                  )}
+                  title={`Câu ${i + 1} · bấm để xem nghĩa / nghe lại`}
+                >
+                  <Jp text={l.jp} />
+                </span>{' '}
+              </span>
             )
           })}
-        </div>
+        </p>
 
-        {/* Selected Vocab Detail Card */}
-        {selectedVocab && (
-          <div className="mt-2.5 rounded-lg bg-surface border border-emerald-500/40 p-3 text-xs animate-in fade-in space-y-1.5 shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-base font-bold text-ink">
-                  <Jp text={selectedVocab.jp} />
-                </span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                  {selectedVocab.meaning}
-                </span>
+        {/* Sticky sentence translation and audio drawer (identical to ReadingTab) */}
+        {line && (
+          <div className="sticky bottom-24 z-10 mt-4 rounded-2xl border border-emerald-500/40 bg-surface p-4 shadow-md animate-in fade-in space-y-2">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                Câu {sel! + 1}/{story.lines.length}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" onClick={() => void speak(line.jp, { voiceURI: voiceA || undefined, rate })}>
+                  🔊 Nghe câu này
+                </Button>
+                <Button size="sm" onClick={() => p.playFrom(sel!)}>
+                  <Play size={13} /> Đọc từ câu này
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setSel(null)} aria-label="Đóng">
+                  ✕
+                </Button>
               </div>
-              <SpeakButton text={selectedVocab.jp} className="h-6 w-6" />
             </div>
-            {selectedVocab.note && (
-              <p className="text-[11px] text-sub leading-relaxed">{selectedVocab.note}</p>
-            )}
-            <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-medium">
-              👉 Các câu chứa từ này đang được làm nổi bật bên dưới.
+
+            <p className="text-lg text-ink font-medium leading-relaxed">
+              <Jp text={line.jp} />
             </p>
+
+            {showVn !== 'none' && (
+              <p className="text-base font-medium text-sub">{line.vn}</p>
+            )}
+
+            {/* Vocab words in this line */}
+            {line.vocabIds && line.vocabIds.length > 0 && (
+              <div className="pt-2 border-t border-line/60 flex flex-wrap items-center gap-1.5">
+                <span className="text-xs text-sub font-semibold">Từ mới trong câu:</span>
+                {line.vocabIds.map((vid) => {
+                  const v = vocabMap.get(vid)
+                  if (!v) return null
+                  const isTarget = selectedVocabId === vid
+                  return (
+                    <span
+                      key={vid}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedVocabId(isTarget ? null : vid)
+                        void speak(v.jp, { voiceURI: voiceA || undefined, rate })
+                      }}
+                      className={cx(
+                        'inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold transition cursor-pointer',
+                        isTarget
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 hover:brightness-110',
+                      )}
+                      title={`${v.jp}: ${v.meaning} (Bấm để nghe phát âm)`}
+                    >
+                      <span>{v.jp.replace(/（[^）]*）/g, '')}</span>
+                      <span className="opacity-75 font-normal">· {v.meaning}</span>
+                    </span>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
-      </div>
 
-      {/* Main Dialogue Passage Card */}
-      <div className="rounded-xl border border-line bg-surface p-4 sm:p-5 space-y-3">
-        <div className="pb-2.5 border-b border-line flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h4 className="text-lg sm:text-xl font-bold text-ink">
-              <Jp text={curPart.title} />
-            </h4>
-            <p className="text-xs text-sub">{curPart.titleVn}</p>
+        {/* Full Vietnamese Translation (shown when showVn === 'all') */}
+        {showVn === 'all' && (
+          <div className="mt-5 rounded-2xl bg-muted/60 p-4 text-base leading-relaxed text-sub animate-in fade-in">
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+              Bản dịch toàn bộ đoạn văn:
+            </p>
+            {story.lines.map((l, i) => (
+              <span key={i}>
+                {i > 0 && NEW_LINE.test(toBase(l.jp)) && <br />}
+                {l.vn}{' '}
+              </span>
+            ))}
           </div>
-          <span className="text-xs text-sub font-medium">
-            💡 Bấm vào câu để che/hiện bản dịch tiếng Việt
-          </span>
-        </div>
+        )}
 
-        {/* Lines */}
-        <div className="space-y-2.5 pt-1">
-          {curPart.lines.map((line, idx) => {
-            const isPlaying = playing === idx
-            const isRevealed = showVn === 'all' || (showVn === 'tap' && shownLines.has(idx))
-            const containsSelectedVocab = selectedVocabId ? line.vocabIds.includes(selectedVocabId) : false
-            const speakerStyle = line.speaker ? SPEAKER_COLORS[line.speaker] ?? {
-              bg: 'bg-muted text-ink',
-              text: 'text-sub',
-              border: 'border-line',
-            } : null
-
-            return (
-              <div
-                key={idx}
-                className={cx(
-                  'group rounded-xl p-3 transition-all border',
-                  isPlaying
-                    ? 'bg-emerald-500/10 border-l-4 border-l-emerald-600 border-emerald-500/30 pl-3.5 ring-1 ring-emerald-500/30 shadow-xs'
-                    : containsSelectedVocab
-                      ? 'bg-emerald-500/5 border-emerald-500/50 shadow-xs'
-                      : 'border-line/60 hover:border-line hover:bg-muted/30',
-                  showVn === 'tap' && 'cursor-pointer',
-                )}
-                onClick={() => {
-                  if (showVn !== 'tap') return
-                  const s = new Set(shownLines)
-                  if (s.has(idx)) s.delete(idx)
-                  else s.add(idx)
-                  setShownLines(s)
-                }}
+        {/* Vocab Coverage Glossary */}
+        <div className="mt-6 pt-4 border-t border-line space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-sub flex items-center gap-1.5">
+              <Sparkles size={14} className="text-emerald-500" />
+              <span>Từ vựng bài học xuất hiện trong đoạn văn ({coverage.covered.length} từ):</span>
+            </span>
+            {selectedVocabId && (
+              <button
+                type="button"
+                onClick={() => setSelectedVocabId(null)}
+                className="text-xs text-sub hover:text-emerald-600 cursor-pointer"
               >
-                <div className="flex items-start gap-2.5">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      p.playFrom(idx)
-                    }}
-                    className={cx(
-                      'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-xs font-semibold transition cursor-pointer',
-                      isPlaying
-                        ? 'bg-emerald-600 text-white shadow-xs'
-                        : 'bg-muted text-sub hover:bg-emerald-500/20 hover:text-emerald-600 opacity-70 group-hover:opacity-100',
-                    )}
-                    title={`Phát đoạn thoại từ câu ${idx + 1}`}
-                  >
-                    {isPlaying ? <Volume2 size={13} /> : <Play size={11} />}
-                  </button>
+                Bỏ chọn ✕
+              </button>
+            )}
+          </div>
 
-                  <div className="flex-1 space-y-1.5">
-                    {/* Speaker badge */}
-                    {line.speaker && (
-                      <div className="flex items-center gap-1.5">
-                        <span
-                          className={cx(
-                            'inline-block px-2 py-0.5 rounded-md text-[11px] font-bold border',
-                            speakerStyle?.bg,
-                            speakerStyle?.border,
-                          )}
-                        >
-                          {line.speaker}
-                          {line.speakerVn && (
-                            <span className="opacity-75 font-normal ml-1">({line.speakerVn})</span>
-                          )}
-                        </span>
-                      </div>
-                    )}
+          <div className="flex flex-wrap gap-1.5">
+            {coverage.covered.map((v) => {
+              const isSelected = selectedVocabId === v.id
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedVocabId(isSelected ? null : v.id)
+                    void speak(v.jp, { voiceURI: voiceA || undefined, rate })
+                  }}
+                  className={cx(
+                    'flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-bold transition cursor-pointer select-none active:scale-95',
+                    isSelected
+                      ? 'border-emerald-500 bg-emerald-600 text-white shadow-xs scale-105'
+                      : 'border-line bg-surface text-ink hover:border-emerald-500/60 hover:text-emerald-600',
+                  )}
+                  title={`${v.jp}: ${v.meaning} (Bấm để nghe & làm nổi bật câu)`}
+                >
+                  <span>{v.jp.replace(/（[^）]*）/g, '')}</span>
+                  <span className="text-[10px] opacity-75 font-normal">({v.meaning})</span>
+                </button>
+              )
+            })}
+          </div>
 
-                    {/* Japanese line */}
-                    <div className="text-base sm:text-lg leading-relaxed font-medium text-ink">
-                      <Jp text={line.jp} />
-                    </div>
-
-                    {/* Vocab pills in this line */}
-                    {line.vocabIds.length > 0 && (
-                      <div className="flex flex-wrap items-center gap-1 pt-0.5">
-                        <span className="text-[10px] text-sub/70 font-medium mr-1">Từ mới:</span>
-                        {line.vocabIds.map((vid) => {
-                          const v = vocabMap.get(vid)
-                          if (!v) return null
-                          const isTarget = selectedVocabId === vid
-                          return (
-                            <span
-                              key={vid}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                setSelectedVocabId(isTarget ? null : vid)
-                              }}
-                              className={cx(
-                                'inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-medium transition cursor-pointer',
-                                isTarget
-                                  ? 'bg-emerald-600 text-white shadow-xs'
-                                  : 'bg-muted/80 text-sub hover:bg-emerald-500/20 hover:text-emerald-700 dark:hover:text-emerald-300',
-                              )}
-                              title={`${v.jp}: ${v.meaning}`}
-                            >
-                              <span>{v.jp.replace(/（[^）]*）/g, '')}</span>
-                              <span className="text-[9px] opacity-75">· {v.meaning}</span>
-                            </span>
-                          )
-                        })}
-                      </div>
-                    )}
-
-                    {/* Vietnamese translation line */}
-                    {isRevealed && (
-                      <p className="mt-1.5 pt-1.5 border-t border-line/40 text-xs sm:text-sm text-sub font-medium leading-relaxed animate-in fade-in">
-                        {line.vn}
-                      </p>
-                    )}
-                  </div>
-
-                  <SpeakButton text={line.jp} className="opacity-40 group-hover:opacity-100 shrink-0 mt-0.5 h-6 w-6" />
+          {selectedVocab && (
+            <div className="rounded-xl bg-surface border border-emerald-500/40 p-3 text-xs animate-in fade-in space-y-1 shadow-xs">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-bold text-ink">
+                    <Jp text={selectedVocab.jp} />
+                  </span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                    {selectedVocab.meaning}
+                  </span>
                 </div>
+                <SpeakButton text={selectedVocab.jp} className="h-6 w-6" />
               </div>
-            )
-          })}
+              {selectedVocab.note && (
+                <p className="text-[11px] text-sub leading-relaxed">{selectedVocab.note}</p>
+              )}
+              <p className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-medium">
+                👉 Câu chứa từ này đang được gạch chân và làm nổi bật trong đoạn văn ở trên.
+              </p>
+            </div>
+          )}
         </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   )
 }
