@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, ClipboardCheck, MessagesSquare, Repeat, Target } from 'lucide-react'
+import { ArrowRight, BookOpen, ClipboardCheck, Headphones, MessagesSquare, Repeat, Target, Zap } from 'lucide-react'
 import { useIndex, unitLabel } from '../lib/data'
 import { sectionOf, tabLabel, unitRatio } from '../lib/progressInfo'
 import { streakOf, today, useProgress } from '../store/progress'
@@ -122,6 +122,47 @@ export function Home() {
             {todayCount >= goal ? '🎉 Đã đạt mục tiêu hôm nay!' : `Còn ${goal - todayCount} câu đúng nữa`}
           </p>
         </Card>
+      </div>
+
+      {/* Quick Access to High-Impact Features */}
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Link to="/passive-listening" className="group">
+          <Card className="h-full p-5 sm:p-6 transition-all border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-surface to-surface hover:border-emerald-500 hover:shadow-lg">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                <Headphones size={13} /> Mới: Nghe thụ động
+              </span>
+              <span className="text-xs text-sub font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition flex items-center gap-1">
+                Bật nghe ngay <ArrowRight size={14} />
+              </span>
+            </div>
+            <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-emerald-600 transition">
+              🎧 Nghe thụ động (Passive Listening)
+            </h3>
+            <p className="mt-1 text-sm text-sub">
+              Mega Mix ôn thi Bài 8-11 liên tục & 10 chủ đề đời sống thực tế kèm trình phát lời đồng bộ kiểu Spotify.
+            </p>
+          </Card>
+        </Link>
+
+        <Link to="/speed-speaking" className="group">
+          <Card className="h-full p-5 sm:p-6 transition-all border-accent/30 bg-gradient-to-br from-accent/10 via-surface to-surface hover:border-accent hover:shadow-lg">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider">
+                <Zap size={13} /> Luyện phản xạ
+              </span>
+              <span className="text-xs text-sub font-semibold group-hover:text-accent transition flex items-center gap-1">
+                Luyện ngay <ArrowRight size={14} />
+              </span>
+            </div>
+            <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-accent transition">
+              ⚡ Luyện nói cấp tốc (Speed Speaking)
+            </h3>
+            <p className="mt-1 text-sm text-sub">
+              Phản xạ đa tốc độ (0.8x - 1.2x), thẻ lật đảo chiều hỏi - đáp phản xạ tự nhiên.
+            </p>
+          </Card>
+        </Link>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
