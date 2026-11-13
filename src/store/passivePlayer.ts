@@ -164,3 +164,4 @@ export function getCurrentLine(state: PassivePlayerState): PassiveLine | null {
   if (!track || !track.lines.length) return null
   return track.lines[state.lineIndex] || null
 }
+
