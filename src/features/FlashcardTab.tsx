@@ -8,6 +8,7 @@ import { useCardSelection } from '../store/cardSelection'
 import { Flashcards, Learn, Match } from '../components/Study'
 import { DeckEditor } from '../components/DeckEditor'
 import { WordSelector } from '../components/WordSelector'
+import { VocabStorySection } from '../components/VocabStorySection'
 import { Button, Card, Chip, Empty } from '../components/ui'
 
 const MODES = [
@@ -277,6 +278,13 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
             />
           )}
         </Card>
+      )}
+
+      {/* Vocabulary Story Passage: 1 continuous story passage with all vocab items */}
+      {deck === 'vocab' && (
+        <div className="mt-8 border-t border-line/80 pt-6">
+          <VocabStorySection unit={unit} />
+        </div>
       )}
     </div>
   )

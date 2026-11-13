@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { Link, NavLink, useParams } from 'react-router-dom'
+import { Headphones } from 'lucide-react'
 import { useIndex, useUnit, unitLabel } from '../lib/data'
+import { getPlaylistById } from '../lib/passiveListeningData'
+import { usePassivePlayer } from '../store/passivePlayer'
 import { UNIT_SECTIONS, sectionOf, tabLabel, useUnitProgress, type UnitTab } from '../lib/progressInfo'
 import { useProgress } from '../store/progress'
 import { Jp } from '../components/Jp'
@@ -33,6 +36,7 @@ export function UnitPage() {
   const { data: index } = useIndex()
   const visit = useProgress((s) => s.visit)
   const { tabs } = useUnitProgress(id)
+  const playPlaylist = usePassivePlayer((s) => s.playPlaylist)
   useEffect(() => {
     if (unit) visit(id, tab)
   }, [unit, id, tab, visit])
@@ -63,7 +67,20 @@ export function UnitPage() {
           </h1>
           <p className="mt-1.5 text-base sm:text-lg text-sub font-medium">{unit.meta.subtitle}</p>
         </div>
-        <div className="flex gap-3 text-base font-semibold">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-base font-semibold">
+          {['b08', 'b09', 'b10', 'b11'].includes(id) && (
+            <button
+              type="button"
+              onClick={() => {
+                const pl = getPlaylistById(`pl-${id}`)
+                if (pl) playPlaylist(pl, 0)
+              }}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1 text-sm font-bold hover:bg-emerald-500/20 active:scale-95 transition cursor-pointer"
+              title="Bật nghe thụ động bài này"
+            >
+              <Headphones size={16} /> Nghe thụ động bài {id.replace('b', '')}
+            </button>
+          )}
           {prev && (
             <Link className="rounded-lg bg-surface border border-line px-3 py-1 text-sub hover:border-accent hover:text-accent transition" to={`/u/${prev.id}/${tab}`}>
               ← {unitLabel(prev)}

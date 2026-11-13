@@ -8,6 +8,7 @@ import { useSettings } from '../store/settings'
 import { Jp } from '../components/Jp'
 import { SpeedControl } from '../components/SpeedControl'
 import { FocusDeck, LevelSteps, PlayBig } from '../components/FocusDeck'
+import { PassiveUnitBanner } from '../components/PassiveUnitBanner'
 import { Button, Empty, cx } from '../components/ui'
 import { roleOf } from './ListeningTab'
 
@@ -81,6 +82,7 @@ export function ListenPracticeTab({ unit }: { unit: Unit }) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-4">
+      <PassiveUnitBanner unitId={uid} />
       <LevelSteps levels={levels} cur={lv} onPick={setLv} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-base text-sub">{LEVELS[lv]!.hint}</p>

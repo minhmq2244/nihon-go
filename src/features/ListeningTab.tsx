@@ -7,6 +7,7 @@ import { DrillItem, DrillRunner, type Question } from '../components/Drill'
 import { Jp } from '../components/Jp'
 import { SpeedControl } from '../components/SpeedControl'
 import { FloatingPlayer, PlayerControls, usePlaylist } from '../components/AudioPlayer'
+import { PassiveUnitBanner } from '../components/PassiveUnitBanner'
 import { Button, Card, Chip, Empty, cx } from '../components/ui'
 
 export const LISTEN_TYPES: Record<ListeningType, string> = {
@@ -33,6 +34,7 @@ export function ListeningTab({ unit }: { unit: Unit }) {
   const types = [...new Set(list.map((l) => l.type))]
   return (
     <div className="space-y-4">
+      <PassiveUnitBanner unitId={unit.meta.id} />
       <div className="flex flex-wrap gap-2">
         <Chip active={filter === 'all'} onClick={() => setFilter('all')}>
           Tất cả ({list.length})
