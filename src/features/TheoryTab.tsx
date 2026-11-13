@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import type { Unit } from '../types'
 import { Html } from '../components/Jp'
 import { KanjiReadingPractice } from '../components/KanjiReadingPractice'
+import { VocabStorySection } from '../components/VocabStorySection'
 import { Card, Chip, cx } from '../components/ui'
 import { useProgress } from '../store/progress'
 import { setKey } from '../lib/progressInfo'
+import { hasVocabStory } from '../lib/vocabStoryData'
 
 export function TheoryTab({ unit }: { unit: Unit }) {
   const [hideMean, setHideMean] = useState(false)
@@ -18,6 +20,7 @@ export function TheoryTab({ unit }: { unit: Unit }) {
       <aside className="no-print hidden lg:block">
         <div className="sticky top-32 space-y-1.5 text-base">
           {unit.theory.map((s) => {
+            const isVocabSec = s.id === '2' || /từ vựng/i.test(s.title)
             const isKanjiSec = s.id === '3' || /kanji|chữ hán/i.test(s.title)
             return (
               <div key={s.id} className="space-y-1">
@@ -28,6 +31,15 @@ export function TheoryTab({ unit }: { unit: Unit }) {
                 >
                   {s.title}
                 </a>
+                {isVocabSec && hasVocabStory(unit.meta.id) && (
+                  <a
+                    href="#sec-vocab-story"
+                    onClick={(e) => scrollTo(e, 'vocab-story')}
+                    className="ml-3 flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-600 hover:text-white transition"
+                  >
+                    <span>📖 Đoạn văn Từ vựng</span>
+                  </a>
+                )}
                 {isKanjiSec && unit.kanji && unit.kanji.length > 0 && (
                   <a
                     href="#sec-kanji-readings"
@@ -69,6 +81,7 @@ export function TheoryTab({ unit }: { unit: Unit }) {
           </Card>
         )}
         {unit.theory.map((s) => {
+          const isVocabSec = s.id === '2' || /từ vựng/i.test(s.title)
           const isKanjiSec = s.id === '3' || /kanji|chữ hán/i.test(s.title)
           return (
             <div key={s.id} className="space-y-6">
@@ -90,6 +103,13 @@ export function TheoryTab({ unit }: { unit: Unit }) {
                 {s.id === '2' && (hideMean || hideWord) && <p className="mt-2 text-sm text-sub">Bấm vào ô bị che để xem đáp án.</p>}
                 <Html html={s.html} className={cx('mt-4', s.id === '2' && hideMean && 'hide-mean', s.id === '2' && hideWord && 'hide-word')} />
               </Card>
+
+              {/* ĐOẠN VĂN NGỮ CẢNH KẾT NỐI TOÀN BỘ TỪ VỰNG NGAY SAU PHẦN TỪ VỰNG */}
+              {isVocabSec && hasVocabStory(unit.meta.id) && (
+                <div id="sec-vocab-story" className="scroll-mt-32">
+                  <VocabStorySection unit={unit} />
+                </div>
+              )}
 
               {/* 3 ĐOẠN VĂN LUYỆN ĐỌC KANJI NGAY SAU PHẦN HỌC KANJI */}
               {isKanjiSec && unit.kanji && unit.kanji.length > 0 && (
