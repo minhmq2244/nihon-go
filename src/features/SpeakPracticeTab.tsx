@@ -72,6 +72,7 @@ export function SpeakPracticeTab({ unit }: { unit: Unit }) {
           {...common(1)}
           items={sentences}
           keyOf={(s) => prefix(1) + s.key}
+          itemLabel="Câu"
           okLabel="Nói trôi rồi"
           againLabel="Nhại thêm"
           onShow={(s) => say(s.card.jp)}
@@ -94,6 +95,7 @@ export function SpeakPracticeTab({ unit }: { unit: Unit }) {
           {...common(2)}
           items={sentences}
           keyOf={(s) => prefix(2) + s.key}
+          itemLabel="Câu"
           reveal
           revealLabel="Xem câu tiếng Nhật"
           okLabel="Nói trôi rồi"
@@ -122,9 +124,10 @@ export function SpeakPracticeTab({ unit }: { unit: Unit }) {
         (asks.length ? (
           <FocusDeck<Ask>
             key={3}
-          {...common(3)}
+            {...common(3)}
             items={asks}
             keyOf={(a) => prefix(3) + a.key}
+            itemLabel="Hỏi - đáp"
             reveal
             revealLabel="Xem câu trả lời mẫu"
             okLabel="Trả lời trôi"
@@ -140,10 +143,11 @@ export function SpeakPracticeTab({ unit }: { unit: Unit }) {
         (steps.length ? (
           <FocusDeck<Step>
             key={4}
-          {...common(4)}
+            {...common(4)}
             next={undefined}
             items={steps}
             keyOf={(s) => prefix(4) + s.key}
+            itemLabel="Tạo câu"
             reveal
             revealLabel="Xem câu tiếng Nhật"
             okLabel="Nói trôi cả câu"

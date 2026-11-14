@@ -48,6 +48,8 @@ interface Progress extends ProgressData {
   saveTime: (id: string, ms: number) => void
   /** Mark a card as mastered (counts toward the daily goal). */
   mark: (key: string) => void
+  /** Unmark a card from the mastered list. */
+  unmark: (key: string) => void
   /** Forget the marks whose key starts with prefix (practise a level again). */
   clearMarks: (prefix: string) => void
   visit: (unitId: string, tab?: string) => void
@@ -102,6 +104,13 @@ export const useProgress = create<Progress>()(
         set((s) => {
           const d = today()
           return { marks: { ...s.marks, [key]: Date.now() }, days: { ...s.days, [d]: (s.days[d] ?? 0) + 1 } }
+        }),
+      unmark: (key) =>
+        set((s) => {
+          if (!s.marks || !s.marks[key]) return s
+          const next = { ...s.marks }
+          delete next[key]
+          return { marks: next }
         }),
       clearMarks: (prefix) =>
         set((s) => ({ marks: Object.fromEntries(Object.entries(s.marks ?? {}).filter(([k]) => !k.startsWith(prefix))) })),

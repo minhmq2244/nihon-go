@@ -45,6 +45,7 @@ export function ListenPracticeTab({ unit }: { unit: Unit }) {
       items={cards}
       prefix={prefix(n)}
       keyOf={(c) => prefix(n) + c.id}
+      itemLabel={n === 1 ? 'Từ' : 'Câu'}
       reveal
       revealLabel={n === 1 ? 'Xem từ' : 'Bật phụ đề'}
       okLabel="Nghe ra rồi"
@@ -97,6 +98,7 @@ export function ListenPracticeTab({ unit }: { unit: Unit }) {
             items={talks}
             prefix={prefix(3)}
             keyOf={(t) => prefix(3) + t.id}
+            itemLabel="Hội thoại"
             okLabel="Hiểu hết rồi"
             againLabel="Nghe lại sau"
             onComplete={() => complete(3, talks.length)}
