@@ -1,14 +1,186 @@
 // Quizlet-style study modes shared by the vocab and kanji tabs.
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Check, ChevronLeft, ChevronRight, RotateCcw, RotateCw, Shuffle, Trophy } from 'lucide-react'
+import { AlertTriangle, BookOpen, Check, ChevronLeft, ChevronRight, RotateCcw, RotateCw, Shuffle, Sparkles, Trophy } from 'lucide-react'
 import type { Card as StudyCard } from '../lib/questions'
 import { meaningMC } from '../lib/questions'
 import { sample, shuffle } from '../lib/data'
 import { speak } from '../lib/speech'
+import { toReading } from '../lib/furigana'
 import { useProgress } from '../store/progress'
 import { DrillItem, type Question } from './Drill'
 import { Jp } from './Jp'
 import { Button, Chip, ProgressBar, SpeakButton, cx } from './ui'
+
+// Distinct color styling for particle badges (matching VerbTab)
+const PARTICLE_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  に: { bg: 'bg-emerald-500/10 dark:bg-emerald-500/20', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-emerald-500/40' },
+  を: { bg: 'bg-indigo-500/10 dark:bg-indigo-500/20', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-500/40' },
+  で: { bg: 'bg-purple-500/10 dark:bg-purple-500/20', text: 'text-purple-700 dark:text-purple-300', border: 'border-purple-500/40' },
+  が: { bg: 'bg-amber-500/10 dark:bg-amber-500/20', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-500/40' },
+  へ: { bg: 'bg-rose-500/10 dark:bg-rose-500/20', text: 'text-rose-700 dark:text-rose-300', border: 'border-rose-500/40' },
+  と: { bg: 'bg-sky-500/10 dark:bg-sky-500/20', text: 'text-sky-700 dark:text-sky-300', border: 'border-sky-500/40' },
+  から: { bg: 'bg-teal-500/10 dark:bg-teal-500/20', text: 'text-teal-700 dark:text-teal-300', border: 'border-teal-500/40' },
+  まで: { bg: 'bg-orange-500/10 dark:bg-orange-500/20', text: 'text-orange-700 dark:text-orange-300', border: 'border-orange-500/40' },
+  より: { bg: 'bg-cyan-500/10 dark:bg-cyan-500/20', text: 'text-cyan-700 dark:text-cyan-300', border: 'border-cyan-500/40' },
+}
+
+/** Rich back-face display for verb flashcards: readings, forms, particles (が, を, に, で...), collocations and real examples. */
+function VerbCardBack({ card }: { card: StudyCard }) {
+  const vd = card.verbDetail
+  if (!vd) return null
+
+  return (
+    <div className="w-full max-w-xl space-y-3 text-left py-1">
+      {/* Verb Main Readings & Forms Header */}
+      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line/60 pb-2.5">
+        <div className="flex flex-wrap items-baseline gap-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight">
+            <Jp text={vd.dict} />
+          </span>
+          <span className="text-sub/40 font-mono">·</span>
+          <span className="text-lg sm:text-xl font-bold text-accent">
+            <Jp text={vd.masu} />
+          </span>
+        </div>
+        {vd.type && (
+          <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent border border-accent/20">
+            {vd.type}
+          </span>
+        )}
+      </div>
+
+      {/* Primary Meaning */}
+      <div className="space-y-0.5">
+        <p className="text-base sm:text-lg font-bold text-ink">{card.back}</p>
+        {vd.meaning && vd.meaning !== card.back && (
+          <p className="text-xs text-sub leading-relaxed">{vd.meaning}</p>
+        )}
+      </div>
+
+      {/* Particle Breakdown: が, を, に, で, と, へ, から, まで */}
+      {vd.particles && vd.particles.length > 0 && (
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Trợ từ đi kèm & Cách dùng</span>
+          </div>
+
+          <div className="space-y-1.5">
+            {vd.particles.map((rawP, pIdx) => {
+              const isWarning = rawP.toUpperCase().startsWith('KHÔNG') || rawP.includes('✗')
+              if (isWarning) {
+                return (
+                  <div
+                    key={pIdx}
+                    className="flex items-start gap-2 rounded-xl bg-bad-soft/40 border border-bad/30 p-2 sm:p-2.5 text-xs text-bad"
+                  >
+                    <span className="shrink-0 rounded px-1.5 py-0.5 font-bold uppercase bg-bad/20 text-bad">
+                      Chú ý
+                    </span>
+                    <span className="font-medium text-ink leading-relaxed">
+                      <Jp text={rawP} />
+                    </span>
+                  </div>
+                )
+              }
+
+              const splitIdx = rawP.indexOf(' — ')
+              const particleKey = splitIdx !== -1 ? rawP.slice(0, splitIdx).trim() : ''
+              const desc = splitIdx !== -1 ? rawP.slice(splitIdx + 3).trim() : rawP
+
+              const color = PARTICLE_COLORS[particleKey] ?? {
+                bg: 'bg-accent-soft',
+                text: 'text-accent',
+                border: 'border-accent/30',
+              }
+
+              return (
+                <div
+                  key={pIdx}
+                  className="flex items-start gap-2.5 rounded-xl bg-surface border border-line/80 p-2 sm:p-2.5 shadow-2xs hover:border-line transition"
+                >
+                  <span
+                    className={cx(
+                      'shrink-0 font-extrabold text-xs px-2 py-0.5 rounded-lg border shadow-2xs',
+                      color.bg,
+                      color.text,
+                      color.border,
+                    )}
+                  >
+                    「{particleKey || '・'}」
+                  </span>
+                  <div className="flex-1 text-xs sm:text-sm font-medium text-ink leading-relaxed">
+                    <Jp text={desc} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Common Sentence Patterns & Collocations */}
+      {vd.patterns && vd.patterns.length > 0 && (
+        <div className="rounded-xl bg-muted/50 border border-line/60 p-2.5 sm:p-3 space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-sub flex items-center gap-1.5">
+            <BookOpen className="h-3.5 w-3.5 text-accent" />
+            <span>Mẫu câu thông dụng</span>
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {vd.patterns.slice(0, 3).map((pat, idx) => (
+              <span
+                key={idx}
+                className="inline-block rounded-lg bg-surface px-2.5 py-1 text-xs font-semibold text-ink border border-line shadow-2xs"
+              >
+                <Jp text={pat} />
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Contextual Realistic Example Sentence */}
+      {vd.examples && vd.examples.length > 0 && (
+        <div className="rounded-xl bg-surface border border-line p-3 sm:p-3.5 space-y-1.5 shadow-2xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-accent flex items-center gap-1">
+              <span>Ví dụ ngữ cảnh</span>
+            </span>
+            <div
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <SpeakButton
+                text={toReading(vd.examples[0].jp)}
+                className="h-6 w-6 text-sub hover:text-accent"
+              />
+            </div>
+          </div>
+          <p className="text-sm sm:text-base font-bold text-ink leading-relaxed">
+            <Jp text={vd.examples[0].jp} />
+          </p>
+          <p className="text-xs sm:text-sm text-sub font-medium">
+            {vd.examples[0].vn}
+          </p>
+        </div>
+      )}
+
+      {/* Common Mistake Warning */}
+      {vd.mistakes && vd.mistakes.length > 0 && (
+        <div className="rounded-xl bg-amber-500/10 border border-amber-500/30 p-2.5 sm:p-3 text-xs space-y-1">
+          <div className="flex items-center gap-1.5 font-bold text-amber-700 dark:text-amber-400">
+            <AlertTriangle className="h-3.5 w-3.5" />
+            <span>Lỗi trợ từ hay gặp:</span>
+          </div>
+          <p className="text-ink font-medium leading-relaxed">
+            <Jp text={vd.mistakes[0]} />
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }) {
   const { items, markItem, resetItems } = useProgress()
@@ -539,7 +711,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
               )}
 
               {/* 3D Flipping Card */}
-              <div className={cx('quizlet-card-inner', flip && 'is-flipped')}>
+              <div className={cx('quizlet-card-inner', c?.verbDetail && 'min-h-[26rem] sm:min-h-[30rem]', flip && 'is-flipped')}>
                 {/* Mặt trước (Front Face - rotateY 0deg) */}
                 <div className="quizlet-card-face quizlet-card-face-front">
                   {/* Header */}
@@ -549,6 +721,11 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         <span className="h-2 w-2 rounded-full bg-accent" />
                         {jpFront ? 'Tiếng Nhật' : 'Tiếng Việt'}
                       </span>
+                      {c.verbDetail && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent border border-accent/20">
+                          Động từ
+                        </span>
+                      )}
                       {isKnown && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
                           <Check className="h-3 w-3" /> Đã thuộc
@@ -582,12 +759,24 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                   {/* Center Content */}
                   <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
                     {jpFront ? (
-                      <span className={cx('font-bold tracking-tight text-ink', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
-                        <Jp text={c.front} />
-                      </span>
+                      <div className="space-y-3">
+                        <span className={cx('font-bold tracking-tight text-ink block', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
+                          <Jp text={c.front} />
+                        </span>
+                        {c.verbDetail?.type && (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub border border-line">
+                            <span>{c.verbDetail.type}</span>
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       <div className="max-w-xl space-y-2">
                         <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
+                        {c.verbDetail?.type && (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub border border-line">
+                            <span>{c.verbDetail.type}</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -611,7 +800,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
                         <span className="h-2 w-2 rounded-full bg-ok" />
-                        {jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
+                        {c.verbDetail ? 'Chi tiết động từ & Trợ từ' : jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
                       </span>
                       {isKnown && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
@@ -644,8 +833,13 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                   </div>
 
                   {/* Center Content */}
-                  <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-8 text-center overflow-y-auto">
-                    {jpFront ? (
+                  <div className={cx(
+                    'flex flex-1 flex-col items-center p-5 sm:p-7 overflow-y-auto',
+                    c.verbDetail ? 'justify-start text-left' : 'justify-center text-center'
+                  )}>
+                    {c.verbDetail ? (
+                      <VerbCardBack card={c} />
+                    ) : jpFront ? (
                       <div className="w-full max-w-xl space-y-4">
                         <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
                         {c.extra && (

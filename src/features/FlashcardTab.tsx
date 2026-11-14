@@ -29,7 +29,7 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
   const { decks, saveDeck, resetDeck } = useCustomCards()
   const { selections, setSelection, resetDeckSelection } = useCardSelection()
 
-  const vocab = useMemo(() => vocabCards(unit.vocab), [unit])
+  const vocab = useMemo(() => vocabCards(unit.vocab, unit.verbs), [unit])
   const kanjiAll = useMemo(() => kanjiCards(unit.kanji), [unit])
   const kanjiChars = useMemo(() => kanjiCharCards(unit.kanji), [unit])
   const kanjiCompounds = useMemo(() => kanjiCompoundCards(unit.kanji), [unit])
@@ -43,7 +43,15 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
   const deckKey = deck === 'vocab' ? `${id}:vocab` : `${id}:kanji:${kanjiFilter}`
   const isCustomized = Boolean(decks[deckKey])
   const defaultCards = deck === 'vocab' ? vocab : kanjiDefault
-  const cards = decks[deckKey] ?? defaultCards
+  const rawCards = decks[deckKey] ?? defaultCards
+  const cards = useMemo(() => {
+    if (deck !== 'vocab') return rawCards
+    return rawCards.map((c) => {
+      if (c.verbDetail) return c
+      const match = vocab.find((vc) => vc.id === c.id)
+      return match?.verbDetail ? { ...c, verbDetail: match.verbDetail } : c
+    })
+  }, [rawCards, deck, vocab])
 
   // Card selection state for this deck
   const rawSelectedIds = selections[deckKey] ?? null

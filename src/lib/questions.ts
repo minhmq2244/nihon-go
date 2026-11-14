@@ -1,5 +1,5 @@
 // Builds practice questions from a unit's vocab and kanji tables.
-import type { KanjiItem, Unit, VocabItem } from '../types'
+import type { KanjiItem, Unit, VocabItem, VerbDetail } from '../types'
 import type { Question } from '../components/Drill'
 import { parseFurigana, toBase, toReading } from './furigana'
 import { sample, shuffle } from './data'
@@ -11,9 +11,19 @@ export interface Card {
   back: string
   extra?: string
   speak: string
+  verbDetail?: VerbDetail
 }
 
 const hasKanji = (s: string) => /[一-鿿々]/.test(s)
+
+/** Clean auxiliary markers from Japanese text for normalized comparison. */
+const cleanVerbMatchKey = (s: string) =>
+  s
+    .replace(/［[^］]*］/g, '')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/（[^）]*）/g, '')
+    .replace(/[〜～・／\s]/g, '')
+    .trim()
 
 /** Main form of a vocab cell: "行きます（いきます）［行く］(I)" → "行きます（いきます）". */
 export function vocabForm(jp: string): string {
@@ -42,8 +52,65 @@ export function vocabAnswers(jp: string, rawJp?: string): string[] {
   return [...new Set(allForms)]
 }
 
-export const vocabCards = (vocab: VocabItem[]): Card[] =>
-  vocab.map((v) => ({ id: v.id, front: vocabForm(v.jp), back: v.meaning, extra: v.note, speak: vocabForm(v.jp) }))
+export const vocabCards = (vocab: VocabItem[], verbs?: VerbDetail[]): Card[] => {
+  // Build lookup index from unit.verbs if available
+  const verbIndex = new Map<string, VerbDetail>()
+  if (verbs && verbs.length > 0) {
+    for (const vd of verbs) {
+      const keys = [
+        cleanVerbMatchKey(toBase(vd.dict)),
+        cleanVerbMatchKey(toReading(vd.dict)),
+        cleanVerbMatchKey(toBase(vd.masu)),
+        cleanVerbMatchKey(toReading(vd.masu)),
+      ]
+      if (vd.dict.endsWith('する')) {
+        const stem = vd.dict.replace(/する$/, '')
+        keys.push(cleanVerbMatchKey(toBase(stem)), cleanVerbMatchKey(toReading(stem)))
+      }
+      for (const k of keys) {
+        if (k && k.length >= 2) {
+          verbIndex.set(k, vd)
+        }
+      }
+    }
+  }
+
+  return vocab.map((v) => {
+    const front = vocabForm(v.jp)
+    let vd: VerbDetail | undefined
+    if (verbs && verbs.length > 0) {
+      const k1 = cleanVerbMatchKey(toBase(v.jp))
+      const k2 = cleanVerbMatchKey(toReading(v.jp))
+      const k3 = cleanVerbMatchKey(toBase(front))
+      const k4 = cleanVerbMatchKey(toReading(front))
+      vd = verbIndex.get(k1) || verbIndex.get(k2) || verbIndex.get(k3) || verbIndex.get(k4)
+
+      if (!vd) {
+        for (const candidate of verbs) {
+          const cDict = cleanVerbMatchKey(toBase(candidate.dict))
+          const cMasu = cleanVerbMatchKey(toBase(candidate.masu))
+          if (cDict && (k1.includes(cDict) || cDict.includes(k1))) {
+            vd = candidate
+            break
+          }
+          if (cMasu && (k1.includes(cMasu) || cMasu.includes(k1))) {
+            vd = candidate
+            break
+          }
+        }
+      }
+    }
+
+    return {
+      id: v.id,
+      front,
+      back: v.meaning,
+      extra: v.note,
+      speak: front,
+      verbDetail: vd,
+    }
+  })
+}
 
 export const kanjiCharCards = (kanji: KanjiItem[]): Card[] =>
   kanji.map((k) => ({
