@@ -18,20 +18,32 @@ export const verbKey = (jp: string) => clean(toBase(jp))
 export class VerbBook {
   private full = new Map<string, VerbDetail>()
   private base = new Map<string, Set<VerbDetail>>()
+  private reading = new Map<string, Set<VerbDetail>>()
+
   add(base: string, reading: string, d: VerbDetail) {
     if (!base) return
     this.full.set(`${base}|${reading}`, d)
     this.base.set(base, (this.base.get(base) ?? new Set()).add(d))
+    if (reading) {
+      this.full.set(`${reading}|${reading}`, d)
+      this.reading.set(reading, (this.reading.get(reading) ?? new Set()).add(d))
+    }
   }
+
   get(base: string, reading: string): VerbDetail | undefined {
     const hit = this.full.get(`${base}|${reading}`)
     if (hit) return hit
     const cands = this.base.get(base)
-    return cands && cands.size === 1 ? [...cands][0] : undefined
+    if (cands && cands.size === 1) return [...cands][0]
+    const rCands = this.reading.get(reading) || this.reading.get(base)
+    if (rCands && rCands.size === 1) return [...rCands][0]
+    return undefined
   }
+
   get size() {
     return new Set(this.full.values()).size
   }
+
   values() {
     return new Set(this.full.values()).values()
   }
@@ -80,7 +92,10 @@ export function parseVerbList(md: string): { detail: VerbDetail; forms: string[]
     }
     const forms = [dict, masu, ...(attr(sec.body, 'alias') ?? '').split(/\s*[;,、]\s*/)].filter(Boolean)
     // する-verbs are often listed as just the noun: 結婚（けっこん）（します）
-    if (/する$/.test(clean(toBase(dict)))) forms.push(dict.replace(/する\s*$/, ''))
+    if (/する$/.test(clean(toBase(dict)))) {
+      forms.push(dict.replace(/する\s*$/, ''))
+      forms.push(masu.replace(/します\s*$/, ''))
+    }
     result.push({ detail: d, forms })
   }
   return result
@@ -93,7 +108,14 @@ export function parseUnitVerbs(md: string): VerbDetail[] {
 export function parseVerbs(md: string): VerbBook {
   const book = new VerbBook()
   for (const { detail: d, forms } of parseVerbList(md)) {
-    for (const f of forms) book.add(clean(toBase(f)), clean(toReading(f)), d)
+    for (const f of forms) {
+      const b = clean(toBase(f))
+      const r = clean(toReading(f))
+      book.add(b, r, d)
+      if (r && r !== b) {
+        book.add(r, r, d)
+      }
+    }
   }
   return book
 }

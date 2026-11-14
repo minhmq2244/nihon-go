@@ -19,6 +19,7 @@ export interface PassivePlayerState {
   sleepMinutes: number | null
   sleepExpiresAt: number | null
   isExpanded: boolean
+  isDismissed: boolean
 
   // Actions
   playPlaylist: (pl: PassivePlaylist, startTrackIdx?: number, startLineIdx?: number) => void
@@ -27,6 +28,7 @@ export interface PassivePlayerState {
   pause: () => void
   resume: () => void
   stop: () => void
+  dismiss: () => void
   nextTrack: () => void
   prevTrack: () => void
   seekLine: (idx: number) => void
@@ -38,6 +40,7 @@ export interface PassivePlayerState {
   setVoiceURI: (uri: string) => void
   setSleepTimer: (minutes: number | null) => void
   setIsExpanded: (expanded: boolean) => void
+  setIsDismissed: (dismissed: boolean) => void
 }
 
 export const usePassivePlayer = create<PassivePlayerState>()(
@@ -55,6 +58,7 @@ export const usePassivePlayer = create<PassivePlayerState>()(
       sleepMinutes: null,
       sleepExpiresAt: null,
       isExpanded: false,
+      isDismissed: true,
 
       playPlaylist: (pl, startTrackIdx = 0, startLineIdx = 0) => {
         set({
@@ -62,6 +66,7 @@ export const usePassivePlayer = create<PassivePlayerState>()(
           trackIndex: Math.max(0, Math.min(startTrackIdx, pl.tracks.length - 1)),
           lineIndex: startLineIdx,
           isPlaying: true,
+          isDismissed: false,
         })
       },
 
@@ -73,19 +78,24 @@ export const usePassivePlayer = create<PassivePlayerState>()(
           trackIndex: idx >= 0 ? idx : 0,
           lineIndex: 0,
           isPlaying: true,
+          isDismissed: false,
         })
       },
 
       togglePlay: () => {
         const { isPlaying } = get()
-        set({ isPlaying: !isPlaying })
+        set({ isPlaying: !isPlaying, isDismissed: false })
       },
 
       pause: () => set({ isPlaying: false }),
-      resume: () => set({ isPlaying: true }),
+      resume: () => set({ isPlaying: true, isDismissed: false }),
 
       stop: () => {
         set({ isPlaying: false, lineIndex: 0 })
+      },
+
+      dismiss: () => {
+        set({ isPlaying: false, isDismissed: true, isExpanded: false, lineIndex: 0 })
       },
 
       nextTrack: () => {
@@ -138,6 +148,7 @@ export const usePassivePlayer = create<PassivePlayerState>()(
       },
 
       setIsExpanded: (isExpanded) => set({ isExpanded }),
+      setIsDismissed: (isDismissed) => set({ isDismissed }),
     }),
     {
       name: 'nihon-passive-player',

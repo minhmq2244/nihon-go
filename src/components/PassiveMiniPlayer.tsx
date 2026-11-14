@@ -1,4 +1,4 @@
-import { Play, Pause, SkipBack, SkipForward, ChevronUp, Volume2, Languages } from 'lucide-react'
+import { Play, Pause, SkipBack, SkipForward, ChevronUp, Volume2, Languages, X } from 'lucide-react'
 import { getCurrentLine, getCurrentTrack, usePassivePlayer } from '../store/passivePlayer'
 import { Jp } from './Jp'
 import { cx } from './ui'
@@ -10,16 +10,18 @@ export function PassiveMiniPlayer() {
   const lineIndex = usePassivePlayer((s) => s.lineIndex)
   const mode = usePassivePlayer((s) => s.mode)
   const isExpanded = usePassivePlayer((s) => s.isExpanded)
+  const isDismissed = usePassivePlayer((s) => s.isDismissed)
 
   const togglePlay = usePassivePlayer((s) => s.togglePlay)
   const nextTrack = usePassivePlayer((s) => s.nextTrack)
   const prevTrack = usePassivePlayer((s) => s.prevTrack)
   const setIsExpanded = usePassivePlayer((s) => s.setIsExpanded)
+  const dismiss = usePassivePlayer((s) => s.dismiss)
 
   const currentTrack = getCurrentTrack(usePassivePlayer.getState())
   const currentLine = getCurrentLine(usePassivePlayer.getState())
 
-  if (!playlist || isExpanded) return null
+  if (!playlist || isExpanded || isDismissed) return null
 
   const progress = currentTrack && currentTrack.lines.length > 0
     ? ((lineIndex + 1) / currentTrack.lines.length) * 100
@@ -133,6 +135,16 @@ export function PassiveMiniPlayer() {
             aria-label="Mở toàn màn hình"
           >
             <ChevronUp size={20} />
+          </button>
+
+          <button
+            type="button"
+            onClick={dismiss}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-sub hover:text-rose-500 hover:bg-rose-500/10 transition cursor-pointer"
+            title="Đóng / Tắt thanh nghe thụ động"
+            aria-label="Tắt nghe thụ động"
+          >
+            <X size={18} />
           </button>
         </div>
       </div>

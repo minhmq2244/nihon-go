@@ -58,5 +58,19 @@ describe('passivePlayer store', () => {
     expect(usePassivePlayer.getState().sleepMinutes).toBeNull()
     expect(usePassivePlayer.getState().sleepExpiresAt).toBeNull()
   })
+
+  it('can dismiss and show player', () => {
+    const pl = getPlaylistById('pl-b08')!
+    usePassivePlayer.getState().playPlaylist(pl, 0)
+    expect(usePassivePlayer.getState().isDismissed).toBe(false)
+
+    usePassivePlayer.getState().dismiss()
+    expect(usePassivePlayer.getState().isDismissed).toBe(true)
+    expect(usePassivePlayer.getState().isPlaying).toBe(false)
+
+    usePassivePlayer.getState().playPlaylist(pl, 0)
+    expect(usePassivePlayer.getState().isDismissed).toBe(false)
+    expect(usePassivePlayer.getState().isPlaying).toBe(true)
+  })
 })
 
