@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Unit, VocabItem } from '../types'
-import { toBase } from '../lib/furigana'
+import { toBase, type Seg } from '../lib/furigana'
 import { friendlyVoiceName, japaneseVoices, onVoicesChanged, speak } from '../lib/speech'
 import { useSettings } from '../store/settings'
+import { useFuriBlockStore } from '../store/furiBlock'
 import { FloatingPlayer, PlayerControls, usePlaylist } from './AudioPlayer'
 import { Jp } from './Jp'
 import { SpeedControl } from './SpeedControl'
 import { Button, Card, Chip, SpeakButton, cx } from './ui'
 import { BookOpen, CheckCircle2, Play, Sparkles, Volume2 } from 'lucide-react'
 import { getVocabStory, getVocabStoryCoverage } from '../lib/vocabStoryData'
+import { KanjiBlockManagerModal, KanjiBlockPopover, type PopoverState } from './KanjiBlockManager'
 
 /** Lines that start a new speaker or block keep their own line inside the passage */
 const NEW_LINE = /^(【|[^\s、。「」]{1,10}[:：]「|「)/
@@ -19,6 +21,16 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
   const [sel, setSel] = useState<number | null>(null)
   const [selectedVocabId, setSelectedVocabId] = useState<string | null>(null)
   const [voices, setVoices] = useState(() => japaneseVoices())
+
+  const blockedItems = useFuriBlockStore((s) => s.items)
+  const blockedCount = Object.keys(blockedItems).length
+  const [popover, setPopover] = useState<PopoverState | null>(null)
+  const [showBlockManager, setShowBlockManager] = useState(false)
+
+  const handleRubyClick = (seg: Seg, e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    setPopover({ seg, rect })
+  }
 
   const { rate, voiceA, set } = useSettings()
 
@@ -53,6 +65,7 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
     p.stop()
     setSel(null)
     setSelectedVocabId(null)
+    setPopover(null)
   }, [unit.meta.id])
 
   if (!story) return null
@@ -73,7 +86,7 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
           <span>{story.lines.length} câu</span>
         </div>
 
-        <div className="flex items-center gap-1 text-xs sm:text-sm">
+        <div className="flex flex-wrap items-center gap-1 text-xs sm:text-sm">
           <Chip active={showVn === 'tap'} onClick={() => setShowVn('tap')}>
             Bấm câu để xem nghĩa
           </Chip>
@@ -83,7 +96,20 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
           <Chip active={showVn === 'none'} onClick={() => setShowVn('none')}>
             Không dịch
           </Chip>
+          <Chip
+            active={showBlockManager}
+            onClick={() => setShowBlockManager(true)}
+            className={blockedCount > 0 ? 'bg-accent/15 text-accent font-semibold ring-1 ring-accent/30' : ''}
+            title="Quản lý danh sách các chữ Hán luôn giữ Furigana kể cả khi tắt ふりがな toàn trang web"
+          >
+            🛡️ Khóa Furigana {blockedCount > 0 ? `(${blockedCount})` : ''}
+          </Chip>
         </div>
+      </div>
+
+      <div className="flex items-center gap-2 px-1 text-xs text-sub">
+        <span className="font-semibold text-emerald-600 dark:text-emerald-400">💡 Mẹo:</span>
+        <span>Bấm trực tiếp vào bất kỳ chữ Hán nào trong đoạn văn để <b>Khóa Furigana (Add block)</b> để luôn giữ Furigana kể cả khi tắt Furigana toàn web.</span>
       </div>
 
       {/* Audio Player Card (styled identically to ReadingTab) */}
@@ -153,7 +179,7 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
             </div>
           </div>
           <h2 className="mt-1 text-2xl sm:text-3xl font-extrabold text-ink">
-            <Jp text={story.title} />
+            <Jp text={story.title} onRubyClick={handleRubyClick} />
           </h2>
           <p className="mt-1 text-base text-sub font-medium">{story.titleVn}</p>
         </div>
@@ -189,7 +215,7 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
                   )}
                   title={`Câu ${i + 1} · bấm để xem nghĩa / nghe lại`}
                 >
-                  <Jp text={l.jp} />
+                  <Jp text={l.jp} onRubyClick={handleRubyClick} />
                 </span>{' '}
               </span>
             )
@@ -217,7 +243,7 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
             </div>
 
             <p className="text-lg text-ink font-medium leading-relaxed">
-              <Jp text={line.jp} />
+              <Jp text={line.jp} onRubyClick={handleRubyClick} />
             </p>
 
             {showVn !== 'none' && (
@@ -322,7 +348,7 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-base font-bold text-ink">
-                    <Jp text={selectedVocab.jp} />
+                    <Jp text={selectedVocab.jp} onRubyClick={handleRubyClick} />
                   </span>
                   <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
                     {selectedVocab.meaning}
@@ -340,6 +366,10 @@ export function VocabStorySection({ unit }: { unit: Unit }) {
           )}
         </div>
       </Card>
+
+      {/* Popover & Modal Quản lý khóa Furigana (Add block) */}
+      <KanjiBlockPopover popover={popover} onClose={() => setPopover(null)} />
+      <KanjiBlockManagerModal open={showBlockManager} onClose={() => setShowBlockManager(false)} />
     </div>
   )
 }
