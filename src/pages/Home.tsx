@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, ClipboardCheck, Headphones, MessagesSquare, Repeat, Target, Zap } from 'lucide-react'
+import { ArrowRight, BookOpen, ClipboardCheck, Headphones, MessagesSquare, Repeat, Sparkles, Target, Zap } from 'lucide-react'
 import { useIndex, unitLabel } from '../lib/data'
 import { sectionOf, tabLabel, unitRatio } from '../lib/progressInfo'
 import { streakOf, today, useProgress } from '../store/progress'
@@ -125,7 +125,26 @@ export function Home() {
       </div>
 
       {/* Quick Access to High-Impact Features */}
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-5 md:grid-cols-3">
+        <Link to="/kanji" className="group">
+          <Card className="h-full p-5 sm:p-6 transition-all border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-surface to-surface hover:border-amber-500 hover:shadow-lg">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">
+                <Sparkles size={13} /> Mới: Ôn tập Kanji
+              </span>
+              <span className="text-xs text-sub font-semibold group-hover:text-amber-600 dark:group-hover:text-amber-400 transition flex items-center gap-1">
+                Lật thẻ ngay <ArrowRight size={14} />
+              </span>
+            </div>
+            <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-amber-600 transition">
+              🀄 Ôn tập Kanji liên bài
+            </h3>
+            <p className="mt-1 text-sm text-sub">
+              Lật thẻ linh hoạt: lọc Chữ Hán đơn / Từ ghép, chọn nhanh nhóm bài thi (Bài 8 - 11) hoặc toàn bộ các bài.
+            </p>
+          </Card>
+        </Link>
+
         <Link to="/passive-listening" className="group">
           <Card className="h-full p-5 sm:p-6 transition-all border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-surface to-surface hover:border-emerald-500 hover:shadow-lg">
             <div className="flex items-center justify-between">

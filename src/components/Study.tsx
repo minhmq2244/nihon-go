@@ -182,6 +182,87 @@ function VerbCardBack({ card }: { card: StudyCard }) {
   )
 }
 
+/** Rich back-face display for single Kanji character cards: On/Kun, radicals, memory story, and compound words. */
+function KanjiCardBack({ card }: { card: StudyCard }) {
+  const k = card.kanjiItem
+  if (!k) return null
+
+  return (
+    <div className="w-full max-w-xl space-y-3.5 text-left py-1">
+      {/* 1. Header: Character & Han-Viet */}
+      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line/60 pb-2.5">
+        <div className="flex items-baseline gap-3">
+          <span className="text-4xl sm:text-5xl font-extrabold text-ink font-serif">
+            {k.char}
+          </span>
+          <span className="text-2xl sm:text-3xl font-extrabold text-accent tracking-wide">
+            {k.hanviet}
+          </span>
+        </div>
+        {k.strokes && (
+          <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-bold text-accent border border-accent/20">
+            {k.strokes} nét
+          </span>
+        )}
+      </div>
+
+      {/* 2. On / Kun readings */}
+      {k.onkun && (
+        <div className="rounded-xl bg-surface border border-line/80 p-2.5 sm:p-3 shadow-2xs space-y-1">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-sub">Âm On / Âm Kun</p>
+          <p className="text-sm sm:text-base font-bold text-ink tracking-wide font-mono">
+            {k.onkun}
+          </p>
+        </div>
+      )}
+
+      {/* 3. Radicals / Parts */}
+      {k.parts && (
+        <div className="rounded-xl bg-muted/50 border border-line/60 p-2.5 sm:p-3 text-xs sm:text-sm">
+          <span className="font-bold text-sub">Bộ phận cấu thành: </span>
+          <span className="font-medium text-ink">{k.parts}</span>
+        </div>
+      )}
+
+      {/* 4. Memory Story */}
+      {k.story && (
+        <div className="rounded-xl bg-amber-500/10 border border-amber-500/30 p-2.5 sm:p-3 space-y-1">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            💡 Câu chuyện gợi nhớ
+          </p>
+          <p className="text-xs sm:text-sm text-ink font-medium leading-relaxed">
+            {k.story}
+          </p>
+        </div>
+      )}
+
+      {/* 5. Key Compounds */}
+      {k.compounds && k.compounds.length > 0 && (
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-sub">
+            📚 Từ ghép thực tế ({k.compounds.length})
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+            {k.compounds.map((comp, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between rounded-xl bg-surface border border-line/80 px-2.5 py-1.5 text-xs shadow-2xs"
+              >
+                <span className="font-bold text-ink">
+                  <Jp text={comp.jp} />
+                </span>
+                <span className="text-sub font-medium ml-2 text-right truncate">
+                  {comp.meaning.replace(/\s*\*.*?\*/g, '').trim()}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }) {
   const { items, markItem, resetItems } = useProgress()
   const [order, setOrder] = useState(cards)
@@ -711,7 +792,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
               )}
 
               {/* 3D Flipping Card */}
-              <div className={cx('quizlet-card-inner', c?.verbDetail && 'min-h-[26rem] sm:min-h-[30rem]', flip && 'is-flipped')}>
+              <div className={cx('quizlet-card-inner', (c?.verbDetail || c?.kanjiItem) && 'min-h-[26rem] sm:min-h-[30rem]', flip && 'is-flipped')}>
                 {/* Mặt trước (Front Face - rotateY 0deg) */}
                 <div className="quizlet-card-face quizlet-card-face-front">
                   {/* Header */}
@@ -721,11 +802,15 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         <span className="h-2 w-2 rounded-full bg-accent" />
                         {jpFront ? 'Tiếng Nhật' : 'Tiếng Việt'}
                       </span>
-                      {c.verbDetail && (
+                      {c.verbDetail ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent border border-accent/20">
                           Động từ
                         </span>
-                      )}
+                      ) : c.kanjiItem ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent border border-accent/20">
+                          Chữ Hán
+                        </span>
+                      ) : null}
                       {isKnown && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
                           <Check className="h-3 w-3" /> Đã thuộc
@@ -763,20 +848,28 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         <span className={cx('font-bold tracking-tight text-ink block', big && !c.front.includes('（') && c.front.length <= 2 ? 'text-7xl sm:text-8xl' : 'text-4xl sm:text-6xl')}>
                           <Jp text={c.front} />
                         </span>
-                        {c.verbDetail?.type && (
+                        {c.verbDetail?.type ? (
                           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub border border-line">
                             <span>{c.verbDetail.type}</span>
                           </div>
-                        )}
+                        ) : c.kanjiItem ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent border border-accent/20">
+                            <span>Chữ Hán · {c.kanjiItem.strokes} nét</span>
+                          </div>
+                        ) : null}
                       </div>
                     ) : (
                       <div className="max-w-xl space-y-2">
                         <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>
-                        {c.verbDetail?.type && (
+                        {c.verbDetail?.type ? (
                           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub border border-line">
                             <span>{c.verbDetail.type}</span>
                           </div>
-                        )}
+                        ) : c.kanjiItem ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent border border-accent/20">
+                            <span>Chữ Hán · {c.kanjiItem.strokes} nét</span>
+                          </div>
+                        ) : null}
                       </div>
                     )}
                   </div>
@@ -800,7 +893,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
                         <span className="h-2 w-2 rounded-full bg-ok" />
-                        {c.verbDetail ? 'Chi tiết động từ & Trợ từ' : jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
+                        {c.verbDetail ? 'Chi tiết động từ & Trợ từ' : c.kanjiItem ? 'Chi tiết Chữ Hán' : jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
                       </span>
                       {isKnown && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
@@ -835,10 +928,12 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                   {/* Center Content */}
                   <div className={cx(
                     'flex flex-1 flex-col items-center p-5 sm:p-7 overflow-y-auto',
-                    c.verbDetail ? 'justify-start text-left' : 'justify-center text-center'
+                    (c.verbDetail || c.kanjiItem) ? 'justify-start text-left' : 'justify-center text-center'
                   )}>
                     {c.verbDetail ? (
                       <VerbCardBack card={c} />
+                    ) : c.kanjiItem ? (
+                      <KanjiCardBack card={c} />
                     ) : jpFront ? (
                       <div className="w-full max-w-xl space-y-4">
                         <p className="text-3xl sm:text-4xl font-bold text-ink tracking-tight">{c.back}</p>

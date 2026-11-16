@@ -271,6 +271,8 @@ function splitCompounds(cell: string) {
           meaning = m[2]!.trim()
         }
       }
+      // Strip editorial warnings/notes from meaning (e.g. *(không đọc...)*, *(Quốc hội là 国会)*)
+      meaning = meaning.replace(/\s*\*\(.*?\)\*/g, '').replace(/\s*\*.*?\*/g, '').trim()
       return jp && /[一-鿿]/.test(jp) ? { jp, meaning } : null
     })
     .filter((x): x is { jp: string; meaning: string } => !!x)

@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, FileText, Flame, Headphones, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sun, Zap } from 'lucide-react'
+import { BookOpen, ClipboardCheck, FileText, Flame, Headphones, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sparkles, Sun, Zap } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
@@ -15,6 +15,7 @@ import { PassiveFullPlayer } from './PassiveFullPlayer'
 const NAV = [
   { to: '/', label: 'Trang chủ', short: 'Chủ', icon: Home, end: true },
   { to: '/units', label: 'Học theo bài', short: 'Bài học', icon: BookOpen },
+  { to: '/kanji', label: 'Ôn tập Kanji', short: 'Kanji', icon: Sparkles },
   { to: '/passive-listening', label: 'Nghe thụ động', short: 'Nghe', icon: Headphones },
   { to: '/speed-speaking', label: 'Luyện nói cấp tốc', short: 'Nói nhanh', icon: Zap },
   { to: '/kaiwa', label: 'Kaiwa', short: 'Kaiwa', icon: MessagesSquare },

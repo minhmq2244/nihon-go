@@ -2648,18 +2648,18 @@ Cách học: 9 chữ đầu gắn liền với các động từ giao tiếp hà
 | # | Kanji | Hán Việt | Số nét | Âm On / Âm Kun | Bộ cấu thành | Câu chuyện gợi nhớ | Từ ghép thực tế |
 |---|---|---|---|---|---|---|---|
 | 1 | **来** | LAI | 7 | ライ / く(る)・き(ます) | 一 + 米 (cây lúa mì) | Cây lúa mì đơm bông báo hiệu mùa thu hoạch sắp **đến** (**tương lai**). | 来（き）ます đến · 来週（らいしゅう） tuần sau · 来月（らいげつ） tháng sau · 来年（らいねん） năm sau |
-| 2 | **帰** | QUY | 10 | キ / かえ(る) | リ (dao/bước) + ヨ (tay) + 冖 + 巾 (khăn) | Tay cầm chổi và khăn thu dọn đồ đạc để **trở về** nhà (**hồi quy**). | 帰（かえ）ります trở về · 日帰（ひがえ）り đi về trong ngày *(không phải "ngày về"!)* |
-| 3 | **会** | HỘI | 6 | カイ・エ / あ(う) | 人 (mái nhà/người) + 云 (đám mây) | Mọi **người** (人) tụ tập đông như **mây** (云) dưới một mái nhà để **gặp gỡ**, **hội** họp. | 会（あ）います gặp · 会社（かいしゃ） công ty · 会社員（かいしゃいん） nhân viên công ty · 宴会（えんかい） bữa tiệc liên hoan *(Quốc hội là 国会)* |
+| 2 | **帰** | QUY | 10 | キ / かえ(る) | リ (dao/bước) + ヨ (tay) + 冖 + 巾 (khăn) | Tay cầm chổi và khăn thu dọn đồ đạc để **trở về** nhà (**hồi quy**). | 帰（かえ）ります trở về · 日帰（ひがえ）り đi về trong ngày |
+| 3 | **会** | HỘI | 6 | カイ・エ / あ(う) | 人 (mái nhà/người) + 云 (đám mây) | Mọi **người** (人) tụ tập đông như **mây** (云) dưới một mái nhà để **gặp gỡ**, **hội** họp. | 会（あ）います gặp · 会社（かいしゃ） công ty · 会社員（かいしゃいん） nhân viên công ty · 宴会（えんかい） bữa tiệc liên hoan · 国会（こっかい） quốc hội |
 | 4 | **社** | XÃ | 7 | シャ / やしろ | 礻 (Thị: bàn thờ thần) + 土 (Thổ: đất đai) | Bàn thờ thần (**礻**) dựng trên mảnh **đất** (**土**) của làng, nơi mọi người tụ họp lập nên **xã** hội, công ty, đền **xã**. | 会社（かいしゃ） công ty · 社員（しゃいん） nhân viên · 神社（じんじゃ） đền Thần đạo |
 | 5 | **聞** | VĂN | 14 | ブン・モン / き(く) | 門 (Môn: cánh cổng) + 耳 (Nhĩ: cái tai) | Áp **cái tai** (**耳**) vào khe **cánh cổng** (**門**) để lắng **nghe** tin tức (**thính văn**). | 聞（き）きます nghe, hỏi · 新聞（しんぶん） tờ báo |
-| 6 | **読** | ĐỘC | 14 | ドク・トク / よ(む) | 言 (Ngôn: lời nói) + 売 (Mãi: bán/phổ biến) | Nhìn mặt chữ và phát ra **lời nói** (**言**) rõ ràng lưu loát: **đọc** sách (**độc** giả). | 読（よ）みます đọc · 読書（どくしょ） việc đọc sách · 読み物（よみもの） sách báo/tài liệu đọc *(không đọc よみのも!)* |
+| 6 | **読** | ĐỘC | 14 | ドク・トク / よ(む) | 言 (Ngôn: lời nói) + 売 (Mãi: bán/phổ biến) | Nhìn mặt chữ và phát ra **lời nói** (**言**) rõ ràng lưu loát: **đọc** sách (**độc** giả). | 読（よ）みます đọc · 読書（どくしょ） việc đọc sách · 読み物（よみもの） sách báo/tài liệu đọc |
 | 7 | **書** | THƯ | 10 | ショ / か(く) | 聿 (cây bút lông) + 日 (mặt trời/trang giấy) | Tay cầm **bút lông** (**聿**) nắn nót **viết** từng dòng chữ lên trang giấy dưới ánh sáng (**日**): **thư** pháp, sách vở. | 書（か）きます viết · 読書（どくしょ） đọc sách · 図書館（としょかん） thư viện · 辞書（じしょ） từ điển |
 | 8 | **話** | THOẠI | 13 | ワ / はな(す)・はなし | 言 (Ngôn: lời nói) + 舌 (Thiệt: cái lưỡi) | Dùng **cái lưỡi** (**舌**) uốn lượn tạo ra **lời nói** (**言**): **nói chuyện**, đối **thoại**. | 話（はな）します nói chuyện · 話（はなし） câu chuyện · 電話（でんわ） điện thoại · 会話（かいわ） hội thoại |
 | 9 | **言** | NGÔN | 7 | ゲン・ゴン / い(う)・こと | 四 nét ngang (làn hơi lời nói) + 口 (Khẩu: cái miệng) | Những làn âm thanh bay ra từ **cái miệng** (**口**): **nói**, **ngôn** từ. | 言（い）います nói · 言葉（ことば） từ vựng, lời nói |
 | 10 | **寺** | TỰ | 6 | ジ / てら | 土 (Thổ: mảnh đất) + 寸 (Thốn: phép tắc) | Mảnh **đất** (**土**) thanh tịnh nơi giữ gìn quy củ **phép tắc** (**寸**): ngôi **chùa** (**tự**). | お寺（てら） ngôi chùa |
 | 11 | **貝** | BỐI | 7 | バイ / かい | 目 (vỏ sò có vân ngang) + ハ (hai chiếc râu/chân) | Hình **con sò** có vỏ cứng (目) và hai chân thò ra dưới đáy (ハ) — tiền tệ cổ đại. | 貝（かい） con sò, ốc · *(Làm bộ thủ trong 買 mua, 員 viên, 貸 cho vay)* |
 | 12 | **力** | LỰC | 2 | リョク・リキ / ちから | Bộ 力 (Lực) | Hình bắp tay cuồn cuộn cơ bắp đang gồng lên: **sức mạnh**, **năng lực**. | 力（ちから） sức mạnh · 体力（たいりょく） thể lực |
-| 13 | **門** | MÔN | 8 | モン / かど | Bộ 門 (Môn) | Hình hai cánh **cổng** lớn đối xứng nhau ở lối ra vào. | 門（もん） cái cổng · 学校の門（がっこうのもん） cổng trường *(không đọc ごっこのもん!)* · 専門（せんもん） chuyên môn |
+| 13 | **門** | MÔN | 8 | モン / かど | Bộ 門 (Môn) | Hình hai cánh **cổng** lớn đối xứng nhau ở lối ra vào. | 門（もん） cái cổng · 学校の門（がっこうのもん） cổng trường · 専門（せんもん） chuyên môn |
 | 14 | **田** | ĐIỀN | 5 | デン / た | 口 (bờ bao quanh) + 十 (bờ đất chia 4 ô) | Thửa **ruộng** trồng lúa vuông vức được đắp bờ chia thành 4 ô đều nhau. | 田（た） ruộng lúa · 山田（やまだ）・田中（たなか） họ Yamada, Tanaka · 田舎（いなか） quê, nông thôn |
 
 **Chữ dễ nhầm**

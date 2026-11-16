@@ -12,6 +12,9 @@ export interface Card {
   extra?: string
   speak: string
   verbDetail?: VerbDetail
+  kanjiItem?: KanjiItem
+  kind?: 'char' | 'compound'
+  unitId?: string
 }
 
 const hasKanji = (s: string) => /[一-鿿々]/.test(s)
@@ -112,15 +115,30 @@ export const vocabCards = (vocab: VocabItem[], verbs?: VerbDetail[]): Card[] => 
   })
 }
 
-export const kanjiCharCards = (kanji: KanjiItem[]): Card[] =>
-  kanji.map((k) => ({
-    id: k.id,
-    front: k.char,
-    back: `${k.hanviet}`,
-    speak: k.compounds[0]?.jp ?? k.char,
-  }))
+export const kanjiCharCards = (kanji: KanjiItem[], unitId?: string): Card[] =>
+  kanji.map((k) => {
+    const extraParts: string[] = []
+    if (k.onkun) extraParts.push(`Âm On / Kun: ${k.onkun}`)
+    if (k.strokes) extraParts.push(`Số nét: ${k.strokes}`)
+    if (k.parts) extraParts.push(`Bộ phận: ${k.parts}`)
+    if (k.story) extraParts.push(`Ghi nhớ: ${k.story}`)
+    if (k.compounds && k.compounds.length > 0) {
+      const compList = k.compounds.slice(0, 4).map((c) => `${c.jp}: ${c.meaning.replace(/\s*\*.*?\*/g, '').trim()}`).join(' · ')
+      extraParts.push(`Từ ghép: ${compList}`)
+    }
+    return {
+      id: k.id,
+      front: k.char,
+      back: k.hanviet,
+      extra: extraParts.join('\n'),
+      speak: k.compounds[0]?.jp ?? k.char,
+      kanjiItem: k,
+      kind: 'char',
+      unitId,
+    }
+  })
 
-export const kanjiCompoundCards = (kanji: KanjiItem[]): Card[] => {
+export const kanjiCompoundCards = (kanji: KanjiItem[], unitId?: string): Card[] => {
   const cards: Card[] = []
   const seen = new Map<string, Card>()
 
@@ -137,12 +155,15 @@ export const kanjiCompoundCards = (kanji: KanjiItem[]): Card[] => {
         continue
       }
 
+      const cleanMeaning = comp.meaning.replace(/\s*\*\(.*?\)\*/g, '').replace(/\s*\*.*?\*/g, '').trim()
       const card: Card = {
         id: `${k.id}:comp:${i}`,
         front: comp.jp,
-        back: comp.meaning,
+        back: cleanMeaning || comp.meaning,
         extra: `Chữ Hán: ${k.char} (${k.hanviet})`,
         speak: comp.jp,
+        kind: 'compound',
+        unitId,
       }
       seen.set(key, card)
       cards.push(card)
@@ -152,44 +173,10 @@ export const kanjiCompoundCards = (kanji: KanjiItem[]): Card[] => {
   return cards
 }
 
-export const kanjiCards = (kanji: KanjiItem[]): Card[] => {
-  const cards: Card[] = []
-  const seenCompounds = new Map<string, Card>()
-
-  for (const k of kanji) {
-    // 1. Single character card: only Hán-Việt meaning
-    cards.push({
-      id: k.id,
-      front: k.char,
-      back: `${k.hanviet}`,
-      speak: k.compounds[0]?.jp ?? k.char,
-    })
-
-    // 2. Its compound cards
-    for (let i = 0; i < k.compounds.length; i++) {
-      const comp = k.compounds[i]!
-      const key = comp.jp.trim()
-      const existing = seenCompounds.get(key)
-      if (existing) {
-        const kanjiTag = `${k.char} (${k.hanviet})`
-        if (existing.extra && !existing.extra.includes(k.char)) {
-          existing.extra += ` · ${kanjiTag}`
-        }
-        continue
-      }
-      const compCard: Card = {
-        id: `${k.id}:comp:${i}`,
-        front: comp.jp,
-        back: comp.meaning,
-        extra: `Chữ Hán: ${k.char} (${k.hanviet})`,
-        speak: comp.jp,
-      }
-      seenCompounds.set(key, compCard)
-      cards.push(compCard)
-    }
-  }
-
-  return cards
+export const kanjiCards = (kanji: KanjiItem[], unitId?: string): Card[] => {
+  const chars = kanjiCharCards(kanji, unitId)
+  const comps = kanjiCompoundCards(kanji, unitId)
+  return [...chars, ...comps]
 }
 
 export function vocabV1(u: Unit): Question[] {
