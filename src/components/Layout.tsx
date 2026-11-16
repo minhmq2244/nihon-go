@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, FileText, Flame, Headphones, Home, Menu, MessagesSquare, Moon, Repeat, Settings, Sparkles, Sun, Zap } from 'lucide-react'
+import { BookOpen, ClipboardCheck, FileText, Flame, Headphones, Home, Menu, MessagesSquare, Mic, Moon, Repeat, Settings, Sparkles, Sun, Zap } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
@@ -18,6 +18,7 @@ const NAV = [
   { to: '/kanji', label: 'Ôn tập Kanji', short: 'Kanji', icon: Sparkles },
   { to: '/passive-listening', label: 'Nghe thụ động', short: 'Nghe', icon: Headphones },
   { to: '/speed-speaking', label: 'Luyện nói cấp tốc', short: 'Nói nhanh', icon: Zap },
+  { to: '/speaking-exam', label: 'Thi Nói JPD133', short: 'Thi Nói', icon: Mic },
   { to: '/kaiwa', label: 'Kaiwa', short: 'Kaiwa', icon: MessagesSquare },
   { to: '/review', label: 'Ôn tập', short: 'Ôn tập', icon: Repeat },
   { to: '/exams', label: 'Kiểm tra', short: 'Kiểm tra', icon: ClipboardCheck },

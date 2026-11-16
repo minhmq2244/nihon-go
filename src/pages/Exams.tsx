@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { Mic, Volume2 } from 'lucide-react'
 import { VOL_NAMES, useExam, useIndex } from '../lib/data'
 import { useProgress } from '../store/progress'
 import { SourceExerciseView, computeResult } from '../components/SourceExercise'
@@ -18,6 +19,27 @@ export function ExamList() {
           Mỗi Tập có một đề tổng hợp. Kiểm tra cuối từng bài nằm trong tab “Kiểm tra cuối bài” của bài đó.
         </p>
       </div>
+
+      {/* Featured Banner: Speaking JPD133 */}
+      <Link to="/speaking-exam">
+        <div className="rounded-3xl bg-gradient-to-r from-accent via-accent to-accent/90 p-6 sm:p-7 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-1 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-white font-extrabold text-xs uppercase tracking-wider">
+              <Mic className="w-3.5 h-3.5" /> Mới: Đề thi Speaking JPD133
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              20 Bộ Đề Thi Nói JPD133 (Demo 2025)
+            </h2>
+            <p className="text-sm sm:text-base text-white/90 font-medium">
+              Đoạn văn đọc chuẩn Kanji Bài 1-11, tranh miêu tả liên hoàn 3 bước, Audio câu hỏi thi thử và gợi ý nhiều cách trả lời điểm 9-10.
+            </p>
+          </div>
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white text-accent font-extrabold text-sm shadow-md transition hover:bg-stone-50">
+            <Volume2 className="w-4 h-4" />
+            Luyện thi Speaking ngay →
+          </span>
+        </div>
+      </Link>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {index.exams.map((e) => {
           const h = tests[e.id] ?? []

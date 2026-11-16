@@ -8,6 +8,7 @@ import { UnitPage } from './pages/UnitPage'
 import { KaiwaList, KaiwaTopicPage, KaiwaDialoguePage } from './pages/Kaiwa'
 import { ExamList, ExamPage } from './pages/Exams'
 import { SpeedSpeakingPage } from './pages/SpeedSpeaking'
+import { SpeakingExamPage } from './pages/SpeakingExam'
 import { PassiveListeningPage } from './pages/PassiveListening'
 import { KanjiReviewPage } from './pages/KanjiReviewPage'
 import { SettingsPage } from './pages/Settings'
@@ -59,6 +60,8 @@ export default function App() {
           <Route path="u/:id" element={<Navigate to="ly-thuyet" replace />} />
           <Route path="u/:id/:tab" element={<UnitPage />} />
           <Route path="speed-speaking" element={<SpeedSpeakingPage />} />
+          <Route path="speaking-exam" element={<SpeakingExamPage />} />
+          <Route path="speaking-exam/:id" element={<SpeakingExamPage />} />
           <Route path="passive-listening" element={<PassiveListeningPage />} />
           <Route path="kaiwa" element={<KaiwaList />} />
           <Route path="kaiwa/:id" element={<KaiwaTopicPage />} />

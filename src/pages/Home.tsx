@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, ClipboardCheck, Headphones, MessagesSquare, Repeat, Sparkles, Target, Zap } from 'lucide-react'
+import { ArrowRight, BookOpen, ClipboardCheck, Headphones, MessagesSquare, Mic, Repeat, Sparkles, Target, Zap } from 'lucide-react'
 import { useIndex, unitLabel } from '../lib/data'
 import { sectionOf, tabLabel, unitRatio } from '../lib/progressInfo'
 import { streakOf, today, useProgress } from '../store/progress'
@@ -125,7 +125,25 @@ export function Home() {
       </div>
 
       {/* Quick Access to High-Impact Features */}
-      <div className="grid gap-5 md:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <Link to="/speaking-exam" className="group">
+          <Card className="h-full p-5 sm:p-6 transition-all border-accent/40 bg-gradient-to-br from-accent/15 via-surface to-surface hover:border-accent hover:shadow-lg">
+            <div className="flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider">
+                <Mic size={13} /> Mới: Thi Nói JPD133
+              </span>
+              <span className="text-xs text-sub font-semibold group-hover:text-accent transition flex items-center gap-1">
+                Luyện ngay <ArrowRight size={14} />
+              </span>
+            </div>
+            <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-accent transition">
+              🎙️ 20 Đề Speaking JPD133
+            </h3>
+            <p className="mt-1 text-sm text-sub">
+              Chuẩn đề demo 2025: Đọc đoạn văn, tranh liên hoàn 3 bước, Audio câu hỏi thi thử và gợi ý nhiều đáp án điểm 9-10.
+            </p>
+          </Card>
+        </Link>
         <Link to="/kanji" className="group">
           <Card className="h-full p-5 sm:p-6 transition-all border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-surface to-surface hover:border-amber-500 hover:shadow-lg">
             <div className="flex items-center justify-between">
