@@ -4,7 +4,7 @@ import { AlertTriangle, BookOpen, Check, ChevronLeft, ChevronRight, RotateCcw, R
 import type { Card as StudyCard } from '../lib/questions'
 import { meaningMC } from '../lib/questions'
 import { sample, shuffle } from '../lib/data'
-import { speak } from '../lib/speech'
+import { speak, stopSpeaking } from '../lib/speech'
 import { toReading } from '../lib/furigana'
 import { useProgress } from '../store/progress'
 import { DrillItem, type Question } from './Drill'
@@ -530,7 +530,8 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return
+      const target = e.target as HTMLElement | null
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return
       if (finished) {
         if (e.key === ' ' || e.code === 'Space' || e.key === 'Enter') {
           e.preventDefault()
@@ -549,6 +550,13 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
         handleMark(false)
       } else if (e.key === 'ArrowUp' || e.key === '2') {
         handleMark(true)
+      } else if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault()
+        const textToSpeak = c?.speak || c?.front
+        if (textToSpeak) {
+          stopSpeaking()
+          void speak(textToSpeak)
+        }
       }
     }
     window.addEventListener('keydown', onKey)
@@ -830,7 +838,8 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         <SpeakButton
                           text={c.speak}
                           className="h-8 w-8 bg-muted text-sub hover:bg-accent-soft hover:text-accent transition"
-                          label="Nghe phát âm"
+                          label="Nghe phát âm (R)"
+                          title="Nghe phát âm (phím R)"
                         />
                       </div>
                       <button
@@ -904,9 +913,14 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                       <RotateCw className="h-3.5 w-3.5 text-accent" />
                       <span>Vuốt ngang để đổi thẻ · Bấm để lật</span>
                     </span>
-                    <span className="hidden sm:inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-sub border border-line">
-                      Phím cách [Space]
-                    </span>
+                    <div className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] text-sub">
+                      <span className="rounded bg-muted px-2 py-0.5 border border-line" title="Nhấn phím R để nghe phát âm">
+                        Phím [R] Nghe
+                      </span>
+                      <span className="rounded bg-muted px-2 py-0.5 border border-line">
+                        [Space] Lật
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -940,7 +954,8 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         <SpeakButton
                           text={c.speak}
                           className="h-8 w-8 bg-muted text-sub hover:bg-accent-soft hover:text-accent transition"
-                          label="Nghe phát âm"
+                          label="Nghe phát âm (R)"
+                          title="Nghe phát âm (phím R)"
                         />
                       </div>
                       <button
@@ -1011,9 +1026,14 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                       <RotateCw className="h-3.5 w-3.5 text-accent" />
                       <span>Vuốt ngang để đổi thẻ · Bấm để lật</span>
                     </span>
-                    <span className="hidden sm:inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 font-mono text-[11px] text-sub border border-line">
-                      Phím cách [Space]
-                    </span>
+                    <div className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] text-sub">
+                      <span className="rounded bg-muted px-2 py-0.5 border border-line" title="Nhấn phím R để nghe phát âm">
+                        Phím [R] Nghe
+                      </span>
+                      <span className="rounded bg-muted px-2 py-0.5 border border-line">
+                        [Space] Lật
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1061,7 +1081,12 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                     <ChevronRight className="h-5 w-5" />
                   )}
                 </Button>
-                <SpeakButton text={c.speak} className="h-10 w-10 border border-line bg-surface" />
+                <SpeakButton
+                  text={c.speak}
+                  className="h-10 w-10 border border-line bg-surface"
+                  label="Nghe phát âm (R)"
+                  title="Nghe phát âm (phím R)"
+                />
               </div>
 
               <div className="flex items-center gap-2">

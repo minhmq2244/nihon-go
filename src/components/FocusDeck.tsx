@@ -259,6 +259,9 @@ export function FocusDeck<T>({
       if (e.key === ' ') {
         e.preventDefault()
         h.replay()
+      } else if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault()
+        h.replay()
       } else if (e.key === 'Enter') {
         e.preventDefault()
         if (h.needsReveal) h.show()

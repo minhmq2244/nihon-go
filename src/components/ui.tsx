@@ -56,12 +56,24 @@ export function ProgressBar({ value, className }: { value: number; className?: s
   )
 }
 
-export function SpeakButton({ text, role, className, label }: { text: string; role?: 'A' | 'B'; className?: string; label?: string }) {
+export function SpeakButton({
+  text,
+  role,
+  className,
+  label,
+  title,
+}: {
+  text: string
+  role?: 'A' | 'B'
+  className?: string
+  label?: string
+  title?: string
+}) {
   return (
     <button
       type="button"
-      title="Nghe"
-      aria-label={label ?? 'Nghe phát âm'}
+      title={title ?? label ?? 'Nghe phát âm'}
+      aria-label={label ?? title ?? 'Nghe phát âm'}
       className={cx('inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sub hover:bg-muted hover:text-accent', className)}
       onClick={(e) => {
         e.stopPropagation()
