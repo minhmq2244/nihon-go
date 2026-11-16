@@ -9,13 +9,17 @@ import {
   EyeOff,
   HelpCircle,
   Mic,
+  Shield,
   Volume2,
   VolumeX,
 } from 'lucide-react'
 import { SPEAKING_EXAMS, type ExamQuestion, type SpeakingExam } from '../lib/speakingExamData'
 import { speak, stopSpeaking } from '../lib/speech'
 import { useProgress } from '../store/progress'
+import { useFuriBlockStore } from '../store/furiBlock'
+import type { Seg } from '../lib/furigana'
 import { Jp } from '../components/Jp'
+import { KanjiBlockManagerModal, KanjiBlockPopover, type PopoverState } from '../components/KanjiBlockManager'
 import { SpeakingPictureComic } from '../components/SpeakingPictureComic'
 import { Button, Card, cx } from '../components/ui'
 
@@ -24,10 +28,12 @@ function QuestionCard({
   q,
   indexLabel,
   examMode,
+  onRubyClick,
 }: {
   q: ExamQuestion
   indexLabel: string
   examMode: boolean
+  onRubyClick?: (seg: Seg, e: React.MouseEvent) => void
 }) {
   const [revealed, setRevealed] = useState(!examMode)
   const [playingJp, setPlayingJp] = useState<string | null>(null)
@@ -85,7 +91,7 @@ function QuestionCard({
         {revealed ? (
           <div className="space-y-1">
             <p className="text-base sm:text-lg font-bold text-ink">
-              <Jp text={q.qJp} speakable />
+              <Jp text={q.qJp} speakable onRubyClick={onRubyClick} />
             </p>
             <p className="text-xs sm:text-sm text-sub font-medium italic">
               🇻🇳 {q.qVi}
@@ -158,7 +164,7 @@ function QuestionCard({
               </div>
 
               <p className="font-bold text-ink mt-1 text-sm sm:text-base leading-snug">
-                <Jp text={ans.jp} speakable />
+                <Jp text={ans.jp} speakable onRubyClick={onRubyClick} />
               </p>
               <p className="text-sub text-[11px] sm:text-xs mt-0.5 italic">
                 {ans.vi}
@@ -183,6 +189,16 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
   const [examMode, setExamMode] = useState(false)
   const [showViPassage, setShowViPassage] = useState(false)
   const [readingAudioPlaying, setReadingAudioPlaying] = useState(false)
+
+  // Kanji Furigana Blocking (Khóa Furigana chữ Hán)
+  const [popover, setPopover] = useState<PopoverState | null>(null)
+  const [showBlockManager, setShowBlockManager] = useState(false)
+  const blockedCount = useFuriBlockStore((s) => Object.keys(s.items).length)
+
+  const handleRubyClick = (seg: Seg, e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    setPopover({ seg, rect })
+  }
 
   // Timer for Exam Mode
   const [timerSeconds, setTimerSeconds] = useState(60)
@@ -361,7 +377,7 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
         {/* Japanese Reading Sheet Container (Mô phỏng tờ giấy thi thật) */}
         <div className="bg-card rounded-3xl border-2 border-stone-800 dark:border-stone-300 p-5 sm:p-7 shadow-md">
           {/* Header of paper */}
-          <div className="flex items-center justify-between border-b-2 border-stone-800 dark:border-stone-300 pb-3 mb-4">
+          <div className="flex flex-wrap items-center justify-between border-b-2 border-stone-800 dark:border-stone-300 pb-3 mb-4 gap-2">
             <div className="flex items-center gap-2">
               <span className="flex items-center justify-center w-7 h-7 rounded-full bg-stone-900 text-white font-bold text-sm">
                 1
@@ -371,26 +387,44 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
               </h2>
             </div>
 
-            {/* Read Passage Audio Button */}
-            <button
-              type="button"
-              onClick={handleToggleReadingAudio}
-              className={cx(
-                'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold transition shadow-xs',
-                readingAudioPlaying
-                  ? 'bg-amber-600 text-white animate-pulse'
-                  : 'bg-stone-100 hover:bg-stone-200 text-stone-800 dark:bg-stone-800 dark:text-stone-200',
-              )}
-              title="Nghe mẫu phát âm toàn bộ bài đọc"
-            >
-              <Volume2 className="w-4 h-4 text-accent" />
-              <span>{readingAudioPlaying ? 'Dừng đọc...' : 'Nghe đọc mẫu'}</span>
-            </button>
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Kanji Furigana Block Manager Button */}
+              <button
+                type="button"
+                onClick={() => setShowBlockManager(true)}
+                className={cx(
+                  'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold transition shadow-xs',
+                  blockedCount > 0
+                    ? 'bg-accent/15 text-accent ring-1 ring-accent/30'
+                    : 'bg-stone-100 hover:bg-stone-200 text-stone-700 dark:bg-stone-800 dark:text-stone-300',
+                )}
+                title="Quản lý danh sách các chữ Hán đã khóa / giữ Furigana"
+              >
+                <Shield className="w-3.5 h-3.5 text-accent" />
+                <span>Khóa Kanji {blockedCount > 0 ? `(${blockedCount})` : ''}</span>
+              </button>
+
+              {/* Read Passage Audio Button */}
+              <button
+                type="button"
+                onClick={handleToggleReadingAudio}
+                className={cx(
+                  'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold transition shadow-xs',
+                  readingAudioPlaying
+                    ? 'bg-amber-600 text-white animate-pulse'
+                    : 'bg-stone-100 hover:bg-stone-200 text-stone-800 dark:bg-stone-800 dark:text-stone-200',
+                )}
+                title="Nghe mẫu phát âm toàn bộ bài đọc"
+              >
+                <Volume2 className="w-4 h-4 text-accent" />
+                <span>{readingAudioPlaying ? 'Dừng đọc...' : 'Nghe đọc mẫu'}</span>
+              </button>
+            </div>
           </div>
 
-          {/* Reading Passage Body with Furigana */}
+          {/* Reading Passage Body with Furigana & interactive ruby click */}
           <div className="py-2 text-base sm:text-xl font-medium leading-loose text-ink">
-            <Jp text={exam.reading.passageJp} />
+            <Jp text={exam.reading.passageJp} onRubyClick={handleRubyClick} />
           </div>
 
           {/* Vocabulary Notes box */}
@@ -399,7 +433,7 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
               <span className="font-bold text-sub">Từ mới:</span>
               {exam.reading.vocabNotes.map((v, idx) => (
                 <span key={idx} className="font-semibold text-ink">
-                  <Jp text={v.word} speakable />: <span className="text-sub font-normal">{v.meaning}</span>
+                  <Jp text={v.word} speakable onRubyClick={handleRubyClick} />: <span className="text-sub font-normal">{v.meaning}</span>
                 </span>
               ))}
             </div>
@@ -430,11 +464,13 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
             q={exam.reading.questions[0]}
             indexLabel="Q1"
             examMode={examMode}
+            onRubyClick={handleRubyClick}
           />
           <QuestionCard
             q={exam.reading.questions[1]}
             indexLabel="Q2"
             examMode={examMode}
+            onRubyClick={handleRubyClick}
           />
         </div>
       </div>
@@ -455,6 +491,7 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
           q={exam.qa.picture.question}
           indexLabel="Picture Q1"
           examMode={examMode}
+          onRubyClick={handleRubyClick}
         />
 
         {/* 2 Free Q&A Questions */}
@@ -473,11 +510,13 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
               q={exam.qa.freeQuestions[0]}
               indexLabel="Q2"
               examMode={examMode}
+              onRubyClick={handleRubyClick}
             />
             <QuestionCard
               q={exam.qa.freeQuestions[1]}
               indexLabel="Q3"
               examMode={examMode}
+              onRubyClick={handleRubyClick}
             />
           </div>
         </div>
@@ -515,6 +554,10 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
           </Link>
         )}
       </div>
+
+      {/* Popover & Modal Quản lý khóa Furigana (Kanji Block) */}
+      <KanjiBlockPopover popover={popover} onClose={() => setPopover(null)} />
+      <KanjiBlockManagerModal open={showBlockManager} onClose={() => setShowBlockManager(false)} />
     </div>
   )
 }
