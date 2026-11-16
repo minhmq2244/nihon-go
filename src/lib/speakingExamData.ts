@@ -101,42 +101,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       ],
       "questions": [
         {
-          "id": "p01-r1",
+          "id": "p01-rq1",
           "qJp": "山田（やまだ）さんは毎朝（まいあさ）何時（なんじ）に起（お）きますか。",
-          "qVi": "Anh Yamada mỗi sáng thức dậy lúc mấy giờ?",
-          "targetGrammar": "Bài 3/11: Hỏi thời gian thức dậy",
+          "qVi": "Anh Yamada thức dậy lúc mấy giờ mỗi sáng?",
+          "targetGrammar": "Bài 03 · Thời gian + に + Động từ",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn chuẩn format",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "6時（じ）に起（お）きます。",
-              "vi": "Thức dậy lúc 6 giờ."
+              "vi": "Anh ấy thức dậy lúc 6 giờ."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ điểm cao",
-              "jp": "山田（やまだ）さんは毎朝（まいあさ）6時（じ）に起（お）きて、牛乳（ぎゅうにゅう）を飲（の）みます。",
-              "vi": "Anh Yamada mỗi sáng dậy lúc 6 giờ rồi uống sữa."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "毎朝（まいあさ）6時（じ）に起（お）きて、牛乳（ぎゅうにゅう）を飲（の）んでからジョギングをします。",
+              "vi": "Mỗi sáng anh ấy thức dậy lúc 6 giờ, sau khi uống sữa thì đi chạy bộ."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "毎朝（まいあさ）6時（じ）です。",
+              "vi": "Mỗi sáng là 6 giờ."
             }
           ]
         },
         {
-          "id": "p01-r2",
+          "id": "p01-rq2",
           "qJp": "山田（やまだ）さんは夜（よる）、どんなことをしますか。",
-          "qVi": "Buổi tối anh Yamada làm những việc gì?",
-          "targetGrammar": "Bài 11: Liệt kê hành động ～たり～たりします",
+          "qVi": "Anh Yamada vào buổi tối làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりします & ～ています",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Liệt kê chuẩn trong bài",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "テレビを見（み）たり、本（ほん）を読（よ）んだりします。",
-              "vi": "Xem tivi và đọc sách."
+              "vi": "Anh ấy xem tivi, đọc sách..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Bổ sung việc học ngoại ngữ",
-              "jp": "テレビを見（み）たり本（ほん）を読（よ）んだりします。そして、フランス語（ご）を勉強（べんきょう）しています。",
-              "vi": "Anh ấy xem tivi, đọc sách. Và còn đang học tiếng Pháp nữa."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "家（いえ）でテレビを見（み）たり、本（ほん）を読（よ）んだりします。そして毎晩（まいばん）フランス語（ご）を30分（ぷん）くらい勉強（べんきょう）しています。",
+              "vi": "Anh ấy ở nhà xem tivi, đọc sách... Và mỗi tối học tiếng Pháp khoảng 30 phút."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "テレビを見（み）たり、フランス語（ご）を勉強（べんきょう）したりします。",
+              "vi": "Anh ấy xem tivi, học tiếng Pháp..."
             }
           ]
         }
@@ -276,75 +288,87 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
     "id": "p02",
     "title": "Đề 02 (P02) · Ngày chủ nhật của chị Kimura",
     "shortTitle": "木村さんの日曜日",
-    "focusGrammar": "Bài 11 · ～たり～たり, ～てから, Thể た",
+    "focusGrammar": "Bài 11 · ～たり～たりします, ～てから, ～ています",
     "badge": "Đề P02 · Bài 11",
     "katakanaWords": [
-      "アパート",
-      "スーパーマーケット",
+      "スーパー",
       "サンドイッチ",
-      "エアコン"
+      "エアコン",
+      "DVD"
     ],
     "reading": {
       "title": "「木村（きむら）さんの日曜日（にちようび）」",
-      "passageJp": "木村（きむら）さんは日曜日（にちようび）の朝（あさ）、アパートの掃除（そうじ）をしてから、スーパーマーケットへ行（い）きます。スーパーで野菜（やさい）や果物（くだもの）を買（か）ったり、サンドイッチを買（か）ったりします。午後（ごご）は暑（あつ）いですから、部屋（へや）でエアコンをつけて、映画（えいが）のDVDを見（み）ます。夕方（ゆうがた）は近（ちか）くの公園（こうえん）を散歩（さんぽ）したり、写真（しゃしん）を撮（と）ったりします。日曜日（にちようび）はいつも自分（じぶん）の好（す）きなことをして、ゆっくり過（す）ごします。",
-      "passageVi": "Chị Kimura vào sáng Chủ Nhật sau khi dọn dẹp căn hộ thì đi siêu thị. Ở siêu thị, chị ấy mua rau củ quả, mua bánh mì kẹp sandwich... Buổi chiều vì trời nóng nên chị bật máy lạnh trong phòng rồi xem DVD phim. Chiều tối chị đi dạo ở công viên gần nhà, chụp ảnh... Ngày Chủ Nhật chị luôn làm những việc mình thích và trải qua một cách thong thả.",
+      "passageJp": "木村（きむら）さんは日曜日（にちようび）の朝（あさ）、部屋（へや）の掃除（そうじ）をしてから、スーパーへ行（い）きます。スーパーで野菜（やさい）や果物（くだもの）を買（か）ったり、サンドイッチを買（か）ったりします。午後（ごご）は暑（あつ）いですから、部屋（へや）でエアコンをつけて、DVDを見（み）ます。夕方（ゆうがた）は近（ちか）くの公園（こうえん）を散歩（さんぽ）したり、写真（しゃしん）を撮（と）ったりします。日曜日（にちようび）はいつも自分（じぶん）の好（す）きなことをして、ゆっくり過（す）ごしています。",
+      "passageVi": "Chị Kimura vào sáng Chủ nhật, sau khi dọn dẹp phòng thì đi siêu thị. Ở siêu thị, chị mua rau củ quả, mua bánh sandwich... Buổi chiều vì trời nóng nên chị bật điều hòa trong phòng rồi xem DVD. Chiều tối, chị đi dạo ở công viên gần nhà, chụp ảnh... Ngày Chủ nhật chị luôn làm những việc mình thích và trải qua một cách thong thả.",
       "underlines": [
         "掃除（そうじ）をしてから、",
         "買（か）ったり、",
-        "エアコンをつけて、",
+        "買（か）ったりします。",
         "散歩（さんぽ）したり、",
-        "撮（と）ったりします。"
+        "写真（しゃしん）を撮（と）ったりします。",
+        "過（す）ごしています。"
       ],
       "vocabNotes": [
         {
-          "word": "エアコン",
-          "reading": "エアコン",
-          "meaning": "Máy điều hòa, máy lạnh"
+          "word": "ゆっくり",
+          "meaning": "Thong thả, từ từ"
         },
         {
-          "word": "過（す）ごします",
-          "reading": "すごします",
-          "meaning": "Trải qua, dành thời gian"
+          "word": "自分（じぶん）",
+          "reading": "じぶん",
+          "meaning": "Bản thân mình"
         }
       ],
       "questions": [
         {
-          "id": "p02-r1",
-          "qJp": "木村（きむら）さんはスーパーへ行（い）く前（まえ）に何（なに）をしますか。",
-          "qVi": "Chị Kimura làm gì trước khi đi siêu thị?",
-          "targetGrammar": "Bài 10/11: Thể てから / 前に",
+          "id": "p02-rq1",
+          "qJp": "木村（きむら）さんは朝（あさ）、何（なに）をしてからスーパーへ行（い）きますか。",
+          "qVi": "Chị Kimura vào buổi sáng làm gì trước khi đi siêu thị?",
+          "targetGrammar": "Bài 07 & 11 · ～てから",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "アパートの掃除（そうじ）をします。",
-              "vi": "Dọn dẹp căn hộ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "部屋（へや）の掃除（そうじ）をしてから行（い）きます。",
+              "vi": "Chị ấy dọn dẹp phòng xong rồi đi."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "アパートの部屋（へや）を掃除（そうじ）してから、スーパーへ行（い）きます。",
-              "vi": "Chị ấy dọn dẹp phòng trong căn hộ rồi mới đi siêu thị."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "日曜日（にちようび）の朝（あさ）、部屋（へや）の掃除（そうじ）をしてからスーパーへ行（い）きます。",
+              "vi": "Vào sáng Chủ nhật, sau khi dọn dẹp phòng thì chị ấy đi siêu thị."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "アパートの部屋（へや）を掃除（そうじ）します。",
+              "vi": "Chị ấy dọn dẹp phòng căn hộ."
             }
           ]
         },
         {
-          "id": "p02-r2",
-          "qJp": "午後（ごご）はどうして部屋（へや）でエアコンをつけますか。",
-          "qVi": "Tại sao buổi chiều chị ấy lại bật điều hòa trong phòng?",
-          "targetGrammar": "Bài 8/10: Hỏi lý do ～から",
+          "id": "p02-rq2",
+          "qJp": "木村（きむら）さんは夕方（ゆうがた）、どんなことをしますか。",
+          "qVi": "Chị Kimura vào buổi chiều tối làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "暑（あつ）いですから。",
-              "vi": "Vì trời nóng."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "公園（こうえん）を散歩（さんぽ）したり、写真（しゃしん）を撮（と）ったりします。",
+              "vi": "Chị ấy đi dạo công viên, chụp ảnh..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ ngữ cảnh",
-              "jp": "午後（ごご）はとても暑（あつ）いですから、エアコンをつけます。",
-              "vi": "Vì buổi chiều rất nóng nên chị ấy bật điều hòa."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "近（ちか）くの公園（こうえん）を散歩（さんぽ）したり、写真（しゃしん）を撮（と）ったりして、ゆっくり過（す）ごしています。",
+              "vi": "Chị ấy đi dạo công viên gần nhà, chụp ảnh... và trải qua một cách thong thả."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "公園（こうえん）へ行（い）って、写真（しゃしん）を撮（と）ります。",
+              "vi": "Chị ấy đến công viên và chụp ảnh."
             }
           ]
         }
@@ -478,77 +502,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p03",
-    "title": "Đề 03 (P03) · Hoạt động tình nguyện của anh Sato",
-    "shortTitle": "佐藤さんのボランティア活動",
-    "focusGrammar": "Bài 10/11 · ～ないでください, ～てから, ～ています",
+    "title": "Đề 03 (P03) · Chuyến du lịch Kyoto của bạn Nam",
+    "shortTitle": "ナムさんの京都旅行",
+    "focusGrammar": "Bài 10 · ～ないでください, ～てから, あげました",
     "badge": "Đề P03 · Bài 10",
     "katakanaWords": [
-      "ボランティア",
-      "リサイクル",
-      "コミュニケーション",
-      "グループ"
+      "ホテル",
+      "タクシー",
+      "カメラ",
+      "おみやげ"
     ],
     "reading": {
-      "title": "「佐藤（さとう）さんのボランティア活動（かつどう）」",
-      "passageJp": "佐藤（さとう）さんは毎月（まいつき）1回（かい）、町（まち）のボランティア活動（かつどう）に参加（さんか）しています。朝（あさ）8時（じ）に公園（こうえん）に集合（しゅうごう）してから、グループの人（ひと）とごみを拾（ひろ）います。紙（かみ）やペットボトルを分（わ）けて、リサイクルの箱（はこ）に入（い）れます。「公園（こうえん）でたばこを吸（す）わないでください」というポスターも貼（は）ります。いろいろな国（くに）の人（ひと）がいますから、楽（たの）しくコミュニケーションができます。活動（かつどう）の終（お）わりにみんなで写真（しゃしん）を撮（と）ります。",
-      "passageVi": "Anh Sato mỗi tháng một lần tham gia hoạt động tình nguyện của thị trấn. Sau khi tập trung ở công viên lúc 8 giờ sáng, anh nhặt rác cùng mọi người trong nhóm. Phân loại giấy và chai nhựa rồi bỏ vào thùng tái chế. Nhóm cũng dán các tấm áp phích ghi \"Xin đừng hút thuốc trong công viên\". Vì có người từ nhiều quốc gia nên có thể giao tiếp rất vui vẻ. Cuối buổi hoạt động, mọi người cùng nhau chụp ảnh kỷ niệm.",
+      "title": "「ナムさんの京都（きょうと）旅行（りょこう）」",
+      "passageJp": "ナムさんは先週（せんしゅう）、新幹線（しんかんせん）に乗（の）って京都（きょうと）へ旅行（りょこう）に行（い）きました。京都駅（きょうとえき）に着（つ）いてから、まずタクシーでホテルへ行（い）って荷物（にもつ）を置（お）きました。それから有名（ゆうめい）なお寺（てら）へ行（い）って、新（あたら）しいカメラで写真（しゃしん）をたくさん撮（と）りました。お寺（てら）の人（ひと）は「中（なか）で走（はし）らないでください」と言（い）いました。夕方（ゆうがた）おみやげ屋（や）でおいしいお菓子（かし）を買（か）って、友達（ともだち）にあげました。",
+      "passageVi": "Bạn Nam tuần trước đã đi tàu Shinkansen đến Kyoto du lịch. Sau khi đến ga Kyoto, trước tiên bạn đi taxi đến khách sạn để gửi hành lý lại. Sau đó bạn đến một ngôi chùa nổi tiếng và chụp rất nhiều ảnh bằng chiếc máy ảnh mới. Người ở chùa nói 'Xin đừng chạy ở bên trong'. Buổi chiều tối ở tiệm quà lưu niệm, bạn mua bánh kẹo ngon để tặng bạn bè.",
       "underlines": [
-        "参加（さんか）しています。",
-        "集合（しゅうごう）してから、",
-        "分（わ）けて、",
-        "吸（す）わないでください",
-        "コミュニケーションができます。"
+        "着（つ）いてから、",
+        "行（い）って",
+        "置（お）きました。",
+        "走（はし）らないでください",
+        "買（か）って、",
+        "友達（ともだち）にあげました。"
       ],
       "vocabNotes": [
         {
-          "word": "集合（しゅうごう）します",
-          "reading": "しゅうごうします",
-          "meaning": "Tập trung, tập hợp"
+          "word": "有名（ゆうめい）な",
+          "reading": "ゆうめいな",
+          "meaning": "Nổi tiếng"
         },
         {
-          "word": "リサイクル",
-          "reading": "リサイクル",
-          "meaning": "Tái chế"
+          "word": "おみやげ屋（や）",
+          "reading": "おみやげや",
+          "meaning": "Tiệm bán quà lưu niệm"
         }
       ],
       "questions": [
         {
-          "id": "p03-r1",
-          "qJp": "佐藤（さとう）さんは何時（なんじ）にどこに集合（しゅうごう）しますか。",
-          "qVi": "Anh Sato tập trung ở đâu lúc mấy giờ?",
-          "targetGrammar": "Bài 3/10: Hỏi địa điểm và thời gian",
+          "id": "p03-rq1",
+          "qJp": "ナムさんは京都駅（きょうとえき）に着（つ）いてから、まず何（なに）をしましたか。",
+          "qVi": "Bạn Nam sau khi đến ga Kyoto thì trước tiên làm gì?",
+          "targetGrammar": "Bài 07 & 10 · ～てから, ～て～",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "朝（あさ）8時（じ）に公園（こうえん）に集合（しゅうごう）します。",
-              "vi": "Tập trung ở công viên lúc 8 giờ sáng."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "タクシーでホテルへ行（い）って荷物（にもつ）を置（お）きました。",
+              "vi": "Bạn ấy đi taxi đến khách sạn và để hành lý lại."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "朝（あさ）の8時（じ）に町（まち）の公園（こうえん）でグループの人（ひと）と集合（しゅうごう）します。",
-              "vi": "Anh ấy tập trung cùng mọi người trong nhóm tại công viên thị trấn lúc 8 giờ sáng."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "まずタクシーでホテルへ行（い）って荷物（にもつ）を置（お）いてから、お寺（てら）へ行（い）きました。",
+              "vi": "Trước tiên bạn ấy đi taxi đến khách sạn để hành lý lại, sau đó đi chùa."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "ホテルへ荷物（にもつ）を置（お）きに行（い）きました。",
+              "vi": "Bạn ấy đi đến khách sạn để đặt hành lý."
             }
           ]
         },
         {
-          "id": "p03-r2",
-          "qJp": "ポスターには何（なん）と書（か）いてありますか。",
-          "qVi": "Trên áp phích viết điều gì?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p03-rq2",
+          "qJp": "お寺（てら）の人（ひと）は何（なん）と言（い）いましたか。",
+          "qVi": "Người ở chùa đã nói gì?",
+          "targetGrammar": "Bài 10 · ～ないでくださいと言いました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn trích dẫn",
-              "jp": "公園（こうえん）でたばこを吸（す）わないでくださいと書（か）いてあります。",
-              "vi": "Viết là: Xin đừng hút thuốc trong công viên."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "「中（なか）で走（はし）らないでください」と言（い）いました。",
+              "vi": "Họ nói: 'Xin đừng chạy ở bên trong'."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Trả lời ý nhắc nhở",
-              "jp": "「たばこを吸（す）わないでください」というポスターです。",
-              "vi": "Đó là áp phích nhắc nhở \"Xin đừng hút thuốc\"."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "お寺（てら）の人（ひと）は「中（なか）で走（はし）らないでください」とナムさんに言（い）いました。",
+              "vi": "Người ở chùa đã nói với bạn Nam rằng 'Xin đừng chạy ở bên trong'."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "中（なか）で走（はし）らないでくださいと注意（ちゅうい）しました。",
+              "vi": "Họ nhắc nhở rằng xin đừng chạy ở bên trong."
             }
           ]
         }
@@ -684,78 +721,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p04",
-    "title": "Đề 04 (P04) · Giờ học tiếng Nhật của bạn Smith",
-    "shortTitle": "スミスさんの日本語の授業",
-    "focusGrammar": "Bài 9/11 · ～ことができます, ～たり～たり, ～とき",
-    "badge": "Đề P04 · Bài 9",
+    "title": "Đề 04 (P04) · Cuộc sống học tập của bạn Smith",
+    "shortTitle": "スミスさんの学生生活",
+    "focusGrammar": "Bài 09 · ～ことができます, 前は～が今は～, ～とき",
+    "badge": "Đề P04 · Bài 09",
     "katakanaWords": [
-      "プロジェクト",
-      "プレゼンテーション",
-      "カフェテリア",
-      "ノートパソコン"
+      "アパート",
+      "ノート",
+      "クラスメイト",
+      "パン"
     ],
     "reading": {
-      "title": "「スミスさんの日本語（にほんご）の授業（じゅぎょう）」",
-      "passageJp": "スミスさんは大学（だいがく）で日本語（にほんご）を勉強（べんきょう）しています。今日（きょう）の授業（じゅぎょう）では、グループのプロジェクトについてプレゼンテーションをしました。初（はじ）めは緊張（きんちょう）しましたが、ノートパソコンの資料（しりょう）を見（み）せながら上手に説明（せつめい）することができました。授業（じゅぎょう）のあとで、友達（ともだち）とカフェテリアへ行（い）って、コーヒーを飲（の）みました。スミスさんは漢字（かんじ）が難（むずか）しいとき、いつも先生（せんせい）や友達（ともだち）に質問（しつもん）しています。",
-      "passageVi": "Bạn Smith đang học tiếng Nhật ở trường đại học. Trong tiết học hôm nay, bạn đã thuyết trình về dự án của nhóm. Ban đầu dù khá căng thẳng, nhưng vừa chiếu tài liệu từ máy tính xách tay vừa giải thích khéo léo nên bạn đã thuyết trình rất thành công. Sau giờ học, bạn cùng bạn bè đến căng tin uống cà phê. Khi chữ Hán khó, Smith luôn đặt câu hỏi nhờ thầy cô hoặc bạn bè giải đáp.",
+      "title": "「スミスさんの学生（がくせい）生活（せいかつ）」",
+      "passageJp": "スミスさんはアメリカから来（き）て、今（いま）東京（とうきょう）のアパートに住（す）んでいます。毎朝（まいあさ）8時（じ）に大（おお）きいパンを食（た）べてから、歩（ある）いて大学（だいがく）へ行（い）きます。大学（だいがく）で日本語（にほんご）を話（はな）したり、クラスメイトとノートを見（み）たりします。漢字（かんじ）が難（むずか）しいとき、いつも先生（せんせい）に聞（き）きます。スミスさんは前（まえ）は箸（はし）が使（つか）えませんでしたが、今（いま）は上手に使（つか）うことができます。",
+      "passageVi": "Bạn Smith đến từ Mỹ, hiện đang sống trong một căn hộ ở Tokyo. Mỗi sáng sau khi ăn một chiếc bánh mì lớn lúc 8 giờ, bạn đi bộ đến trường đại học. Ở trường, bạn nói tiếng Nhật, cùng bạn cùng lớp xem vở ghi chép... Khi chữ Hán khó, bạn luôn hỏi thầy cô giáo. Trước đây bạn Smith không dùng được đũa, nhưng bây giờ bạn có thể dùng rất giỏi.",
       "underlines": [
-        "プレゼンテーションをしました。",
-        "ノートパソコン",
-        "説明（せつめい）することができました。",
-        "カフェテリアへ行（い）って、",
+        "住（す）んでいます。",
+        "食（た）べてから、",
+        "話（はな）したり、",
+        "見（み）たりします。",
         "難（むずか）しいとき、",
-        "質問（しつもん）しています。"
+        "使（つか）うことができます。"
       ],
       "vocabNotes": [
         {
-          "word": "緊張（きんちょう）します",
-          "reading": "きんちょうします",
-          "meaning": "Căng thẳng, hồi hộp"
+          "word": "箸（はし）",
+          "reading": "はし",
+          "meaning": "Đôi đũa"
         },
         {
-          "word": "プレゼンテーション",
-          "reading": "プレゼンテーション",
-          "meaning": "Thuyết trình, bài báo cáo"
+          "word": "上手（じょうず）に",
+          "reading": "じょうず",
+          "meaning": "Giỏi, khéo léo"
         }
       ],
       "questions": [
         {
-          "id": "p04-r1",
-          "qJp": "スミスさんは今日（きょう）の授業（じゅぎょう）で何（なに）をしましたか。",
-          "qVi": "Bạn Smith đã làm gì trong giờ học hôm nay?",
-          "targetGrammar": "Bài 9: Hỏi về nội dung hành động",
+          "id": "p04-rq1",
+          "qJp": "スミスさんは漢字（かんじ）が難（むずか）しいとき、どうしますか。",
+          "qVi": "Bạn Smith khi gặp chữ Hán khó thì làm như thế nào?",
+          "targetGrammar": "Bài 11 · ～とき",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "プレゼンテーションをしました。",
-              "vi": "Bạn ấy đã làm bài thuyết trình."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "いつも先生（せんせい）に聞（き）きます。",
+              "vi": "Bạn ấy luôn hỏi thầy cô giáo."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ chi tiết",
-              "jp": "グループプロジェクトについてのプレゼンテーションをしました。",
-              "vi": "Bạn ấy đã thuyết trình về dự án của nhóm."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "漢字（かんじ）が難（むずか）しいとき、いつも先生（せんせい）に質問（しつもん）します。",
+              "vi": "Khi chữ Hán khó, bạn ấy luôn đặt câu hỏi cho thầy cô giáo."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "先生（せんせい）に聞（き）いたり、クラスメイトに聞（き）いたりします。",
+              "vi": "Bạn ấy hỏi thầy cô giáo hoặc hỏi bạn cùng lớp."
             }
           ]
         },
         {
-          "id": "p04-r2",
-          "qJp": "漢字（かんじ）が難（むずか）しいとき、スミスさんはどうしますか。",
-          "qVi": "Khi chữ Hán khó, bạn Smith làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p04-rq2",
+          "qJp": "スミスさんは前（まえ）と今（いま）で、何（なに）ができるようになりましたか。",
+          "qVi": "Bạn Smith trước đây và bây giờ đã có thể làm được điều gì?",
+          "targetGrammar": "Bài 09 & 11 · 前は～が今は～, ～ことができます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "先生（せんせい）や友達（ともだち）に質問（しつもん）します。",
-              "vi": "Đặt câu hỏi nhờ thầy cô và bạn bè."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "箸（はし）を上手（じょうず）に使（つか）うことができます。",
+              "vi": "Bạn ấy có thể dùng đũa rất khéo léo."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "わからない漢字（かんじ）があるとき、先生（せんせい）や友達（ともだち）に聞（き）いて質問（しつもん）します。",
-              "vi": "Khi có chữ Hán không hiểu, bạn ấy hỏi thầy cô và bạn bè."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "前（まえ）は箸（はし）が使（つか）えませんでしたが、今（いま）は上手（じょうず）に使（つか）うことができます。",
+              "vi": "Trước đây không dùng được đũa, nhưng bây giờ có thể dùng rất giỏi."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "箸（はし）でご飯（はん）を食（た）べることができます。",
+              "vi": "Bạn ấy có thể ăn cơm bằng đũa."
             }
           ]
         }
@@ -891,27 +940,26 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p05",
-    "title": "Đề 05 (P05) · Gia đình và món quà của bạn Linh",
-    "shortTitle": "リンさんの家族とプレゼント",
-    "focusGrammar": "Bài 8/11 · あげる, もらう, ～とき, ～ています",
-    "badge": "Đề P05 · Bài 8",
+    "title": "Đề 05 (P05) · Sinh nhật mẹ của bạn Linh",
+    "shortTitle": "リンさんのお母さんの誕生日",
+    "focusGrammar": "Bài 08 · あげました, くれました, ～とき",
+    "badge": "Đề P05 · Bài 08",
     "katakanaWords": [
-      "スマートフォン",
-      "プレゼント",
+      "デパート",
+      "スカーフ",
       "チョコレート",
-      "ビデオ通話（つうわ）"
+      "プレゼント"
     ],
     "reading": {
-      "title": "「リンさんの家族（かぞく）とプレゼント」",
-      "passageJp": "リンさんはベトナムから日本（にほん）へ留学（りゅうがく）に来（き）ています。先週（せんしゅう）、母（はは）の誕生日（たんじょうび）でしたから、デパートで日本のきれいなスカーフとおいしいチョコレートを買（か）いました。そして、郵便局（ゆうびんきょく）から母（はは）にプレゼントを送（おく）りました。夜（よる）、スマートフォンでビデオ通話（つうわ）をして、家族（かぞく）の顔（かお）を見（み）ながら楽（たの）しく話（はな）しました。母（はは）はとても喜（よろこ）んでくれました。リンさんは家族（かぞく）に会（あ）いたいとき、いつも写真（しゃしん）を見（み）ています。",
-      "passageVi": "Bạn Linh từ Việt Nam sang Nhật du học. Tuần trước vì là sinh nhật mẹ, bạn đã mua một chiếc khăn quàng cổ Nhật Bản rất đẹp và sô-cô-la ngon ở trung tâm thương mại. Sau đó, bạn gửi quà cho mẹ qua bưu điện. Buổi tối, gọi video bằng điện thoại thông minh, vừa nhìn ngắm gương mặt gia đình vừa trò chuyện vui vẻ. Mẹ bạn đã rất vui. Khi nhớ và muốn gặp gia đình, Linh luôn ngắm nhìn những bức ảnh.",
+      "title": "「リンさんのお母（かあ）さんの誕生日（たんじょうび）」",
+      "passageJp": "リンさんはベトナムの留学生（りゅうがくせい）で、今（いま）日本の大学（だいがく）に通（かよ）っています。先週（せんしゅう）はお母（かあ）さんの50歳（さい）の誕生日（たんじょうび）でしたから、デパートへ行（い）きました。きれいなスカーフとおいしいチョコレートを買（か）って、郵便局（ゆうびんきょく）から母（はは）に送（おく）りました。夜（よる）はお母（かあ）さんに電話（でんわ）をかけて、楽（たの）しく話（はな）しました。お母（かあ）さんは「すてきなプレゼントをありがとう」と言（い）って、とても喜（よろこ）んでくれました。",
+      "passageVi": "Linh là du học sinh Việt Nam, hiện đang theo học tại một trường đại học ở Nhật Bản. Tuần trước là sinh nhật 50 tuổi của mẹ nên Linh đã đến trung tâm thương mại. Bạn mua một chiếc khăn quàng cổ đẹp và sô-cô-la ngon, rồi ra bưu điện gửi cho mẹ. Buổi tối bạn gọi điện thoại cho mẹ và trò chuyện rất vui vẻ. Mẹ nói 'Cảm ơn con vì món quà tuyệt vời' và đã rất vui mừng.",
       "underlines": [
-        "買（か）いました。",
+        "通（かよ）っています。",
+        "買（か）って、",
         "送（おく）りました。",
-        "スマートフォン",
-        "見（み）ながら",
-        "喜（よろこ）んでくれました。",
-        "会（あ）いたいとき、"
+        "電話（でんわ）をかけて、",
+        "喜（よろこ）んでくれました。"
       ],
       "vocabNotes": [
         {
@@ -920,49 +968,60 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
           "meaning": "Vui mừng, phấn khởi"
         },
         {
-          "word": "ビデオ通話（つうわ）",
-          "reading": "ビデオつうわ",
-          "meaning": "Cuộc gọi video"
+          "word": "すてきな",
+          "meaning": "Tuyệt vời, đẹp đẽ"
         }
       ],
       "questions": [
         {
-          "id": "p05-r1",
-          "qJp": "リンさんはお母（かあ）さんに何（なに）を送（おく）りましたか。",
-          "qVi": "Bạn Linh đã gửi quà gì cho mẹ?",
-          "targetGrammar": "Bài 8: Quà tặng あげます / 送ります",
+          "id": "p05-rq1",
+          "qJp": "リンさんはデパートでお母（かあ）さんに何（なに）を買（か）いましたか。",
+          "qVi": "Bạn Linh đã mua gì cho mẹ ở trung tâm thương mại?",
+          "targetGrammar": "Bài 08 · N1 と N2 を買いました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "スカーフとチョコレートを送（おく）りました。",
-              "vi": "Đã gửi khăn quàng cổ và sô-cô-la."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "きれいなスカーフとおいしいチョコレートを買（か）いました。",
+              "vi": "Bạn ấy mua một chiếc khăn quàng cổ đẹp và sô-cô-la ngon."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "デパートで買（か）った日本のスカーフとチョコレートを送（おく）りました。",
-              "vi": "Bạn ấy đã gửi chiếc khăn quàng Nhật Bản và sô-cô-la mua ở trung tâm thương mại."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "お母（かあ）さんの誕生日（たんじょうび）のために、スカーフとチョコレートを買（か）って送（おく）りました。",
+              "vi": "Để mừng sinh nhật mẹ, bạn ấy đã mua khăn quàng cổ và sô-cô-la rồi gửi về."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "誕生日（たんじょうび）のプレゼントを買（か）いました。",
+              "vi": "Bạn ấy mua quà sinh nhật."
             }
           ]
         },
         {
-          "id": "p05-r2",
-          "qJp": "家族（かぞく）に会（あ）いたいとき、リンさんはどうしますか。",
-          "qVi": "Khi muốn gặp gia đình, bạn Linh làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p05-rq2",
+          "qJp": "お母（かあ）さんは電話（でんわ）で何（なん）と言（い）いましたか。",
+          "qVi": "Mẹ của bạn Linh qua điện thoại đã nói gì?",
+          "targetGrammar": "Bài 08 · ～と言いました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "家族（かぞく）の写真（しゃしん）を見（み）ます。",
-              "vi": "Ngắm ảnh của gia đình."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "「すてきなプレゼントをありがとう」と言（い）いました。",
+              "vi": "Mẹ nói: 'Cảm ơn con vì món quà tuyệt vời'."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "家族（かぞく）に会（あ）いたいとき、いつも写真（しゃしん）を見（み）ています。",
-              "vi": "Khi nhớ gia đình, bạn ấy luôn ngắm nhìn những bức ảnh chụp chung."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "「すてきなプレゼントをありがとう」と言（い）って、とても喜（よろこ）んでくれました。",
+              "vi": "Mẹ nói: 'Cảm ơn con vì món quà tuyệt vời' và đã rất vui mừng."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "プレゼントをとても喜（よろこ）びました。",
+              "vi": "Mẹ đã rất vui mừng vì món quà."
             }
           ]
         }
@@ -1096,77 +1155,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p06",
-    "title": "Đề 06 (P06) · Chuyến du lịch bằng xe bus của anh Takahashi",
+    "title": "Đề 06 (P06) · Tour du lịch xe buýt của anh Takahashi",
     "shortTitle": "高橋さんのバスツアー",
-    "focusGrammar": "Bài 10/11 · ～てから, ～ないでください, ～て来ます",
+    "focusGrammar": "Bài 10 · ～ないでください, 見えます, ～てから",
     "badge": "Đề P06 · Bài 10",
     "katakanaWords": [
       "バスツアー",
-      "ガイド",
       "チケット",
+      "ガイド",
       "カメラ"
     ],
     "reading": {
       "title": "「高橋（たかはし）さんのバスツアー」",
-      "passageJp": "高橋（たかはし）さんは先週（せんしゅう）の土曜日（どようび）、富士山（ふじさん）のバスツアーに参加（さんか）しました。朝（あさ）8時（じ）に東京駅（とうきょうえき）の前（まえ）でガイドさんにチケットを見（み）せてから、バスに乗（の）りました。ガイドさんは「バスの中（なか）でごみを捨（す）てないでください」と説明（せつめい）しました。昼（ひる）ごろ富士山（ふじさん）に着（つ）いて、新（あたら）しいカメラで写真（しゃしん）をたくさん撮（と）りました。山（やま）の上（うえ）は空気（くうき）がきれいで、景色（けしき）も素晴（すば）らしかったです。",
-      "passageVi": "Anh Takahashi thứ Bảy tuần trước đã tham gia tour xe buýt ngắm núi Phú Sĩ. Lúc 8 giờ sáng, trước ga Tokyo sau khi cho hướng dẫn viên xem vé thì anh lên xe. Hướng dẫn viên giải thích: \"Xin đừng vứt rác trên xe buýt\". Khoảng buổi trưa đến núi Phú Sĩ, anh chụp rất nhiều ảnh bằng chiếc máy ảnh mới. Trên núi không khí trong lành, quang cảnh cũng vô cùng tuyệt vời.",
+      "passageJp": "高橋（たかはし）さんは先週（せんしゅう）の土曜日（どようび）、バスツアーに参加（さんか）しました。朝（あさ）8時（じ）に駅（えき）の前（まえ）でガイドさんにチケットを見（み）せてから、バスに乗（の）りました。ガイドさんは「危（あぶ）ないですから、バスの中（なか）で立（た）たないでください」と言（い）いました。窓（まど）から大（おお）きい山（やま）がきれいに見（み）えました。昼（ひる）ごはんは有名（ゆうめい）な店（みせ）で魚（さかな）料理（りょうり）を食（た）べて、写真（しゃしん）をたくさん撮（と）りました。",
+      "passageVi": "Anh Takahashi thứ Bảy tuần trước đã tham gia một chuyến du lịch bằng xe buýt. Sau khi đưa vé cho hướng dẫn viên ở trước nhà ga lúc 8 giờ sáng, anh lên xe buýt. Hướng dẫn viên nói 'Vì nguy hiểm nên xin đừng đứng dậy khi ở trong xe buýt'. Từ cửa sổ có thể nhìn thấy ngọn núi lớn rất đẹp. Bữa trưa anh ăn món cá ở một quán nổi tiếng và chụp rất nhiều ảnh.",
       "underlines": [
-        "参加（さんか）しました。",
         "見（み）せてから、",
         "乗（の）りました。",
-        "捨（す）てないでください",
+        "立（た）たないでください",
+        "見（み）えました。",
+        "食（た）べて、",
         "撮（と）りました。"
       ],
       "vocabNotes": [
         {
-          "word": "景色（けしき）",
-          "reading": "けしき",
-          "meaning": "Phong cảnh, quang cảnh"
+          "word": "危（あぶ）ない",
+          "reading": "あぶない",
+          "meaning": "Nguy hiểm"
         },
         {
-          "word": "捨（す）てます",
-          "reading": "すてます",
-          "meaning": "Vứt, xả (rác)"
+          "word": "窓（まど）",
+          "reading": "まど",
+          "meaning": "Cửa sổ"
         }
       ],
       "questions": [
         {
-          "id": "p06-r1",
-          "qJp": "バスに乗（の）る前（まえ）に、高橋（たかはし）さんは誰（だれ）に何（なに）を見（み）せましたか。",
-          "qVi": "Trước khi lên xe buýt, anh Takahashi đã đưa cái gì cho ai xem?",
-          "targetGrammar": "Bài 10: Hành động trước sau / Danh từ に Danh từ を",
+          "id": "p06-rq1",
+          "qJp": "ガイドさんはバスの中（なか）で何（なん）と言（い）いましたか。",
+          "qVi": "Hướng dẫn viên ở trong xe buýt đã nói gì?",
+          "targetGrammar": "Bài 10 · ～ないでくださいと言いました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "ガイドさんにチケットを見（み）せました。",
-              "vi": "Đã cho hướng dẫn viên xem vé."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "「危（あぶ）ないですから、立（た）たないでください」と言（い）いました。",
+              "vi": "Họ nói: 'Vì nguy hiểm nên xin đừng đứng dậy'."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "東京駅（とうきょうえき）の前（まえ）で、ツアーのガイドさんにチケットを見（み）せました。",
-              "vi": "Trước ga Tokyo, anh ấy đã cho hướng dẫn viên của tour xem vé."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "ガイドさんは「危（あぶ）ないですから、バスの中（なか）で立（た）たないでください」と説明（せつめい）しました。",
+              "vi": "Hướng dẫn viên đã giải thích: 'Vì nguy hiểm nên xin đừng đứng dậy trong xe buýt'."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "バスの中（なか）で立（た）ってはいけませんと言（い）いました。",
+              "vi": "Họ nói không được đứng dậy trong xe buýt."
             }
           ]
         },
         {
-          "id": "p06-r2",
-          "qJp": "ガイドさんはバスの中（なか）で何（なに）をしないでくださいと言（い）いましたか。",
-          "qVi": "Hướng dẫn viên đã nhắc nhở đừng làm gì trên xe buýt?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p06-rq2",
+          "qJp": "高橋（たかはし）さんは昼（ひる）ごはんに何（なに）を食（た）べましたか。",
+          "qVi": "Anh Takahashi đã ăn gì vào bữa trưa?",
+          "targetGrammar": "Bài 02 & 03 · Danh từ を食べました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "ごみを捨（す）てないでくださいと言（い）いました。",
-              "vi": "Bảo rằng xin đừng vứt rác."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "有名（ゆうめい）な店（みせ）で魚（さかな）料理（りょうり）を食（た）べました。",
+              "vi": "Anh ấy ăn món cá ở một quán ăn nổi tiếng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "「バスの中（なか）でごみを捨（す）てないでください」と説明（せつめい）しました。",
-              "vi": "Đã giải thích rằng \"Xin đừng vứt rác ở trên xe buýt\"."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "昼（ひる）ごはんは有名（ゆうめい）な店（みせ）で魚（さかな）料理（りょうり）を食（た）べて、写真（しゃしん）をたくさん撮（と）りました。",
+              "vi": "Bữa trưa anh ấy ăn món cá ở quán nổi tiếng và chụp rất nhiều ảnh."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "おいしい魚（さかな）料理（りょうり）です。",
+              "vi": "Là món ăn cá rất ngon."
             }
           ]
         }
@@ -1301,78 +1373,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p07",
-    "title": "Đề 07 (P07) · Cuộc sống làm thêm của bạn An",
-    "shortTitle": "アンさんのアルバイト生活",
-    "focusGrammar": "Bài 10/11 · ～てから, ～たり～たり, ～くなります",
-    "badge": "Đề P07 · Bài 11",
+    "title": "Đề 07 (P07) · Sở thích thể thao của anh Tanaka",
+    "shortTitle": "田中さんのスポーツの趣味",
+    "focusGrammar": "Bài 09 · 趣味は～ことです, ～ことができます, ～たり～たり",
+    "badge": "Đề P07 · Bài 09",
     "katakanaWords": [
-      "アルバイト",
-      "カフェ",
-      "メニュー",
-      "マネージャー"
+      "スポーツ",
+      "テニス",
+      "プール",
+      "ジョギング"
     ],
     "reading": {
-      "title": "「アンさんのアルバイト生活（せいかつ）」",
-      "passageJp": "留学生（りゅうがくせい）のアンさんは、駅（えき）の近（ちか）くのカフェでアルバイトをしています。お店（みせ）に着（つ）いてから、まず制服（せいふく）に着替（きが）えてマネージャーに挨拶（あいさつ）をします。仕事（しごと）はコーヒーを入（い）れたり、お客（きゃく）さんにメニューを渡（わた）したりします。初（はじ）めは日本語（にほんご）での接客（せっきゃく）が難（むずか）しかったですが、だんだん慣（な）れて上手（じょうず）になりました。夜（よる）9時（じ）に仕事（しごと）が終（お）わって、おなかがすいたとき、カフェのサンドイッチを食（た）べます。",
-      "passageVi": "Du học sinh An đang làm thêm tại một quán cà phê gần nhà ga. Sau khi đến quán, trước tiên bạn thay đồng phục rồi chào hỏi người quản lý. Công việc gồm pha cà phê, đưa thực đơn cho khách hàng... Ban đầu việc tiếp khách bằng tiếng Nhật rất khó khăn, nhưng dần dần bạn đã quen và trở nên thành thạo. 9 giờ tối khi công việc kết thúc và bụng đói, bạn ăn bánh sandwich của quán.",
+      "title": "「田中（たなか）さんのスポーツの趣味（しゅみ）」",
+      "passageJp": "田中（たなか）さんの趣味（しゅみ）はスポーツをすることです。子（こ）どものときから泳（およ）ぐことが好（す）きで、今（いま）もプールで500メートル泳（およ）ぐことができます。毎週（まいしゅう）土曜日（どようび）の朝（あさ）は公園（こうえん）で30分（ぷん）ジョギングをします。日曜日（にちようび）は会社（かいしゃ）の友達（ともだち）とテニスをしたり、自転車（じてんしゃ）に乗（の）ったりします。疲（つか）れたとき、温（あたた）かいお風呂（ふろ）に入（はい）ってから早（はや）く寝（ね）ています。",
+      "passageVi": "Sở thích của anh Tanaka là chơi thể thao. Từ nhỏ anh đã thích bơi lội, và bây giờ vẫn có thể bơi 500 mét ở hồ bơi. Mỗi sáng thứ Bảy anh chạy bộ 30 phút ở công viên. Chủ nhật anh chơi tennis cùng bạn bè ở công ty, hoặc đạp xe đạp... Khi mệt mỏi, sau khi tắm bồn nước ấm anh đi ngủ sớm.",
       "underlines": [
-        "アルバイトをしています。",
-        "着替（きが）えて",
-        "入（い）れたり、",
-        "渡（わた）したりします。",
-        "上手（じょうず）になりました。",
-        "おなかがすいたとき、"
+        "趣味（しゅみ）はスポーツをすることです。",
+        "泳（およ）ぐことができます。",
+        "テニスをしたり、",
+        "乗（の）ったりします。",
+        "入（はい）ってから",
+        "寝（ね）ています。"
       ],
       "vocabNotes": [
         {
-          "word": "着替（きが）えます",
-          "reading": "きがえます",
-          "meaning": "Thay quần áo, đổi đồ"
+          "word": "子（こ）どものとき",
+          "reading": "こどものとき",
+          "meaning": "Hồi còn nhỏ"
         },
         {
-          "word": "接客（せっきゃく）",
-          "reading": "せっきゃく",
-          "meaning": "Tiếp khách, phục vụ khách"
+          "word": "お風呂（ふろ）",
+          "reading": "おふろ",
+          "meaning": "Bồn tắm nước nóng"
         }
       ],
       "questions": [
         {
-          "id": "p07-r1",
-          "qJp": "アンさんはカフェでどんな仕事（しごと）をしますか。",
-          "qVi": "Bạn An làm những công việc gì ở quán cà phê?",
-          "targetGrammar": "Bài 11: Liệt kê ～たり～たり",
+          "id": "p07-rq1",
+          "qJp": "田中（たなか）さんはプールで何（なん）メートル泳（およ）ぐことができますか。",
+          "qVi": "Anh Tanaka có thể bơi bao nhiêu mét ở hồ bơi?",
+          "targetGrammar": "Bài 09 · Lượng từ + ～ことができます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "コーヒーを入（い）れたり、メニューを渡（わた）したりします。",
-              "vi": "Pha cà phê và đưa thực đơn cho khách."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "500メートル泳（およ）ぐことができます。",
+              "vi": "Anh ấy có thể bơi 500 mét."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "おいしいコーヒーを入（い）れたり、お客（きゃく）さんにメニューを渡（わた）したりします。",
-              "vi": "Pha cà phê thơm ngon và đưa thực đơn cho khách hàng."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "子（こ）どものときから泳（およ）ぐことが好（す）きで、今（いま）も500メートル泳（およ）ぐことができます。",
+              "vi": "Từ nhỏ đã thích bơi lội nên bây giờ vẫn có thể bơi 500 mét."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "プールで500メートルです。",
+              "vi": "Là 500 mét ở hồ bơi."
             }
           ]
         },
         {
-          "id": "p07-r2",
-          "qJp": "おなかがすいたとき、アンさんは何（なに）を食（た）べますか。",
-          "qVi": "Khi bụng đói, bạn An ăn món gì?",
-          "targetGrammar": "Bài 10/11: ～とき / Trạng thái cơ thể",
+          "id": "p07-rq2",
+          "qJp": "田中（たなか）さんは疲（つか）れたとき、どうしますか。",
+          "qVi": "Anh Tanaka khi mệt mỏi thì làm gì?",
+          "targetGrammar": "Bài 11 · ～とき, ～てから",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "サンドイッチを食（た）べます。",
-              "vi": "Ăn bánh mì kẹp sandwich."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "お風呂（ふろ）に入（はい）ってから早（はや）く寝（ね）ています。",
+              "vi": "Anh ấy tắm bồn nước nóng xong rồi đi ngủ sớm."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "仕事（しごと）が終（お）わってから、カフェのサンドイッチを食（た）べます。",
-              "vi": "Sau khi tan làm, bạn ấy ăn bánh mì sandwich của quán cà phê."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "疲（つか）れたとき、温（あたた）かいお風呂（ふろ）に入（はい）ってからゆっくり寝（ね）ます。",
+              "vi": "Khi mệt mỏi, sau khi ngâm bồn nước ấm anh ấy ngủ một giấc thật ngon."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "温（あたた）かいお風呂（ふろ）に入（はい）ります。",
+              "vi": "Anh ấy ngâm bồn tắm nước ấm."
             }
           ]
         }
@@ -1508,77 +1592,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p08",
-    "title": "Đề 08 (P08) · Lớp học nấu ăn của chị Nakamura",
-    "shortTitle": "中村さんの料理教室",
-    "focusGrammar": "Bài 8/9 · 教えてくれました, ～ことができます, 作る",
-    "badge": "Đề P08 · Bài 9",
+    "title": "Đề 08 (P08) · Công việc làm thêm của bạn Mai",
+    "shortTitle": "マイさんのアルバイト",
+    "focusGrammar": "Bài 11 · 働いています, たり～たり, ～てくれます",
+    "badge": "Đề P08 · Bài 11",
     "katakanaWords": [
-      "クッキング",
-      "エプロン",
-      "キッチン",
-      "デザート"
+      "アルバイト",
+      "レストラン",
+      "メニュー",
+      "コーヒー"
     ],
     "reading": {
-      "title": "「中村（なかむら）さんの料理（りょうり）教室（きょうしつ）」",
-      "passageJp": "中村（なかむら）さんは先月（せんげつ）から、週末（しゅうまつ）のクッキング教室（きょうしつ）に通（かよ）っています。広（ひろ）いキッチンでエプロンをつけて、先生（せんせい）に日本料理（にほんりょうり）の作（つく）り方を教（おし）えてもらいました。今日（きょう）は魚（さかな）の切（き）り方や天（てん）ぷらの揚（あ）げ方を練習（れんしゅう）して、上手（じょうず）に作（つく）ることができました。料理（りょうり）のあとで、甘（あま）いデザートを食（た）べながらみんなと楽（たの）しく話（はな）しました。家（いえ）でも家族（かぞく）のために作（つく）ってあげたいです。",
-      "passageVi": "Chị Nakamura từ tháng trước đã tham gia lớp học nấu ăn vào cuối tuần. Đeo tạp dề trong gian bếp rộng rãi, chị được cô giáo chỉ dạy cách làm các món ăn Nhật Bản. Hôm nay chị tập cách cắt cá và rán món tempura, và đã làm được rất khéo léo. Sau khi nấu xong, vừa ăn món tráng miệng ngọt ngào vừa trò chuyện vui vẻ cùng mọi người. Về nhà chị cũng muốn nấu cho gia đình thưởng thức.",
+      "title": "「マイさんのアルバイト」",
+      "passageJp": "マイさんは今（いま）、駅（えき）の近（ちか）くのレストランでアルバイトをしています。1週間（しゅうかん）に3回（かい）、夕方（ゆうがた）5時（じ）から9時（じ）まで働（はたら）いています。店（みせ）でお客（きゃく）さんにメニューを渡（わた）したり、おいしいコーヒーを入（い）れたりします。店長（てんちょう）は親切（しんせつ）で、仕事（しごと）をいろいろ教（おし）えてくれます。忙（いそが）しいですが、日本語（にほんご）の会話（かいわ）が上手（じょうず）になりました。",
+      "passageVi": "Mai hiện đang làm thêm tại một nhà hàng gần nhà ga. Một tuần bạn làm 3 buổi, từ 5 giờ chiều đến 9 giờ tối. Ở quán, bạn đưa thực đơn cho khách, pha cà phê ngon... Quản lý cửa hàng rất tốt bụng và chỉ dạy công việc tận tình. Dù bận rộn nhưng khả năng hội thoại tiếng Nhật của bạn đã trở nên tiến bộ.",
       "underlines": [
-        "クッキング教室（きょうしつ）",
-        "教（おし）えてもらいました。",
-        "作（つく）ることができました。",
-        "食（た）べながら",
-        "作（つく）ってあげたいです。"
+        "アルバイトをしています。",
+        "働（はたら）いています。",
+        "渡（わた）したり、",
+        "入（い）れたりします。",
+        "教（おし）えてくれます。",
+        "上手（じょうず）になりました。"
       ],
       "vocabNotes": [
         {
-          "word": "通（かよ）います",
-          "reading": "かよいます",
-          "meaning": "Đi lại thường xuyên (học/làm)"
+          "word": "店長（てんちょう）",
+          "reading": "てんちょう",
+          "meaning": "Quản lý / Chủ cửa hàng"
         },
         {
-          "word": "デザート",
-          "reading": "デザート",
-          "meaning": "Món tráng miệng"
+          "word": "お客（きゃく）さん",
+          "reading": "おきゃくさん",
+          "meaning": "Khách hàng"
         }
       ],
       "questions": [
         {
-          "id": "p08-r1",
-          "qJp": "中村（なかむら）さんは今日（きょう）の教室（きょうしつ）で何（なに）を作（つく）ることができましたか。",
-          "qVi": "Chị Nakamura trong buổi học hôm nay đã có thể làm được món gì?",
-          "targetGrammar": "Bài 9: Mẫu câu ～ことができます",
+          "id": "p08-rq1",
+          "qJp": "マイさんは1週間（しゅうかん）に何回（なんかい）アルバイトをしていますか。",
+          "qVi": "Bạn Mai một tuần làm thêm bao nhiêu lần?",
+          "targetGrammar": "Bài 09 · Khoảng thời gian に Số lần",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "天（てん）ぷらや魚（さかな）の料理（りょうり）を作（つく）ることができました。",
-              "vi": "Đã có thể làm được món tempura và món cá."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "1週間（しゅうかん）に3回（かい）働（はたら）いています。",
+              "vi": "Bạn ấy làm việc 3 lần một tuần."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "魚（さかな）を切（き）って、天（てん）ぷらを上手（じょうず）に作（つく）ることができました。",
-              "vi": "Chị ấy đã cắt cá và làm món tempura rất khéo léo."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "1週間（しゅうかん）に3回（かい）、夕方（ゆうがた）5時（じ）から9時（じ）まで働（はたら）いています。",
+              "vi": "Một tuần bạn ấy làm 3 buổi, từ 5 giờ chiều đến 9 giờ tối."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "週（しゅう）に3回（かい）です。",
+              "vi": "Là 3 lần một tuần."
             }
           ]
         },
         {
-          "id": "p08-r2",
-          "qJp": "中村（なかむら）さんは家（いえ）に帰（かえ）ってから誰（だれ）のために料理（りょうり）を作（つく）りたいですか。",
-          "qVi": "Sau khi về nhà, chị Nakamura muốn nấu ăn cho ai?",
-          "targetGrammar": "Bài 8: Mẫu câu ～のために / 作ってあげます",
+          "id": "p08-rq2",
+          "qJp": "店長（てんちょう）はどんな人（ひと）ですか。",
+          "qVi": "Người quản lý cửa hàng là người như thế nào?",
+          "targetGrammar": "Bài 08 · Tính từ + で, ～てくれます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "家族（かぞく）のために作（つく）りたいです。",
-              "vi": "Muốn nấu cho gia đình."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "親切（しんせつ）な人（ひと）です。",
+              "vi": "Là một người rất tốt bụng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "家（いえ）でも家族（かぞく）のために日本料理（にほんりょうり）を作（つく）ってあげたいです。",
-              "vi": "Chị ấy muốn tự tay nấu món Nhật đãi gia đình tại nhà."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "親切（しんせつ）で、仕事（しごと）をいろいろ教（おし）えてくれる人（ひと）です。",
+              "vi": "Là người rất tốt bụng và chỉ dạy công việc rất tận tình."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "とても優（やさ）しくて親切（しんせつ）です。",
+              "vi": "Rất hiền và tốt bụng."
             }
           ]
         }
@@ -1714,79 +1811,89 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p09",
-    "title": "Đề 09 (P09) · Cuộc sống mới của bạn Mai",
-    "shortTitle": "マイさんの新しい生活",
-    "focusGrammar": "Bài 11 · ～とき, だんだん慣れました, 一人暮らし",
+    "title": "Đề 09 (P09) · Ngày nghỉ cuối tuần của anh Suzuki",
+    "shortTitle": "鈴木さんの休日",
+    "focusGrammar": "Bài 11 · ～たり～たり, ～てから, 日記を書いています",
     "badge": "Đề P09 · Bài 11",
     "katakanaWords": [
-      "ルームメイト",
-      "スケジュール",
-      "インターネット",
-      "シャンプー"
+      "テレビ",
+      "パン",
+      "コーヒー",
+      "ゲーム"
     ],
     "reading": {
-      "title": "「マイさんの新（あたら）しい生活（せいかつ）」",
-      "passageJp": "マイさんは先月（せんげつ）から、大学（だいがく）の寮（りょう）で一人暮（ひとりぐ）らしを始（はじ）めました。初（はじ）めは寂（さび）しくて生活（せいかつ）が大変（たいへん）でしたが、だんだん慣（な）れました。日本人のルームメイトが親切（しんせつ）にいろいろなことを教（おし）えてくれたからです。毎日（まいにち）のスケジュールを手帳（てちょう）に書（か）いて、計画的（けいかくてき）に生活（せいかつ）しています。夜（よる）、暇（ひま）なとき、インターネットで映画（えいが）を見（み）たり、ベトナムの家族（かぞく）と連絡（れんらく）したりします。",
-      "passageVi": "Bạn Mai từ tháng trước đã bắt đầu cuộc sống tự lập tại ký túc xá của trường đại học. Ban đầu bạn thấy buồn và cuộc sống khá vất vả, nhưng dần dần đã quen. Đó là vì người bạn cùng phòng Nhật Bản đã nhiệt tình chỉ dẫn cho bạn rất nhiều điều. Bạn ghi lịch trình mỗi ngày vào sổ tay và sinh hoạt rất có kế hoạch. Buổi tối khi rảnh rỗi, bạn xem phim trên mạng Internet, liên lạc với gia đình ở Việt Nam...",
+      "title": "「鈴木（すずき）さんの休日（きゅうじつ）」",
+      "passageJp": "鈴木（すずき）さんは土曜日（どようび）、いつも朝（あさ）9時（じ）ごろ起（お）きます。パンを食（た）べて温（あたた）かいコーヒーを飲（の）んでから、部屋（へや）の掃除（そうじ）をします。午後（ごご）はテレビで映画（えいが）を見（み）たり、弟（おとうと）とゲームをしたりします。夕方（ゆうがた）はスーパーへ晩（ばん）ごはんの買（か）い物（もの）に行（い）きます。夜（よる）は家（いえ）でゆっくり音楽（おんがく）を聞（き）いて、日記（にっき）を書（か）いています。",
+      "passageVi": "Anh Suzuki vào thứ Bảy luôn thức dậy vào khoảng 9 giờ sáng. Sau khi ăn bánh mì và uống cà phê ấm, anh dọn dẹp phòng. Buổi chiều anh xem phim trên tivi, chơi game cùng em trai... Chiều tối anh đi siêu thị mua sắm đồ ăn tối. Buổi tối ở nhà anh thong thả nghe nhạc và viết nhật ký.",
       "underlines": [
-        "一人暮（ひとりぐ）らし",
-        "だんだん慣（な）れました。",
-        "教（おし）えてくれたからです。",
-        "スケジュール",
-        "暇（ひま）なとき、",
+        "飲（の）んでから、",
+        "掃除（そうじ）をします。",
         "見（み）たり、",
-        "連絡（れんらく）したりします。"
+        "ゲームをしたりします。",
+        "聞（き）いて、",
+        "書（か）いています。"
       ],
       "vocabNotes": [
         {
-          "word": "計画的（けいかくてき）",
-          "reading": "けいかくてき",
-          "meaning": "Có kế hoạch, bài bản"
+          "word": "〜ごろ",
+          "meaning": "Khoảng chừng (chỉ mốc thời gian)"
         },
         {
-          "word": "手帳（てちょう）",
-          "reading": "てちょう",
-          "meaning": "Sổ tay bỏ túi"
+          "word": "日記（にっき）",
+          "reading": "にっき",
+          "meaning": "Nhật ký"
         }
       ],
       "questions": [
         {
-          "id": "p09-r1",
-          "qJp": "マイさんはどうして日本（にほん）の生活（せいかつ）に慣（な）れましたか。",
-          "qVi": "Tại sao bạn Mai lại dần quen với cuộc sống ở Nhật?",
-          "targetGrammar": "Bài 8/11: Hỏi lý do ～から / ～てくれた",
+          "id": "p09-rq1",
+          "qJp": "鈴木（すずき）さんは朝（あさ）ごはんのあとで、何（なに）をしますか。",
+          "qVi": "Anh Suzuki sau bữa ăn sáng thì làm gì?",
+          "targetGrammar": "Bài 05 & 07 · ～てから, 掃除をします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "ルームメイトが親切（しんせつ）に教（おし）えてくれたからです。",
-              "vi": "Vì người bạn cùng phòng đã tốt bụng chỉ bảo cho."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "部屋（へや）の掃除（そうじ）をします。",
+              "vi": "Anh ấy dọn dẹp phòng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "日本人のルームメイトがいろいろなことを教（おし）えてくれたからです。",
-              "vi": "Vì người bạn cùng phòng người Nhật đã nhiệt tình dạy cho bạn rất nhiều điều."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "パンを食（た）べてコーヒーを飲（の）んでから、部屋（へや）の掃除（そうじ）をします。",
+              "vi": "Sau khi ăn bánh mì và uống cà phê, anh ấy dọn dẹp phòng."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "アパートの掃除（そうじ）です。",
+              "vi": "Là dọn dẹp căn hộ."
             }
           ]
         },
         {
-          "id": "p09-r2",
-          "qJp": "夜（よる）暇（ひま）なとき、マイさんは何（なに）をしますか。",
-          "qVi": "Buổi tối khi rảnh rỗi, bạn Mai làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき / ～たり～たり",
+          "id": "p09-rq2",
+          "qJp": "鈴木（すずき）さんは午後（ごご）、どんなことをしますか。",
+          "qVi": "Anh Suzuki vào buổi chiều làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "映画（えいが）を見（み）たり、家族（かぞく）と連絡（れんらく）したりします。",
-              "vi": "Xem phim và liên lạc với gia đình."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "テレビで映画（えいが）を見（み）たり、弟（おとうと）とゲームをしたりします。",
+              "vi": "Anh ấy xem phim trên tivi, chơi game cùng em trai..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "インターネットで映画（えいが）を見（み）たり、国の家族（かぞく）に電話（でんわ）したりします。",
-              "vi": "Xem phim trên Internet và gọi điện cho gia đình ở quê nhà."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "午後（ごご）はテレビを見（み）たりゲームをしたりして、夕方（ゆうがた）スーパーへ行（い）きます。",
+              "vi": "Buổi chiều xem tivi, chơi game... rồi chiều tối đi siêu thị."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "映画（えいが）を見（み）て、ゲームをします。",
+              "vi": "Anh ấy xem phim và chơi game."
             }
           ]
         }
@@ -1922,79 +2029,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p10",
-    "title": "Đề 10 (P10) · Sở thích âm nhạc của chị Watanabe",
-    "shortTitle": "渡辺さんの音楽の趣味",
-    "focusGrammar": "Bài 9/11 · 趣味は～こと, ～を聞きながら, コンサート",
-    "badge": "Đề P10 · Bài 9",
+    "title": "Đề 10 (P10) · Gia đình của chị Sato",
+    "shortTitle": "佐藤さんの家族",
+    "focusGrammar": "Bài 08 · 家族, 住んでいます, 背が高い, あげました",
+    "badge": "Đề P10 · Bài 08",
     "katakanaWords": [
-      "コンサート",
-      "クラシック",
-      "ピアノ",
-      "チケット"
+      "ネクタイ",
+      "シャツ",
+      "テニス",
+      "プレゼント"
     ],
     "reading": {
-      "title": "「渡辺（わたなべ）さんの音楽（おんがく）の趣味（しゅみ）」",
-      "passageJp": "渡辺（わたなべ）さんの趣味（しゅみ）は、クラシック音楽（おんがく）を聞（き）くことです。子どものころからピアノを習（なら）っていて、今（いま）も家（いえ）でよく弾（ひ）いています。先週（せんしゅう）、有名（ゆうめい）なオーケストラのチケットを買（か）って、大（おお）きなホールへコンサートを見（み）に行（い）きました。素晴（すば）らしい演奏（えんそう）を聞（き）いて、とても感動（かんどう）しました。渡辺（わたなべ）さんは疲（つか）れたときやストレスがあるとき、いつもピアノを弾（ひ）いたり音楽（おんがく）を聞（き）いたりしてリラックスしています。",
-      "passageVi": "Sở thích của chị Watanabe là nghe nhạc cổ điển. Từ nhỏ chị đã học đàn piano và hiện tại ở nhà vẫn thường xuyên chơi đàn. Tuần trước, sau khi mua vé của một dàn nhạc giao hưởng nổi tiếng, chị đã đến hội trường lớn để thưởng thức buổi hòa nhạc. Được lắng nghe màn trình diễn tuyệt vời, chị vô cùng xúc động. Khi mệt mỏi hay có căng thẳng, chị Watanabe luôn chơi piano, nghe nhạc để thư giãn đầu óc.",
+      "title": "「佐藤（さとう）さんの家族（かぞく）」",
+      "passageJp": "佐藤（さとう）さんの家族（かぞく）は4人（にん）です。父（ちち）と母（はは）と兄（あに）がいます。父（ちち）は銀行（ぎんこう）で働（はたら）いていて、背（せ）が高（たか）いです。母（はは）は高校（こうこう）で英語（えいご）を教（おし）えています。兄（あに）は会社員（かいしゃいん）で、テニスが上手（じょうず）です。先月（せんげつ）は父（ちち）の誕生日（たんじょうび）でしたから、兄（あに）と一緒（いっしょ）にお金（かね）を出（だ）して、青（あお）いネクタイをあげました。父（ちち）はとても喜（よろこ）びました。",
+      "passageVi": "Gia đình chị Sato có 4 người: bố, mẹ, anh trai và chị. Bố làm việc ở ngân hàng và dáng người cao ráo. Mẹ dạy tiếng Anh ở trường cấp ba. Anh trai là nhân viên công ty và chơi tennis rất giỏi. Tháng trước là sinh nhật của bố, chị cùng anh trai góp tiền mua tặng bố chiếc cà vạt màu xanh dương. Bố đã rất vui mừng.",
       "underlines": [
-        "聞（き）くことです。",
-        "弾（ひ）いています。",
-        "チケット",
-        "コンサート",
-        "感動（かんどう）しました。",
-        "弾（ひ）いたり",
-        "聞（き）いたりして"
+        "働（はたら）いていて、",
+        "背（せ）が高（たか）いです。",
+        "教（おし）えています。",
+        "上手（じょうず）です。",
+        "出（だ）して、",
+        "あげました。"
       ],
       "vocabNotes": [
         {
-          "word": "演奏（えんそう）",
-          "reading": "えんそう",
-          "meaning": "Biểu diễn, trình diễn nhạc cụ"
+          "word": "背（せ）が高（たか）い",
+          "reading": "せがたかい",
+          "meaning": "Dáng người cao"
         },
         {
-          "word": "感動（かんどう）します",
-          "reading": "かんどうします",
-          "meaning": "Cảm động, xúc động"
+          "word": "お金（かね）を出（だ）す",
+          "reading": "おかねをだす",
+          "meaning": "Bỏ tiền / Góp tiền"
         }
       ],
       "questions": [
         {
-          "id": "p10-r1",
-          "qJp": "渡辺（わたなべ）さんの趣味（しゅみ）は何（なん）ですか。",
-          "qVi": "Sở thích của chị Watanabe là gì?",
-          "targetGrammar": "Bài 9: Mẫu câu 趣味は V-ることです",
+          "id": "p10-rq1",
+          "qJp": "佐藤（さとう）さんのお父（とう）さんはどんな人（ひと）ですか。",
+          "qVi": "Bố của chị Sato là người như thế nào?",
+          "targetGrammar": "Bài 08 · Miêu tả ngoại hình & nghề nghiệp",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "クラシック音楽（おんがく）を聞（き）くことです。",
-              "vi": "Là nghe nhạc cổ điển."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "銀行（ぎんこう）で働（はたら）いていて、背（せ）が高（たか）いです。",
+              "vi": "Bác ấy làm việc ở ngân hàng và dáng người cao."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "クラシック音楽（おんがく）を聞（き）くことと、ピアノを弾（ひ）くことです。",
-              "vi": "Là nghe nhạc cổ điển và chơi đàn piano."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "銀行員（ぎんこういん）で、背（せ）が高（たか）くてかっこいい人（ひと）です。",
+              "vi": "Là nhân viên ngân hàng, dáng người cao ráo và phong độ."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "背（せ）が高（たか）い銀行員（ぎんこういん）です。",
+              "vi": "Là nhân viên ngân hàng cao ráo."
             }
           ]
         },
         {
-          "id": "p10-r2",
-          "qJp": "疲（つか）れたとき、渡辺（わたなべ）さんはどうしますか。",
-          "qVi": "Khi mệt mỏi, chị Watanabe làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき / ～たり～たり",
+          "id": "p10-rq2",
+          "qJp": "先月（せんげつ）、佐藤（さとう）さんとお兄（にい）さんはお父（とう）さんに何（なに）をあげましたか。",
+          "qVi": "Tháng trước, chị Sato và anh trai đã tặng gì cho bố?",
+          "targetGrammar": "Bài 08 · [Người] に [Vật] をあげました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "ピアノを弾（ひ）いたり、音楽（おんがく）を聞（き）いたりします。",
-              "vi": "Chơi piano và nghe nhạc."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "青（あお）いネクタイをあげました。",
+              "vi": "Đã tặng chiếc cà vạt màu xanh dương."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ mục đích",
-              "jp": "ピアノを弾（ひ）いたり音楽（おんがく）を聞（き）いたりしてリラックスします。",
-              "vi": "Chị ấy chơi piano hoặc nghe nhạc để thư giãn tâm hồn."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "誕生日（たんじょうび）に、お兄（にい）さんと一緒（いっしょ）に青（あお）いネクタイを買（か）ってあげました。",
+              "vi": "Vào ngày sinh nhật, chị ấy cùng anh trai đã mua tặng bố chiếc cà vạt xanh dương."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "ネクタイのプレゼントです。",
+              "vi": "Là món quà cà vạt."
             }
           ]
         }
@@ -2128,77 +2246,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p11",
-    "title": "Đề 11 (P11) · Cuộc sống rèn luyện sức khỏe của anh Ito",
-    "shortTitle": "伊藤さんの健康生活",
-    "focusGrammar": "Bài 10/11 · ～てから, ～ないでください, ～くなります",
-    "badge": "Đề P11 · Bài 10",
+    "title": "Đề 11 (P11) · Căn phòng mới của bạn An",
+    "shortTitle": "アンさんの新しい部屋",
+    "focusGrammar": "Bài 07 · あります, AくてAです, 前は～が今は～",
+    "badge": "Đề P11 · Bài 07",
     "katakanaWords": [
-      "スポーツジム",
-      "トレーニング",
-      "ランニングマシン",
-      "プロテイン"
+      "アパート",
+      "ベッド",
+      "テーブル",
+      "エアコン"
     ],
     "reading": {
-      "title": "「伊藤（いとう）さんの健康（けんこう）生活（せいかつ）」",
-      "passageJp": "伊藤（いとう）さんは体（からだ）を強（つよ）くするために、週（しゅう）に3回（かい）スポーツジムへ通（かよ）っています。ジムに着（つ）いてから、まず準備（じゅんび）体操（たいそう）をして、ランニングマシンで30分（ぷん）走（はし）ります。「走（はし）っているとき、スマートフォンを見（み）ないでください」とインストラクターに注意（ちゅうい）されました。汗（あせ）をたくさんかいてから、シャワーを浴（あ）びてプロテインを飲（の）みます。運動（うんどう）を始（はじ）めてから、体（からだ）が元気（げんき）になって毎日（まいにち）よく眠（ねむ）れます。",
-      "passageVi": "Để nâng cao sức khỏe, anh Ito đi tập ở phòng gym mỗi tuần 3 lần. Sau khi đến phòng gym, trước tiên anh tập bài thể dục khởi động, rồi chạy 30 phút trên máy chạy bộ. Huấn luyện viên nhắc nhở: \"Khi đang chạy xin đừng nhìn vào điện thoại thông minh\". Sau khi ra nhiều mồ hôi, anh tắm vòi sen rồi uống bột protein. Kể từ khi bắt đầu vận động, cơ thể trở nên khỏe khoắn và mỗi ngày đều ngủ rất ngon giấc.",
+      "title": "「アンさんの新（あたら）しい部屋（へや）」",
+      "passageJp": "アンさんは先週（せんしゅう）、大学（だいがく）の近（ちか）くのアパートに引（ひ）っ越（こ）しました。新（あたら）しい部屋（へや）は2階（かい）にあって、明（あか）るくて静（しず）かです。部屋（へや）の中（なか）に新（あたら）しいベッドやテーブルがあります。スーパーまで歩（ある）いて5分（ふん）ですから、とても便利（べんり）です。前（まえ）の部屋（へや）は狭（せま）かったですが、今（いま）の部屋（へや）は広（ひろ）くて、とても気（き）に入（い）っています。",
+      "passageVi": "Bạn An tuần trước đã chuyển đến căn hộ gần trường đại học. Căn phòng mới ở tầng 2, sáng sủa và yên tĩnh. Trong phòng có chiếc giường mới và chiếc bàn. Đi bộ ra siêu thị chỉ mất 5 phút nên rất tiện lợi. Căn phòng trước đây thì chật hẹp, nhưng căn phòng hiện tại rộng rãi và bạn rất ưng ý.",
       "underlines": [
-        "通（かよ）っています。",
-        "体操（たいそう）をして、",
-        "見（み）ないでください",
-        "浴（あ）びて",
-        "元気（げんき）になって"
+        "引（ひ）っ越（こ）しました。",
+        "2階（かい）にあって、",
+        "明（あか）るくて静（しず）かです。",
+        "テーブルがあります。",
+        "狭（せま）かったですが、",
+        "気（き）に入（い）っています。"
       ],
       "vocabNotes": [
         {
-          "word": "体操（たいそう）",
-          "reading": "たいそう",
-          "meaning": "Bài tập thể dục"
+          "word": "気（き）に入（い）る",
+          "reading": "きにいる",
+          "meaning": "Ưng ý, thích thú"
         },
         {
-          "word": "汗（あせ）をかきます",
-          "reading": "あせをかきます",
-          "meaning": "Ra mồ hôi, toát mồ hôi"
+          "word": "引（ひ）っ越（こ）し",
+          "reading": "ひっこし",
+          "meaning": "Chuyển nhà"
         }
       ],
       "questions": [
         {
-          "id": "p11-r1",
-          "qJp": "インストラクターは何（なに）をしないでくださいと注意（ちゅうい）しましたか。",
-          "qVi": "Huấn luyện viên đã nhắc nhở đừng làm gì?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p11-rq1",
+          "qJp": "アンさんの新（あたら）しい部屋（へや）はどんな部屋（へや）ですか。",
+          "qVi": "Căn phòng mới của bạn An là căn phòng như thế nào?",
+          "targetGrammar": "Bài 04 & 08 · AくてAです",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "走（はし）っているとき、スマートフォンを見（み）ないでくださいと注意（ちゅうい）しました。",
-              "vi": "Nhắc rằng khi đang chạy xin đừng nhìn vào điện thoại thông minh."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "2階（かい）にあって、明（あか）るくて静（しず）かな部屋（へや）です。",
+              "vi": "Ở tầng 2, là căn phòng sáng sủa và yên tĩnh."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Ngắn gọn",
-              "jp": "走（はし）りながらスマートフォンを使（つか）わないでくださいと言（い）いました。",
-              "vi": "Bảo rằng đừng vừa chạy vừa dùng điện thoại."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "明（あか）るくて静（しず）かで、スーパーまで歩（ある）いて5分（ふん）で便利（べんり）な部屋（へや）です。",
+              "vi": "Sáng sủa, yên tĩnh, và đi bộ 5 phút đến siêu thị rất tiện lợi."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "広（ひろ）くてきれいで、静（しず）かな部屋（へや）です。",
+              "vi": "Căn phòng rộng, đẹp và yên tĩnh."
             }
           ]
         },
         {
-          "id": "p11-r2",
-          "qJp": "運動（うんどう）をしてから、伊藤（いとう）さんの体（からだ）はどうなりましたか。",
-          "qVi": "Sau khi tập thể dục, cơ thể anh Ito đã thay đổi như thế nào?",
-          "targetGrammar": "Bài 10: Biến đổi ～くなります / ～になります",
+          "id": "p11-rq2",
+          "qJp": "前（まえ）の部屋（へや）と今（いま）の部屋（へや）はどう違（ちが）いますか。",
+          "qVi": "Phòng trước đây và phòng bây giờ khác nhau thế nào?",
+          "targetGrammar": "Bài 11 · 前は～が、今は～",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "元気（げんき）になりました。",
-              "vi": "Đã trở nên khỏe khoắn hơn."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "前（まえ）は狭（せま）かったですが、今（いま）は広（ひろ）いです。",
+              "vi": "Trước đây chật, nhưng bây giờ thì rộng rãi."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "体（からだ）が元気（げんき）になって、毎日（まいにち）よく眠（ねむ）れるようになりました。",
-              "vi": "Cơ thể trở nên khỏe mạnh và mỗi ngày đều ngủ rất ngon."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "前（まえ）の部屋（へや）は狭（せま）かったですが、今（いま）の部屋（へや）は広（ひろ）くて気（き）に入（い）っています。",
+              "vi": "Phòng trước chật hẹp, nhưng phòng hiện tại rộng rãi và rất ưng ý."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "今（いま）の部屋（へや）のほうが広（ひろ）くて便利（べんり）です。",
+              "vi": "Phòng hiện tại rộng và tiện lợi hơn."
             }
           ]
         }
@@ -2332,77 +2463,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p12",
-    "title": "Đề 12 (P12) · Chuyến mua sắm của bạn Kim tại khu thương mại",
-    "shortTitle": "キムさんのデパートでの買い物",
-    "focusGrammar": "Bài 8/10 · あげます, ～てから, エレベーター",
-    "badge": "Đề P12 · Bài 8",
+    "title": "Đề 12 (P12) · Thói quen sinh hoạt của anh Kobayashi",
+    "shortTitle": "小林さんの健康生活",
+    "focusGrammar": "Bài 11 · 前は～が今は～, ～たり～たり, ～ています",
+    "badge": "Đề P12 · Bài 11",
     "katakanaWords": [
-      "デパート",
-      "エレベーター",
-      "インフォメーション",
-      "ネクタイ"
+      "ジュース",
+      "サラダ",
+      "ジム",
+      "スポーツ"
     ],
     "reading": {
-      "title": "「キムさんのデパートでの買（か）い物（もの）」",
-      "passageJp": "キムさんは今週末（こんしゅうまつ）が父（ちち）の誕生日（たんじょうび）ですから、駅前（えきまえ）のデパートへ買（か）い物（もの）に行（い）きました。まず1階（かい）のインフォメーションで紳士服（しんしふく）の売（う）り場（ば）を聞（き）いてから、エレベーターで4階（かい）へ上（あ）がりました。店員（てんいん）さんに相談（そうだん）して、青（あお）いきれいなネクタイを選（えら）びました。店員（てんいん）さんは「きれいにラッピングしますから、少（すこ）し待（ま）ってください」と言（い）いました。キムさんは父（ちち）に渡（わた）す日（ひ）を楽（たの）しみにしています。",
-      "passageVi": "Vì cuối tuần này là sinh nhật bố nên bạn Kim đã đến trung tâm thương mại trước ga để mua sắm. Trước tiên, sau khi hỏi quầy thông tin tầng 1 về khu vực bán đồ nam thì bạn đi thang máy lên tầng 4. Được nhân viên bán hàng tư vấn, bạn chọn một chiếc cà vạt màu xanh rất đẹp. Nhân viên nói: \"Chúng tôi sẽ gói quà thật đẹp, xin quý khách đợi một lát ạ\". Bạn Kim rất mong chờ đến ngày trao quà cho bố.",
+      "title": "「小林（こばやし）さんの健康（けんこう）生活（せいかつ）」",
+      "passageJp": "小林（こばやし）さんは毎朝（まいあさ）7時（じ）に起（お）きて、野菜（やさい）のジュースを飲（の）みます。前（まえ）は朝（あさ）ごはんをあまり食（た）べませんでしたが、今（いま）はパンやサラダをたくさん食（た）べています。会社（かいしゃ）の帰（かえ）りに1週間（しゅうかん）に2回（かい）ジムへ行（い）って、走（はし）ったり泳（およ）いだりします。夜（よる）は11時（じ）までに寝（ね）ています。体（からだ）の調子（ちょうし）がとても良（よ）くなりました。",
+      "passageVi": "Anh Kobayashi mỗi sáng thức dậy lúc 7 giờ và uống nước ép rau củ. Trước đây anh ít khi ăn sáng, nhưng bây giờ anh ăn nhiều bánh mì và salad. Trên đường từ công ty về, mỗi tuần anh đi phòng tập gym 2 lần, chạy bộ và bơi lội... Buổi tối anh đi ngủ trước 11 giờ. Sức khỏe của anh đã trở nên rất tốt.",
       "underlines": [
-        "買（か）い物（もの）に行（い）きました。",
-        "インフォメーション",
-        "聞（き）いてから、",
-        "エレベーター",
-        "少（すこ）し待（ま）ってください"
+        "食（た）べませんでしたが、",
+        "食（た）べています。",
+        "走（はし）ったり",
+        "泳（およ）いだりします。",
+        "寝（ね）ています。",
+        "良（よ）くなりました。"
       ],
       "vocabNotes": [
         {
-          "word": "ラッピングします",
-          "reading": "ラッピングします",
-          "meaning": "Gói quà"
+          "word": "体（からだ）の調子（ちょうし）",
+          "reading": "からだのちょうし",
+          "meaning": "Tình trạng sức khỏe"
         },
         {
-          "word": "楽（たの）しみにします",
-          "reading": "たのしみにします",
-          "meaning": "Mong chờ, háo hức"
+          "word": "帰（かえ）りに",
+          "reading": "かえりに",
+          "meaning": "Trên đường về"
         }
       ],
       "questions": [
         {
-          "id": "p12-r1",
-          "qJp": "キムさんはお父（とう）さんのために何（なに）を買（か）いましたか。",
-          "qVi": "Bạn Kim đã mua gì cho bố?",
-          "targetGrammar": "Bài 8: Quà tặng あげます / 買いました",
+          "id": "p12-rq1",
+          "qJp": "小林（こばやし）さんは前（まえ）と今（いま）で、朝（あさ）ごはんがどう変（か）わりましたか。",
+          "qVi": "Anh Kobayashi trước đây và bây giờ bữa sáng thay đổi như thế nào?",
+          "targetGrammar": "Bài 11 · 前は～が、今は～",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "ネクタイを買（か）いました。",
-              "vi": "Đã mua một chiếc cà vạt."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "前（まえ）はあまり食（た）べませんでしたが、今（いま）はたくさん食（た）べています。",
+              "vi": "Trước đây ít ăn, nhưng bây giờ ăn nhiều."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "青（あお）いきれいなネクタイを買（か）いました。",
-              "vi": "Đã mua một chiếc cà vạt màu xanh rất đẹp."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "前（まえ）は食（た）べませんでしたが、今（いま）は毎朝（まいあさ）パンやサラダをたくさん食（た）べています。",
+              "vi": "Trước đây không ăn, nhưng bây giờ mỗi sáng ăn nhiều bánh mì và salad."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "今（いま）は毎朝（まいあさ）きちんと食（た）べています。",
+              "vi": "Bây giờ mỗi sáng đều ăn uống đầy đủ."
             }
           ]
         },
         {
-          "id": "p12-r2",
-          "qJp": "4階（かい）へどうやって行（い）きましたか。",
-          "qVi": "Bạn ấy đã lên tầng 4 bằng cách nào?",
-          "targetGrammar": "Bài 9: Phương thức di chuyển どうやって",
+          "id": "p12-rq2",
+          "qJp": "小林（こばやし）さんはジムでどんなことをしますか。",
+          "qVi": "Anh Kobayashi ở phòng tập gym làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "エレベーターで行（い）きました。",
-              "vi": "Đi bằng thang máy."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "走（はし）ったり泳（およ）いだりします。",
+              "vi": "Anh ấy chạy bộ, bơi lội..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "インフォメーションで聞（き）いてから、エレベーターで上（あ）がりました。",
-              "vi": "Sau khi hỏi ở quầy thông tin thì bạn ấy đi lên bằng thang máy."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "会社（かいしゃ）の帰（かえ）りに1週間（しゅうかん）に2回（かい）ジムへ行（い）って、走（はし）ったり泳（およ）いだりします。",
+              "vi": "Trên đường đi làm về, mỗi tuần 2 lần anh ấy đến phòng gym chạy bộ và bơi lội."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "運動（うんどう）をして汗（あせ）を流（なが）します。",
+              "vi": "Anh ấy tập thể thao để rèn luyện."
             }
           ]
         }
@@ -2538,77 +2682,89 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p13",
-    "title": "Đề 13 (P13) · Buổi xem phim của anh Kobayashi",
-    "shortTitle": "小林さんの映画鑑賞",
-    "focusGrammar": "Bài 9/11 · 映画を見ることが好き, ～てから, アクション",
-    "badge": "Đề P13 · Bài 9",
+    "title": "Đề 13 (P13) · Chuyến đi vườn thú của anh Ito",
+    "shortTitle": "伊藤さんの動物園ツアー",
+    "focusGrammar": "Bài 10 · 見えます, ～ないでください, ～てから",
+    "badge": "Đề P13 · Bài 10",
     "katakanaWords": [
-      "シネマ",
-      "アクション",
-      "ポップコーン",
-      "スクリーン"
+      "バス",
+      "チケット",
+      "アイスクリーム",
+      "カメラ"
     ],
     "reading": {
-      "title": "「小林（こばやし）さんの映画（えいが）鑑賞（かんしょう）」",
-      "passageJp": "小林（こばやし）さんは映画（えいが）を見（み）ることが大好（だいす）きです。先週（せんしゅう）の日曜日（にちようび）、新（あたら）しいシネマコンプレックスへ行（い）きました。受付（うけつけ）でチケットとポップコーンを買（か）ってから、大（おお）きなスクリーンの部屋（へや）に入（い）りました。見（み）た映画（えいが）はアメリカのアクション映画（えいが）で、音（おと）も映像（えいぞう）も迫力（はくりょく）がありました。映画（えいが）のあとで、カフェで友達（ともだち）と映画（えいが）の感想（かんそう）を話（はな）し合（あ）いました。",
-      "passageVi": "Anh Kobayashi rất thích xem phim. Chủ Nhật tuần trước, anh đã đến một cụm rạp chiếu phim mới mở. Sau khi mua vé và bắp rang bơ tại quầy thì anh bước vào phòng chiếu màn hình lớn. Bộ phim anh xem là một phim hành động của Mỹ, cả âm thanh lẫn hình ảnh đều vô cùng sống động và kịch tính. Sau bộ phim, anh cùng bạn bè ngồi ở quán cà phê trao đổi cảm nhận về bộ phim.",
+      "title": "「伊藤（いとう）さんの動物園（どうぶつえん）ツアー」",
+      "passageJp": "伊藤（いとう）さんは日曜日（にちようび）、家族（かぞく）と一緒（いっしょ）に動物園（どうぶつえん）へ行（い）きました。駅（えき）からバスに乗（の）って、20分（ぷん）くらいで着（つ）きました。入口（いりぐち）でチケットを買（か）ってから、中（なか）に入（はい）りました。大（おお）きいゾウやかわいいパンダが見（み）えました。看板（かんばん）に「動物（どうぶつ）に食（た）べ物（もの）をやらないでください」と書（か）いてありました。帰（かえ）りにみんなでおいしいアイスクリームを食（た）べました。",
+      "passageVi": "Anh Ito vào Chủ nhật đã cùng gia đình đi vườn thú. Từ ga lên xe buýt, mất khoảng 20 phút là đến nơi. Sau khi mua vé ở lối vào thì bước vào bên trong. Có thể nhìn thấy những chú voi to lớn và gấu trúc dễ thương. Trên biển báo có ghi 'Xin đừng cho động vật ăn'. Lúc về, mọi người cùng ăn kem rất ngon.",
       "underlines": [
-        "見（み）ることが大好（だいす）きです。",
-        "ポップコーンを買（か）ってから、",
-        "スクリーン",
-        "アクション映画（えいが）",
-        "話（はな）し合（あ）いました。"
+        "乗（の）って、",
+        "買（か）ってから、",
+        "入（はい）りました。",
+        "見（み）えました。",
+        "やらないでください",
+        "食（た）べました。"
       ],
       "vocabNotes": [
         {
-          "word": "迫力（はくりょく）",
-          "reading": "はくりょく",
-          "meaning": "Sức lôi cuốn, kịch tính"
+          "word": "看板（かんばん）",
+          "reading": "かんばん",
+          "meaning": "Biển hiệu, biển báo"
         },
         {
-          "word": "感想（かんそう）",
-          "reading": "かんそう",
-          "meaning": "Cảm tưởng, nhận xét"
+          "word": "やる（やります）",
+          "meaning": "Cho (động vật ăn, tưới cây)"
         }
       ],
       "questions": [
         {
-          "id": "p13-r1",
-          "qJp": "小林（こばやし）さんはどんな映画（えいが）を見（み）ましたか。",
-          "qVi": "Anh Kobayashi đã xem bộ phim thể loại gì?",
-          "targetGrammar": "Bài 9: Thể loại phim / Tính từ miêu tả",
+          "id": "p13-rq1",
+          "qJp": "伊藤（いとう）さんは動物園（どうぶつえん）でどんな動物（どうぶつ）を見（み）ましたか。",
+          "qVi": "Anh Ito ở vườn thú đã nhìn thấy những con vật nào?",
+          "targetGrammar": "Bài 10 · ～が見えました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "アメリカのアクション映画（えいが）を見（み）ました。",
-              "vi": "Đã xem một bộ phim hành động của Mỹ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "大（おお）きいゾウやかわいいパンダを見（み）ました。",
+              "vi": "Anh ấy thấy voi to và gấu trúc dễ thương."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "迫力（はくりょく）があるアメリカのアクション映画（えいが）を見（み）ました。",
-              "vi": "Đã xem một bộ phim hành động Mỹ đầy kịch tính."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "大（おお）きいゾウやかわいいパンダが見（み）えて、写真（しゃしん）を撮（と）りました。",
+              "vi": "Anh ấy nhìn thấy voi to và gấu trúc dễ thương, rồi chụp ảnh."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "ゾウとパンダです。",
+              "vi": "Là voi và gấu trúc."
             }
           ]
         },
         {
-          "id": "p13-r2",
-          "qJp": "スクリーンがある部屋（へや）に入（はい）る前（まえ）に何（なに）を買（か）いましたか。",
-          "qVi": "Trước khi vào phòng chiếu, anh ấy đã mua gì?",
-          "targetGrammar": "Bài 10/11: Mẫu câu ～前に / ～てから",
+          "id": "p13-rq2",
+          "qJp": "看板（かんばん）には何（なん）と書（か）いてありましたか。",
+          "qVi": "Trên biển báo có ghi chữ gì?",
+          "targetGrammar": "Bài 10 · ～ないでくださいと書いてありました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "チケットとポップコーンを買（か）いました。",
-              "vi": "Đã mua vé và bắp rang bơ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "「動物（どうぶつ）に食（た）べ物（もの）をやらないでください」と書（か）いてありました。",
+              "vi": "Có ghi: 'Xin đừng cho động vật ăn'."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "受付（うけつけ）で映画（えいが）のチケットとおいしいポップコーンを買（か）いました。",
-              "vi": "Tại quầy tiếp tân, anh ấy đã mua vé xem phim và bắp rang bơ thơm ngon."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "看板（かんばん）に「動物（どうぶつ）に食（た）べ物（もの）をやらないでください」と大（おお）きく書（か）いてありました。",
+              "vi": "Trên biển báo có ghi chữ rất to: 'Xin đừng cho động vật ăn'."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "動物（どうぶつ）に餌（えさ）をあげないでくださいということです。",
+              "vi": "Nghĩa là xin đừng cho động vật đồ ăn."
             }
           ]
         }
@@ -2744,77 +2900,91 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p14",
-    "title": "Đề 14 (P14) · Giờ tự học ở thư viện của bạn Nam",
-    "shortTitle": "ナムさんの図書館での勉強",
-    "focusGrammar": "Bài 10/11 · ～ないでください, ～てから, 静かに",
-    "badge": "Đề P14 · Bài 10",
+    "title": "Đề 14 (P14) · Việc học tiếng Nhật của bạn Maria",
+    "shortTitle": "マリアさんの日本語の勉強",
+    "focusGrammar": "Bài 09 · 趣味は～ことです, ～ことができます, ～たり～たり",
+    "badge": "Đề P14 · Bài 09",
     "katakanaWords": [
-      "ライブラリー",
-      "パソコン",
-      "コピー機（き）",
-      "エアコン"
+      "アニメ",
+      "クラスメイト",
+      "ノート",
+      "カラオケ"
     ],
     "reading": {
-      "title": "「ナムさんの図書館（としょかん）での勉強（べんきょう）」",
-      "passageJp": "ナムさんは試験（しけん）の前（まえ）に、よく大学（だいがく）のライブラリーで勉強（べんきょう）しています。図書館（としょかん）の中（なか）は静（しず）かでエアコンも涼（すず）しいですから、集中（しゅうちゅう）することができます。受付（うけつけ）で学生証（がくせいしょう）を見（み）せてから、パソコンの部屋（へや）でレポートを書（か）きます。「館内（かんない）で大（おお）きな声（こえ）で話（はな）さないでください。食（た）べ物（もの）を食（た）べないでください」という規則（きそく）があります。ナムさんは必要な資料（しりょう）をコピー機（き）でコピーしてから、本（ほん）を2冊（さつ）借（か）りて帰（かえ）りました。",
-      "passageVi": "Trước kỳ thi, bạn Nam thường học bài ở thư viện trường đại học. Bên trong thư viện yên tĩnh và điều hòa mát mẻ nên bạn có thể rất tập trung. Sau khi xuất trình thẻ sinh viên ở quầy lễ tân, bạn vào phòng máy tính viết bài báo cáo. Ở đây có quy định: \"Xin đừng nói chuyện to tiếng trong thư viện. Xin đừng ăn đồ ăn\". Bạn Nam photo các tài liệu cần thiết bằng máy photocopy, sau đó mượn 2 cuốn sách rồi ra về.",
+      "title": "「マリアさんの日本語（にほんご）の勉強（べんきょう）」",
+      "passageJp": "マリアさんの趣味（しゅみ）は日本（にほん）のアニメを見（み）ることです。毎晩（まいばん）宿題（しゅくだい）をしてから、アニメを1時間（じかん）見（み）ています。わからない言葉（ことば）があるとき、辞書（じしょ）で調（しら）べたり、ノートに書（か）いたりします。今（いま）はひらがなとカタカナを全部（ぜんぶ）読（よ）むことができます。週末（しゅうまつ）はクラスメイトとカラオケへ行（い）って、日本語（にほんご）の歌（うた）を歌（うた）っています。",
+      "passageVi": "Sở thích của Maria là xem phim hoạt hình Nhật Bản. Mỗi tối sau khi làm bài tập, bạn xem anime 1 tiếng. Khi có từ không hiểu, bạn tra từ điển hoặc viết vào vở ghi... Bây giờ bạn có thể đọc được toàn bộ chữ Hiragana và Katakana. Cuối tuần bạn đi hát karaoke cùng bạn cùng lớp và hát những bài hát tiếng Nhật.",
       "underlines": [
-        "集中（しゅうちゅう）することができます。",
-        "見（み）せてから、",
-        "話（はな）さないでください。",
-        "食（た）べないでください",
-        "コピーしてから、"
+        "見（み）ることです。",
+        "宿題（しゅくだい）をしてから、",
+        "見（み）ています。",
+        "あるとき、",
+        "調（しら）べたり、",
+        "書（か）いたりします。",
+        "読（よ）むことができます。"
       ],
       "vocabNotes": [
         {
-          "word": "集中（しゅうちゅう）します",
-          "reading": "しゅうちゅうします",
-          "meaning": "Tập trung"
+          "word": "言葉（ことば）",
+          "reading": "ことば",
+          "meaning": "Từ vựng, từ ngữ"
         },
         {
-          "word": "規則（きそく）",
-          "reading": "きそく",
-          "meaning": "Quy tắc, nội quy"
+          "word": "調（しら）べます",
+          "reading": "しらべます",
+          "meaning": "Tra cứu, tìm kiếm"
         }
       ],
       "questions": [
         {
-          "id": "p14-r1",
-          "qJp": "図書館（としょかん）の中（なか）で何（なに）をしてはいけませんか。",
-          "qVi": "Trong thư viện không được làm những việc gì?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p14-rq1",
+          "qJp": "マリアさんはわからない言葉（ことば）があるとき、どうしますか。",
+          "qVi": "Maria khi có từ không hiểu thì làm như thế nào?",
+          "targetGrammar": "Bài 11 · ～とき, ～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "大（おお）きな声（こえ）で話（はな）したり、食（た）べ物（もの）を食（た）べたりしてはいけません。",
-              "vi": "Không được nói chuyện to tiếng hoặc ăn đồ ăn."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "辞書（じしょ）で調（しら）べたり、ノートに書（か）いたりします。",
+              "vi": "Bạn ấy tra từ điển, ghi vào vở..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Trích dẫn quy tắc",
-              "jp": "大（おお）きな声（こえ）で話（はな）さないでください、食（た）べないでくださいと書（か）いてあります。",
-              "vi": "Có quy định: xin đừng nói lớn tiếng và xin đừng ăn đồ ăn."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "わからない言葉（ことば）があるとき、辞書（じしょ）で調（しら）べてノートにメモします。",
+              "vi": "Khi có từ không hiểu, bạn ấy tra từ điển rồi ghi chú lại vào vở."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "辞書（じしょ）を使（つか）って調（しら）べます。",
+              "vi": "Bạn ấy dùng từ điển để tra cứu."
             }
           ]
         },
         {
-          "id": "p14-r2",
-          "qJp": "ナムさんは本（ほん）を何冊（なんさつ）借（か）りましたか。",
-          "qVi": "Bạn Nam đã mượn mấy cuốn sách?",
-          "targetGrammar": "Bài 9: Đếm số lượng ～冊",
+          "id": "p14-rq2",
+          "qJp": "マリアさんは週末（しゅうまつ）、クラスメイトと何（なに）をしますか。",
+          "qVi": "Maria vào cuối tuần làm gì cùng bạn cùng lớp?",
+          "targetGrammar": "Bài 11 · ～ています",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "2冊（さつ）借（か）りました。",
-              "vi": "Đã mượn 2 cuốn sách."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "カラオケへ行（い）って、日本語（にほんご）の歌（うた）を歌（うた）っています。",
+              "vi": "Bạn ấy đi hát karaoke và hát bài hát tiếng Nhật."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "必要（ひつよう）な本（ほん）を2冊（さつ）借（か）りて帰（かえ）りました。",
-              "vi": "Bạn ấy đã mượn 2 cuốn sách cần thiết rồi ra về."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "週末（しゅうまつ）はクラスメイトと一緒（いっしょ）にカラオケへ行（い）って楽（たの）しく歌（うた）います。",
+              "vi": "Cuối tuần bạn ấy cùng bạn cùng lớp đi karaoke và hát rất vui vẻ."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "カラオケで歌（うた）を歌（うた）います。",
+              "vi": "Bạn ấy hát tại quán karaoke."
             }
           ]
         }
@@ -2948,77 +3118,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p15",
-    "title": "Đề 15 (P15) · Chuẩn bị tiệc sinh nhật của anh Kato",
-    "shortTitle": "加藤さんのパーティー準備",
-    "focusGrammar": "Bài 8/11 · あげました, ～たり～たり, サプライズ",
-    "badge": "Đề P15 · Bài 8",
+    "title": "Đề 15 (P15) · Chuyến mua sắm của chị Watanabe",
+    "shortTitle": "渡辺さんのデパートでの買い物",
+    "focusGrammar": "Bài 07 · ～てから, ～たり～たり, ～に入れます",
+    "badge": "Đề P15 · Bài 07",
     "katakanaWords": [
-      "サプライズ",
-      "パーティー",
-      "バースデーケーキ",
-      "ジュース"
+      "デパート",
+      "エレベーター",
+      "レストラン",
+      "シャツ"
     ],
     "reading": {
-      "title": "「加藤（かとう）さんのパーティー準備（じゅんび）」",
-      "passageJp": "加藤（かとう）さんは昨日（きのう）、友達（ともだち）のためにサプライズの誕生日（たんじょうび）パーティーを計画（けいかく）しました。午後（ごご）ケーキ屋（や）へ行（い）って、大（おお）きなバースデーケーキを予約（よやく）してから、スーパーでジュースやお菓子（かし）を買（か）いました。夕方（ゆうがた）友達（ともだち）の部屋（へや）に集（あつ）まって、風船（ふうせん）を飾（かざ）ったり音楽（おんがく）を準備（じゅんび）したりしました。主役（しゅやく）の友達（ともだち）が入（はい）ってきたとき、みんなで「お誕生日（たんじょうび）おめでとう」と言（い）ってプレゼントをあげました。とても楽（たの）しい夜（よる）でした。",
-      "passageVi": "Hôm qua anh Kato đã lên kế hoạch tổ chức một bữa tiệc sinh nhật bất ngờ cho bạn. Buổi chiều sau khi đến tiệm bánh đặt chiếc bánh sinh nhật lớn, anh đi siêu thị mua nước ngọt và bánh kẹo. Chiều tối mọi người tập trung ở phòng của bạn, trang trí bóng bay, chuẩn bị âm nhạc... Khi người bạn nhân vật chính bước vào phòng, mọi người đồng thanh hô \"Chúc mừng sinh nhật!\" và tặng quà. Đó là một buổi tối vô cùng vui vẻ.",
+      "title": "「渡辺（わたなべ）さんのデパートでの買（か）い物（もの）」",
+      "passageJp": "渡辺（わたなべ）さんは昨日（きのう）、友達（ともだち）と一緒（いっしょ）に大（おお）きいデパートへ行（い）きました。エレベーターで3階（かい）へ行（い）って、服（ふく）を見（み）ました。白（しろ）くてきれいなシャツを買（か）ってから、5階（かい）のレストランへ行（い）きました。レストランで天（てん）ぷらを食（た）べたり、お茶（ちゃ）を飲（の）んだりしました。店員（てんいん）さんはとても親切（しんせつ）でした。買（か）い物（もの）袋（ぶくろ）を車（くるま）に入（い）れて、夕方（ゆうがた）家（いえ）に帰（かえ）りました。",
+      "passageVi": "Chị Watanabe hôm qua đã cùng bạn đi đến một trung tâm thương mại lớn. Đi thang máy lên tầng 3 và xem quần áo. Sau khi mua chiếc áo sơ mi trắng đẹp thì chị lên nhà hàng ở tầng 5. Ở nhà hàng, chị ăn món tempura, uống trà... Nhân viên bán hàng rất thân thiện. Chị để các túi đồ mua sắm vào xe rồi chiều tối trở về nhà.",
       "underlines": [
-        "計画（けいかく）しました。",
-        "予約（よやく）してから、",
-        "風船（ふうせん）を飾（かざ）ったり",
-        "入（はい）ってきたとき、",
-        "プレゼントをあげました。"
+        "3階（かい）へ行（い）って、",
+        "買（か）ってから、",
+        "食（た）べたり、",
+        "飲（の）んだりしました。",
+        "車（くるま）に入（い）れて、",
+        "帰（かえ）りました。"
       ],
       "vocabNotes": [
         {
-          "word": "風船（ふうせん）",
-          "reading": "ふうせん",
-          "meaning": "Bóng bay"
+          "word": "天（てん）ぷら",
+          "reading": "てんぷら",
+          "meaning": "Món tempura chiên giòn"
         },
         {
-          "word": "主役（しゅやく）",
-          "reading": "しゅやく",
-          "meaning": "Nhân vật chính"
+          "word": "店員（てんいん）",
+          "reading": "てんいん",
+          "meaning": "Nhân viên bán hàng"
         }
       ],
       "questions": [
         {
-          "id": "p15-r1",
-          "qJp": "加藤（かとう）さんはスーパーで何（なに）を買（か）いましたか。",
-          "qVi": "Anh Kato đã mua gì ở siêu thị?",
-          "targetGrammar": "Bài 2/8: Hỏi đồ vật đã mua",
+          "id": "p15-rq1",
+          "qJp": "渡辺（わたなべ）さんは3階（かい）で何（なに）を買（か）いましたか。",
+          "qVi": "Chị Watanabe đã mua gì ở tầng 3?",
+          "targetGrammar": "Bài 04 & 08 · Tính từ + 名詞",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "ジュースやお菓子（かし）を買（か）いました。",
-              "vi": "Đã mua nước ngọt và bánh kẹo."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "白（しろ）くてきれいなシャツを買（か）いました。",
+              "vi": "Chị ấy mua một chiếc áo sơ mi trắng đẹp."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "パーティーのために、ジュースやお菓子（かし）を買（か）いました。",
-              "vi": "Anh ấy đã mua nước ngọt và bánh kẹo để chuẩn bị cho bữa tiệc."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "3階（かい）の服（ふく）売（う）り場（ば）で、白（しろ）くてきれいなシャツを買（か）いました。",
+              "vi": "Ở quầy quần áo tầng 3, chị ấy đã mua chiếc sơ mi trắng đẹp."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "きれいな白いシャツです。",
+              "vi": "Là chiếc áo sơ mi trắng đẹp."
             }
           ]
         },
         {
-          "id": "p15-r2",
-          "qJp": "友達（ともだち）が部屋（へや）に入（はい）ってきたとき、みんなは何（なに）をしましたか。",
-          "qVi": "Khi người bạn bước vào phòng, mọi người đã làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき / ～あげました",
+          "id": "p15-rq2",
+          "qJp": "レストランでどんなことをしましたか。",
+          "qVi": "Ở nhà hàng, chị Watanabe đã làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりしました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "「お誕生日（たんじょうび）おめでとう」と言（い）ってプレゼントをあげました。",
-              "vi": "Nói chúc mừng sinh nhật rồi tặng quà."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "天（てん）ぷらを食（た）べたり、お茶（ちゃ）を飲（の）んだりしました。",
+              "vi": "Chị ấy ăn món tempura, uống trà..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "みんなで「おめでとう」と言（い）って、用意（ようい）したプレゼントをあげました。",
-              "vi": "Mọi người cùng chúc mừng và trao món quà đã chuẩn bị sẵn."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "5階（かい）のレストランで友達（ともだち）と天（てん）ぷらを食（た）べたりお茶（ちゃ）を飲（の）んだりしました。",
+              "vi": "Ở nhà hàng tầng 5, chị ấy cùng bạn ăn tempura và uống trà."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "おいしい天（てん）ぷらを食（た）べました。",
+              "vi": "Chị ấy đã ăn món tempura ngon."
             }
           ]
         }
@@ -3154,79 +3337,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p16",
-    "title": "Đề 16 (P16) · Một ngày làm việc tại công ty của anh Yoshida",
-    "shortTitle": "吉田さんの会社での一日",
-    "focusGrammar": "Bài 10/11 · ～てから, ～たり～たり, ～ています",
-    "badge": "Đề P16 · Bài 11",
+    "title": "Đề 16 (P16) · Chuyến đi biển mùa hè của anh Nakamura",
+    "shortTitle": "中村さんの夏の海旅行",
+    "focusGrammar": "Bài 06 · So sánh より, ～たり～たり, ～ました",
+    "badge": "Đề P16 · Bài 06",
     "katakanaWords": [
-      "ミーティング",
-      "ソフトウェア",
-      "スケジュール",
-      "コンピューター"
+      "ホテル",
+      "カメラ",
+      "ジュース",
+      "レストラン"
     ],
     "reading": {
-      "title": "「吉田（よしだ）さんの会社（かいしゃ）での一日（いちにち）」",
-      "passageJp": "吉田（よしだ）さんはIT企業（きぎょう）でソフトウェアの開発（かいはつ）をしています。毎朝（まいあさ）8時半（じはん）に出社（しゅっしゃ）してから、まずコンピューターでメールをチェックします。10時（じ）からチームのメンバーとオンラインでミーティングをして、今日（きょう）のスケジュールを確認（かくにん）します。午後（ごご）はプログラムを書（か）いたり、仕様書（しようしょ）を読（よ）んだりします。仕事（しごと）が忙（いそが）しくて疲（つか）れたとき、屋上（おくじょう）へ行（い）って遠（とお）くの景色（けしき）を見（み）ながら深呼吸（しんこきゅう）します。",
-      "passageVi": "Anh Yoshida đang làm công việc phát triển phần mềm tại một doanh nghiệp CNTT. Mỗi sáng sau khi đến công ty lúc 8 giờ rưỡi, trước tiên anh kiểm tra email trên máy tính. Từ 10 giờ, anh họp trực tuyến với các thành viên trong nhóm để xác nhận lịch trình công việc hôm nay. Buổi chiều anh viết code lập trình, đọc tài liệu đặc tả... Khi công việc bận rộn và thấy mệt mỏi, anh lên tầng thượng vừa ngắm nhìn quang cảnh đằng xa vừa hít thở thật sâu.",
+      "title": "「中村（なかむら）さんの夏（なつ）の海（うみ）旅行（りょこう）」",
+      "passageJp": "中村（なかむら）さんは先月（せんげつ）、友達（ともだち）と電車（でんしゃ）に乗（の）って海（うみ）へ行（い）きました。海（うみ）の近（ちか）くのホテルに泊（と）まりました。朝（あさ）は青（あお）い海（うみ）で泳（およ）いだり、写真（しゃしん）を撮（と）ったりしました。昼（ひる）ごはんは海（うみ）の近（ちか）くのレストランで新（あたら）しい魚（さかな）を食（た）べました。東京（とうきょう）より涼（すず）しくて、空気（くうき）がとてもきれいでした。新（あたら）しいカメラで写真（しゃしん）をたくさん撮（と）りました。",
+      "passageVi": "Anh Nakamura tháng trước đã cùng bạn bè đi tàu điện về vùng biển. Họ trọ tại một khách sạn gần biển. Buổi sáng bơi ở biển xanh, chụp ảnh... Bữa trưa ăn cá tươi ở nhà hàng ven biển. Ở đó mát mẻ hơn Tokyo và không khí rất trong lành. Anh chụp rất nhiều ảnh bằng chiếc máy ảnh mới.",
       "underlines": [
-        "開発（かいはつ）をしています。",
-        "出社（しゅっしゃ）してから、",
-        "ミーティング",
-        "書（か）いたり、",
-        "読（よ）んだりします。",
-        "疲（つか）れたとき、",
-        "見（み）ながら"
+        "乗（の）って、",
+        "行（い）きました。",
+        "泳（およ）いだり、",
+        "撮（と）ったりしました。",
+        "東京（とうきょう）より涼（すず）しくて、",
+        "撮（と）りました。"
       ],
       "vocabNotes": [
         {
-          "word": "確認（かくにん）します",
-          "reading": "かくにんします",
-          "meaning": "Xác nhận, kiểm tra lại"
+          "word": "泊（と）まります",
+          "reading": "とまります",
+          "meaning": "Trọ lại, nghỉ đêm"
         },
         {
-          "word": "深呼吸（しんこきゅう）",
-          "reading": "しんこきゅう",
-          "meaning": "Hít thở sâu"
+          "word": "涼（すず）しい",
+          "reading": "すずしい",
+          "meaning": "Mát mẻ"
         }
       ],
       "questions": [
         {
-          "id": "p16-r1",
-          "qJp": "吉田（よしだ）さんは10時（じ）から何（なに）をしますか。",
-          "qVi": "Anh Yoshida làm gì từ lúc 10 giờ?",
-          "targetGrammar": "Bài 3/11: Hỏi lịch trình thời gian",
+          "id": "p16-rq1",
+          "qJp": "中村（なかむら）さんは海（うみ）でどんなことをしましたか。",
+          "qVi": "Anh Nakamura ở biển đã làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりしました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "チームのミーティングをします。",
-              "vi": "Họp với nhóm."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "海（うみ）で泳（およ）いだり、写真（しゃしん）を撮（と）ったりしました。",
+              "vi": "Anh ấy bơi ở biển, chụp ảnh..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "メンバーとオンラインでミーティングをして、スケジュールを確認（かくにん）します。",
-              "vi": "Họp online với các thành viên để kiểm tra lại lịch trình công việc."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "朝（あさ）は青（あお）い海（うみ）で泳（およ）いだり、新（あたら）しいカメラで写真（しゃしん）をたくさん撮（と）ったりしました。",
+              "vi": "Buổi sáng anh ấy bơi ở biển xanh và chụp nhiều ảnh bằng chiếc máy ảnh mới."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "泳（およ）いで、おいしい魚（さかな）を食（た）べました。",
+              "vi": "Anh ấy bơi lội và ăn cá ngon."
             }
           ]
         },
         {
-          "id": "p16-r2",
-          "qJp": "疲（つか）れたとき、吉田（よしだ）さんはどうしますか。",
-          "qVi": "Khi mệt mỏi, anh Yoshida làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p16-rq2",
+          "qJp": "海（うみ）の町（まち）は東京（とうきょう）と比（くら）べてどうでしたか。",
+          "qVi": "Thị trấn ven biển so với Tokyo thì như thế nào?",
+          "targetGrammar": "Bài 06 · So sánh AよりBのほうが",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "屋上（おくじょう）へ行（い）って深呼吸（しんこきゅう）します。",
-              "vi": "Lên sân thượng hít thở sâu."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "東京（とうきょう）より涼（すず）しくて、空気（くうき）がきれいです。",
+              "vi": "Mát mẻ hơn Tokyo và không khí trong lành."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "屋上（おくじょう）へ行（い）って、景色（けしき）を見（み）ながら深呼吸（しんこきゅう）します。",
-              "vi": "Lên sân thượng, vừa ngắm phong cảnh vừa hít thở thật sâu."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "東京（とうきょう）より涼（すず）しくて、空気（くうき）がとてもきれいでした。",
+              "vi": "Nơi đó mát hơn Tokyo và không khí thì rất sạch sẽ trong lành."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "とても涼（すず）しかったです。",
+              "vi": "Rất là mát mẻ."
             }
           ]
         }
@@ -3361,78 +3555,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p17",
-    "title": "Đề 17 (P17) · Bữa tiệc món ăn Việt Nam của bạn Hạnh",
-    "shortTitle": "ハインさんのベトナム料理パーティー",
-    "focusGrammar": "Bài 8/9 · 作ってあげました, ～ができます, パーティー",
-    "badge": "Đề P17 · Bài 8",
+    "title": "Đề 17 (P17) · Bữa tiệc ở nhà bạn của anh Kato",
+    "shortTitle": "加藤さんの友達の家でのパーティー",
+    "focusGrammar": "Bài 07 · ～てください, ～たり～たり, 弾いて",
+    "badge": "Đề P17 · Bài 07",
     "katakanaWords": [
       "パーティー",
-      "フォー",
-      "スプリングロール",
-      "ビール"
+      "ピザ",
+      "ケーキ",
+      "ギター"
     ],
     "reading": {
-      "title": "「ハインさんのベトナム料理（りょうり）パーティー」",
-      "passageJp": "留学生（りゅうがくせい）のハインさんは先週（せんしゅう）、アパートでベトナム料理（りょうり）のパーティーを開（ひら）きました。前（まえ）の日にスーパーで新鮮（しんせん）な野菜（やさい）や牛肉（ぎゅうにく）を買（か）って、朝（あさ）からスープを準備（じゅんび）しました。日本人の友達（ともだち）が来（き）てから、一緒（いっしょ）にスプリングロールを巻（ま）いて、おいしいフォーを作（つく）ってあげました。友達（ともだち）は「箸（はし）を上手に使（つか）うことができますよ」と言（い）って、たくさん食（た）べてくれました。みんなでビールを飲（の）みながら夜（よる）遅（おそ）くまで楽（たの）しく歌（うた）いました。",
-      "passageVi": "Du học sinh Hạnh tuần trước đã tổ chức một bữa tiệc ẩm thực Việt Nam tại căn hộ. Hôm trước, bạn đã mua rau tươi và thịt bò ở siêu thị, rồi chuẩn bị nước dùng từ sáng sớm. Sau khi những người bạn Nhật Bản đến, bạn cùng các bạn cuốn nem và tự tay nấu món phở thơm ngon chiêu đãi. Các bạn nói \"Tớ dùng đũa rất khéo đấy nhé\" và đã ăn rất nhiệt tình. Mọi người vừa uống bia vừa vui vẻ ca hát đến tận đêm muộn.",
+      "title": "「加藤（かとう）さんの友達（ともだち）の家（いえ）でのパーティー」",
+      "passageJp": "加藤（かとう）さんは先週（せんしゅう）の日曜日（にちようび）、友達（ともだち）の家（いえ）のパーティーに行（い）きました。手土産（てみやげ）においしいケーキを買（か）って持（も）って行（い）きました。友達（ともだち）の部屋（へや）でピザを食（た）べたり、ジュースを飲（の）んだりしました。友達（ともだち）は「どうぞたくさん食（た）べてください」と言（い）いました。食事（しょくじ）のあとで、友達（ともだち）がギターを弾（ひ）いて、みんなで楽（たの）しく歌（うた）を歌（うた）いました。",
+      "passageVi": "Anh Kato vào Chủ nhật tuần trước đã đến dự bữa tiệc ở nhà một người bạn. Anh mua chiếc bánh kem ngon mang đến làm quà. Trong phòng của bạn, mọi người ăn bánh pizza, uống nước ngọt... Người bạn nói 'Xin mời các bạn ăn thật nhiều nhé'. Sau bữa ăn, người bạn chơi đàn ghi-ta và mọi người cùng nhau hát rất vui vẻ.",
       "underlines": [
-        "開（ひら）きました。",
-        "買（か）って、",
-        "来（き）てから、",
-        "作（つく）ってあげました。",
-        "使（つか）うことができます",
-        "飲（の）みながら"
+        "買（か）って",
+        "持（も）って行（い）きました。",
+        "食（た）べたり、",
+        "飲（の）んだりしました。",
+        "食（た）べてください",
+        "弾（ひ）いて、",
+        "歌（うた）いました。"
       ],
       "vocabNotes": [
         {
-          "word": "開（ひら）きます",
-          "reading": "ひらきます",
-          "meaning": "Mở, tổ chức (tiệc/hội)"
+          "word": "手土産（てみやげ）",
+          "reading": "てみやげ",
+          "meaning": "Quà mang theo khi đến thăm nhà"
         },
         {
-          "word": "巻（ま）きます",
-          "reading": "まきます",
-          "meaning": "Cuốn, cuộn"
+          "word": "どうぞ",
+          "meaning": "Xin mời"
         }
       ],
       "questions": [
         {
-          "id": "p17-r1",
-          "qJp": "ハインさんは日本人の友達（ともだち）に何（なに）を作（つく）ってあげましたか。",
-          "qVi": "Bạn Hạnh đã nấu món gì chiêu đãi những người bạn Nhật?",
-          "targetGrammar": "Bài 8: Mẫu câu ～てあげました",
+          "id": "p17-rq1",
+          "qJp": "加藤（かとう）さんは友達（ともだち）の家（いえ）に何（なに）を持（も）って行（い）きましたか。",
+          "qVi": "Anh Kato đã mang gì đến nhà người bạn?",
+          "targetGrammar": "Bài 07 · ～を持って行きました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "フォーとスプリングロールを作（つく）ってあげました。",
-              "vi": "Đã nấu món phở và nem cuốn chiêu đãi."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "おいしいケーキを買（か）って持（も）って行（い）きました。",
+              "vi": "Anh ấy mua bánh kem ngon mang đến."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "ベトナムの有名（ゆうめい）なフォーやスプリングロールを作（つく）ってあげました。",
-              "vi": "Bạn ấy đã làm món phở và nem cuốn nổi tiếng của Việt Nam chiêu đãi bạn."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "パーティーの手土産（てみやげ）においしいケーキを持（も）って行（い）きました。",
+              "vi": "Anh ấy mang bánh kem ngon đến làm quà cho bữa tiệc."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "ケーキです。",
+              "vi": "Là chiếc bánh kem."
             }
           ]
         },
         {
-          "id": "p17-r2",
-          "qJp": "友達（ともだち）は何（なに）を上手に使（つか）うことができますか。",
-          "qVi": "Người bạn có thể sử dụng thành thạo vật gì?",
-          "targetGrammar": "Bài 9: Mẫu câu ～ことができます",
+          "id": "p17-rq2",
+          "qJp": "食事（しょくじ）のあとで、みんなで何（なに）をしましたか。",
+          "qVi": "Sau bữa ăn, mọi người đã cùng nhau làm gì?",
+          "targetGrammar": "Bài 07 & 09 · ギターを弾いて、歌を歌いました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "箸（はし）を上手に使（つか）うことができます。",
-              "vi": "Có thể dùng đũa rất thành thạo."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "友達（ともだち）がギターを弾（ひ）いて、みんなで歌（うた）を歌（うた）いました。",
+              "vi": "Người bạn gảy đàn ghi-ta và mọi người cùng hát."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "ベトナムの料理（りょうり）を食（た）べるとき、箸（はし）を上手に使（つか）うことができます。",
-              "vi": "Khi ăn món Việt Nam, bạn ấy có thể dùng đũa rất khéo léo."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "食事（しょくじ）のあとで、友達（ともだち）のギターの音（おと）に合（あ）わせて楽（たの）しく歌（うた）いました。",
+              "vi": "Sau bữa ăn, mọi người đã cùng nhau hát thật vui theo tiếng đàn ghi-ta của người bạn."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "みんなで歌（うた）を歌（うた）いました。",
+              "vi": "Mọi người cùng nhau hát."
             }
           ]
         }
@@ -3568,78 +3774,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p18",
-    "title": "Đề 18 (P18) · Chuyến tham quan bảo tàng mỹ thuật của anh Matsumoto",
-    "shortTitle": "松本さんの美術館巡り",
-    "focusGrammar": "Bài 10/11 · ～ないでください, ～てから, ミュージアム",
-    "badge": "Đề P18 · Bài 10",
+    "title": "Đề 18 (P18) · Một ngày làm việc của anh Yoshida",
+    "shortTitle": "吉田さんの会社での一日",
+    "focusGrammar": "Bài 03 & 11 · 働いています, ～てから, ～たり～たり, ～とき",
+    "badge": "Đề P18 · Bài 03",
     "katakanaWords": [
-      "ミュージアム",
-      "パンフレット",
-      "ポスター",
-      "カフェ"
+      "パソコン",
+      "メール",
+      "コーヒー",
+      "オフィス"
     ],
     "reading": {
-      "title": "「松本（まつもと）さんの美術館（びじゅつかん）巡（めぐ）り」",
-      "passageJp": "松本（まつもと）さんは休（やす）みの日に、新（あたら）しくできた現代（げんだい）アートのミュージアムへ行（い）きました。受付（うけつけ）でチケットを買（か）ってパンフレットをもらってから、展示室（てんじしつ）に入（はい）りました。入口（いりぐち）に「写真（しゃしん）を撮（と）らないでください。作品（さくひん）に触（さわ）らないでください」と大（おお）きく書（か）いてありました。静（しず）かな部屋（へや）で美（うつく）しい絵（え）を見（み）て、心（こころ）が穏（おだ）やかになりました。見学（けんがく）のあとで、ミュージアムカフェでコーヒーを飲（の）みながらポスターを買（か）いました。",
-      "passageVi": "Anh Matsumoto vào ngày nghỉ đã đến một bảo tàng nghệ thuật đương đại mới xây. Sau khi mua vé và nhận tập tài liệu giới thiệu ở quầy lễ tân thì anh bước vào phòng triển lãm. Ở lối vào có ghi rất to: \"Xin đừng chụp ảnh. Xin đừng chạm vào hiện vật tác phẩm\". Ngắm nhìn những bức tranh tuyệt đẹp trong không gian yên tĩnh, tâm hồn anh trở nên thanh thản. Sau chuyến tham quan, vừa uống cà phê tại quán cà phê bảo tàng vừa mua một tấm áp phích kỷ niệm.",
+      "title": "「吉田（よしだ）さんの会社（かいしゃ）での一日（いちにち）」",
+      "passageJp": "吉田（よしだ）さんは東京（とうきょう）の会社（かいしゃ）で働（はたら）いています。毎朝（まいあさ）8時半（じはん）に会社（かいしゃ）に着（つ）いてから、まずパソコンでメールを読（よ）みます。午前（ごぜん）は会議（かいぎ）をしたり、書類（しょるい）を作（つく）ったりします。昼（ひる）休みは食堂（しょくどう）で定食（ていしょく）を食（た）べて、コーヒーを飲（の）みます。仕事（しごと）で疲（つか）れたとき、近（ちか）くの公園（こうえん）を少し歩（ある）いて休（やす）んでいます。",
+      "passageVi": "Anh Yoshida làm việc tại một công ty ở Tokyo. Mỗi sáng sau khi đến công ty lúc 8 giờ rưỡi, trước tiên anh đọc email trên máy tính. Buổi sáng anh họp, lập giấy tờ tài liệu... Giờ nghỉ trưa anh ăn cơm suất ở nhà ăn và uống cà phê. Khi mệt mỏi vì công việc, anh đi dạo một chút ở công viên gần đó rồi nghỉ ngơi.",
       "underlines": [
-        "もらってから、",
-        "入（はい）りました。",
-        "撮（と）らないでください。",
-        "触（さわ）らないでください",
-        "穏（おだ）やかになりました。",
-        "飲（の）みながら"
+        "働（はたら）いています。",
+        "着（つ）いてから、",
+        "会議（かいぎ）をしたり、",
+        "作（つく）ったりします。",
+        "疲（つか）れたとき、",
+        "休（やす）んでいます。"
       ],
       "vocabNotes": [
         {
-          "word": "展示室（てんじしつ）",
-          "reading": "てんじしつ",
-          "meaning": "Phòng trưng bày, triển lãm"
+          "word": "定食（ていしょく）",
+          "reading": "ていしょく",
+          "meaning": "Cơm phần, cơm suất"
         },
         {
-          "word": "穏（おだ）やか",
-          "reading": "おだやか",
-          "meaning": "Thanh thản, bình yên"
+          "word": "書類（しょるい）",
+          "reading": "しょるい",
+          "meaning": "Hồ sơ, giấy tờ văn bản"
         }
       ],
       "questions": [
         {
-          "id": "p18-r1",
-          "qJp": "美術館（びじゅつかん）の入口（いりぐち）に何（なに）と書（か）いてありましたか。",
-          "qVi": "Ở lối vào bảo tàng mỹ thuật viết điều gì?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p18-rq1",
+          "qJp": "吉田（よしだ）さんは会社（かいしゃ）に着（つ）いてから、まず何（なに）をしますか。",
+          "qVi": "Anh Yoshida sau khi đến công ty thì trước tiên làm gì?",
+          "targetGrammar": "Bài 07 & 11 · ～てから, まず",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "写真（しゃしん）を撮（と）らないでください、触（さわ）らないでくださいと書（か）いてありました。",
-              "vi": "Viết là: Xin đừng chụp ảnh, xin đừng sờ vào tác phẩm."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "パソコンでメールを読（よ）みます。",
+              "vi": "Anh ấy đọc email trên máy tính."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "「写真（しゃしん）を撮（と）らないでください。作品（さくひん）に触（さわ）らないでください」と注意（ちゅうい）が書（か）いてありました。",
-              "vi": "Có bảng lưu ý: \"Xin đừng chụp ảnh. Xin đừng chạm tay vào tác phẩm\"."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "8時半（じはん）に会社（かいしゃ）に着（つ）いてから、まずパソコンでメールをチェックします。",
+              "vi": "Sau khi đến công ty lúc 8 giờ rưỡi, trước tiên anh ấy đọc email trên máy tính."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "メールの確認（かくにん）をします。",
+              "vi": "Anh ấy kiểm tra email."
             }
           ]
         },
         {
-          "id": "p18-r2",
-          "qJp": "松本（まつもと）さんは見学（けんがく）のあとでカフェで何（なに）をしましたか。",
-          "qVi": "Sau khi tham quan, anh Matsumoto đã làm gì ở quán cà phê?",
-          "targetGrammar": "Bài 11: Nối hành động / ～ながら",
+          "id": "p18-rq2",
+          "qJp": "吉田（よしだ）さんは仕事（しごと）で疲（つか）れたとき、どうしますか。",
+          "qVi": "Anh Yoshida khi mệt mỏi vì công việc thì làm gì?",
+          "targetGrammar": "Bài 11 · ～とき",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "コーヒーを飲（の）んで、ポスターを買（か）いました。",
-              "vi": "Uống cà phê và mua áp phích."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "近（ちか）くの公園（こうえん）を少し歩（ある）いて休（やす）んでいます。",
+              "vi": "Anh ấy đi dạo một chút ở công viên gần đó rồi nghỉ ngơi."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "コーヒーを飲（の）みながら記念（きねん）のポスターを買（か）いました。",
-              "vi": "Vừa uống cà phê vừa chọn mua tấm áp phích làm kỷ niệm."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "疲（つか）れたとき、公園（こうえん）を散歩（さんぽ）してリフレッシュします。",
+              "vi": "Khi mệt, anh ấy đi dạo ở công viên để thư giãn lấy lại năng lượng."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "公園（こうえん）で少し休（やす）みます。",
+              "vi": "Anh ấy nghỉ ngơi một chút ở công viên."
             }
           ]
         }
@@ -3773,78 +3991,91 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p19",
-    "title": "Đề 19 (P19) · Chuyện chuyển nhà của bạn Inoue",
-    "shortTitle": "井上さんの引っ越し",
-    "focusGrammar": "Bài 8/11 · 手伝ってもらいました, ～てから, アパート",
-    "badge": "Đề P19 · Bài 8",
+    "title": "Đề 19 (P19) · Lớp học nấu ăn của chị Inoue",
+    "shortTitle": "井上さんの料理教室",
+    "focusGrammar": "Bài 09 · 趣味は～ことです, ～たり～たり, ～てください",
+    "badge": "Đề P19 · Bài 09",
     "katakanaWords": [
-      "アパート",
-      "トラック",
-      "ダンボール",
-      "ベッド"
+      "エプロン",
+      "メニュー",
+      "スープ",
+      "クラス"
     ],
     "reading": {
-      "title": "「井上（いのうえ）さんの引（ひ）っ越（こ）し」",
-      "passageJp": "井上（いのうえ）さんは先週末（せんしゅうまつ）、大学（だいがく）の近（ちか）くの新（あたら）しいアパートへ引（ひ）っ越（こ）しました。引（ひ）っ越（こ）す前（まえ）に本（ほん）や服（ふく）をダンボールに入（い）れて、きれいに荷造（にづく）りをしました。当日は車（くるま）を持（も）っている友達（ともだち）にトラックを運転（うんてん）してもらって、大（おお）きなベッドや机（つくえ）を運（はこ）びました。友達（ともだち）がたくさん手伝（てつだ）ってくれましたから、作業（さぎょう）が早（はや）く終（お）わりました。荷物（にもつ）を片付（かたづ）けてから、感謝（かんしゃ）の気持ちで友達（ともだち）に焼肉（やきにく）をごちそうしました。",
-      "passageVi": "Bạn Inoue cuối tuần trước đã chuyển đến căn hộ mới gần trường đại học. Trước khi chuyển nhà, bạn xếp sách vở quần áo vào thùng các tông, đóng gói hành lý rất gọn gàng. Vào ngày chuyển, bạn nhờ một người bạn có xe lái xe tải giúp, vận chuyển chiếc giường lớn và bàn học. Vì bạn bè giúp đỡ rất nhiệt tình nên công việc đã hoàn thành nhanh chóng. Sau khi dọn dẹp xong đồ đạc, với lòng biết ơn bạn đã mời bạn bè một bữa thịt nướng Yakiniku.",
+      "title": "「井上（いのうえ）さんの料理（りょうり）教室（きょうしつ）」",
+      "passageJp": "井上（いのうえ）さんの趣味（しゅみ）は料理（りょうり）を作（つく）ることです。1か月（げつ）に2回（かい）、土曜日（どようび）に料理（りょうり）教室（きょうしつ）に通（かよ）っています。教室（きょうしつ）でエプロンをつけてから、先生（せんせい）の話（はなし）を聞（き）きます。野菜（やさい）を切（き）ったり、おいしいスープを作（つく）ったりします。先生（せんせい）は「包丁（ほうちょう）に気（き）をつけてください」と親切（しんせつ）に教（おし）えてくれます。作（つく）った料理（りょうり）をみんなで食（た）べて、とても楽（たの）しいです。",
+      "passageVi": "Sở thích của chị Inoue là nấu ăn. Mỗi tháng 2 lần vào thứ Bảy, chị tham gia lớp học nấu ăn. Ở lớp, sau khi đeo tạp dề chị lắng nghe thầy cô giảng. Chị cắt rau củ, nấu món súp ngon... Thầy cô ân cần dặn 'Xin hãy cẩn thận với dao làm bếp'. Mọi người cùng thưởng thức những món đã nấu, rất vui vẻ.",
       "underlines": [
-        "引（ひ）っ越（こ）しました。",
-        "ダンボール",
-        "運転（うんてん）してもらって、",
-        "手伝（てつだ）ってくれましたから、",
-        "片付（かたづ）けてから、",
-        "ごちそうしました。"
+        "料理（りょうり）を作（つく）ることです。",
+        "通（かよ）っています。",
+        "つけてから、",
+        "切（き）ったり、",
+        "作（つく）ったりします。",
+        "気（き）をつけてください",
+        "教（おし）えてくれます。"
       ],
       "vocabNotes": [
         {
-          "word": "荷造（にづく）り",
-          "reading": "にづくり",
-          "meaning": "Đóng gói hành lý"
+          "word": "包丁（ほうちょう）",
+          "reading": "ほうちょう",
+          "meaning": "Con dao làm bếp"
         },
         {
-          "word": "ごちそうします",
-          "reading": "ごちそうします",
-          "meaning": "Khao, mời ăn uống"
+          "word": "気（き）をつける",
+          "reading": "きをつける",
+          "meaning": "Cẩn thận, chú ý"
         }
       ],
       "questions": [
         {
-          "id": "p19-r1",
-          "qJp": "友達（ともだち）は井上（いのうえ）さんに何（なに）をしてくれましたか。",
-          "qVi": "Người bạn đã làm gì giúp bạn Inoue?",
-          "targetGrammar": "Bài 8: Mẫu câu ～てくれました",
+          "id": "p19-rq1",
+          "qJp": "井上（いのうえ）さんは1か月（げつ）に何回（なんかい）料理教室（りょうりきょうしつ）に通（かよ）っていますか。",
+          "qVi": "Chị Inoue một tháng đến lớp học nấu ăn bao nhiêu lần?",
+          "targetGrammar": "Bài 09 · Khoảng thời gian に Số lần",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "トラックを運転（うんてん）して、荷物（にもつ）を運（はこ）んでくれました。",
-              "vi": "Đã lái xe tải và khuân vác đồ đạc giúp."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "1か月（げつ）に2回（かい）通（かよ）っています。",
+              "vi": "Chị ấy đi học 2 lần một tháng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "トラックを運転（うんてん）してベッドや机（つくえ）を運（はこ）ぶのを手伝（てつだ）ってくれました。",
-              "vi": "Đã giúp lái xe tải và phụ khiêng giường cùng bàn học."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "1か月（げつ）に2回（かい）、土曜日（どようび）に料理（りょうり）教室（きょうしつ）へ通（かよ）っています。",
+              "vi": "Một tháng 2 lần, vào thứ Bảy chị ấy đến lớp học nấu ăn."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "月（つき）に2回（かい）です。",
+              "vi": "Là 2 lần một tháng."
             }
           ]
         },
         {
-          "id": "p19-r2",
-          "qJp": "荷物（にもつ）を片付（かたづ）けてから、井上（いのうえ）さんは友達（ともだち）に何（なに）をごちそうしましたか。",
-          "qVi": "Sau khi dọn đồ xong, bạn Inoue đã khao bạn món gì?",
-          "targetGrammar": "Bài 8/10: ～てから / ごちそうしました",
+          "id": "p19-rq2",
+          "qJp": "先生（せんせい）は何（なん）と教（おし）えてくれますか。",
+          "qVi": "Thầy cô giáo đã ân cần dặn dò điều gì?",
+          "targetGrammar": "Bài 10 · ～てくださいと教えてくれます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "焼肉（やきにく）をごちそうしました。",
-              "vi": "Đã khao bữa thịt nướng Yakiniku."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "「包丁（ほうちょう）に気（き）をつけてください」と教（おし）えてくれます。",
+              "vi": "Thầy cô dặn: 'Xin hãy cẩn thận với dao làm bếp'."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ lý do",
-              "jp": "手伝（てつだ）ってくれた友達（ともだち）に、感謝（かんしゃ）でおいしい焼肉（やきにく）をごちそうしました。",
-              "vi": "Với lòng biết ơn người bạn đã giúp đỡ, bạn ấy đã khao một bữa thịt nướng thật ngon."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "先生（せんせい）は「危（あぶ）ないですから包丁（ほうちょう）に気（き）をつけてください」と親切（しんせつ）に教（おし）えてくれます。",
+              "vi": "Thầy cô ân cần dặn: 'Vì nguy hiểm nên xin hãy cẩn thận với dao làm bếp'."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "包丁（ほうちょう）の使い方（かた）に気（き）をつけてくださいと言（い）います。",
+              "vi": "Thầy cô dặn hãy cẩn thận trong cách dùng dao."
             }
           ]
         }
@@ -3980,79 +4211,90 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
   },
   {
     "id": "p20",
-    "title": "Đề 20 (P20) · Kỷ niệm du lịch Kyoto của bạn John",
-    "shortTitle": "ジョンさんの京都旅行の思い出",
-    "focusGrammar": "Bài 10/11 · ～てから, ～たり～たり, ～とき",
+    "title": "Đề 20 (P20) · Ngày hội thể thao của bạn John",
+    "shortTitle": "ジョンさんの学校のスポーツの日",
+    "focusGrammar": "Bài 11 · ～たり～たり, ～てから, 速い",
     "badge": "Đề P20 · Bài 11",
     "katakanaWords": [
-      "ホテル",
-      "タクシー",
-      "スマートカメラ",
-      "おみやげ"
+      "サッカー",
+      "テニス",
+      "スポーツ",
+      "シャワー"
     ],
     "reading": {
-      "title": "「ジョンさんの京都（きょうと）旅行（りょこう）の思い出（おもいで）」",
-      "passageJp": "ジョンさんは先月（せんげつ）、新幹線（しんかんせん）に乗（の）って京都（きょうと）へ2泊（はく）3日（みっか）の旅行（りょこう）に行（い）きました。京都駅（きょうとえき）に着（つ）いてから、まずタクシーでホテルへ行（い）って荷物（にもつ）を預（あず）けました。それから有名（ゆうめい）な金閣寺（きんかくじ）や清水寺（きよみずでら）を見学（けんがく）して、新（あたら）しいスマートカメラで写真（しゃしん）をたくさん撮（と）りました。「寺（てら）の中（なか）では走（はし）らないでください」という注意（ちゅうい）を守（まも）って静（しず）かに歩（ある）きました。夕方（ゆうがた）おみやげ屋（や）で抹茶（まっちゃ）のお菓子（かし）を買（か）って、友達（ともだち）にあげました。",
-      "passageVi": "Bạn John tháng trước đã đi tàu cao tốc Shinkansen đến Kyoto trong chuyến du lịch 3 ngày 2 đêm. Sau khi đến ga Kyoto, trước tiên bạn đi taxi về khách sạn gửi hành lý. Sau đó đi tham quan các ngôi chùa nổi tiếng như chùa Vàng Kinkakuji, chùa Kiyomizu, và chụp rất nhiều ảnh bằng chiếc máy ảnh thông minh mới. Bạn tuân thủ lời nhắc: \"Xin đừng chạy nhảy bên trong khuôn viên chùa\" và bước đi rất yên tĩnh. Buổi chiều tối ở tiệm đồ lưu niệm, bạn mua bánh kẹo trà xanh matcha về làm quà tặng bạn bè.",
+      "title": "「ジョンさんの学校（がっこう）のスポーツの日（ひ）」",
+      "passageJp": "ジョンさんの大学（だいがく）で先週（せんしゅう）、「スポーツの日（ひ）」がありました。朝（あさ）9時（じ）に運動場（うんどうじょう）に集（あつ）まってから、みんなで体操（たいそう）をしました。午前（ごぜん）はサッカーの試合（しあい）に出（で）たり、友達（ともだち）の応援（おうえん）をしたりしました。走（はし）るのが速（はや）い友達（ともだち）がいて、とてもかっこよかったです。終（お）わったあと、シャワーを浴（あ）びてから、みんなで冷（つめ）たいジュースを飲（の）みました。",
+      "passageVi": "Ở trường đại học của John tuần trước đã diễn ra 'Ngày hội thể thao'. Sau khi tập trung ở sân vận động lúc 9 giờ sáng, mọi người cùng tập thể dục. Buổi sáng bạn tham gia trận đấu bóng đá, cổ vũ cho bạn bè... Có người bạn chạy rất nhanh trông vô cùng ngầu. Sau khi kết thúc, sau khi tắm vòi sen thì mọi người cùng uống nước ngọt mát lạnh.",
       "underlines": [
-        "乗（の）って",
-        "行（い）きました。",
-        "着（つ）いてから、",
-        "写真（しゃしん）をたくさん撮（と）りました。",
-        "走（はし）らないでください",
-        "買（か）って、",
-        "あげました。"
+        "集（あつ）まってから、",
+        "体操（たいそう）をしました。",
+        "出（で）たり、",
+        "応援（おうえん）をしたりしました。",
+        "走（はし）るのが速（はや）い",
+        "浴（あ）びてから、",
+        "飲（の）みました。"
       ],
       "vocabNotes": [
         {
-          "word": "預（あず）けます",
-          "reading": "あずけます",
-          "meaning": "Gửi (đồ đạc, hành lý)"
+          "word": "運動場（うんどうじょう）",
+          "reading": "うんどうじょう",
+          "meaning": "Sân vận động, sân thể thao"
         },
         {
-          "word": "守（まも）ります",
-          "reading": "まもります",
-          "meaning": "Tuân thủ, giữ gìn"
+          "word": "かっこいい",
+          "meaning": "Ngầu, bảnh bao, phong độ"
         }
       ],
       "questions": [
         {
-          "id": "p20-r1",
-          "qJp": "京都駅（きょうとえき）に着（つ）いてから、ジョンさんはまずどこへ行（い）きましたか。",
-          "qVi": "Sau khi đến ga Kyoto, bạn John trước tiên đã đi đâu?",
-          "targetGrammar": "Bài 10/11: Mẫu câu ～てから",
+          "id": "p20-rq1",
+          "qJp": "ジョンさんは午前中（ごぜんちゅう）、どんなことをしましたか。",
+          "qVi": "Bạn John vào buổi sáng đã làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりしました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "タクシーでホテルへ行（い）きました。",
-              "vi": "Đi taxi về khách sạn."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "サッカーの試合（しあい）に出（で）たり、友達（ともだち）の応援（おうえん）をしたりしました。",
+              "vi": "Bạn ấy đá bóng, cổ vũ cho bạn bè..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ mục đích",
-              "jp": "荷物（にもつ）を預（あず）けるために、タクシーでホテルへ行（い）きました。",
-              "vi": "Bạn ấy đã đi taxi đến khách sạn để gửi hành lý."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "午前（ごぜん）はサッカーの試合（しあい）に出（で）たり、走（はし）る友達（ともだち）を応援（おうえん）したりしました。",
+              "vi": "Buổi sáng bạn ấy tham gia trận đá bóng và cổ vũ cho bạn bè đang chạy."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "サッカーの試合（しあい）をしました。",
+              "vi": "Bạn ấy thi đấu bóng đá."
             }
           ]
         },
         {
-          "id": "p20-r2",
-          "qJp": "寺（てら）の中（なか）で何（なに）をしてはいけませんか。",
-          "qVi": "Bên trong chùa không được làm gì?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p20-rq2",
+          "qJp": "運動（うんどう）が終（お）わったあとで、みんなで何（なに）をしましたか。",
+          "qVi": "Sau khi buổi tập thể thao kết thúc, mọi người cùng nhau làm gì?",
+          "targetGrammar": "Bài 07 & 11 · ～てから、～ました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Trực tiếp",
-              "jp": "走（はし）ってはいけません。（走（はし）らないでください）",
-              "vi": "Không được chạy."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "シャワーを浴（あ）びてから、冷（つめ）たいジュースを飲（の）みました。",
+              "vi": "Sau khi tắm vòi sen, mọi người cùng uống nước ngọt mát lạnh."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ",
-              "jp": "「寺（てら）の中（なか）では走（はし）らないでください」と注意（ちゅうい）がありました。",
-              "vi": "Có bảng nhắc nhở: \"Xin đừng chạy trong khuôn viên chùa\"."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "終（お）わったあと、シャワーを浴（あ）びてからみんなで一緒（いっしょ）に冷（つめ）たいジュースを飲（の）みました。",
+              "vi": "Sau khi kết thúc, tắm vòi sen xong thì mọi người đã cùng nhau uống nước ngọt mát lạnh."
+            },
+            {
+              "level": "alt",
+              "label": "Cách trả lời khác",
+              "jp": "冷（つめ）たいジュースを飲（の）んで休憩（きゅうけい）しました。",
+              "vi": "Mọi người uống nước ngọt mát lạnh và nghỉ ngơi."
             }
           ]
         }
