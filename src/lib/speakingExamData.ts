@@ -230,54 +230,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p01-q2",
+          "id": "p01-fq1",
           "qJp": "去年（きょねん）の誕生日（たんじょうび）に友達（ともだち）に何（なに）をもらいましたか。",
-          "qVi": "Sinh nhật năm ngoái bạn đã nhận được cái gì từ bạn bè?",
-          "targetGrammar": "Bài 8: Cho nhận ～に～をもらいました",
+          "qVi": "Vào sinh nhật năm ngoái, bạn đã nhận được món quà gì từ bạn bè?",
+          "targetGrammar": "Bài 08 · [Người] に [Vật] をもらいました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn (Đồng hồ)",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "時計（とけい）をもらいました。",
-              "vi": "Tôi đã nhận được một chiếc đồng hồ."
+              "vi": "Tôi đã nhận được chiếc đồng hồ."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đầy đủ chi tiết (Sách tiếng Nhật)",
-              "jp": "日本語（にほんご）の本（ほん）とペンをもらいました。とてもうれしかったです。",
-              "vi": "Tôi nhận được sách tiếng Nhật và một cây bút. Tôi đã rất vui."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "去年（きょねん）の誕生日（たんじょうび）に、親（した）しい友達（ともだち）にきれいな青（あお）い時計（とけい）をもらいました。",
+              "vi": "Vào sinh nhật năm ngoái, tôi đã nhận được một chiếc đồng hồ màu xanh dương rất đẹp từ người bạn thân."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Áo thun từ bạn thân",
-              "jp": "親友（しんゆう）にきれいなTシャツをもらいました。今（いま）も大切（たいせつ）に使（つか）っています。",
-              "vi": "Tôi nhận được chiếc áo phông rất đẹp từ bạn thân. Bây giờ tôi vẫn nâng niu sử dụng."
+              "label": "Cách trả lời khác",
+              "jp": "本（ほん）とTシャツをもらいました。",
+              "vi": "Tôi đã nhận được sách và áo thun."
             }
           ]
         },
         {
-          "id": "p01-q3",
+          "id": "p01-fq2",
           "qJp": "疲（つか）れたとき、どうしますか。",
-          "qVi": "Khi mệt mỏi, bạn làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "qVi": "Khi mệt mỏi, bạn thường làm gì?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngủ sớm / Nghe nhạc",
-              "jp": "早（はや）く寝（ね）ます。",
-              "vi": "Tôi đi ngủ sớm."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "お風呂（ふろ）に入（はい）って、早（はや）く寝（ね）ます。",
+              "vi": "Tôi ngâm bồn tắm rồi đi ngủ sớm."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Thư giãn tắm nước nóng và nghe nhạc",
-              "jp": "お風呂（ふろ）に入（はい）って、好（す）きな音楽（おんがく）を聞（き）きます。",
-              "vi": "Tôi ngâm bồn tắm nước nóng rồi nghe bản nhạc mình yêu thích."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "疲（つか）れたとき、温（あたた）かいお風呂（ふろ）に入（はい）ってから、ゆっくり寝（ね）ています。",
+              "vi": "Khi mệt mỏi, sau khi ngâm mình trong bồn nước ấm thì tôi ngủ một giấc thật ngon."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Dùng ～たり～たり",
-              "jp": "家（いえ）でゆっくり休（やす）んだり、好（す）きなアニメを見（み）たりします。",
-              "vi": "Tôi thong thả nghỉ ngơi ở nhà, hoặc xem anime yêu thích."
+              "label": "Cách trả lời khác",
+              "jp": "好（す）きな音楽（おんがく）を聞（き）いて休（やす）みます。",
+              "vi": "Tôi nghe bản nhạc yêu thích rồi nghỉ ngơi."
             }
           ]
         }
@@ -446,54 +446,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p02-q2",
+          "id": "p02-fq1",
           "qJp": "あなたの趣味（しゅみ）は何（なん）ですか。",
           "qVi": "Sở thích của bạn là gì?",
-          "targetGrammar": "Bài 9: Mẫu câu 趣味は V-ることです",
+          "targetGrammar": "Bài 09 · 趣味は V-ることです",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Danh từ đơn giản",
-              "jp": "読書（どくしょ）です。/ 音楽（おんがく）です。",
-              "vi": "Là đọc sách / Là âm nhạc."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "音楽（おんがく）を聞（き）くことです。",
+              "vi": "Là nghe nhạc."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Chuẩn mẫu V-ること",
-              "jp": "私（わたし）の趣味（しゅみ）は、外国（がいこく）の映画（えいが）を見（み）ることです。",
-              "vi": "Sở thích của tôi là xem phim nước ngoài."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "私（わたし）の趣味（しゅみ）は音楽（おんがく）を聞（き）くことです。休（やす）みの日に部屋（へや）でよく聞（き）きます。",
+              "vi": "Sở thích của tôi là nghe nhạc. Vào ngày nghỉ tôi thường hay nghe ở trong phòng."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Sở thích đá bóng & tần suất",
-              "jp": "サッカーをすることです。1週間（しゅうかん）に2回（かい）友達（ともだち）と練習（れんしゅう）します。",
-              "vi": "Là chơi bóng đá. Một tuần tôi luyện tập với bạn 2 lần."
+              "label": "Cách trả lời khác",
+              "jp": "サッカーをすることです。",
+              "vi": "Là chơi đá bóng."
             }
           ]
         },
         {
-          "id": "p02-q3",
+          "id": "p02-fq2",
           "qJp": "暇（ひま）なとき、たいてい何（なに）をしますか。",
           "qVi": "Khi rảnh rỗi, bạn thường làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu 暇なとき / たいてい",
+          "targetGrammar": "Bài 11 · ～とき、～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngắn gọn",
-              "jp": "音楽（おんがく）を聞（き）きます。",
-              "vi": "Tôi nghe nhạc."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "テレビを見（み）たり、本（ほん）を読（よ）んだりします。",
+              "vi": "Tôi xem tivi, đọc sách..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Dùng ～たり～たり",
-              "jp": "YouTubeで動画（どうが）を見（み）たり、部屋（へや）でゲームをしたりします。",
-              "vi": "Tôi xem video trên YouTube, chơi game trong phòng..."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "暇（ひま）なとき、家（いえ）で映画（えいが）を見（み）たり、友達（ともだち）と電話（でんわ）で話（はな）したりします。",
+              "vi": "Khi rảnh rỗi, tôi xem phim ở nhà, nói chuyện điện thoại với bạn bè..."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đi dạo hóng gió",
-              "jp": "天気がいいときは、自転車（じてんしゃ）で近（ちか）くの川（かわ）の周（まわ）りを散歩（さんぽ）します。",
-              "vi": "Khi trời đẹp, tôi đạp xe đi dạo quanh con sông gần nhà."
+              "label": "Cách trả lời khác",
+              "jp": "近（ちか）くの公園（こうえん）を散歩（さんぽ）します。",
+              "vi": "Tôi đi dạo ở công viên gần nhà."
             }
           ]
         }
@@ -665,54 +665,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p03-q2",
+          "id": "p03-fq1",
           "qJp": "あなたの家族（かぞく）は何人（なんにん）ですか。誰（だれ）がいますか。",
           "qVi": "Gia đình bạn có mấy người? Gồm những ai?",
-          "targetGrammar": "Bài 8: Đếm người và xưng hô gia đình",
+          "targetGrammar": "Bài 08 · Gia đình & Số lượng người (〜人)",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Gia đình 4 người",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "4人（にん）です。父（ちち）と母（はは）と兄（あに）と私（わたし）です。",
               "vi": "Có 4 người. Bố, mẹ, anh trai và tôi."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Gia đình 5 người kèm nơi ở",
-              "jp": "5人（にん）です。両親（りょうしん）と姉（あね）と弟（おとうと）と私（わたし）です。家族（かぞく）はハノイに住（す）んでいます。",
-              "vi": "Có 5 người. Bố mẹ, chị gái, em trai và tôi. Gia đình tôi sống ở Hà Nội."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "家族（かぞく）は4人（にん）です。両親（りょうしん）と兄（あに）が1人（ひとり）いて、ハノイに住（す）んでいます。",
+              "vi": "Gia đình tôi có 4 người. Có bố mẹ và 1 anh trai, hiện đang sống ở Hà Nội."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Gia đình 3 người",
-              "jp": "3人（にん）です。両親（りょうしん）と私（わたし）です。一人っ子（ひとりっこ）です。",
-              "vi": "Có 3 người. Bố mẹ và tôi. Tôi là con một."
+              "label": "Cách trả lời khác",
+              "jp": "3人（にん）です。両親（りょうしん）と私（わたし）です。",
+              "vi": "Có 3 người. Bố mẹ và tôi."
             }
           ]
         },
         {
-          "id": "p03-q3",
-          "qJp": "教室（きょうしつ）の中で、何をしてはいけませんか。（何（なに）をしないでくださいと言（い）われますか）",
-          "qVi": "Trong phòng học không được làm gì? (Thầy cô nhắc nhở đừng làm gì?)",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p03-fq2",
+          "qJp": "教室（きょうしつ）の中（なか）で、何（なに）をしてはいけませんか。（何（なに）をしないでくださいと言（い）われますか）",
+          "qVi": "Trong lớp học, không được làm việc gì? (Được nhắc nhở xin đừng làm gì?)",
+          "targetGrammar": "Bài 10 · ～ないでください",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Đừng nói chuyện riêng",
-              "jp": "大きな声（こえ）で話（はな）さないでください。",
-              "vi": "Xin đừng nói chuyện to tiếng."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "ごはんを食（た）べないでくださいと言（い）われます。",
+              "vi": "Được nhắc là xin đừng ăn cơm trong lớp."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Cấm ăn uống và dùng điện thoại",
-              "jp": "ご飯（はん）を食（た）べないでください。そして、スマートフォンを使（つか）わないでください。",
-              "vi": "Xin đừng ăn cơm. Và đừng dùng điện thoại thông minh."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "授業中（じゅぎょうちゅう）に携帯電話（けいたいでんわ）を使（つか）わないでくださいと言（い）われます。",
+              "vi": "Được nhắc nhở là trong giờ học xin đừng dùng điện thoại di động."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đừng ngủ gật",
-              "jp": "授業（じゅぎょう）中（ちゅう）に寝（ね）ないでください。",
-              "vi": "Xin đừng ngủ trong giờ học."
+              "label": "Cách trả lời khác",
+              "jp": "大（おお）きい声（こえ）で話（はな）さないでください。",
+              "vi": "Xin đừng nói chuyện lớn tiếng."
             }
           ]
         }
@@ -884,54 +884,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p04-q2",
+          "id": "p04-fq1",
           "qJp": "あなたはどんな外国語（がいこくご）を話（はな）すことができますか。",
           "qVi": "Bạn có thể nói được ngoại ngữ nào?",
-          "targetGrammar": "Bài 9: Mẫu câu ～ことができます",
+          "targetGrammar": "Bài 09 · ～ことができます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Tiếng Anh",
-              "jp": "英語（えいご）を話（はな）すことができます。",
-              "vi": "Tôi có thể nói tiếng Anh."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "英語（えいご）と日本語（にほんご）を話（はな）すことができます。",
+              "vi": "Tôi có thể nói tiếng Anh và tiếng Nhật."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Tiếng Anh và một chút tiếng Nhật",
-              "jp": "英語（えいご）と少し日本語（にほんご）を話（はな）すことができます。",
-              "vi": "Tôi có thể nói tiếng Anh và một chút tiếng Nhật."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "ベトナム語（ご）と英語（えいご）ができます。そして今（いま）、大学（だいがく）で日本語（にほんご）を勉強（べんきょう）しています。",
+              "vi": "Tôi nói được tiếng Việt và tiếng Anh. Và hiện tại đang học tiếng Nhật ở trường đại học."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đang học chăm chỉ",
-              "jp": "ベトナム語（ご）と英語（えいご）ができます。今（いま）日本語（にほんご）も一生懸命（いっしょうけんめい）勉強（べんきょう）しています。",
-              "vi": "Tôi nói được tiếng Việt và tiếng Anh. Giờ tôi cũng đang chăm chỉ học tiếng Nhật."
+              "label": "Cách trả lời khác",
+              "jp": "英語（えいご）を少（すこ）し話（はな）すことができます。",
+              "vi": "Tôi có thể nói một chút tiếng Anh."
             }
           ]
         },
         {
-          "id": "p04-q3",
-          "qJp": "日本語（にほんご）の意味（いみ）がわからないとき、どうしますか。",
-          "qVi": "Khi không hiểu ý nghĩa tiếng Nhật, bạn làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p04-fq2",
+          "qJp": "日本語（にほんご）の言葉（ことば）の意味（いみ）がわからないとき、どうしますか。",
+          "qVi": "Khi không hiểu ý nghĩa của từ vựng tiếng Nhật, bạn làm thế nào?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Tra từ điển",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "辞書（じしょ）で調（しら）べます。",
-              "vi": "Tôi tra từ điển."
+              "vi": "Tôi tra bằng từ điển."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Tra điện thoại và hỏi thầy cô",
-              "jp": "スマートフォンで調（しら）べたり、先生（せんせい）に聞（き）いたりします。",
-              "vi": "Tôi tra bằng điện thoại hoặc hỏi thầy cô giáo."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "意味（いみ）がわからないとき、スマートフォンの辞書（じしょ）で調（しら）べたり、先生（せんせい）に聞（き）いたりします。",
+              "vi": "Khi không hiểu nghĩa, tôi tra từ điển trên điện thoại hoặc hỏi thầy cô."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Dịch qua mạng",
-              "jp": "インターネットで意味（いみ）を調（しら）べて、ノートにメモを書（か）きます。",
-              "vi": "Tôi tra nghĩa trên mạng rồi ghi chú vào sổ."
+              "label": "Cách trả lời khác",
+              "jp": "先生（せんせい）や友達（ともだち）に質問（しつもん）します。",
+              "vi": "Tôi hỏi thầy cô hoặc bạn bè."
             }
           ]
         }
@@ -1099,54 +1099,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p05-q2",
+          "id": "p05-fq1",
           "qJp": "母（はは）の日（ひ）や誕生日（たんじょうび）に、お母（かあ）さんに何（なに）をあげましたか。",
-          "qVi": "Vào ngày của Mẹ hoặc sinh nhật, bạn đã tặng gì cho mẹ?",
-          "targetGrammar": "Bài 8: Mẫu câu ～に～をあげました",
+          "qVi": "Vào ngày của mẹ hoặc ngày sinh nhật, bạn đã tặng gì cho mẹ?",
+          "targetGrammar": "Bài 08 · [Người] に [Vật] をあげました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Hoa tươi",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "きれいな花（はな）をあげました。",
-              "vi": "Tôi đã tặng hoa tươi rất đẹp."
+              "vi": "Tôi đã tặng mẹ hoa đẹp."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Quần áo và thiệp chúc",
-              "jp": "服（ふく）と手紙（てがみ）をあげました。母（はは）はとても喜（よろこ）びました。",
-              "vi": "Tôi tặng quần áo và một lá thư. Mẹ tôi đã rất vui."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "お母（かあ）さんの誕生日（たんじょうび）に、きれいなスカーフと服（ふく）を買（か）ってあげました。",
+              "vi": "Vào sinh nhật mẹ, tôi đã mua tặng mẹ chiếc khăn quàng cổ đẹp và bộ quần áo."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tự nấu ăn đãi mẹ",
-              "jp": "母（はは）のために、おいしい料理（りょうり）を作（つく）ってあげました。",
-              "vi": "Tôi đã tự tay nấu những món ăn ngon chiêu đãi mẹ."
+              "label": "Cách trả lời khác",
+              "jp": "おいしいケーキをプレゼントしました。",
+              "vi": "Tôi đã tặng chiếc bánh kem ngon."
             }
           ]
         },
         {
-          "id": "p05-q3",
+          "id": "p05-fq2",
           "qJp": "家族（かぞく）や友達（ともだち）に会（あ）いたいとき、どうしますか。",
-          "qVi": "Khi muốn gặp gia đình hoặc bạn bè, bạn làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "qVi": "Khi nhớ và muốn gặp gia đình hoặc bạn bè, bạn thường làm gì?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Gọi điện thoại",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "電話（でんわ）をかけます。",
               "vi": "Tôi gọi điện thoại."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Gọi video nói chuyện",
-              "jp": "スマートフォンでビデオ通話（つうわ）をして、顔（かお）を見（み）ながら話（はな）します。",
-              "vi": "Tôi gọi video bằng điện thoại thông minh, vừa nhìn mặt vừa trò chuyện."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "家族（かぞく）に会（あ）いたいとき、スマートフォンで電話（でんわ）をかけて、顔（かお）を見（み）ながら話（はな）します。",
+              "vi": "Khi muốn gặp gia đình, tôi gọi điện thoại để nhìn mặt trò chuyện."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Nhắn tin và gửi ảnh",
-              "jp": "メッセージを送（おく）ったり、写真（しゃしん）を見（み）たりします。",
-              "vi": "Tôi nhắn tin hoặc ngắm lại những bức ảnh kỷ niệm."
+              "label": "Cách trả lời khác",
+              "jp": "写真（しゃしん）を見（み）たり、メッセージを送（おく）ったりします。",
+              "vi": "Tôi xem lại ảnh hoặc nhắn tin."
             }
           ]
         }
@@ -1317,54 +1317,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p06-q2",
+          "id": "p06-fq1",
           "qJp": "あなたは1年（ねん）に何回（なんかい）くらい旅行（りょこう）に行（い）きますか。",
           "qVi": "Một năm bạn đi du lịch khoảng mấy lần?",
-          "targetGrammar": "Bài 9: Tần suất 1年に～回",
+          "targetGrammar": "Bài 09 · 1年に〜回",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: 2 lần",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "1年（ねん）に2回（かい）くらい行（い）きます。",
-              "vi": "Khoảng 2 lần một năm."
+              "vi": "Một năm tôi đi khoảng 2 lần."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đi cùng gia đình/bạn bè",
-              "jp": "1年（ねん）に1回（かい）か2回（かい）行（い）きます。夏休（なつやす）みに友達（ともだち）と海（うみ）へ行（い）くのが好（す）きです。",
-              "vi": "Khoảng 1 đến 2 lần một năm. Tôi thích đi biển cùng bạn bè vào kỳ nghỉ hè."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "1年（ねん）に2回（かい）くらい、夏休（なつやす）みやテト休（やす）みに友達（ともだち）と旅行（りょこう）へ行（い）きます。",
+              "vi": "Một năm khoảng 2 lần, vào kỳ nghỉ hè hoặc nghỉ Tết tôi đi du lịch cùng bạn bè."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Bận rộn ít đi",
-              "jp": "勉強（べんきょう）が忙（いそが）しいですから、あまり行（い）きません。でも、旅行（りょこう）に行（い）きたいです。",
-              "vi": "Vì việc học bận rộn nên tôi ít đi. Nhưng tôi rất muốn đi du lịch."
+              "label": "Cách trả lời khác",
+              "jp": "忙（いそが）しいですから、1年（ねん）に1回（かい）だけ行（い）きます。",
+              "vi": "Vì bận rộn nên một năm tôi chỉ đi 1 lần."
             }
           ]
         },
         {
-          "id": "p06-q3",
-          "qJp": "授業（じゅぎょう）の途中（とちゅう）でトイレへ行（い）きたいとき、先生（せんせい）に何（なん）と言（い）いますか。",
-          "qVi": "Trong giờ học khi muốn đi vệ sinh, bạn nói câu gì với thầy cô?",
-          "targetGrammar": "Bài 10: Mẫu câu ～て来ます / Xin phép",
+          "id": "p06-fq2",
+          "qJp": "電車（でんしゃ）やバスの中（なか）で、何（なに）をしてはいけませんか。",
+          "qVi": "Ở trên tàu điện hoặc xe buýt, không được làm gì?",
+          "targetGrammar": "Bài 10 · ～ないでください",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Câu xin phép ngắn",
-              "jp": "「先生（せんせい）、トイレへ行（い）ってもいいですか。」",
-              "vi": "\"Thưa thầy, em xin phép đi vệ sinh được không ạ?\""
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "たばこを吸（す）わないでください。",
+              "vi": "Xin đừng hút thuốc."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Mẫu V-て来ます chuẩn Bài 10",
-              "jp": "「すみません、ちょっとトイレへ行（い）って来（き）てもいいですか。」",
-              "vi": "\"Xin lỗi thầy, em xin phép đi vệ sinh một lát rồi quay lại được không ạ?\""
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "電車（でんしゃ）の中（なか）でたばこを吸（す）ったり、大（おお）きい声（こえ）で電話（でんわ）をかけたりしないでください。",
+              "vi": "Trên tàu điện xin đừng hút thuốc hoặc gọi điện thoại lớn tiếng."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Lịch sự",
-              "jp": "「先生（せんせい）、お手洗（てあら）いに行（い）って来（き）ます。」",
-              "vi": "\"Thưa thầy/cô, em xin phép ra ngoài đi vệ sinh một lát ạ.\""
+              "label": "Cách trả lời khác",
+              "jp": "ごみを捨（す）てないでくださいと言（い）われます。",
+              "vi": "Được nhắc nhở là xin đừng vứt rác."
             }
           ]
         }
@@ -1536,54 +1536,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p07-q2",
-          "qJp": "おなかがすいたとき、どうしますか。",
-          "qVi": "Khi đói bụng, bạn làm gì?",
-          "targetGrammar": "Bài 10/11: Mẫu câu ～とき / Trạng thái cơ thể",
+          "id": "p07-fq1",
+          "qJp": "あなたは料理（りょうり）を作（つく）ることができますか。どんな料理（りょうり）ができますか。",
+          "qVi": "Bạn có thể nấu ăn được không? Nấu được món gì?",
+          "targetGrammar": "Bài 09 · ～ことができます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ăn cơm / Đi ăn",
-              "jp": "ご飯（はん）を食（た）べます。",
-              "vi": "Tôi ăn cơm."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "はい、できます。卵（たまご）料理（りょうり）ができます。",
+              "vi": "Vâng, tôi làm được. Tôi làm được các món trứng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Mua bánh hoặc tự nấu",
-              "jp": "コンビニでおにぎりを買（か）ったり、自分（じぶん）で簡単（かんたん）な料理（りょうり）を作（つく）ったりします。",
-              "vi": "Tôi mua cơm nắm ở cửa hàng tiện lợi hoặc tự nấu món đơn giản."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "はい、作（つく）ることができます。ベトナムのフォーや簡単（かんたん）な日本料理（にほんりょうり）を作（つく）ることができます。",
+              "vi": "Vâng, tôi có thể nấu được. Tôi nấu được món phở Việt Nam và món Nhật đơn giản."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đi ăn tiệm cùng bạn",
-              "jp": "友達（ともだち）と一緒（いっしょ）に近（ちか）くのレストランへ食（た）べに行（い）きます。",
-              "vi": "Tôi cùng bạn đi ra nhà hàng gần đó để ăn."
+              "label": "Cách trả lời khác",
+              "jp": "簡単（かんたん）な料理（りょうり）なら作（つく）ることができます。",
+              "vi": "Nếu là món đơn giản thì tôi có thể nấu được."
             }
           ]
         },
         {
-          "id": "p07-q3",
-          "qJp": "休（やす）みの日（ひ）はたいていどんなことをしますか。",
-          "qVi": "Ngày nghỉ bạn thường làm những việc gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～たり～たりします",
+          "id": "p07-fq2",
+          "qJp": "休（やす）みの日はたいていどんなことをしますか。",
+          "qVi": "Vào ngày nghỉ, bạn thường làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Đọc sách và ngủ",
-              "jp": "本（ほん）を読（よ）んだり、寝（ね）たりします。",
-              "vi": "Tôi đọc sách, ngủ..."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "部屋（へや）の掃除（そうじ）をしたり、洗濯（せんたく）をしたりします。",
+              "vi": "Tôi dọn dẹp phòng, giặt giũ quần áo..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Dọn dẹp và xem phim",
-              "jp": "部屋（へや）を掃除（そうじ）したり、Netflixでドラマを見（み）たりします。",
-              "vi": "Tôi dọn dẹp phòng, xem phim dài tập trên Netflix..."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "休（やす）みの日（ひ）は部屋（へや）を掃除（そうじ）したり、スーパーへ買（か）い物（もの）に行（い）ったりします。",
+              "vi": "Ngày nghỉ tôi dọn dẹp phòng, đi siêu thị mua sắm..."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đi siêu thị và nấu ăn",
-              "jp": "スーパーへ買（か）い物（もの）に行（い）ったり、おいしい料理（りょうり）を作（つく）ったりします。",
-              "vi": "Tôi đi mua sắm ở siêu thị, nấu những món ăn ngon..."
+              "label": "Cách trả lời khác",
+              "jp": "友達（ともだち）と遊（あそ）んだり、映画（えいが）を見（み）たりします。",
+              "vi": "Tôi đi chơi cùng bạn bè, xem phim..."
             }
           ]
         }
@@ -1755,54 +1755,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p08-q2",
-          "qJp": "あなたは料理（りょうり）を作（つく）ることができますか。どんな料理（りょうり）ができますか。",
-          "qVi": "Bạn có biết nấu ăn không? Bạn có thể làm được món gì?",
-          "targetGrammar": "Bài 9: Mẫu câu ～ができます / ～ことができます",
+          "id": "p08-fq1",
+          "qJp": "誰（だれ）に日本語（にほんご）を教（おし）えてもらいましたか。",
+          "qVi": "Bạn đã được ai dạy tiếng Nhật cho?",
+          "targetGrammar": "Bài 08 · [Người] に教えてもらいました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Nấu được món đơn giản",
-              "jp": "はい、できます。卵焼（たまごや）きができます。",
-              "vi": "Vâng, tôi làm được. Tôi làm được món trứng cuộn."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "大学（だいがく）の先生（せんせい）に教（おし）えてもらいました。",
+              "vi": "Tôi được thầy cô ở trường đại học dạy cho."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Nấu món ăn Việt Nam",
-              "jp": "はい、ベトナム料理（りょうり）を作（つく）ることができます。フォーや春巻（はるま）きが上手（じょうず）です。",
-              "vi": "Vâng, tôi nấu được món ăn Việt Nam. Tôi làm phở và nem cuốn rất ngon."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "高校（こうこう）と大学（だいがく）で、親切（しんせつ）な日本人の先生（せんせい）に教（おし）えてもらいました。",
+              "vi": "Ở trường cấp ba và đại học, tôi được thầy giáo người Nhật rất tận tình dạy cho."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Không biết nấu ăn nhiều",
-              "jp": "あまりできません。ラーメンや簡単（かんたん）なものだけ作（つく）ることができます。",
-              "vi": "Tôi không rành lắm. Tôi chỉ nấu được mì ramen và các món đơn giản thôi."
+              "label": "Cách trả lời khác",
+              "jp": "学校（がっこう）の先生（せんせい）です。",
+              "vi": "Là thầy cô giáo ở trường."
             }
           ]
         },
         {
-          "id": "p08-q3",
-          "qJp": "誰（だれ）に日本語（にほんご）を教（おし）えてもらいましたか。",
-          "qVi": "Bạn được ai dạy tiếng Nhật cho?",
-          "targetGrammar": "Bài 8: Mẫu câu ～に～を教えてもらいました",
+          "id": "p08-fq2",
+          "qJp": "おなかがすいたとき、どうしますか。",
+          "qVi": "Khi bị đói bụng, bạn làm như thế nào?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Thầy cô trường FPT",
-              "jp": "FPT大学（だいがく）の先生（せんせい）に教（おし）えてもらいました。",
-              "vi": "Tôi được thầy cô trường Đại học FPT dạy cho."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "食堂（しょくどう）へ行（い）って、ごはんを食（た）べます。",
+              "vi": "Tôi đến nhà ăn và ăn cơm."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Giáo viên người Nhật nhiệt tình",
-              "jp": "日本人（にほんじん）の先生（せんせい）に教（おし）えてもらいました。とても親切（しんせつ）な先生（せんせい）です。",
-              "vi": "Tôi được một thầy giáo người Nhật dạy cho. Thầy rất tận tình và tốt bụng."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "おなかがすいたとき、コンビニでおにぎりやパンを買（か）って食（た）べます。",
+              "vi": "Khi đói bụng, tôi ra cửa hàng tiện lợi mua cơm nắm hoặc bánh mì ăn."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Cả thầy cô và bạn bè",
-              "jp": "学校（がっこう）の先生（せんせい）と、日本人の友達（ともだち）に教（おし）えてもらいました。",
-              "vi": "Tôi được cả thầy cô ở trường và những người bạn Nhật Bản chỉ dạy cho."
+              "label": "Cách trả lời khác",
+              "jp": "家（いえ）で簡単（かんたん）な料理（りょうり）を作（つく）って食（た）べます。",
+              "vi": "Tôi tự nấu món đơn giản ở nhà rồi ăn."
             }
           ]
         }
@@ -1973,54 +1973,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p09-q2",
-          "qJp": "寂（さび）しいとき、どうしますか。",
-          "qVi": "Khi cảm thấy cô đơn/buồn, bạn làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p09-fq1",
+          "qJp": "あなたのご家族（かぞく）はどこに住（す）んでいますか。",
+          "qVi": "Gia đình bạn hiện đang sinh sống ở đâu?",
+          "targetGrammar": "Bài 08 · [Địa điểm] に住んでいます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Gọi cho gia đình",
-              "jp": "家族（かぞく）に電話（でんわ）をかけます。",
-              "vi": "Tôi gọi điện cho gia đình."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "ダナンに住（す）んでいます。",
+              "vi": "Gia đình tôi sống ở Đà Nẵng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Nghe nhạc quê nhà hoặc đi chơi với bạn",
-              "jp": "国の歌（うた）を聞（き）いたり、友達（ともだち）と遊（あそ）びに行（い）ったりします。",
-              "vi": "Tôi nghe những bài hát quê hương hoặc rủ bạn bè đi chơi."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "私（わたし）の家族（かぞく）はベトナムのハノイに住（す）んでいます。父（ちち）と母（はは）と妹（いもうと）がいます。",
+              "vi": "Gia đình tôi sống ở Hà Nội, Việt Nam. Có bố, mẹ và em gái."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tự nấu ăn và xem phim hài",
-              "jp": "好（す）きなものを食（た）べて、おもしろいコメディ映画（えいが）を見（み）ます。",
-              "vi": "Tôi ăn món mình thích rồi xem phim hài giải trí."
+              "label": "Cách trả lời khác",
+              "jp": "田舎（いなか）の町（まち）に住（す）んでいます。",
+              "vi": "Gia đình tôi sống ở vùng quê."
             }
           ]
         },
         {
-          "id": "p09-q3",
-          "qJp": "引越（ひっこ）しをするとき、誰（だれ）に手伝（てつだ）ってもらいましたか。",
-          "qVi": "Khi chuyển nhà, bạn được ai giúp đỡ?",
-          "targetGrammar": "Bài 8: Mẫu câu ～に手伝ってもらいました",
+          "id": "p09-fq2",
+          "qJp": "寂（さび）しいとき、どうしますか。",
+          "qVi": "Khi cảm thấy buồn hoặc cô đơn, bạn làm gì?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Bạn bè giúp",
-              "jp": "友達（ともだち）に手伝（てつだ）ってもらいました。",
-              "vi": "Tôi được bạn bè giúp đỡ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "友達（ともだち）と電話（でんわ）で話（はな）します。",
+              "vi": "Tôi nói chuyện điện thoại với bạn bè."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Anh trai và bạn thân",
-              "jp": "兄（あに）と大学（だいがく）の友達（ともだち）に手伝（てつだ）ってもらいました。とても助（たす）かりました。",
-              "vi": "Tôi được anh trai và bạn đại học giúp đỡ. Đã đỡ vất vả rất nhiều."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "寂（さび）しいとき、家族（かぞく）に電話（でんわ）をかけたり、好（す）きな音楽（おんがく）を聞（き）いたりします。",
+              "vi": "Khi buồn, tôi gọi điện cho gia đình hoặc nghe những bài nhạc yêu thích."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tự làm một mình",
-              "jp": "荷物（にもつ）が少（すく）なかったですから、自分（じぶん）一人（ひとり）でしました。",
-              "vi": "Vì hành lý ít nên tôi tự làm một mình."
+              "label": "Cách trả lời khác",
+              "jp": "外（そと）へ出（で）て散歩（さんぽ）します。",
+              "vi": "Tôi ra ngoài đi dạo."
             }
           ]
         }
@@ -2190,54 +2190,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p10-q2",
-          "qJp": "あなたはどんな音楽（おんがく）が好きですか。楽器（がっき）を弾（ひ）くことができますか。",
-          "qVi": "Bạn thích thể loại âm nhạc nào? Bạn có biết chơi nhạc cụ nào không?",
-          "targetGrammar": "Bài 9: ～が好き / ～ことができます",
+          "id": "p10-fq1",
+          "qJp": "あなたはどんな音楽（おんがく）が好（す）きですか。楽器（がっき）を弾（ひ）くことができますか。",
+          "qVi": "Bạn thích thể loại nhạc nào? Bạn có thể chơi được nhạc cụ không?",
+          "targetGrammar": "Bài 09 · ～が好き / ～ことができます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Thích nhạc Pop",
-              "jp": "ポップスが好きです。ギターを少し弾（ひ）くことができます。",
-              "vi": "Tôi thích nhạc Pop. Tôi có thể chơi ghita một chút."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "ポップスが好（す）きです。ギターを少（すこ）し弾（ひ）くことができます。",
+              "vi": "Tôi thích nhạc Pop. Tôi có thể chơi ghi-ta một chút."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Nhạc trẻ, không biết chơi nhạc cụ",
-              "jp": "ベトナムの若（わか）い音楽（おんがく）が好きです。楽器（がっき）は全然（ぜんぜん）できません。",
-              "vi": "Tôi thích nhạc trẻ Việt Nam. Về nhạc cụ thì tôi hoàn toàn không biết chơi."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "日本（にほん）のポップスが好（す）きです。子（こ）どものときピアノを習（なら）いましたから、ピアノを弾（ひ）くことができます。",
+              "vi": "Tôi thích nhạc Pop Nhật Bản. Hồi nhỏ có học piano nên có thể chơi được piano."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Nhạc Nhật Bản",
-              "jp": "日本のJ-POPが好きです。ピアノを弾（ひ）くことができます。",
-              "vi": "Tôi thích nhạc J-POP của Nhật. Tôi biết chơi piano."
+              "label": "Cách trả lời khác",
+              "jp": "楽器（がっき）は弾（ひ）けませんが、歌（うた）を歌（うた）うことが好（す）きです。",
+              "vi": "Tôi không chơi được nhạc cụ nhưng thích hát."
             }
           ]
         },
         {
-          "id": "p10-q3",
-          "qJp": "ストレスがあるとき、どうやって解消（かいしょう）しますか。（どうしますか）",
-          "qVi": "Khi bị căng thẳng/stress, bạn giải tỏa bằng cách nào? (Bạn làm gì?)",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p10-fq2",
+          "qJp": "体（からだ）の調子（ちょうし）が悪（わる）いとき、どうしますか。",
+          "qVi": "Khi trong người cảm thấy không khỏe, bạn làm gì?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Ngủ thật nhiều",
-              "jp": "たくさん寝（ね）ます。",
-              "vi": "Tôi ngủ thật nhiều."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "薬（くすり）を飲（の）んで寝（ね）ます。",
+              "vi": "Tôi uống thuốc rồi đi ngủ."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Chơi thể thao hoặc nghe nhạc",
-              "jp": "友達（ともだち）とサッカーをしたり、好（す）きな音楽（おんがく）を聞（き）いたりします。",
-              "vi": "Tôi đi đá bóng cùng bạn bè hoặc nghe bản nhạc mình yêu thích."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "体（からだ）の調子（ちょうし）が悪（わる）いとき、病院（びょういん）へ行（い）って薬（くすり）をもらってから、早（はや）く休（やす）みます。",
+              "vi": "Khi không khỏe, tôi đến bệnh viện lấy thuốc rồi về nhà nghỉ sớm."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đi ăn món ngon",
-              "jp": "おいしいものを食（た）べて、散歩（さんぽ）をします。気持ちが良（よ）くなります。",
-              "vi": "Tôi ăn món ngon rồi đi dạo hóng mát. Tâm trạng sẽ thấy tốt hơn."
+              "label": "Cách trả lời khác",
+              "jp": "温（あたた）かいスープを飲（の）んでゆっくり休（やす）みます。",
+              "vi": "Tôi uống bát súp ấm rồi thong thả nghỉ ngơi."
             }
           ]
         }
@@ -2407,54 +2407,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p11-q2",
-          "qJp": "体（からだ）の調子（ちょうし）が悪いとき、どうしますか。",
-          "qVi": "Khi tình trạng sức khỏe không tốt / thấy mệt trong người, bạn làm gì?",
-          "targetGrammar": "Bài 10/11: ～とき / Sức khỏe",
+          "id": "p11-fq1",
+          "qJp": "あなたの親（した）しい友達（ともだち）はどんな人（ひと）ですか。",
+          "qVi": "Người bạn thân của bạn là người như thế nào?",
+          "targetGrammar": "Bài 08 · Miêu tả người Aくて/で、Bです",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Uống thuốc và ngủ",
-              "jp": "薬（くすり）を飲（の）んで寝（ね）ます。",
-              "vi": "Tôi uống thuốc rồi đi ngủ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "背（せ）が高（たか）くて、親切（しんせつ）な人（ひと）です。",
+              "vi": "Dáng người cao và rất tốt bụng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Nghỉ học và đi bệnh viện",
-              "jp": "学校（がっこう）を休（やす）んで、病院（びょういん）へ行（い）きます。",
-              "vi": "Tôi xin nghỉ học rồi đi đến bệnh viện khám."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "背（せ）が高（たか）くて、とても面白（おもしろ）くて優（やさ）しい人（ひと）です。",
+              "vi": "Dáng người cao, tính tình rất hài hước và hiền lành."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Uống nước ấm và nghỉ ngơi",
-              "jp": "温（あたた）かいお茶（ちゃ）を飲（の）んで、部屋（へや）でゆっくり休（やす）みます。",
-              "vi": "Tôi uống trà ấm rồi nghỉ ngơi yên tĩnh trong phòng."
+              "label": "Cách trả lời khác",
+              "jp": "親切（しんせつ）で、スポーツが上手（じょうず）な友達（ともだち）です。",
+              "vi": "Là người bạn tốt bụng và chơi thể thao rất giỏi."
             }
           ]
         },
         {
-          "id": "p11-q3",
-          "qJp": "毎晩（まいばん）寝（ね）る前（まえ）に、何（なに）をしますか。",
-          "qVi": "Mỗi tối trước khi đi ngủ, bạn làm gì?",
-          "targetGrammar": "Bài 10/11: Mẫu câu V-る前に / Thói quen",
+          "id": "p11-fq2",
+          "qJp": "毎晩（まいばん）、寝（ね）る前（まえ）に何（なに）をしていますか。",
+          "qVi": "Mỗi tối trước khi đi ngủ, bạn thường làm gì?",
+          "targetGrammar": "Bài 11 · V-る前に, ～ています",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Đánh răng",
-              "jp": "歯（は）を磨（みが）きます。",
-              "vi": "Tôi đánh răng."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "スマートフォンを見（み）ています。",
+              "vi": "Tôi xem điện thoại."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Xem điện thoại một lát",
-              "jp": "ベッドでスマートフォンを見（み）たり、音楽（おんがく）を聞（き）いたりします。",
-              "vi": "Tôi lướt điện thoại trên giường hoặc nghe nhạc..."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "毎晩（まいばん）寝（ね）る前（まえ）に、歯（は）を磨（みが）いてから、日本語（にほんご）の日記（にっき）を書（か）いています。",
+              "vi": "Mỗi tối trước khi ngủ, sau khi đánh răng thì tôi viết nhật ký bằng tiếng Nhật."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Ôn bài tiếng Nhật",
-              "jp": "今日（きょう）勉強（べんきょう）した日本語（にほんご）の単語（たんご）を復習（ふくしゅう）します。",
-              "vi": "Tôi ôn lại các từ vựng tiếng Nhật đã học trong ngày."
+              "label": "Cách trả lời khác",
+              "jp": "温（あたた）かいお茶（ちゃ）を飲（の）んで、音楽（おんがく）を聞（き）いています。",
+              "vi": "Tôi uống trà ấm và nghe nhạc."
             }
           ]
         }
@@ -2626,54 +2626,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p12-q2",
+          "id": "p12-fq1",
           "qJp": "父（ちち）の日（ひ）や誕生日（たんじょうび）に、お父（とう）さんに何（なに）をあげましたか。",
-          "qVi": "Vào ngày của Cha hoặc sinh nhật bố, bạn đã tặng gì cho bố?",
-          "targetGrammar": "Bài 8: Mẫu câu ～に～をあげました",
+          "qVi": "Vào ngày của bố hoặc ngày sinh nhật, bạn đã tặng gì cho bố?",
+          "targetGrammar": "Bài 08 · [Người] に [Vật] をあげました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Áo sơ mi",
-              "jp": "シャツをあげました。",
-              "vi": "Tôi đã tặng áo sơ mi."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "ネクタイをあげました。",
+              "vi": "Tôi đã tặng chiếc cà vạt."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Cà vạt và lời chúc",
-              "jp": "きれいなネクタイをあげました。父（ちち）はとても喜（よろこ）んでくれました。",
-              "vi": "Tôi tặng một chiếc cà vạt đẹp. Bố tôi đã rất vui mừng."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "お父（とう）さんの誕生日（たんじょうび）に、青（あお）いネクタイとお酒（さけ）を買（か）ってあげました。",
+              "vi": "Vào sinh nhật bố, tôi mua tặng bố chiếc cà vạt màu xanh và chai rượu."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Trà ngon và ví da",
-              "jp": "おいしいお茶（ちゃ）と財布（さいふ）をあげました。",
-              "vi": "Tôi tặng trà ngon và một chiếc ví."
+              "label": "Cách trả lời khác",
+              "jp": "新（あたら）しいシャツをプレゼントしました。",
+              "vi": "Tôi đã tặng chiếc áo sơ mi mới."
             }
           ]
         },
         {
-          "id": "p12-q3",
+          "id": "p12-fq2",
           "qJp": "道（みち）がわからないとき、どうしますか。",
-          "qVi": "Khi không biết đường, bạn làm gì?",
-          "targetGrammar": "Bài 10/11: ～とき / Phương hướng",
+          "qVi": "Khi bị lạc đường hoặc không biết đường, bạn làm thế nào?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Tra bản đồ điện thoại",
-              "jp": "Googleマップで調（しら）べます。",
-              "vi": "Tôi tra bản đồ Google Maps."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "交番（こうばん）の人（ひと）に聞（き）きます。",
+              "vi": "Tôi hỏi chú cảnh sát ở bốt cảnh sát."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Hỏi người qua đường hoặc cảnh sát",
-              "jp": "交番（こうばん）の警察官（けいさつかん）や近（ちか）くの人（ひと）に道（みち）を聞（き）きます。",
-              "vi": "Tôi hỏi đường cảnh sát ở bốt giao thông hoặc người gần đó."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "道（みち）がわからないとき、スマートフォンで地図（ちず）を見（み）たり、近（ちか）くの人（ひと）に聞（き）いたりします。",
+              "vi": "Khi không biết đường, tôi xem bản đồ trên điện thoại hoặc hỏi người gần đó."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tra điện thoại và hỏi",
-              "jp": "スマートフォンで調（しら）べたり、店（みせ）の人（ひと）に聞（き）いたりします。",
-              "vi": "Tôi vừa tra bằng điện thoại vừa hỏi người trong cửa hàng."
+              "label": "Cách trả lời khác",
+              "jp": "駅（えき）の人（ひと）や店（みせ）の人（ひと）に質問（しつもん）します。",
+              "vi": "Tôi hỏi nhân viên nhà ga hoặc nhân viên cửa hàng."
             }
           ]
         }
@@ -2844,54 +2844,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p13-q2",
-          "qJp": "あなたは映画館（えいがかん）へ映画（えいが）を見（み）に行（い）くことが好きですか。どんな映画（えいが）が好きですか。",
-          "qVi": "Bạn có thích đến rạp xem phim không? Bạn thích thể loại phim nào?",
-          "targetGrammar": "Bài 9: Mẫu câu ～ことが好き / Sở thích",
+          "id": "p13-fq1",
+          "qJp": "あなたの部屋（へや）の窓（まど）から何（なに）が見（み）えますか。",
+          "qVi": "Từ cửa sổ phòng bạn có thể nhìn thấy những gì?",
+          "targetGrammar": "Bài 10 · [Danh từ] が見えます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Thích hoạt hình",
-              "jp": "はい、好きです。日本のアニメ映画（えいが）が好きです。",
-              "vi": "Vâng, tôi thích. Tôi thích phim hoạt hình anime của Nhật."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "大（おお）きい木（き）が見（み）えます。",
+              "vi": "Có thể nhìn thấy cây lớn."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Thích phim hành động và hài",
-              "jp": "はい、大好（だいす）きです。アクションやコメディ映画（えいが）をよく見（み）ます。",
-              "vi": "Vâng, tôi rất thích. Tôi hay xem phim hành động hoặc hài hước."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "部屋（へや）の窓（まど）から公園（こうえん）の木（き）や、道路（どうろ）を走（はし）る車（くるま）がきれいに見（み）えます。",
+              "vi": "Từ cửa sổ phòng có thể thấy rõ những hàng cây công viên và xe chạy trên đường."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Xem ở nhà hơn",
-              "jp": "映画館（えいがかん）へあまり行（い）きません。家（いえ）でパソコンで見（み）るのが好きです。",
-              "vi": "Tôi ít khi ra rạp. Tôi thích xem trên máy tính ở nhà hơn."
+              "label": "Cách trả lời khác",
+              "jp": "静（しず）かな道（みち）が見（み）えます。",
+              "vi": "Có thể nhìn thấy con đường yên tĩnh."
             }
           ]
         },
         {
-          "id": "p13-q3",
-          "qJp": "今度（こんど）の日曜日（にちようび）、何（なに）をする予定（よてい）ですか。（何（なに）をしますか）",
-          "qVi": "Chủ Nhật tới bạn dự định làm gì? (Bạn sẽ làm gì?)",
-          "targetGrammar": "Bài 11: Dự định / ～たり～たり",
+          "id": "p13-fq2",
+          "qJp": "日曜日（にちようび）はたいてい何（なに）をしたり何（なに）をしたりしますか。",
+          "qVi": "Vào ngày Chủ nhật, bạn thường làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～たり～たりします",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Học bài ở nhà",
-              "jp": "家（いえ）で日本語（にほんご）を勉強（べんきょう）します。",
-              "vi": "Tôi học tiếng Nhật ở nhà."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "買（か）い物（もの）をしたり、テレビを見（み）たりします。",
+              "vi": "Tôi mua sắm, xem tivi..."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đi chơi với bạn bè",
-              "jp": "友達（ともだち）とカフェへ行（い）ったり、映画（えいが）を見（み）たりするつもりです。",
-              "vi": "Tôi định đi cà phê cùng bạn hoặc đi xem phim..."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "日曜日（にちようび）は部屋（へや）を掃除（そうじ）したり洗濯（せんたく）をしたりして、午後（ごご）は友達（ともだち）とカフェへ行（い）きます。",
+              "vi": "Chủ nhật tôi dọn dẹp phòng, giặt quần áo... rồi buổi chiều đi cà phê với bạn."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Về quê thăm gia đình",
-              "jp": "実家（じっか）へ帰（かえ）って、両親（りょうしん）に会（あ）います。",
-              "vi": "Tôi về quê thăm bố mẹ."
+              "label": "Cách trả lời khác",
+              "jp": "家（いえ）で本（ほん）を読（よ）んだり、料理（りょうり）を作（つく）ったりします。",
+              "vi": "Ở nhà tôi đọc sách, nấu ăn..."
             }
           ]
         }
@@ -3062,54 +3062,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p14-q2",
+          "id": "p14-fq1",
           "qJp": "あなたは1か月（げつ）に何冊（なんさつ）くらい本（ほん）を読（よ）みますか。",
-          "qVi": "Một tháng bạn đọc khoảng mấy cuốn sách?",
-          "targetGrammar": "Bài 9: Tần suất 1か月に～冊",
+          "qVi": "Một tháng bạn đọc khoảng mấy quyển sách?",
+          "targetGrammar": "Bài 09 · 1か月に〜冊",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: 1 hoặc 2 cuốn",
-              "jp": "1冊（いっさつ）か2冊（にさつ）読（よ）みます。",
-              "vi": "Tôi đọc 1 hoặc 2 cuốn."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "1冊（さつ）か2冊（さつ）読（よ）みます。",
+              "vi": "Tôi đọc khoảng 1 hoặc 2 quyển."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đọc sách chuyên ngành hoặc tiểu thuyết",
-              "jp": "1か月（げつ）に2冊（にさつ）くらい読（よ）みます。小説（しょうせつ）や技術（ぎじゅつ）の本（ほん）が好きです。",
-              "vi": "Khoảng 2 cuốn một tháng. Tôi thích đọc tiểu thuyết và sách công nghệ."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "忙（いそが）しいですが、1か月（げつ）に2冊（さつ）くらい日本語（にほんご）の本（ほん）を読（よ）んでいます。",
+              "vi": "Tuy bận nhưng một tháng tôi đọc khoảng 2 quyển sách tiếng Nhật."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đọc truyện tranh trên điện thoại",
-              "jp": "紙（かみ）の本（ほん）はあまり読（よ）みませんが、スマートフォンで漫画（まんが）をよく読（よ）みます。",
-              "vi": "Sách giấy thì tôi ít đọc, nhưng tôi hay đọc truyện tranh trên điện thoại."
+              "label": "Cách trả lời khác",
+              "jp": "あまり読（よ）みません。1か月（げつ）に1冊（さつ）くらいです。",
+              "vi": "Tôi ít khi đọc, khoảng 1 quyển mỗi tháng."
             }
           ]
         },
         {
-          "id": "p14-q3",
-          "qJp": "試験（しけん）の前（まえ）に、どうやって勉強（べんきょう）しますか。",
-          "qVi": "Trước kỳ thi, bạn học bài bằng cách nào?",
-          "targetGrammar": "Bài 9/11: どうやって / Phương pháp học",
+          "id": "p14-fq2",
+          "qJp": "頭（あたま）が痛（いた）いとき、どうしますか。",
+          "qVi": "Khi bị đau đầu, bạn làm thế nào?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Học từ vựng và ngữ pháp",
-              "jp": "単語（たんご）と文法（ぶんぽう）を復習（ふくしゅう）します。",
-              "vi": "Tôi ôn lại từ vựng và ngữ pháp."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "薬（くすり）を飲（の）んで寝（ね）ます。",
+              "vi": "Tôi uống thuốc rồi đi ngủ."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Làm bài tập và hỏi bạn",
-              "jp": "教科書（きょうかしょ）の問題（もんだい）をたくさん解（と）いたり、友達（ともだち）と一緒（いっしょ）に勉強（べんきょう）したりします。",
-              "vi": "Tôi làm nhiều bài tập trong sách, cùng học nhóm với bạn bè..."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "頭（あたま）が痛（いた）いとき、薬（くすり）を飲（の）んでから、静（しず）かな部屋（へや）でゆっくり休（やす）みます。",
+              "vi": "Khi đau đầu, sau khi uống thuốc tôi nghỉ ngơi trong căn phòng yên tĩnh."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Lên thư viện tự học",
-              "jp": "静（しず）かな図書館（としょかん）へ行（い）って、過去問（かこもん）を練習（れんしゅう）します。",
-              "vi": "Tôi lên thư viện yên tĩnh để luyện đề thi các năm trước."
+              "label": "Cách trả lời khác",
+              "jp": "仕事（しごと）や勉強（べんきょう）を休（やす）んで早（はや）く寝（ね）ます。",
+              "vi": "Tôi xin nghỉ làm/học và ngủ sớm."
             }
           ]
         }
@@ -3281,54 +3281,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p15-q2",
-          "qJp": "友達（ともだち）の誕生日（たんじょうび）に、プレゼントをあげたことがありますか。何（なに）をあげましたか。",
-          "qVi": "Bạn đã từng tặng quà sinh nhật cho bạn bè chưa? Bạn đã tặng gì?",
-          "targetGrammar": "Bài 8: Mẫu câu ～をあげました",
+          "id": "p15-fq1",
+          "qJp": "友達（ともだち）の誕生日（たんじょうび）に、どんなプレゼントをあげましたか。",
+          "qVi": "Vào sinh nhật bạn bè, bạn đã tặng món quà gì?",
+          "targetGrammar": "Bài 08 · [Người] に [Vật] をあげました",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Tặng sách",
-              "jp": "はい、あります。本（ほん）をあげました。",
-              "vi": "Vâng, có ạ. Tôi đã tặng một cuốn sách."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "かわいいペンとお菓子（かし）をあげました。",
+              "vi": "Tôi đã tặng cây bút dễ thương và bánh kẹo."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Tặng áo và thiệp viết tay",
-              "jp": "はい、きれいな服（ふく）と手紙（てがみ）をあげました。とても喜（よろこ）んでくれました。",
-              "vi": "Vâng, tôi tặng chiếc áo đẹp và thiệp viết tay. Bạn ấy đã rất vui."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "友達（ともだち）の誕生日（たんじょうび）に、きれいなノートと好（す）きなチョコレートを買（か）ってあげました。",
+              "vi": "Vào sinh nhật bạn, tôi mua tặng bạn quyển vở đẹp và sô-cô-la bạn thích."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Mời đi ăn lẩu",
-              "jp": "物（もの）じゃなくて、一緒（いっしょ）においしい鍋（なべ）料理（りょうり）をごちそうしてあげました。",
-              "vi": "Không phải hiện vật, mà tôi mời bạn ấy đi ăn một bữa lẩu thật ngon."
+              "label": "Cách trả lời khác",
+              "jp": "本（ほん）をプレゼントしました。",
+              "vi": "Tôi đã tặng một cuốn sách."
             }
           ]
         },
         {
-          "id": "p15-q3",
-          "qJp": "うれしいとき、誰（だれ）に一番（いちばん）最初（さいしょ）に話（はな）しますか。",
-          "qVi": "Khi có chuyện vui, bạn chia sẻ với ai đầu tiên?",
-          "targetGrammar": "Bài 8/11: ～とき / Gia đình, bạn bè",
+          "id": "p15-fq2",
+          "qJp": "眠（ねむ）いとき、どうしますか。",
+          "qVi": "Khi cảm thấy buồn ngủ, bạn làm thế nào?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Nói với mẹ",
-              "jp": "母（はは）に話（はな）します。",
-              "vi": "Tôi nói với mẹ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "コーヒーを飲（の）みます。",
+              "vi": "Tôi uống cà phê."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Kể cho bạn thân",
-              "jp": "一番（いちばん）仲（なか）がいい友達（ともだち）にすぐメッセージを送（おく）って話（はな）します。",
-              "vi": "Tôi lập tức nhắn tin kể cho người bạn thân nhất."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "勉強（べんきょう）のときに眠（ねむ）いとき、冷（つめ）たい水（みず）で顔（かお）を洗（あら）ったりコーヒーを飲（の）んだりします。",
+              "vi": "Khi buồn ngủ lúc đang học, tôi rửa mặt bằng nước lạnh hoặc uống cà phê."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Chia sẻ với gia đình",
-              "jp": "家族（かぞく）のグループチャットで報告（ほうこく）します。",
-              "vi": "Tôi thông báo trong nhóm chat chung của gia đình."
+              "label": "Cách trả lời khác",
+              "jp": "少（すこ）し散歩（さんぽ）をします。",
+              "vi": "Tôi đi dạo một chút."
             }
           ]
         }
@@ -3499,54 +3499,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p16-q2",
-          "qJp": "仕事（しごと）や勉強（べんきょう）が終わってから、たいてい何をしますか。",
-          "qVi": "Sau khi làm việc hoặc học xong, bạn thường làm gì?",
-          "targetGrammar": "Bài 10/11: Mẫu câu ～てから",
+          "id": "p16-fq1",
+          "qJp": "仕事（しごと）や学校（がっこう）が終（お）わってから、たいてい何（なに）をしますか。",
+          "qVi": "Sau khi tan làm hoặc tan học, bạn thường làm gì?",
+          "targetGrammar": "Bài 11 · ～てから",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Về nhà nghỉ ngơi",
-              "jp": "家（いえ）へ帰（かえ）って休（やす）みます。",
-              "vi": "Tôi về nhà nghỉ ngơi."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "家（いえ）へ帰（かえ）って、晩（ばん）ごはんを食（た）べます。",
+              "vi": "Tôi về nhà rồi ăn bữa tối."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Nấu ăn và xem video",
-              "jp": "家（いえ）へ帰（かえ）ってから、ご飯（はん）を作（つく）ってYouTubeを見（み）ます。",
-              "vi": "Sau khi về nhà, tôi nấu cơm rồi xem YouTube."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "授業（じゅぎょう）が終（お）わってから、スーパーで買（か）い物（もの）をして、家（いえ）で料理（りょうり）を作（つく）ります。",
+              "vi": "Sau giờ học, tôi đi siêu thị mua đồ rồi về nhà nấu ăn."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đi tập thể thao với bạn",
-              "jp": "友達（ともだち）と一緒（いっしょ）にジムへ行（い）って運動（うんどう）します。",
-              "vi": "Tôi cùng bạn đến phòng gym tập thể dục."
+              "label": "Cách trả lời khác",
+              "jp": "図書館（としょかん）で勉強（べんきょう）してから家（いえ）に帰（かえ）ります。",
+              "vi": "Tôi học ở thư viện rồi mới về nhà."
             }
           ]
         },
         {
-          "id": "p16-q3",
-          "qJp": "とても忙（いそが）しいとき、どうしますか。",
-          "qVi": "Khi rất bận rộn, bạn làm gì?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき、どうしますか",
+          "id": "p16-fq2",
+          "qJp": "とても忙（いそが）しくて疲（つか）れたとき、どうしますか。",
+          "qVi": "Khi rất bận rộn và mệt mỏi, bạn làm thế nào?",
+          "targetGrammar": "Bài 11 · ～とき、どうしますか",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Viết ghi chú lịch trình",
-              "jp": "メモを書（か）いて順番（じゅんばん）にやります。",
-              "vi": "Tôi viết ghi chú và làm theo thứ tự."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "お風呂（ふろ）に入（はい）って早（はや）く寝（ね）ます。",
+              "vi": "Tôi ngâm bồn rồi đi ngủ sớm."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Cố gắng ngủ đủ giấc",
-              "jp": "忙（いそが）しくても、毎日（まいにち）しっかり寝（ね）るようにします。",
-              "vi": "Dù bận rộn tôi vẫn cố gắng ngủ đủ giấc mỗi ngày."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "疲（つか）れたとき、おいしいものをたくさん食（た）べて、ゆっくり寝（ね）るようにしています。",
+              "vi": "Khi mệt, tôi ăn thật nhiều món ngon rồi cố gắng ngủ thật sâu giấc."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Nhờ bạn bè giúp đỡ",
-              "jp": "友達（ともだち）や家族（かぞく）に少（すこ）し手伝（てつだ）ってもらいます。",
-              "vi": "Tôi nhờ bạn bè hoặc gia đình phụ giúp một chút."
+              "label": "Cách trả lời khác",
+              "jp": "好（す）きな音楽（おんがく）を聞（き）いてリラックスします。",
+              "vi": "Tôi nghe nhạc yêu thích để thư giãn."
             }
           ]
         }
@@ -3718,54 +3718,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p17-q2",
-          "qJp": "外国人の友達（ともだち）にどんなベトナム料理（りょうり）を食（た）べてほしいですか。（紹介（しょうかい）したいですか）",
-          "qVi": "Bạn muốn bạn bè người nước ngoài thưởng thức món ăn Việt Nam nào? (Muốn giới thiệu món gì?)",
-          "targetGrammar": "Bài 8/9: Giới thiệu món ăn / Thể mong muốn",
+          "id": "p17-fq1",
+          "qJp": "外国（がいこく）の人（ひと）にベトナム料理（りょうり）を紹介（しょうかい）するとき、何（なに）がおすすめですか。",
+          "qVi": "Khi giới thiệu món ăn Việt Nam cho người nước ngoài, bạn gợi ý món gì?",
+          "targetGrammar": "Bài 08 & 09 · Món ăn yêu thích & Giới thiệu",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Phở và bánh mì",
-              "jp": "フォーやバインミーを食（た）べてほしいです。",
-              "vi": "Tôi muốn bạn ấy ăn thử phở và bánh mì."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "フォーがおすすめです。",
+              "vi": "Món phở là gợi ý tuyệt vời."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Bún chả và nem rán",
-              "jp": "ハノイのブンチャーや揚（あ）げ春巻（はるま）きを食（た）べてほしいです。本当（ほんとう）においしいですから。",
-              "vi": "Tôi muốn bạn ăn bún chả Hà Nội và nem rán. Vì thực sự rất là ngon."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "フォーと春巻（はるま）きがおすすめです。とてもおいしくて有名（ゆうめい）です。",
+              "vi": "Phở và nem cuốn rán là gợi ý tuyệt nhất. Rất ngon và nổi tiếng."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tự nấu món quê hương",
-              "jp": "私（わたし）が自分（じぶん）で作（つく）った家庭（かてい）料理（りょうり）を食（た）べてほしいです。",
-              "vi": "Tôi muốn bạn nếm thử các món cơm nhà do chính tay tôi nấu."
+              "label": "Cách trả lời khác",
+              "jp": "バインミーです。野菜（やさい）と肉（にく）がたくさん入（はい）っています。",
+              "vi": "Là bánh mì. Có rất nhiều rau và thịt."
             }
           ]
         },
         {
-          "id": "p17-q3",
-          "qJp": "あなたは日本料理（にほんりょうり）の中（なか）で何（なに）が一番（いちばん）好きですか。納豆（なっとう）を食（た）べることができますか。",
-          "qVi": "Trong các món ăn Nhật Bản bạn thích món nào nhất? Bạn có ăn được Natto không?",
-          "targetGrammar": "Bài 9: Mẫu câu ～ことができます / Nhất ～一番",
+          "id": "p17-fq2",
+          "qJp": "あなたは日本料理（にほんりょうり）の中（なか）で何（なに）が一番（いちばん）好（す）きですか。",
+          "qVi": "Trong các món ăn Nhật Bản, bạn thích món nào nhất?",
+          "targetGrammar": "Bài 06 & 09 · ～の中で～が一番好きです",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Thích Ramen, không ăn được Natto",
-              "jp": "ラーメンが一番好きです。納豆（なっとう）は食（た）べることができません。",
-              "vi": "Tôi thích ramen nhất. Natto thì tôi không ăn được."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "ラーメンが一番（いちばん）好（す）きです。",
+              "vi": "Tôi thích món mì Ramen nhất."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Thích Sushi, ăn được Natto",
-              "jp": "寿司（すし）が一番好きです。納豆（なっとう）も体（からだ）にいいですから食（た）べることができます。",
-              "vi": "Tôi thích sushi nhất. Natto tốt cho sức khỏe nên tôi cũng ăn được."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "日本料理（にほんりょうり）の中（なか）で寿司（すし）が一番（いちばん）好（す）きです。新鮮（しんせん）でおいしいです。",
+              "vi": "Trong các món Nhật tôi thích Sushi nhất. Vừa tươi lại rất ngon."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Thích lẩu Sukiyaki",
-              "jp": "すき焼（や）きが好きです。日本の牛肉（ぎゅうにく）はとてもおいしいです。",
-              "vi": "Tôi thích lẩu Sukiyaki. Thịt bò của Nhật rất ngon."
+              "label": "Cách trả lời khác",
+              "jp": "天（てん）ぷらや牛丼（ぎゅうどん）が好（す）きです。",
+              "vi": "Tôi thích tempura và cơm thịt bò Gyudon."
             }
           ]
         }
@@ -3935,54 +3935,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p18-q2",
-          "qJp": "あなたは絵（え）を描（か）くことができますか。写真（しゃしん）を撮（と）ることが好きですか。",
-          "qVi": "Bạn có biết vẽ tranh không? Bạn có thích chụp ảnh không?",
-          "targetGrammar": "Bài 9: ～ことができます / ～ことが好き",
+          "id": "p18-fq1",
+          "qJp": "あなたは絵（え）を描（か）くことができますか。また写真（しゃしん）を撮（と）ることが好（す）きですか。",
+          "qVi": "Bạn có thể vẽ tranh được không? Bạn có thích chụp ảnh không?",
+          "targetGrammar": "Bài 09 · ～ことができます & ～ことが好きです",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Không biết vẽ, thích chụp ảnh",
-              "jp": "絵（え）は下手（へた）ですが、写真（しゃしん）を撮（と）ることが大好（だいす）きです。",
-              "vi": "Vẽ thì tôi dở, nhưng tôi rất thích chụp ảnh."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "絵（え）は下手（へた）ですが、写真（しゃしん）を撮（と）ることが好（す）きです。",
+              "vi": "Tôi vẽ tranh kém nhưng lại thích chụp ảnh."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Chụp ảnh bằng điện thoại",
-              "jp": "旅行（りょこう）のとき、スマートフォンで景色（けしき）の写真（しゃしん）をたくさん撮（と）ります。",
-              "vi": "Khi đi du lịch, tôi chụp rất nhiều ảnh phong cảnh bằng điện thoại."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "絵（え）を描（か）くことはできませんが、スマートフォンで景色（けしき）の写真（しゃしん）を撮（と）ることが大好（だいす）きです。",
+              "vi": "Tôi không vẽ được tranh, nhưng rất thích chụp ảnh phong cảnh bằng điện thoại."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Vẽ tranh manga",
-              "jp": "子どものころから漫画（まんが）の絵（え）を描（か）くことができます。",
-              "vi": "Từ nhỏ tôi đã biết vẽ truyện tranh manga."
+              "label": "Cách trả lời khác",
+              "jp": "写真（しゃしん）を撮（と）ることが好（す）きです。",
+              "vi": "Tôi thích chụp ảnh."
             }
           ]
         },
         {
-          "id": "p18-q3",
-          "qJp": "美術館（びじゅつかん）や図書館（としょかん）で、何（なに）をしてはいけませんか。",
-          "qVi": "Ở viện bảo tàng hoặc thư viện, không được làm những việc gì?",
-          "targetGrammar": "Bài 10: Mẫu câu ～ないでください",
+          "id": "p18-fq2",
+          "qJp": "図書館（としょかん）や病院（びょういん）の中（なか）で、何（なに）をしてはいけませんか。",
+          "qVi": "Trong thư viện hoặc trong bệnh viện, không được làm gì?",
+          "targetGrammar": "Bài 10 · ～ないでください",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Đừng gây ồn ào",
-              "jp": "大（おお）きな声（こえ）で騒（さわ）がないでください。",
-              "vi": "Xin đừng làm ồn lớn tiếng."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "大（おお）きい声（こえ）で話（はな）さないでください。",
+              "vi": "Xin đừng nói chuyện lớn tiếng."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đừng chụp ảnh và sờ vào tranh",
-              "jp": "フラッシュで写真（しゃしん）を撮（と）らないでください。そして絵（え）に触（さわ）らないでください。",
-              "vi": "Xin đừng chụp ảnh dùng đèn flash. Và đừng chạm vào tranh."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "図書館（としょかん）の中（なか）では静（しず）かにしてください。走（はし）ったり大（おお）きい声（こえ）で話（はな）したりしないでください。",
+              "vi": "Trong thư viện hãy giữ yên lặng. Xin đừng chạy hoặc nói chuyện lớn tiếng."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Cấm ăn uống",
-              "jp": "展示室（てんじしつ）で食（た）べ物（もの）を食（た）べたり、ジュースを飲（の）んだりしてはいけません。",
-              "vi": "Không được ăn đồ ăn hay uống nước ngọt trong phòng trưng bày."
+              "label": "Cách trả lời khác",
+              "jp": "たばこを吸（す）わないでくださいと言（い）われます。",
+              "vi": "Được nhắc là xin đừng hút thuốc."
             }
           ]
         }
@@ -4155,54 +4155,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p19-q2",
-          "qJp": "困（こま）ったとき、誰（だれ）に相談（そうだん）しますか。（誰（だれ）に助（たす）けてもらいますか）",
-          "qVi": "Khi gặp khó khăn, bạn tâm sự/hỏi ý kiến ai? (Được ai giúp đỡ?)",
-          "targetGrammar": "Bài 8/11: ～とき / ～に相談します",
+          "id": "p19-fq1",
+          "qJp": "日本語（にほんご）の勉強（べんきょう）で何（なに）が難（むずか）しいですか。漢字（かんじ）を書（か）くことができますか。",
+          "qVi": "Trong việc học tiếng Nhật, điều gì khó với bạn? Bạn có thể viết được chữ Hán không?",
+          "targetGrammar": "Bài 08 & 09 · Miêu tả tính chất & ～ことができます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Hỏi bố mẹ",
-              "jp": "両親（りょうしん）に相談（そうだん）します。",
-              "vi": "Tôi tâm sự hỏi ý kiến bố mẹ."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "漢字（かんじ）が難（むずか）しいですが、簡単（かんたん）な漢字（かんじ）なら書（か）くことができます。",
+              "vi": "Chữ Hán khó, nhưng chữ đơn giản thì tôi có thể viết được."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Nhờ thầy cô hoặc bạn thân",
-              "jp": "学校（がっこう）の先生（せんせい）や親（した）しい友達（ともだち）に相談（そうだん）して助（たす）けてもらいます。",
-              "vi": "Tôi hỏi ý kiến thầy cô ở trường hoặc bạn bè thân thiết để nhờ giúp đỡ."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "漢字（かんじ）が一番（いちばん）難（むずか）しいです。毎日（まいにち）練習（れんしゅう）して、100個（こ）くらい書（か）くことができます。",
+              "vi": "Chữ Hán là khó nhất. Tôi luyện tập mỗi ngày và có thể viết được khoảng 100 chữ."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tự suy nghĩ trước",
-              "jp": "まず自分（じぶん）でよく考（かんが）えます。どうしてもわからないとき、先輩（せんぱい）に聞（き）きます。",
-              "vi": "Trước tiên tôi tự suy nghĩ kỹ. Khi thật sự không giải quyết được thì hỏi các anh chị tiền bối."
+              "label": "Cách trả lời khác",
+              "jp": "聞（き）くことが難（むずか）しいです。",
+              "vi": "Kỹ năng nghe là khó nhất với tôi."
             }
           ]
         },
         {
-          "id": "p19-q3",
-          "qJp": "一人暮（ひとりぐ）らしをしたことがありますか。一人暮（ひとりぐ）らしはどうですか。（または家族（かぞく）と住（す）むのとどちらがいいですか）",
-          "qVi": "Bạn đã từng sống một mình chưa? Cuộc sống tự lập như thế nào?",
-          "targetGrammar": "Bài 8/11: Cuộc sống / So sánh",
+          "id": "p19-fq2",
+          "qJp": "時間（じかん）がたくさんあるとき、どんなことをしたいですか。",
+          "qVi": "Khi có nhiều thời gian, bạn muốn làm những việc gì?",
+          "targetGrammar": "Bài 11 · ～とき、V-たいです",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Đang sống một mình",
-              "jp": "はい、今一人暮（ひとりぐ）らしをしています。自由（じゆう）ですが、少し寂（さび）しいです。",
-              "vi": "Vâng, hiện tôi đang sống một mình. Tự do nhưng hơi cô đơn một chút."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "旅行（りょこう）に行（い）きたいです。",
+              "vi": "Tôi muốn đi du lịch."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Sống cùng gia đình tốt hơn",
-              "jp": "まだ一人暮（ひとりぐ）らしをしたことがありません。家族（かぞく）と一緒（いっしょ）に住（す）むほうが安心（あんしん）です。",
-              "vi": "Tôi chưa từng sống một mình. Sống cùng gia đình thì thấy yên tâm hơn."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "時間（じかん）があるとき、家族（かぞく）や友達（ともだち）と一緒（いっしょ）に日本（にほん）へ旅行（りょこう）に行（い）きたいです。",
+              "vi": "Khi có thời gian, tôi muốn cùng gia đình hoặc bạn bè đi du lịch Nhật Bản."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Tự lập giúp trưởng thành",
-              "jp": "一人暮（ひとりぐ）らしをしてから、料理（りょうり）や洗濯（せんたく）が自分でできるようになりました。",
-              "vi": "Kể từ khi sống một mình, tôi đã biết tự nấu ăn và giặt giũ quần áo."
+              "label": "Cách trả lời khác",
+              "jp": "家（いえ）でゆっくり映画（えいが）を見（み）たり本（ほん）を読（よ）んだりしたいです。",
+              "vi": "Tôi muốn ở nhà thong thả xem phim và đọc sách."
             }
           ]
         }
@@ -4372,54 +4372,54 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
       },
       "freeQuestions": [
         {
-          "id": "p20-q2",
-          "qJp": "日本（にほん）へ行（い）ったら、どこへ一番（いちばん）行（い）きたいですか。そこで何（なに）をしたいですか。",
-          "qVi": "Nếu đến Nhật Bản, bạn muốn đi đâu nhất? Bạn muốn làm gì ở đó?",
-          "targetGrammar": "Bài 9/10: Điểm đến và mục đích",
+          "id": "p20-fq1",
+          "qJp": "あなたは今（いま）、どんなことを勉強（べんきょう）していますか。",
+          "qVi": "Hiện tại bạn đang học tập những nội dung gì?",
+          "targetGrammar": "Bài 11 · ～ています (Thói quen hiện tại)",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Đi Tokyo ngắm tháp",
-              "jp": "東京（とうきょう）へ行（い）きたいです。東京（とうきょう）タワーを見（み）たいです。",
-              "vi": "Tôi muốn đi Tokyo. Tôi muốn ngắm tháp Tokyo."
+              "label": "Cơ bản (Đủ ý)",
+              "jp": "大学（だいがく）でITと日本語（にほんご）を勉強（べんきょう）しています。",
+              "vi": "Tôi đang học CNTT và tiếng Nhật ở trường đại học."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Đi Kyoto mặc Kimono chụp ảnh",
-              "jp": "京都（きょうと）へ行（い）きたいです。古（ふる）いお寺（てら）を見（み）たり、着物（きもの）を着（き）て写真（しゃしん）を撮（と）ったりしたいです。",
-              "vi": "Tôi muốn đến Kyoto. Tôi muốn ngắm những ngôi đền cổ và mặc kimono chụp ảnh."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "今（いま）、大学（だいがく）でコンピューターと日本語（にほんご）の会話（かいわ）を一所懸命（いっしょうけんめい）勉強（べんきょう）しています。",
+              "vi": "Hiện tại tôi đang chăm chỉ học máy tính và hội thoại tiếng Nhật ở trường đại học."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Đi Hokkaido ngắm tuyết",
-              "jp": "北海道（ほっかいどう）へ行（い）きたいです。雪（ゆき）を見（み）て、おいしい海鮮（かいせん）料理（りょうり）を食（た）べたいです。",
-              "vi": "Tôi muốn đến Hokkaido để ngắm tuyết và ăn hải sản thơm ngon."
+              "label": "Cách trả lời khác",
+              "jp": "日本語（にほんご）の文法（ぶんぽう）と漢字（かんじ）を勉強（べんきょう）しています。",
+              "vi": "Tôi đang học ngữ pháp và chữ Hán tiếng Nhật."
             }
           ]
         },
         {
-          "id": "p20-q3",
-          "qJp": "旅行（りょこう）へ行（い）くとき、何（なに）を一番（いちばん）大切（たいせつ）に持（も）って行（い）きますか。",
-          "qVi": "Khi đi du lịch, bạn mang theo vật gì quan trọng nhất?",
-          "targetGrammar": "Bài 11: Mẫu câu ～とき / Đồ đạc cần thiết",
+          "id": "p20-fq2",
+          "qJp": "旅行（りょこう）へ行（い）くとき、何（なに）を持（も）って行（い）きますか。",
+          "qVi": "Khi đi du lịch, bạn mang theo những đồ vật gì?",
+          "targetGrammar": "Bài 11 · ～とき、～を持って行きます",
           "answers": [
             {
               "level": "basic",
-              "label": "Cách 1: Điện thoại và tiền",
+              "label": "Cơ bản (Đủ ý)",
               "jp": "スマートフォンとお金（かね）を持（も）って行（い）きます。",
-              "vi": "Tôi mang theo điện thoại thông minh và tiền."
+              "vi": "Tôi mang theo điện thoại và tiền."
             },
             {
               "level": "expanded",
-              "label": "Cách 2: Hộ chiếu và thuốc cá nhân",
-              "jp": "パスポートと必要（ひつよう）な薬（くすり）です。何（なに）かあったとき安心（あんしん）ですから。",
-              "vi": "Là hộ chiếu và các loại thuốc men cần thiết. Để an tâm khi có chuyện phát sinh."
+              "label": "Mở rộng (Chuẩn thi)",
+              "jp": "旅行（りょこう）へ行（い）くとき、服（ふく）やカメラ、そしてスマートフォンを必（かなら）ず持（も）って行（い）きます。",
+              "vi": "Khi đi du lịch, tôi nhất định mang theo quần áo, máy ảnh và điện thoại."
             },
             {
               "level": "alt",
-              "label": "Cách 3: Máy ảnh để lưu giữ kỷ niệm",
-              "jp": "写真（しゃしん）を撮（と）るためのカメラです。きれいな思い出（おもいで）を残（のこ）したいですから。",
-              "vi": "Là máy ảnh để chụp hình. Vì tôi muốn lưu giữ những kỷ niệm đẹp."
+              "label": "Cách trả lời khác",
+              "jp": "小（ちい）さいかばんと財布（さいふ）を持（も）って行（い）きます。",
+              "vi": "Tôi mang theo túi nhỏ và ví tiền."
             }
           ]
         }
