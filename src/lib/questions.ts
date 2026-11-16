@@ -13,7 +13,7 @@ export interface Card {
   speak: string
   verbDetail?: VerbDetail
   kanjiItem?: KanjiItem
-  kind?: 'char' | 'compound'
+  kind?: 'char' | 'single' | 'compound'
   unitId?: string
 }
 
@@ -156,13 +156,15 @@ export const kanjiCompoundCards = (kanji: KanjiItem[], unitId?: string): Card[] 
       }
 
       const cleanMeaning = comp.meaning.replace(/\s*\*\(.*?\)\*/g, '').replace(/\s*\*.*?\*/g, '').trim()
+      const kanjiChars = comp.jp.match(/[\u4e00-\u9faf々]/g) || []
+      const isCompound = kanjiChars.length >= 2
       const card: Card = {
         id: `${k.id}:comp:${i}`,
         front: comp.jp,
         back: cleanMeaning || comp.meaning,
         extra: `Chữ Hán: ${k.char} (${k.hanviet})`,
         speak: comp.jp,
-        kind: 'compound',
+        kind: isCompound ? 'compound' : 'single',
         unitId,
       }
       seen.set(key, card)
@@ -173,10 +175,23 @@ export const kanjiCompoundCards = (kanji: KanjiItem[], unitId?: string): Card[] 
   return cards
 }
 
+/** Single-kanji meaningful words (e.g. 会います, 来ます, 帰ります, 貝, 門, お寺) */
+export const kanjiSingleCards = (kanji: KanjiItem[], unitId?: string): Card[] => {
+  return kanjiCompoundCards(kanji, unitId).filter((c) => c.kind === 'single')
+}
+
+/** Multi-kanji compound words (e.g. 会社, 宴会, 国会, 来週, 読書) */
+export const kanjiMultiCompoundCards = (kanji: KanjiItem[], unitId?: string): Card[] => {
+  return kanjiCompoundCards(kanji, unitId).filter((c) => c.kind === 'compound')
+}
+
+/** All meaningful Kanji words (single words + compound words) */
+export const kanjiMeaningfulCards = (kanji: KanjiItem[], unitId?: string): Card[] => {
+  return kanjiCompoundCards(kanji, unitId)
+}
+
 export const kanjiCards = (kanji: KanjiItem[], unitId?: string): Card[] => {
-  const chars = kanjiCharCards(kanji, unitId)
-  const comps = kanjiCompoundCards(kanji, unitId)
-  return [...chars, ...comps]
+  return kanjiCompoundCards(kanji, unitId)
 }
 
 export function vocabV1(u: Unit): Question[] {

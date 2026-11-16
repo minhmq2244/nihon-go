@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Check, CheckSquare, Filter, Layers, Search, Sparkles, Square } from 'lucide-react'
 import { load, unitLabel, useIndex } from '../lib/data'
-import { kanjiCharCards, kanjiCompoundCards } from '../lib/questions'
+import { kanjiCompoundCards } from '../lib/questions'
 import { Flashcards } from '../components/Study'
 import { Card, Chip, Empty, Loading, cx } from '../components/ui'
 import { Jp } from '../components/Jp'
@@ -20,7 +20,7 @@ export function KanjiReviewPage() {
 
   // Selected unit IDs (default to upcoming exam lessons b08..b11 or all basic)
   const [selectedUnitIds, setSelectedUnitIds] = useState<string[]>(['b08', 'b09', 'b10', 'b11'])
-  const [cardType, setCardType] = useState<'all' | 'char' | 'compound'>('all')
+  const [cardType, setCardType] = useState<'all' | 'single' | 'compound'>('all')
   const [unitsMap, setUnitsMap] = useState<Record<string, Unit>>({})
   const [loading, setLoading] = useState(false)
   const [showLookupTable, setShowLookupTable] = useState(false)
@@ -66,16 +66,16 @@ export function KanjiReviewPage() {
     return selectedUnitsList.flatMap((u) => u.kanji ?? [])
   }, [selectedUnitsList])
 
-  // Generate cards
-  const charCards = useMemo(() => kanjiCharCards(allKanji), [allKanji])
-  const compoundCards = useMemo(() => kanjiCompoundCards(allKanji), [allKanji])
-  const allCards = useMemo(() => [...charCards, ...compoundCards], [charCards, compoundCards])
+  // Generate meaningful kanji words (both single words and compounds)
+  const meaningfulWords = useMemo(() => kanjiCompoundCards(allKanji), [allKanji])
+  const singleCards = useMemo(() => meaningfulWords.filter((c) => c.kind === 'single'), [meaningfulWords])
+  const compoundCards = useMemo(() => meaningfulWords.filter((c) => c.kind === 'compound'), [meaningfulWords])
 
   const activeCards = useMemo(() => {
-    if (cardType === 'char') return charCards
+    if (cardType === 'single') return singleCards
     if (cardType === 'compound') return compoundCards
-    return allCards
-  }, [cardType, charCards, compoundCards, allCards])
+    return meaningfulWords
+  }, [cardType, singleCards, compoundCards, meaningfulWords])
 
   // Presets handlers
   const applyPreset = (ids: string[]) => {
@@ -123,10 +123,10 @@ export function KanjiReviewPage() {
           <span>Kho tài nguyên Kanji tổng hợp</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight">
-          Ôn tập Kanji toàn diện
+          Ôn tập từ vựng Kanji có nghĩa
         </h1>
         <p className="mt-1.5 text-base sm:text-lg text-sub font-medium">
-          Luyện nhớ chữ Hán, âm Hán-Việt, âm On/Kun và từ ghép thực tế. Chọn linh hoạt từng bài hoặc gộp nhiều bài để ôn thi cấp tốc.
+          Lật thẻ các từ ghép và từ đơn Kanji có nghĩa thực tế. Mặt trước hiển thị từ tiếng Nhật, mặt sau hiển thị nghĩa tiếng Việt cùng các chữ Hán cấu thành.
         </p>
       </div>
 
@@ -218,13 +218,13 @@ export function KanjiReviewPage() {
             active={cardType === 'all'}
             onClick={() => setCardType('all')}
           >
-            Tất cả thẻ ({allCards.length})
+            Tất cả từ Kanji có nghĩa ({meaningfulWords.length})
           </Chip>
           <Chip
-            active={cardType === 'char'}
-            onClick={() => setCardType('char')}
+            active={cardType === 'single'}
+            onClick={() => setCardType('single')}
           >
-            Chữ Hán đơn ({charCards.length})
+            Từ đơn Kanji ({singleCards.length})
           </Chip>
           <Chip
             active={cardType === 'compound'}

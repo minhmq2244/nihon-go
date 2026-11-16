@@ -806,6 +806,14 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent border border-accent/20">
                           Động từ
                         </span>
+                      ) : c.kind === 'single' ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                          Từ đơn Kanji
+                        </span>
+                      ) : c.kind === 'compound' ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-2.5 py-0.5 text-xs font-semibold text-indigo-700 dark:text-indigo-300 border border-indigo-500/30">
+                          Từ ghép Kanji
+                        </span>
                       ) : c.kanjiItem ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-semibold text-accent border border-accent/20">
                           Chữ Hán
@@ -852,6 +860,14 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub border border-line">
                             <span>{c.verbDetail.type}</span>
                           </div>
+                        ) : c.kind === 'single' ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                            <span>Từ đơn Kanji</span>
+                          </div>
+                        ) : c.kind === 'compound' ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-300 border border-indigo-500/30">
+                            <span>Từ ghép Kanji</span>
+                          </div>
                         ) : c.kanjiItem ? (
                           <div className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent border border-accent/20">
                             <span>Chữ Hán · {c.kanjiItem.strokes} nét</span>
@@ -864,6 +880,14 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                         {c.verbDetail?.type ? (
                           <div className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub border border-line">
                             <span>{c.verbDetail.type}</span>
+                          </div>
+                        ) : c.kind === 'single' ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                            <span>Từ đơn Kanji</span>
+                          </div>
+                        ) : c.kind === 'compound' ? (
+                          <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-300 border border-indigo-500/30">
+                            <span>Từ ghép Kanji</span>
                           </div>
                         ) : c.kanjiItem ? (
                           <div className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent border border-accent/20">
@@ -893,7 +917,17 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-sub">
                         <span className="h-2 w-2 rounded-full bg-ok" />
-                        {c.verbDetail ? 'Chi tiết động từ & Trợ từ' : c.kanjiItem ? 'Chi tiết Chữ Hán' : jpFront ? 'Ý nghĩa & Ví dụ' : 'Tiếng Nhật'}
+                        {c.verbDetail
+                          ? 'Chi tiết động từ & Trợ từ'
+                          : c.kind === 'single'
+                          ? 'Từ đơn Kanji · Ý nghĩa'
+                          : c.kind === 'compound'
+                          ? 'Từ ghép Kanji · Ý nghĩa'
+                          : c.kanjiItem
+                          ? 'Chi tiết Chữ Hán'
+                          : jpFront
+                          ? 'Ý nghĩa & Ví dụ'
+                          : 'Tiếng Nhật'}
                       </span>
                       {isKnown && (
                         <span className="inline-flex items-center gap-1 rounded-full bg-ok-soft px-2.5 py-0.5 text-xs font-semibold text-ok border border-ok/20">
@@ -941,7 +975,7 @@ export function Flashcards({ cards, big }: { cards: StudyCard[]; big?: boolean }
                           <div className="rounded-2xl border border-line bg-muted/50 p-4 text-left text-base sm:text-lg font-medium">
                             <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1.5">
                               {c.extra.startsWith('Chữ Hán:')
-                                ? 'Thông tin Kanji'
+                                ? 'Chữ Hán cấu thành'
                                 : c.extra.startsWith('Âm')
                                 ? 'Âm On/Kun & Từ ghép'
                                 : 'Ví dụ & Ngữ cảnh'}

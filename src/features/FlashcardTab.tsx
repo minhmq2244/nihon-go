@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { CheckSquare, Pencil } from 'lucide-react'
 import type { Unit } from '../types'
-import { kanjiCards, kanjiCharCards, kanjiCompoundCards, vocabCards, vocabV1 } from '../lib/questions'
+import { kanjiCharCards, kanjiCompoundCards, vocabCards, vocabV1 } from '../lib/questions'
 import { setKey } from '../lib/progressInfo'
 import { useCustomCards } from '../store/customCards'
 import { useCardSelection } from '../store/cardSelection'
@@ -20,7 +20,7 @@ const MODES = [
 /** Quizlet-style study: pick the vocabulary deck or the kanji deck, then flip cards / learn / match. */
 export function FlashcardTab({ unit }: { unit: Unit }) {
   const [deck, setDeck] = useState<'vocab' | 'kanji'>('vocab')
-  const [kanjiFilter, setKanjiFilter] = useState<'all' | 'char' | 'compound'>('all')
+  const [kanjiFilter, setKanjiFilter] = useState<'all' | 'single' | 'compound' | 'char'>('all')
   const [mode, setMode] = useState<(typeof MODES)[number]['id']>('cards')
   const [isEditing, setIsEditing] = useState(false)
   const [isSelecting, setIsSelecting] = useState(false)
@@ -30,15 +30,17 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
   const { selections, setSelection, resetDeckSelection } = useCardSelection()
 
   const vocab = useMemo(() => vocabCards(unit.vocab, unit.verbs), [unit])
-  const kanjiAll = useMemo(() => kanjiCards(unit.kanji), [unit])
+  const kanjiAll = useMemo(() => kanjiCompoundCards(unit.kanji), [unit])
+  const kanjiSingle = useMemo(() => kanjiCompoundCards(unit.kanji).filter((c) => c.kind === 'single'), [unit])
+  const kanjiCompounds = useMemo(() => kanjiCompoundCards(unit.kanji).filter((c) => c.kind === 'compound'), [unit])
   const kanjiChars = useMemo(() => kanjiCharCards(unit.kanji), [unit])
-  const kanjiCompounds = useMemo(() => kanjiCompoundCards(unit.kanji), [unit])
 
   const kanjiDefault = useMemo(() => {
-    if (kanjiFilter === 'char') return kanjiChars
+    if (kanjiFilter === 'single') return kanjiSingle
     if (kanjiFilter === 'compound') return kanjiCompounds
+    if (kanjiFilter === 'char') return kanjiChars
     return kanjiAll
-  }, [kanjiFilter, kanjiChars, kanjiCompounds, kanjiAll])
+  }, [kanjiFilter, kanjiSingle, kanjiCompounds, kanjiChars, kanjiAll])
 
   const deckKey = deck === 'vocab' ? `${id}:vocab` : `${id}:kanji:${kanjiFilter}`
   const isCustomized = Boolean(decks[deckKey])
@@ -68,17 +70,20 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
 
   const vocabCount = decks[`${id}:vocab`]?.length ?? vocab.length
   const kanjiAllCount = decks[`${id}:kanji:all`]?.length ?? kanjiAll.length
+  const kanjiSingleCount = decks[`${id}:kanji:single`]?.length ?? kanjiSingle.length
   const kanjiCharsCount = decks[`${id}:kanji:char`]?.length ?? kanjiChars.length
   const kanjiCompoundsCount = decks[`${id}:kanji:compound`]?.length ?? kanjiCompounds.length
 
   const deckTitle =
     deck === 'vocab'
       ? 'Từ vựng'
-      : kanjiFilter === 'char'
-      ? 'Kanji (Chữ Hán)'
+      : kanjiFilter === 'single'
+      ? 'Kanji (Từ đơn có nghĩa)'
       : kanjiFilter === 'compound'
       ? 'Kanji (Từ ghép)'
-      : 'Kanji (Tất cả)'
+      : kanjiFilter === 'char'
+      ? 'Kanji (Chữ Hán gốc)'
+      : 'Kanji (Tất cả từ có nghĩa)'
 
   return (
     <div className="space-y-4">
@@ -106,12 +111,13 @@ export function FlashcardTab({ unit }: { unit: Unit }) {
         </div>
 
         {deck === 'kanji' && (
-          <div className="flex rounded-2xl bg-muted p-1 text-sm">
+          <div className="flex flex-wrap rounded-2xl bg-muted p-1 text-sm gap-1">
             {(
               [
-                ['all', `Tất cả (${kanjiAllCount})`],
-                ['char', `Chữ Hán (${kanjiCharsCount})`],
+                ['all', `Tất cả từ có nghĩa (${kanjiAllCount})`],
+                ['single', `Từ đơn (${kanjiSingleCount})`],
                 ['compound', `Từ ghép (${kanjiCompoundsCount})`],
+                ['char', `Chữ Hán (${kanjiCharsCount})`],
               ] as const
             ).map(([kf, label]) => (
               <button
