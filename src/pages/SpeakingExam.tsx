@@ -24,6 +24,14 @@ import { SpeakingPictureComic } from '../components/SpeakingPictureComic'
 import { Button, Card, cx } from '../components/ui'
 
 // Sub-component for individual Question with Audio + Reveal Answers
+function cleanQuestion(text: string): string {
+  return text
+    .replace(/【[^】]*】/g, '')
+    .replace(/\[[^\]]*\]/g, '')
+    .replace(/^\s*picture\s*p\d+\s*[:：]?/i, '')
+    .trim()
+}
+
 function QuestionCard({
   q,
   indexLabel,
@@ -42,15 +50,19 @@ function QuestionCard({
     setRevealed(!examMode)
   }, [examMode])
 
+  const displayQJp = useMemo(() => cleanQuestion(q.qJp), [q.qJp])
+  const displayQVi = useMemo(() => cleanQuestion(q.qVi), [q.qVi])
+
   const handleSpeak = async (text: string) => {
-    if (playingJp === text) {
+    const speechTarget = cleanQuestion(text)
+    if (playingJp === speechTarget) {
       stopSpeaking()
       setPlayingJp(null)
       return
     }
-    setPlayingJp(text)
+    setPlayingJp(speechTarget)
     try {
-      await speak(text)
+      await speak(speechTarget)
     } finally {
       setPlayingJp(null)
     }
@@ -72,17 +84,17 @@ function QuestionCard({
         {/* Big Audio Question Button */}
         <button
           type="button"
-          onClick={() => handleSpeak(q.qJp)}
+          onClick={() => handleSpeak(displayQJp)}
           className={cx(
             'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-xs transition active:scale-95',
-            playingJp === q.qJp
+            playingJp === displayQJp
               ? 'bg-amber-500 text-white animate-pulse'
               : 'bg-accent text-white hover:bg-accent/90',
           )}
           title="Nghe giám khảo đọc câu hỏi"
         >
-          {playingJp === q.qJp ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          <span>{playingJp === q.qJp ? 'Đang phát...' : 'Nghe câu hỏi'}</span>
+          {playingJp === displayQJp ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          <span>{playingJp === displayQJp ? 'Đang phát...' : 'Nghe câu hỏi'}</span>
         </button>
       </div>
 
@@ -91,10 +103,10 @@ function QuestionCard({
         {revealed ? (
           <div className="space-y-1">
             <p className="text-base sm:text-lg font-bold text-ink">
-              <Jp text={q.qJp} speakable onRubyClick={onRubyClick} />
+              <Jp text={displayQJp} speakable onRubyClick={onRubyClick} />
             </p>
             <p className="text-xs sm:text-sm text-sub font-medium italic">
-              🇻🇳 {q.qVi}
+              🇻🇳 {displayQVi}
             </p>
           </div>
         ) : (
@@ -200,6 +212,43 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
     setPopover({ seg, rect })
   }
 
+  // Split reading passage into individual sentences ending with 。
+  const sentences = useMemo(() => {
+    return exam.reading.passageJp
+      .trim()
+      .split(/(?<=。)/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+  }, [exam.reading.passageJp])
+
+  // Split Vietnamese translation into sentences
+  const sentencesVi = useMemo(() => {
+    return exam.reading.passageVi
+      .trim()
+      .split(/(?<=[.!?])\s+/)
+      .map((s) => s.trim())
+      .filter(Boolean)
+  }, [exam.reading.passageVi])
+
+  const [playingSentence, setPlayingSentence] = useState<string | null>(null)
+  const [readingViewMode, setReadingViewMode] = useState<'paragraph' | 'sentences'>('paragraph')
+
+  const handlePlaySentence = async (sent: string) => {
+    if (playingSentence === sent) {
+      stopSpeaking()
+      setPlayingSentence(null)
+      return
+    }
+    stopSpeaking()
+    setReadingAudioPlaying(false)
+    setPlayingSentence(sent)
+    try {
+      await speak(sent, { rate: 0.9 })
+    } finally {
+      setPlayingSentence(null)
+    }
+  }
+
   // Timer for Exam Mode
   const [timerSeconds, setTimerSeconds] = useState(60)
   const [timerRunning, setTimerRunning] = useState(false)
@@ -224,6 +273,8 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
       setReadingAudioPlaying(false)
       return
     }
+    stopSpeaking()
+    setPlayingSentence(null)
     setReadingAudioPlaying(true)
     try {
       await speak(exam.reading.passageJp, { rate: 0.9 })
@@ -422,10 +473,124 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
             </div>
           </div>
 
-          {/* Reading Passage Body with Furigana & interactive ruby click */}
-          <div className="py-2 text-base sm:text-xl font-medium leading-loose text-ink">
-            <Jp text={exam.reading.passageJp} onRubyClick={handleRubyClick} />
+          {/* Subheader toolbar: Mode Switcher & Guide */}
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-stone-200/80 dark:border-stone-800">
+            <div className="flex items-center gap-1.5 bg-stone-100 dark:bg-stone-800/80 p-1 rounded-xl border border-stone-200 dark:border-stone-700 text-xs font-bold">
+              <button
+                type="button"
+                onClick={() => setReadingViewMode('paragraph')}
+                className={cx(
+                  'px-3 py-1 rounded-lg transition',
+                  readingViewMode === 'paragraph'
+                    ? 'bg-card text-accent shadow-xs'
+                    : 'text-sub hover:text-ink',
+                )}
+              >
+                📄 Toàn đoạn văn
+              </button>
+              <button
+                type="button"
+                onClick={() => setReadingViewMode('sentences')}
+                className={cx(
+                  'px-3 py-1 rounded-lg transition flex items-center gap-1.5',
+                  readingViewMode === 'sentences'
+                    ? 'bg-card text-accent shadow-xs'
+                    : 'text-sub hover:text-ink',
+                )}
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>Tách từng câu để nghe</span>
+              </button>
+            </div>
+
+            <p className="text-[11px] text-sub font-medium">
+              💡 Bấm vào câu để nghe riêng câu đó · Bấm vào chữ Hán để khóa Furigana
+            </p>
           </div>
+
+          {/* Reading Passage Body */}
+          {readingViewMode === 'paragraph' ? (
+            <div className="py-2 text-base sm:text-xl font-medium leading-[2.6] text-ink">
+              {sentences.map((sent, idx) => {
+                const isPlaying = playingSentence === sent
+                return (
+                  <span
+                    key={idx}
+                    onClick={() => handlePlaySentence(sent)}
+                    className={cx(
+                      'inline cursor-pointer transition-all rounded-lg px-1.5 py-0.5 mx-0.5 group relative select-text',
+                      isPlaying
+                        ? 'bg-amber-200/70 text-amber-950 dark:bg-amber-950/60 dark:text-amber-100 ring-2 ring-amber-500 shadow-xs'
+                        : 'hover:bg-stone-100 dark:hover:bg-stone-800/80',
+                    )}
+                    title="Bấm để nghe câu này · Bấm vào chữ Hán để khóa Furigana"
+                  >
+                    <Jp text={sent} onRubyClick={handleRubyClick} />
+                    <span
+                      className={cx(
+                        'inline-flex items-center justify-center ml-1 text-xs transition-opacity align-middle',
+                        isPlaying
+                          ? 'opacity-100 text-amber-600 animate-pulse'
+                          : 'opacity-0 group-hover:opacity-100 text-sub',
+                      )}
+                    >
+                      <Volume2 className="w-3.5 h-3.5 inline" />
+                    </span>{' '}
+                  </span>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="space-y-3 py-2">
+              {sentences.map((sent, idx) => {
+                const isPlaying = playingSentence === sent
+                return (
+                  <div
+                    key={idx}
+                    className={cx(
+                      'p-3.5 rounded-2xl border transition-all',
+                      isPlaying
+                        ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-400 dark:border-amber-600 shadow-sm'
+                        : 'bg-stone-50/80 dark:bg-stone-800/40 border-stone-200 dark:border-stone-700 hover:border-accent/40',
+                    )}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1.5 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-stone-200 dark:bg-stone-700 text-sub">
+                            Câu {idx + 1}
+                          </span>
+                        </div>
+                        <p className="text-base sm:text-lg font-bold text-ink leading-loose">
+                          <Jp text={sent} onRubyClick={handleRubyClick} />
+                        </p>
+                        {sentencesVi[idx] && (
+                          <p className="text-xs sm:text-sm text-sub italic pt-0.5">
+                            🇻🇳 {sentencesVi[idx]}
+                          </p>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handlePlaySentence(sent)}
+                        className={cx(
+                          'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition shadow-xs shrink-0',
+                          isPlaying
+                            ? 'bg-amber-600 text-white animate-pulse'
+                            : 'bg-accent text-white hover:bg-accent/90',
+                        )}
+                        title="Nghe câu này"
+                      >
+                        {isPlaying ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                        <span>{isPlaying ? 'Dừng' : 'Nghe câu'}</span>
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
 
           {/* Vocabulary Notes box */}
           {exam.reading.vocabNotes.length > 0 && (

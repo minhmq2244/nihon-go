@@ -191,7 +191,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p01-q1",
-          "qJp": "【Picture P01】田中（たなか）さんは昨日（きのう）何（なに）をしましたか。",
+          "qJp": "田中（たなか）さんは昨日（きのう）何（なに）をしましたか。",
           "qVi": "Hôm qua anh Tanaka đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu quá khứ V-て hoặc ～たり～たり",
           "answers": [
@@ -395,7 +395,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p02-q1",
-          "qJp": "【Picture P02】鈴木（すずき）さんは先週（せんしゅう）の日曜日（にちようび）に何（なに）をしましたか。",
+          "qJp": "鈴木（すずき）さんは先週（せんしゅう）の日曜日（にちようび）に何（なに）をしましたか。",
           "qVi": "Chị Suzuki đã làm gì vào Chủ Nhật tuần trước?",
           "targetGrammar": "Bài 11: Nối hành động thể て hoặc たり...たり",
           "answers": [
@@ -601,7 +601,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p03-q1",
-          "qJp": "【Picture P03】山田（やまだ）さんは先週（せんしゅう）の土曜日（どようび）に何（なに）をしましたか。",
+          "qJp": "山田（やまだ）さんは先週（せんしゅう）の土曜日（どようび）に何（なに）をしましたか。",
           "qVi": "Anh Yamada đã làm gì vào thứ Bảy tuần trước?",
           "targetGrammar": "Bài 11: Nối câu quá khứ V-て",
           "answers": [
@@ -808,7 +808,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p04-q1",
-          "qJp": "【Picture P04】スミスさんは昨日（きのう）何（なに）をしましたか。",
+          "qJp": "スミスさんは昨日（きのう）何（なに）をしましたか。",
           "qVi": "Hôm qua bạn Smith đã làm những gì?",
           "targetGrammar": "Bài 11: Thể て hoặc たり...たり",
           "answers": [
@@ -1013,7 +1013,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p05-q1",
-          "qJp": "【Picture P05】リンさんは先週（せんしゅう）何（なに）をしましたか。",
+          "qJp": "リンさんは先週（せんしゅう）何（なに）をしましたか。",
           "qVi": "Tuần trước bạn Linh đã làm những gì?",
           "targetGrammar": "Bài 11: Nối chuỗi hành động thể て",
           "answers": [
@@ -1218,7 +1218,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p06-q1",
-          "qJp": "【Picture P06】高橋（たかはし）さんは先週（せんしゅう）の土曜日（どようび）に何（なに）をしましたか。",
+          "qJp": "高橋（たかはし）さんは先週（せんしゅう）の土曜日（どようび）に何（なに）をしましたか。",
           "qVi": "Anh Takahashi đã làm gì vào thứ Bảy tuần trước?",
           "targetGrammar": "Bài 11: Nối câu quá khứ V-て hoặc たり...たり",
           "answers": [
@@ -1425,7 +1425,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p07-q1",
-          "qJp": "【Picture P07】アンさんは昨日（きのう）何（なに）をしましたか。",
+          "qJp": "アンさんは昨日（きのう）何（なに）をしましたか。",
           "qVi": "Hôm qua bạn An đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て hoặc たり...たり",
           "answers": [
@@ -1631,7 +1631,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p08-q1",
-          "qJp": "【Picture P08】中村（なかむら）さんは昨日（きのう）何（なに）をしましたか。",
+          "qJp": "中村（なかむら）さんは昨日（きのう）何（なに）をしましたか。",
           "qVi": "Chị Nakamura đã làm gì vào ngày hôm qua?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -1839,7 +1839,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p09-q1",
-          "qJp": "【Picture P09】マイさんは引越（ひっこ）しの日（ひ）に何（なに）をしましたか。",
+          "qJp": "マイさんは引越（ひっこ）しの日（ひ）に何（なに）をしましたか。",
           "qVi": "Bạn Mai đã làm những gì trong ngày chuyển nhà?",
           "targetGrammar": "Bài 11: Nối câu quá khứ thể て",
           "answers": [
@@ -2045,7 +2045,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p10-q1",
-          "qJp": "【Picture P10】渡辺（わたなべ）さんは先週（せんしゅう）何（なに）をしましたか。",
+          "qJp": "渡辺（わたなべ）さんは先週（せんしゅう）何（なに）をしましたか。",
           "qVi": "Tuần trước chị Watanabe đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -2249,7 +2249,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p11-q1",
-          "qJp": "【Picture P11】伊藤（いとう）さんは昨日（きのう）ジムで何（なに）をしましたか。",
+          "qJp": "伊藤（いとう）さんは昨日（きのう）ジムで何（なに）をしましたか。",
           "qVi": "Hôm qua anh Ito đã làm những gì ở phòng tập gym?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -2455,7 +2455,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p12-q1",
-          "qJp": "【Picture P12】キムさんは昨日（きのう）デパートで何（なに）をしましたか。",
+          "qJp": "キムさんは昨日（きのう）デパートで何（なに）をしましたか。",
           "qVi": "Hôm qua bạn Kim đã làm những gì ở trung tâm thương mại?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -2661,7 +2661,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p13-q1",
-          "qJp": "【Picture P13】小林（こばやし）さんは先週（せんしゅう）の日曜日（にちようび）に何（なに）をしましたか。",
+          "qJp": "小林（こばやし）さんは先週（せんしゅう）の日曜日（にちようび）に何（なに）をしましたか。",
           "qVi": "Chủ Nhật tuần trước anh Kobayashi đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -2865,7 +2865,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p14-q1",
-          "qJp": "【Picture P14】ナムさんは昨日（きのう）図書館（としょかん）で何（なに）をしましたか。",
+          "qJp": "ナムさんは昨日（きのう）図書館（としょかん）で何（なに）をしましたか。",
           "qVi": "Hôm qua bạn Nam đã làm những gì ở thư viện?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -3071,7 +3071,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p15-q1",
-          "qJp": "【Picture P15】加藤（かとう）さんは昨日（きのう）何（なに）をしましたか。",
+          "qJp": "加藤（かとう）さんは昨日（きのう）何（なに）をしましたか。",
           "qVi": "Hôm qua anh Kato đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -3278,7 +3278,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p16-q1",
-          "qJp": "【Picture P16】吉田（よしだ）さんは昨日（きのう）何（なに）をしましたか。",
+          "qJp": "吉田（よしだ）さんは昨日（きのう）何（なに）をしましたか。",
           "qVi": "Hôm qua anh Yoshida đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -3485,7 +3485,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p17-q1",
-          "qJp": "【Picture P17】ハインさんは先週（せんしゅう）何（なに）をしましたか。",
+          "qJp": "ハインさんは先週（せんしゅう）何（なに）をしましたか。",
           "qVi": "Tuần trước bạn Hạnh đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -3690,7 +3690,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p18-q1",
-          "qJp": "【Picture P18】松本（まつもと）さんは先週（せんしゅう）の日曜日（にちようび）に何（なに）をしましたか。",
+          "qJp": "松本（まつもと）さんは先週（せんしゅう）の日曜日（にちようび）に何（なに）をしましたか。",
           "qVi": "Chủ Nhật tuần trước anh Matsumoto đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -3897,7 +3897,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p19-q1",
-          "qJp": "【Picture P19】井上（いのうえ）さんは先週（せんしゅう）何（なに）をしましたか。",
+          "qJp": "井上（いのうえ）さんは先週（せんしゅう）何（なに）をしましたか。",
           "qVi": "Tuần trước bạn Inoue đã làm những gì?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
@@ -4103,7 +4103,7 @@ export const SPEAKING_EXAMS: SpeakingExam[] = [
         ],
         "question": {
           "id": "p20-q1",
-          "qJp": "【Picture P20】ジョンさんは先月（せんげつ）京都（きょうと）で何（なに）をしましたか。",
+          "qJp": "ジョンさんは先月（せんげつ）京都（きょうと）で何（なに）をしましたか。",
           "qVi": "Tháng trước bạn John đã làm những gì ở Kyoto?",
           "targetGrammar": "Bài 11: Nối câu thể て",
           "answers": [
