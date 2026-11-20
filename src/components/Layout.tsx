@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { BookOpen, ClipboardCheck, FileText, Flame, Headphones, Home, Menu, MessagesSquare, Mic, Moon, Repeat, Settings, Sparkles, Sun, Zap } from 'lucide-react'
+import { BookOpen, ClipboardCheck, FileText, Flame, GraduationCap, Headphones, Home, Menu, MessagesSquare, Mic, Moon, Repeat, Settings, Sparkles, Sun, Zap } from 'lucide-react'
 import { useSettings } from '../store/settings'
 import { streakOf, useProgress } from '../store/progress'
 import { stopSpeaking } from '../lib/speech'
@@ -19,6 +19,7 @@ const NAV = [
   { to: '/passive-listening', label: 'Nghe thụ động', short: 'Nghe', icon: Headphones },
   { to: '/speed-speaking', label: 'Luyện nói cấp tốc', short: 'Nói nhanh', icon: Zap },
   { to: '/speaking-exam', label: 'Thi Nói JPD133', short: 'Thi Nói', icon: Mic },
+  { to: '/ssg-fe', label: 'SSG-FE', short: 'SSG', icon: GraduationCap },
   { to: '/kaiwa', label: 'Kaiwa', short: 'Kaiwa', icon: MessagesSquare },
   { to: '/review', label: 'Ôn tập', short: 'Ôn tập', icon: Repeat },
   { to: '/exams', label: 'Kiểm tra', short: 'Kiểm tra', icon: ClipboardCheck },
@@ -208,16 +209,16 @@ export function Layout() {
       <PassiveMiniPlayer />
       <PassiveFullPlayer />
 
-      <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-8 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+      <nav className="no-print fixed inset-x-0 bottom-0 z-30 no-scrollbar flex items-center overflow-x-auto border-t border-line bg-surface/95 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         {NAV.map((n) => (
           <NavLink
             key={n.to}
             to={n.to}
             end={n.end}
-            className={({ isActive }) => cx('flex flex-col items-center gap-0.5 py-2.5 text-xs', isActive ? 'font-bold text-accent' : 'text-sub')}
+            className={({ isActive }) => cx('flex min-w-[62px] flex-1 flex-col items-center gap-0.5 py-2 text-xs shrink-0', isActive ? 'font-bold text-accent' : 'text-sub')}
           >
-            <n.icon size={22} />
-            {n.short}
+            <n.icon size={20} />
+            <span className="truncate max-w-[60px] text-[11px]">{n.short}</span>
           </NavLink>
         ))}
       </nav>
