@@ -39,8 +39,10 @@ export function Home() {
   if (!index) return <Loading />
 
   const unitsTouched = index.units.filter((u) => Object.keys(sets).some((k) => k.startsWith(u.id + ':')))
-  const last = index.units.find((u) => u.id === lastPlace?.unitId) ?? index.units[0]!
+  const last = index.units.find((u) => u.id === lastPlace?.unitId) ?? index.units.find((u) => u.vol === 4) ?? index.units[0]!
+  const isVol4 = last.vol === 4
   const lastTab = lastPlace && tabLabel(lastPlace.tab) ? { id: lastPlace.tab, label: tabLabel(lastPlace.tab)! } : undefined
+  const cdUnits = index.units.filter((u) => u.vol === 4)
   const kaiwaTotal = index.kaiwa.reduce((s, k) => s + k.dialogueCount, 0)
   const kaiwaDone = Object.entries(dialogues).filter(([id, steps]) => id.startsWith('k') && steps.includes(4)).length
   // Flashcard self-marks and randomly built quiz items are not replayable on the review page.
@@ -74,43 +76,74 @@ export function Home() {
       </section>
 
       <div className="grid gap-5 md:grid-cols-3">
-        <Link to={`/u/${last.id}/${lastTab?.id ?? 'ly-thuyet'}`} className="md:col-span-2">
-          <div className="h-full rounded-3xl bg-gradient-to-r from-accent via-accent to-accent/90 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                  {lastPlace ? 'Tiếp tục bài học' : 'Bắt đầu bài học'}
-                </span>
-                {lastTab && (
-                  <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
-                    Đang ở: {sectionOf(lastTab.id).tabs.length > 1 ? `${sectionOf(lastTab.id).label} · ${lastTab.label}` : lastTab.label}
+        {!isVol4 ? (
+          <Link to="/passive-listening" className="md:col-span-2">
+            <div className="h-full rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                    ⭐ ĐÃ GỘP TỔNG HỢP BÀI 1 – 11
                   </span>
-                )}
+                  <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
+                    4 Siêu Chủ Đề Thực Chiến Đời Thường
+                  </span>
+                </div>
+                <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight">
+                  Đại Tổng Ôn Giao Tiếp (Bài 1 – 11)
+                </h2>
+                <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
+                  139 câu đối thoại thực tế ngoài đời: Trường học, Konbini, Tàu điện nhịp sống & Nhà trọ tự lập.
+                </p>
               </div>
-              <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight">
-                {unitLabel(last)} · <Jp text={last.title} />
-              </h2>
-              <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
-                {last.subtitle}
-              </p>
-            </div>
-            <div className="mt-6">
-              <div className="h-2.5 overflow-hidden rounded-full bg-white/25">
-                <div
-                  className="h-full rounded-full bg-cta transition-all"
-                  style={{
-                    width: `${Math.round(unitRatio(sets, last.id) * 100)}%`,
-                  }}
-                />
-              </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="inline-flex items-center gap-2 rounded-xl bg-cta px-5 py-2.5 text-base font-bold text-on-cta shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
-                  {lastPlace ? 'Học tiếp' : 'Vào học ngay'} <ArrowRight size={18} />
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+                <span className="inline-flex items-center gap-2 rounded-xl bg-white text-emerald-800 px-5 py-2.5 text-base font-extrabold shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
+                  <Headphones size={18} /> Bật nghe Mega Mix ngay <ArrowRight size={18} />
+                </span>
+                <span className="text-sm font-semibold text-white/80">
+                  Hỗ trợ chạy chữ Spotify & Luyện vai
                 </span>
               </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        ) : (
+          <Link to={`/u/${last.id}/${lastTab?.id ?? 'ly-thuyet'}`} className="md:col-span-2">
+            <div className="h-full rounded-3xl bg-gradient-to-r from-accent via-accent to-accent/90 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                    {lastPlace ? 'Tiếp tục chủ đề' : 'Bắt đầu chủ đề'}
+                  </span>
+                  {lastTab && (
+                    <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
+                      Đang ở: {sectionOf(lastTab.id).tabs.length > 1 ? `${sectionOf(lastTab.id).label} · ${lastTab.label}` : lastTab.label}
+                    </span>
+                  )}
+                </div>
+                <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight">
+                  {unitLabel(last)} · <Jp text={last.title} />
+                </h2>
+                <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
+                  {last.subtitle}
+                </p>
+              </div>
+              <div className="mt-6">
+                <div className="h-2.5 overflow-hidden rounded-full bg-white/25">
+                  <div
+                    className="h-full rounded-full bg-cta transition-all"
+                    style={{
+                      width: `${Math.round(unitRatio(sets, last.id) * 100)}%`,
+                    }}
+                  />
+                </div>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2 rounded-xl bg-cta px-5 py-2.5 text-base font-bold text-on-cta shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
+                    {lastPlace ? 'Học tiếp' : 'Vào học ngay'} <ArrowRight size={18} />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        )}
         <Card className="flex flex-col items-center justify-center p-6 text-center">
           <p className="flex items-center gap-2 text-base font-bold text-sub">
             <Target size={18} className="text-accent" /> Mục tiêu hôm nay
@@ -255,15 +288,29 @@ export function Home() {
 
       <Card className="p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-ink">Lộ trình của bạn</h3>
+          <div>
+            <h3 className="text-lg font-bold text-ink">Lộ trình học của bạn</h3>
+            <p className="text-xs text-sub">Đại tổng ôn Bài 1–11 nối tiếp bằng 10 Chủ đề N5+ → N4</p>
+          </div>
           <Link to="/units" className="text-sm font-semibold text-accent hover:underline">
-            Xem tất cả bài →
+            Xem toàn bộ chủ đề →
           </Link>
         </div>
-        <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1">
-          {index.units.map((u) => {
+        <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 items-center">
+          {/* Consolidated B01-B11 Card */}
+          <Link
+            to="/units"
+            className="flex h-16 w-36 shrink-0 flex-col items-center justify-center rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-extrabold transition-all hover:scale-105 active:scale-95 shadow-xs px-2 text-center"
+            title="Đại Tổng Ôn Bài 1 – 11 (4 Siêu Chủ Đề Thực Chiến Đời Thường)"
+          >
+            <span className="text-[10px] uppercase tracking-wider font-black">⭐ Đã gộp</span>
+            <span className="text-xs font-bold leading-tight mt-0.5">Tổng ôn B1–11</span>
+          </Link>
+
+          {/* CD Units (Chủ đề 0 đến 9) */}
+          {cdUnits.map((u) => {
             const touched = unitsTouched.includes(u)
-            const current = u.id === last.id
+            const current = u.id === last.id && isVol4
             return (
               <Link
                 key={u.id}
@@ -279,7 +326,7 @@ export function Home() {
                 title={`${unitLabel(u)} · ${u.subtitle}`}
               >
                 <span className="text-[11px] font-semibold opacity-85 uppercase tracking-wide">
-                  {u.kind === 'bai' ? 'Bài' : 'CĐ'}
+                  CĐ
                 </span>
                 <span className="text-lg font-extrabold leading-none mt-0.5">{u.num}</span>
               </Link>
@@ -288,11 +335,11 @@ export function Home() {
         </div>
       </Card>
 
-      {!lastPlace && (
+      {!isVol4 && (
         <div className="pt-2 text-center">
-          <Link to="/u/b01">
-            <Button variant="cta" size="lg">
-              Bắt đầu từ Bài 1
+          <Link to="/passive-listening">
+            <Button variant="cta" size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-md">
+              <Headphones size={18} /> Vào Nghe Thực Chiến Bài 1 – 11
             </Button>
           </Link>
         </div>
