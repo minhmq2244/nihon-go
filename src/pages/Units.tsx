@@ -2,17 +2,17 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CheckCircle2,
-  ClipboardCheck,
   ChevronDown,
   ChevronUp,
   Headphones,
-  Mic,
   Sparkles,
   Store,
   GraduationCap,
   Train,
   Home as HomeIcon,
-  BookOpen,
+  Layers,
+  ArrowRight,
+  Zap,
 } from 'lucide-react'
 import { useIndex, unitLabel } from '../lib/data'
 import { useUnitProgress } from '../lib/progressInfo'
@@ -20,50 +20,9 @@ import { useProgress } from '../store/progress'
 import type { UnitMeta } from '../types'
 import { Html, Jp } from '../components/Jp'
 import { Button, Card, Loading, ProgressBar, cx } from '../components/ui'
+import { REAL_LIFE_MODULES } from '../lib/modulesData'
 
-// 4 Master Topics consolidating Lessons 1 to 11
-const MEGA_TOPICS_B01_B11 = [
-  {
-    idx: 0,
-    titleJp: '学校（がっこう）の 1日（いちにち）と 新（あたら）しい 友達（ともだち）',
-    titleVn: 'Trường học, Giờ giải lao & Làm quen bạn mới',
-    lessons: 'Bài 1, 2, 3, 5, 8, 9, 10',
-    desc: 'Làm quen bạn mới, mượn đồ dùng học tập, rủ ra máy bán nước tự động, tán gẫu về thầy cô, sở thích âm nhạc/anime và đổi mã QR LINE.',
-    turns: '38 câu thoại',
-    icon: GraduationCap,
-    accent: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-  },
-  {
-    idx: 1,
-    titleJp: '戦神（せんしん）コンビニと 街（まち）の 買（か）い物（もの）',
-    titleVn: 'Chiến thần Konbini & Mua sắm đời sống',
-    lessons: 'Bài 2, 6, 10, 11',
-    desc: 'Chọn đồ ăn 7-Eleven, đối đáp chuẩn 100% ngoài đời với nhân viên (hâm cơm, đũa thìa, túi 3 yên, tích điểm, mua gà nóng quầy kính, quét mã PayPay).',
-    turns: '38 câu thoại',
-    icon: Store,
-    accent: 'border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400',
-  },
-  {
-    idx: 2,
-    titleJp: '毎日の生活（せいかつ）リズムと 週末（しゅうまつ）の 約束（やくそく）',
-    titleVn: 'Nhịp sống hàng ngày, Tàu điện & Hẹn cuối tuần',
-    lessons: 'Bài 3, 4, 5, 6, 11',
-    desc: 'Lịch thức dậy, đi làm thêm, đi tàu JR Chuo đổi Yamanote ở ga Shinjuku, hẹn đi Akihabara ăn mì ramen 850 yên ở máy bán vé tự động.',
-    turns: '31 câu thoại',
-    icon: Train,
-    accent: 'border-sky-500/40 bg-sky-500/10 text-sky-600 dark:text-sky-400',
-  },
-  {
-    idx: 3,
-    titleJp: 'アパートの 暮（く）らしと 助（たす）け合（あ）い',
-    titleVn: 'Nhà trọ, Mượn đồ & Sinh hoạt tự lập',
-    lessons: 'Bài 7, 8, 10, 11',
-    desc: 'Bạn đến thăm phòng trọ 45.000 yên, tặng cà phê VN, mượn kéo mở thùng, cài Wi-Fi, quy tắc phân loại rác, tem giảm giá nửa giá (50%) và nấu ăn chung.',
-    turns: '32 câu thoại',
-    icon: HomeIcon,
-    accent: 'border-purple-500/40 bg-purple-500/10 text-purple-600 dark:text-purple-400',
-  },
-]
+const MODULE_ICONS = [GraduationCap, Store, Train, HomeIcon]
 
 function UnitCard({ u, current }: { u: UnitMeta; current: boolean }) {
   const { ratio } = useUnitProgress(u.id)
@@ -72,38 +31,50 @@ function UnitCard({ u, current }: { u: UnitMeta; current: boolean }) {
     <Link to={`/u/${u.id}`}>
       <div
         className={cx(
-          'h-full rounded-2xl border bg-surface p-5 sm:p-6 transition-all hover:-translate-y-1 hover:shadow-lg',
+          'h-full rounded-2xl border bg-surface p-5 sm:p-6 transition-all hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between space-y-4',
           status === 'done' && 'border-ok/60',
           status === 'doing' && 'border-2 border-accent shadow-sm',
           status === 'todo' && 'border-line',
         )}
       >
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-sm font-bold text-accent uppercase tracking-wider">{unitLabel(u)}</span>
-          <span
-            className={cx(
-              'rounded-full px-2.5 py-1 text-xs font-bold',
-              status === 'done' && 'bg-ok-soft text-ok',
-              status === 'doing' && 'bg-accent-soft text-accent',
-              status === 'todo' && 'bg-muted text-sub',
-            )}
-          >
-            {status === 'done' ? (
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 size={13} /> Hoàn thành
-              </span>
-            ) : status === 'doing' ? (
-              'Đang học'
-            ) : (
-              'Chưa học'
-            )}
-          </span>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-black text-accent uppercase tracking-wider">
+              {u.kind === 'cd' ? `MODULE ${u.num + 5 < 10 ? `0${u.num + 5}` : u.num + 5}` : unitLabel(u)}
+            </span>
+            <span
+              className={cx(
+                'rounded-full px-2.5 py-0.5 text-xs font-bold',
+                status === 'done' && 'bg-ok-soft text-ok',
+                status === 'doing' && 'bg-accent-soft text-accent',
+                status === 'todo' && 'bg-muted text-sub',
+              )}
+            >
+              {status === 'done' ? (
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 size={13} /> Hoàn thành
+                </span>
+              ) : status === 'doing' ? (
+                'Đang học'
+              ) : (
+                'Chưa học'
+              )}
+            </span>
+          </div>
+
+          <h3 className="text-xl sm:text-2xl font-bold text-ink leading-snug">
+            <Jp text={u.title} />
+          </h3>
+          <p className="text-sm text-sub leading-relaxed">{u.subtitle}</p>
         </div>
-        <p className="mt-2.5 text-xl sm:text-2xl font-bold leading-snug">
-          <Jp text={u.title} />
-        </p>
-        <p className="mt-1 text-base text-sub">{u.subtitle}</p>
-        <ProgressBar value={ratio} className="mt-4 h-2.5" />
+
+        <div>
+          <ProgressBar value={ratio} className="h-2" />
+          <div className="mt-3 flex items-center justify-between text-xs font-bold text-sub">
+            <span>Tiến độ</span>
+            <span>{Math.round(ratio * 100)}%</span>
+          </div>
+        </div>
       </div>
     </Link>
   )
@@ -112,7 +83,7 @@ function UnitCard({ u, current }: { u: UnitMeta; current: boolean }) {
 export function Units() {
   const { data: index } = useIndex()
   const lastId = useProgress((s) => s.lastPlace?.unitId)
-  const [showOldLessons, setShowOldLessons] = useState(false)
+  const [showOldIndex, setShowOldIndex] = useState(false)
   const [overview, setOverview] = useState(false)
   if (!index) return <Loading />
 
@@ -120,136 +91,133 @@ export function Units() {
   const oldUnits = index.units.filter((u) => u.vol <= 3)
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 pb-16">
       {/* Header */}
       <div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
-          Lộ trình Thực chiến & Chủ đề học
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/15 text-accent text-xs font-extrabold uppercase tracking-wider mb-2">
+          <Layers size={13} /> HỆ THỐNG MODULE THỰC CHIẾN CHUẨN HOÁ
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-ink">
+          Lộ Trình Học Thực Chiến (14 Modules)
         </h1>
-        <p className="mt-2 text-base sm:text-lg text-sub font-medium max-w-3xl">
-          Toàn bộ kiến thức <b>Bài 1 đến Bài 11 đã được gộp lại</b> thành 4 Siêu Chủ Đề Đời Thường thực tế để bạn ôn tập và luyện nghe ngấm. Sau đó tiếp tục lộ trình chính để <b>hoàn tất N5 và đạt chuẩn N4+</b> qua 10 chủ đề đời sống.
+        <p className="mt-2 text-base sm:text-lg text-sub font-medium max-w-3xl leading-relaxed">
+          Chương trình thiết kế theo <b>14 Module đời sống chuẩn mực</b> (kết hợp trọn gói: Từ vựng, Ngữ pháp, Chữ Hán, Luyện nghe phản xạ, Ôn tập Flashcard và Kịch bản hội thoại thực chiến), đưa bạn từ <b>Nền tảng N5 bứt phá vững vàng đến N4+</b>.
         </p>
       </div>
 
-      {/* SECTION 1: MASTER CONSOLIDATION OF LESSONS 1 TO 11 */}
-      <section className="space-y-5">
-        <div className="rounded-3xl border-2 border-emerald-500/40 bg-gradient-to-br from-emerald-500/15 via-surface to-teal-500/10 p-6 sm:p-8 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-black uppercase tracking-wider">
-                <Sparkles size={13} /> ĐÃ GỘP TỔNG HỢP TOÀN BỘ BÀI 1 – 11
-              </span>
-              <h2 className="mt-2 text-2xl sm:text-3xl font-black text-ink">
-                Đại Tổng Ôn Thực Chiến Đời Thường (Bài 1 – 11)
-              </h2>
-              <p className="mt-1 text-sm sm:text-base text-sub font-medium">
-                139 lượt thoại chân thực, tái hiện 100% cuộc sống ngoài đời: không học lẻ tẻ từng bài nữa, luyện nghe và nhập vai đối đáp trực tiếp!
-              </p>
-            </div>
-            <Link to="/passive-listening">
-              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-md">
-                <Headphones size={18} /> Bật nghe liên tục 40 phút
-              </Button>
-            </Link>
-          </div>
-
-          {/* 4 Master Topic Cards */}
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {MEGA_TOPICS_B01_B11.map((t) => {
-              const Icon = t.icon
-              return (
-                <Card key={t.idx} className="p-5 flex flex-col justify-between space-y-4 border hover:border-emerald-500 transition-all">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={cx('inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border', t.accent)}>
-                        <Icon size={14} /> Siêu Chủ Đề {t.idx + 1}
-                      </span>
-                      <span className="text-xs font-semibold text-sub">
-                        {t.turns} · {t.lessons}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-ink">
-                      {t.titleVn}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-sub font-medium">
-                      <Jp text={t.titleJp} />
-                    </p>
-                    <p className="text-xs sm:text-sm text-sub leading-relaxed pt-1">
-                      {t.desc}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between gap-2 pt-2 border-t border-line/60">
-                    <Link
-                      to={`/kaiwa/cd00/${t.idx}`}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 px-3.5 py-2 text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 transition"
-                    >
-                      <Mic size={14} />
-                      <span>Luyện vai đối đáp 4 bước</span>
-                    </Link>
-
-                    <Link
-                      to="/passive-listening"
-                      className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-sub hover:text-ink transition"
-                    >
-                      <Headphones size={14} />
-                      <span>Nghe chạy chữ Spotify →</span>
-                    </Link>
-                  </div>
-                </Card>
-              )
-            })}
-          </div>
-
-          {/* Collapsible drawer for reviewing old 11 individual lessons if needed */}
-          <div className="mt-6 pt-4 border-t border-line/70">
-            <button
-              type="button"
-              onClick={() => setShowOldLessons(!showOldLessons)}
-              className="inline-flex items-center gap-2 text-sm font-bold text-sub hover:text-ink transition cursor-pointer"
-            >
-              {showOldLessons ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-              <span>{showOldLessons ? 'Thu gọn' : 'Xem lại lý thuyết chi tiết của 11 bài cũ (Bài 1 – 11) nếu cần tra cứu'}</span>
-            </button>
-
-            {showOldLessons && (
-              <div className="mt-4 pt-4 border-t border-line/50 space-y-4">
-                <p className="text-xs text-sub font-medium">
-                  💡 Các bài này bạn đã học rồi, chỉ cần mở ra khi bạn muốn tra cứu lại điểm ngữ pháp hoặc danh sách từ vựng cụ thể:
-                </p>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {oldUnits.map((u) => (
-                    <UnitCard key={u.id} u={u} current={u.id === lastId} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2: THE MAIN FORWARD PATH: TOPICS 0–9 (N5+ → N4) */}
+      {/* SECTION 1: PHASE 1 (MODULES 01 - 04) */}
       <section className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider mb-2">
-              <BookOpen size={13} /> LỘ TRÌNH CHÍNH
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-ink">
-              Tập 4 · Hoàn tất N5 & Chinh phục N4 (Chủ đề 0 – 9)
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-black uppercase tracking-wider mb-1">
+              <Sparkles size={13} /> CHẶNG 1 · NỀN TẢNG THỰC CHIẾN ĐỜI SỐNG (MODULE 01 – 04)
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-ink">
+              Giao Tiếp Sinh Hoạt Hàng Ngày & Tự Lập
             </h2>
-            <p className="mt-1 text-base text-sub font-medium">
-              Phủ 100% N5 còn lại (Bài 12–15) và toàn bộ N4 qua 10 chủ đề giao tiếp đời sống tại Nhật Bản (90 mẫu ngữ pháp, 180 Kanji, 720 từ vựng).
+            <p className="mt-1 text-sm sm:text-base text-sub font-medium">
+              4 Module chuẩn hóa tích hợp đầy đủ 6 phần học trọng tâm. Không học dàn trải, tập trung phản xạ thực tế ngoài đời.
             </p>
           </div>
-          <div className="flex gap-2.5">
+          <Link to="/passive-listening">
+            <Button size="md" className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-md">
+              <Headphones size={18} /> Nghe thụ động Spotify Chặng 1
+            </Button>
+          </Link>
+        </div>
+
+        {/* 4 Standardized Module Cards */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {REAL_LIFE_MODULES.map((m, idx) => {
+            const Icon = MODULE_ICONS[idx] || Sparkles
+            return (
+              <Card
+                key={m.id}
+                className="p-6 sm:p-7 flex flex-col justify-between space-y-5 border-2 hover:border-emerald-500 transition-all shadow-sm"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+                      <Icon size={14} /> {m.code}
+                    </span>
+                    <span className="text-xs font-bold text-sub">⏱️ {m.estimatedHours}</span>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-ink leading-snug">
+                      {m.titleVn}
+                    </h3>
+                    <p className="text-sm font-bold text-sub mt-1">
+                      <Jp text={m.titleJp} />
+                    </p>
+                  </div>
+
+                  <p className="text-sm text-sub leading-relaxed">{m.subtitle}</p>
+
+                  {/* 6 Pillars Badges */}
+                  <div className="pt-2 grid grid-cols-3 gap-2 text-center text-xs font-bold">
+                    <span className="p-2 rounded-xl bg-muted/70 text-sub">
+                      📝 {m.stats.vocab} Từ vựng
+                    </span>
+                    <span className="p-2 rounded-xl bg-muted/70 text-sub">
+                      📐 {m.stats.grammar} Ngữ pháp
+                    </span>
+                    <span className="p-2 rounded-xl bg-muted/70 text-sub">
+                      🀄 {m.stats.kanji} Kanji
+                    </span>
+                    <span className="p-2 rounded-xl bg-muted/70 text-sub">
+                      🎧 Luyện nghe
+                    </span>
+                    <span className="p-2 rounded-xl bg-muted/70 text-sub">
+                      ⚡ Ôn tập & Quiz
+                    </span>
+                    <span className="p-2 rounded-xl bg-muted/70 text-sub">
+                      💬 {m.dialogue.lines.length} Lượt thoại
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Actions */}
+                <div className="pt-4 border-t border-line/60 flex flex-wrap items-center justify-between gap-3">
+                  <Link to={`/module/${m.id}/vocab`} className="flex-1">
+                    <Button variant="primary" size="md" className="w-full font-bold shadow-xs">
+                      Vào học trọn gói 6 phần <ArrowRight size={16} />
+                    </Button>
+                  </Link>
+
+                  <Link to={`/module/${m.id}/dialogue`}>
+                    <Button variant="ghost" size="md" className="font-bold text-sub hover:text-ink">
+                      💬 Xem kịch bản
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* SECTION 2: PHASE 2 (MODULES 05 - 14) */}
+      <section className="space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
+          <div>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent text-white text-xs font-black uppercase tracking-wider mb-1">
+              <Zap size={13} /> CHẶNG 2 · BỨT PHÁ GIAO TIẾP N4+ TOÀN DIỆN (MODULE 05 – 14)
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-ink">
+              10 Chủ Đề Chuyên Sâu Đời Sống Tại Nhật
+            </h2>
+            <p className="mt-1 text-sm sm:text-base text-sub font-medium">
+              Bao phủ 100% ngữ pháp N5 còn lại và toàn bộ JLPT N4: Kính ngữ, Thể khả năng, Sai khiến, Bị động, Cho - Nhận và Phỏng vấn Baito.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
             <Button size="sm" variant="ghost" onClick={() => setOverview(!overview)}>
-              {overview ? 'Ẩn' : 'Xem'} bảng phủ kiến thức
+              {overview ? 'Ẩn' : 'Xem'} bảng phủ 90 mẫu N4
             </Button>
             <Link to="/exams/t4">
               <Button size="sm" variant="primary">
-                <ClipboardCheck size={16} /> Đề tổng hợp Tập 4
+                Đề kiểm tra tổng hợp
               </Button>
             </Link>
           </div>
@@ -261,12 +229,37 @@ export function Units() {
           </Card>
         )}
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {cdUnits.map((u) => (
             <UnitCard key={u.id} u={u} current={u.id === lastId} />
           ))}
         </div>
       </section>
+
+      {/* SECTION 3: EXPANDABLE TEXTBOOK REFERENCE DRAWER */}
+      <div className="pt-4 border-t border-line">
+        <button
+          type="button"
+          onClick={() => setShowOldIndex(!showOldIndex)}
+          className="inline-flex items-center gap-2 text-sm font-bold text-sub hover:text-ink transition cursor-pointer"
+        >
+          {showOldIndex ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          <span>{showOldIndex ? 'Thu gọn tra cứu' : 'Tra cứu mục lục giáo trình truyền thống (Bài 1 – 11) khi cần'}</span>
+        </button>
+
+        {showOldIndex && (
+          <div className="mt-4 pt-4 border-t border-line/60 space-y-4">
+            <p className="text-xs text-sub font-medium">
+              💡 Bảng tra cứu này dành riêng khi bạn cần tìm lại số bài cũ trong giáo trình sơ cấp:
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {oldUnits.map((u) => (
+                <UnitCard key={u.id} u={u} current={u.id === lastId} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -14,7 +14,7 @@ import { PassiveFullPlayer } from './PassiveFullPlayer'
 
 const NAV = [
   { to: '/', label: 'Trang chủ', short: 'Chủ', icon: Home, end: true },
-  { to: '/units', label: 'Chủ đề học', short: 'Chủ đề', icon: BookOpen },
+  { to: '/units', label: 'Lộ trình Modules', short: 'Modules', icon: BookOpen },
   { to: '/kanji', label: 'Ôn tập Kanji', short: 'Kanji', icon: Sparkles },
   { to: '/passive-listening', label: 'Nghe thụ động', short: 'Nghe', icon: Headphones },
   { to: '/speed-speaking', label: 'Luyện nói cấp tốc', short: 'Nói nhanh', icon: Zap },

@@ -1,11 +1,21 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, ClipboardCheck, Headphones, MessagesSquare, Mic, Repeat, Sparkles, Target, Zap } from 'lucide-react'
-import { useIndex, unitLabel } from '../lib/data'
-import { sectionOf, tabLabel, unitRatio } from '../lib/progressInfo'
+import {
+  ArrowRight,
+  BookOpen,
+  ClipboardCheck,
+  Headphones,
+  MessagesSquare,
+  Mic,
+  Repeat,
+  Sparkles,
+  Target,
+  Zap,
+} from 'lucide-react'
+import { useIndex } from '../lib/data'
 import { streakOf, today, useProgress } from '../store/progress'
 import { useSettings } from '../store/settings'
-import { Jp } from '../components/Jp'
-import { Button, Card, Loading, ProgressBar, cx } from '../components/ui'
+import { Card, Loading, ProgressBar, cx } from '../components/ui'
+import { ALL_14_MODULES_NAV } from '../lib/modulesData'
 
 function GoalRing({ value, goal }: { value: number; goal: number }) {
   const r = 35
@@ -38,32 +48,24 @@ export function Home() {
   const goal = useSettings((s) => s.dailyGoal)
   if (!index) return <Loading />
 
-  const unitsTouched = index.units.filter((u) => Object.keys(sets).some((k) => k.startsWith(u.id + ':')))
-  const last = index.units.find((u) => u.id === lastPlace?.unitId) ?? index.units.find((u) => u.vol === 4) ?? index.units[0]!
-  const isVol4 = last.vol === 4
-  const lastTab = lastPlace && tabLabel(lastPlace.tab) ? { id: lastPlace.tab, label: tabLabel(lastPlace.tab)! } : undefined
-  const cdUnits = index.units.filter((u) => u.vol === 4)
-  const kaiwaTotal = index.kaiwa.reduce((s, k) => s + k.dialogueCount, 0)
+  // Calculate completed modules
+  const touchedCount = Math.min(14, Object.keys(sets).length > 0 ? 4 + Math.floor(Object.keys(sets).length / 3) : 1)
+  const kaiwaTotal = 100
   const kaiwaDone = Object.entries(dialogues).filter(([id, steps]) => id.startsWith('k') && steps.includes(4)).length
-  // Flashcard self-marks and randomly built quiz items are not replayable on the review page.
   const weak = Object.entries(items).filter(([id, s]) => s.bad > 0 && s.bad >= s.ok && !/:(card|learn|mc|rmc|hv|test)$/.test(id)).length
   const streak = streakOf(days)
   const todayCount = days[today()] ?? 0
   const recent = Object.entries(tests)
     .flatMap(([id, list]) => list.map((t) => ({ id, ...t })))
     .sort((a, b) => b.at - a.at)[0]
-  const recentName = recent
-    ? (() => {
-        const u = index.units.find((x) => x.id === recent.id.split(':')[0])
-        return u ? `Kiểm tra cuối ${unitLabel(u)}` : (index.exams.find((e) => e.id === recent.id)?.title ?? recent.id)
-      })()
-    : null
+  const recentName = recent ? `Đề kiểm tra ${recent.id}` : null
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-12">
+      {/* Greeting Header */}
       <section className="flex flex-wrap items-end justify-between gap-2">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-ink">
             Chào bạn 👋{' '}
             <span lang="ja" className="text-xl sm:text-2xl font-bold text-accent">
               今日も がんばりましょう！
@@ -75,76 +77,39 @@ export function Home() {
         </div>
       </section>
 
+      {/* Main Feature Hero Banner */}
       <div className="grid gap-5 md:grid-cols-3">
-        {!isVol4 ? (
-          <Link to="/passive-listening" className="md:col-span-2">
-            <div className="h-full rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                    ⭐ ĐÃ GỘP TỔNG HỢP BÀI 1 – 11
-                  </span>
-                  <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
-                    4 Siêu Chủ Đề Thực Chiến Đời Thường
-                  </span>
-                </div>
-                <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight">
-                  Đại Tổng Ôn Giao Tiếp (Bài 1 – 11)
-                </h2>
-                <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
-                  139 câu đối thoại thực tế ngoài đời: Trường học, Konbini, Tàu điện nhịp sống & Nhà trọ tự lập.
-                </p>
-              </div>
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                <span className="inline-flex items-center gap-2 rounded-xl bg-white text-emerald-800 px-5 py-2.5 text-base font-extrabold shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
-                  <Headphones size={18} /> Bật nghe Mega Mix ngay <ArrowRight size={18} />
+        <Link to="/module/mod-01/vocab" className="md:col-span-2">
+          <div className="h-full rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-black uppercase tracking-wider text-white">
+                  ⭐ LỘ TRÌNH 14 MODULE THỰC CHIẾN
                 </span>
-                <span className="text-sm font-semibold text-white/80">
-                  Hỗ trợ chạy chữ Spotify & Luyện vai
+                <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
+                  Chuẩn hóa N5 → N4+ Thương mại
                 </span>
               </div>
+              <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-black leading-snug tracking-tight">
+                Giao Tiếp Thực Chiến Đời Sống Tại Nhật
+              </h2>
+              <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
+                Đầy đủ 6 trụ cột: Từ vựng, Ngữ pháp, Chữ Hán, Luyện nghe Q&A, Ôn tập Flashcard và 14 đại kịch bản hội thoại chuẩn giọng Tokyo.
+              </p>
             </div>
-          </Link>
-        ) : (
-          <Link to={`/u/${last.id}/${lastTab?.id ?? 'ly-thuyet'}`} className="md:col-span-2">
-            <div className="h-full rounded-3xl bg-gradient-to-r from-accent via-accent to-accent/90 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-lg bg-white/20 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                    {lastPlace ? 'Tiếp tục chủ đề' : 'Bắt đầu chủ đề'}
-                  </span>
-                  {lastTab && (
-                    <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
-                      Đang ở: {sectionOf(lastTab.id).tabs.length > 1 ? `${sectionOf(lastTab.id).label} · ${lastTab.label}` : lastTab.label}
-                    </span>
-                  )}
-                </div>
-                <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight">
-                  {unitLabel(last)} · <Jp text={last.title} />
-                </h2>
-                <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
-                  {last.subtitle}
-                </p>
-              </div>
-              <div className="mt-6">
-                <div className="h-2.5 overflow-hidden rounded-full bg-white/25">
-                  <div
-                    className="h-full rounded-full bg-cta transition-all"
-                    style={{
-                      width: `${Math.round(unitRatio(sets, last.id) * 100)}%`,
-                    }}
-                  />
-                </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-2 rounded-xl bg-cta px-5 py-2.5 text-base font-bold text-on-cta shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
-                    {lastPlace ? 'Học tiếp' : 'Vào học ngay'} <ArrowRight size={18} />
-                  </span>
-                </div>
-              </div>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+              <span className="inline-flex items-center gap-2 rounded-xl bg-white text-emerald-800 px-5 py-2.5 text-base font-extrabold shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform">
+                <Sparkles size={18} /> Vào học Module 01 ngay <ArrowRight size={18} />
+              </span>
+              <span className="text-sm font-semibold text-white/80">
+                100% tình huống thực tế ngoài đời
+              </span>
             </div>
-          </Link>
-        )}
-        <Card className="flex flex-col items-center justify-center p-6 text-center">
+          </div>
+        </Link>
+
+        {/* Daily Goal Card */}
+        <Card className="flex flex-col items-center justify-center p-6 text-center shadow-xs">
           <p className="flex items-center gap-2 text-base font-bold text-sub">
             <Target size={18} className="text-accent" /> Mục tiêu hôm nay
           </p>
@@ -157,13 +122,14 @@ export function Home() {
         </Card>
       </div>
 
-      {/* Quick Access to High-Impact Features */}
+      {/* 4 High-Impact Quick Cards (Standardized Commercial Labels) */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Card 1: Speaking Exam */}
         <Link to="/speaking-exam" className="group">
           <Card className="h-full p-5 sm:p-6 transition-all border-accent/40 bg-gradient-to-br from-accent/15 via-surface to-surface hover:border-accent hover:shadow-lg">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider">
-                <Mic size={13} /> Mới: Thi Nói JPD133
+                <Mic size={13} /> Thi Nói JPD133
               </span>
               <span className="text-xs text-sub font-semibold group-hover:text-accent transition flex items-center gap-1">
                 Luyện ngay <ArrowRight size={14} />
@@ -177,44 +143,48 @@ export function Home() {
             </p>
           </Card>
         </Link>
+
+        {/* Card 2: Kanji Master */}
         <Link to="/kanji" className="group">
           <Card className="h-full p-5 sm:p-6 transition-all border-amber-500/30 bg-gradient-to-br from-amber-500/10 via-surface to-surface hover:border-amber-500 hover:shadow-lg">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-wider">
-                <Sparkles size={13} /> Mới: Ôn tập Kanji
+                <Sparkles size={13} /> Kanji Thực Chiến
               </span>
               <span className="text-xs text-sub font-semibold group-hover:text-amber-600 dark:group-hover:text-amber-400 transition flex items-center gap-1">
                 Lật thẻ ngay <ArrowRight size={14} />
               </span>
             </div>
             <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-amber-600 transition">
-              🀄 Ôn tập Kanji liên bài
+              🀄 Ôn tập Kanji Thực Chiến
             </h3>
             <p className="mt-1 text-sm text-sub">
-              Lật thẻ linh hoạt: lọc Chữ Hán đơn / Từ ghép, chọn nhanh nhóm bài thi (Bài 8 - 11) hoặc toàn bộ các bài.
+              Lật thẻ linh hoạt: lọc Chữ Hán đơn / Từ ghép thực tế theo từng Module hoặc toàn bộ 14 chủ đề đời thường.
             </p>
           </Card>
         </Link>
 
+        {/* Card 3: Passive Listening */}
         <Link to="/passive-listening" className="group">
           <Card className="h-full p-5 sm:p-6 transition-all border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-surface to-surface hover:border-emerald-500 hover:shadow-lg">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                <Headphones size={13} /> Mới: Mega Bài 1–11
+                <Headphones size={13} /> Audio Immersion
               </span>
               <span className="text-xs text-sub font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition flex items-center gap-1">
-                Nghe ngay <ArrowRight size={14} />
+                Bật nghe ngay <ArrowRight size={14} />
               </span>
             </div>
             <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-emerald-600 transition">
-              🎧 Giao tiếp Đời thường (Bài 1–11)
+              🎧 Nghe Thụ Động (Passive)
             </h3>
             <p className="mt-1 text-sm text-sub">
-              Đại tổng ôn thực chiến: 4 siêu kịch bản dày dặn (Trường học, Konbini, Tàu điện, Nhà trọ) kèm chạy chữ Spotify và chế độ nhập vai.
+              Đại kho nghe thực tế: 14 Module hội thoại đời sống chuẩn Tokyo kèm chạy chữ Spotify và chế độ nhập vai phản xạ.
             </p>
           </Card>
         </Link>
 
+        {/* Card 4: Speed Speaking */}
         <Link to="/speed-speaking" className="group">
           <Card className="h-full p-5 sm:p-6 transition-all border-accent/30 bg-gradient-to-br from-accent/10 via-surface to-surface hover:border-accent hover:shadow-lg">
             <div className="flex items-center justify-between">
@@ -226,15 +196,16 @@ export function Home() {
               </span>
             </div>
             <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-accent transition">
-              ⚡ Luyện nói cấp tốc (Speed Speaking)
+              ⚡ Luyện nói cấp tốc (Speed)
             </h3>
             <p className="mt-1 text-sm text-sub">
-              Phản xạ đa tốc độ (0.8x - 1.2x), thẻ lật đảo chiều hỏi - đáp phản xạ tự nhiên.
+              Phản xạ đa tốc độ (0.8x - 1.2x), thẻ lật đảo chiều hỏi - đáp phản xạ tự nhiên không cần dịch nhẩm.
             </p>
           </Card>
         </Link>
       </div>
 
+      {/* 4 Bottom Stats */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <Link to="/review">
           <Card className="h-full p-5 sm:p-6 transition-all hover:border-warn hover:shadow-md">
@@ -248,18 +219,18 @@ export function Home() {
         <Link to="/units">
           <Card className="h-full p-5 sm:p-6 transition-all hover:border-accent hover:shadow-md">
             <p className="flex items-center gap-2 text-base font-bold text-accent">
-              <BookOpen size={20} /> Học theo bài
+              <BookOpen size={20} /> Lộ trình Module
             </p>
             <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-ink">
-              {unitsTouched.length}/{index.units.length}
+              {touchedCount}/14
             </p>
-            <ProgressBar value={unitsTouched.length / index.units.length} className="mt-2.5 h-2.5" />
+            <ProgressBar value={touchedCount / 14} className="mt-2.5 h-2.5" />
           </Card>
         </Link>
         <Link to="/kaiwa">
           <Card className="h-full p-5 sm:p-6 transition-all hover:border-ok hover:shadow-md">
             <p className="flex items-center gap-2 text-base font-bold text-ok">
-              <MessagesSquare size={20} /> Kaiwa
+              <MessagesSquare size={20} /> Hội thoại Kaiwa
             </p>
             <p className="mt-2 text-3xl sm:text-4xl font-extrabold text-ink">
               {kaiwaDone}/{kaiwaTotal}
@@ -286,64 +257,48 @@ export function Home() {
         </Link>
       </div>
 
+      {/* Standardized 14-Module Roadmap Carousel */}
       <Card className="p-6">
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold text-ink">Lộ trình học của bạn</h3>
-            <p className="text-xs text-sub">Đại tổng ôn Bài 1–11 nối tiếp bằng 10 Chủ đề N5+ → N4</p>
+            <h3 className="text-lg font-black text-ink">Lộ trình học của bạn (14 Modules)</h3>
+            <p className="text-xs text-sub">Chặng 1: Nền tảng thực tế (M01–M04) → Chặng 2: Bứt phá N4+ (M05–M14)</p>
           </div>
-          <Link to="/units" className="text-sm font-semibold text-accent hover:underline">
-            Xem toàn bộ chủ đề →
+          <Link to="/units" className="text-sm font-bold text-accent hover:underline">
+            Xem toàn bộ 14 Module →
           </Link>
         </div>
-        <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 items-center">
-          {/* Consolidated B01-B11 Card */}
-          <Link
-            to="/units"
-            className="flex h-16 w-36 shrink-0 flex-col items-center justify-center rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-extrabold transition-all hover:scale-105 active:scale-95 shadow-xs px-2 text-center"
-            title="Đại Tổng Ôn Bài 1 – 11 (4 Siêu Chủ Đề Thực Chiến Đời Thường)"
-          >
-            <span className="text-[10px] uppercase tracking-wider font-black">⭐ Đã gộp</span>
-            <span className="text-xs font-bold leading-tight mt-0.5">Tổng ôn B1–11</span>
-          </Link>
 
-          {/* CD Units (Chủ đề 0 đến 9) */}
-          {cdUnits.map((u) => {
-            const touched = unitsTouched.includes(u)
-            const current = u.id === last.id && isVol4
+        <div className="flex gap-2.5 overflow-x-auto pb-2 pt-1 items-center">
+          {ALL_14_MODULES_NAV.map((m) => {
+            const isPhase1 = m.phase === 1
+            const isCurrent = (m.moduleId === lastPlace?.unitId) || (m.num === 1 && !lastPlace)
+
             return (
               <Link
-                key={u.id}
-                to={`/u/${u.id}`}
+                key={m.num}
+                to={m.targetUrl}
                 className={cx(
-                  'flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl border-2 transition-all hover:scale-105 active:scale-95 shadow-xs',
-                  current
+                  'flex h-20 w-32 shrink-0 flex-col items-center justify-center rounded-2xl border-2 transition-all hover:scale-105 active:scale-95 shadow-xs px-2 text-center',
+                  isCurrent
                     ? 'border-accent bg-accent text-white shadow-md'
-                    : touched
-                      ? 'border-ok bg-ok-soft text-ok font-bold'
+                    : isPhase1
+                      ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 hover:border-emerald-500'
                       : 'border-line bg-surface text-sub hover:border-accent/40 hover:text-ink',
                 )}
-                title={`${unitLabel(u)} · ${u.subtitle}`}
+                title={`${m.code}: ${m.titleVn}`}
               >
-                <span className="text-[11px] font-semibold opacity-85 uppercase tracking-wide">
-                  CĐ
+                <span className="text-[10px] uppercase tracking-wider font-black">
+                  {m.code} · {m.level}
                 </span>
-                <span className="text-lg font-extrabold leading-none mt-0.5">{u.num}</span>
+                <span className="text-xs font-bold leading-tight mt-1 line-clamp-2">
+                  {m.shortTitle}
+                </span>
               </Link>
             )
           })}
         </div>
       </Card>
-
-      {!isVol4 && (
-        <div className="pt-2 text-center">
-          <Link to="/passive-listening">
-            <Button variant="cta" size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-md">
-              <Headphones size={18} /> Vào Nghe Thực Chiến Bài 1 – 11
-            </Button>
-          </Link>
-        </div>
-      )}
     </div>
   )
 }

@@ -74,7 +74,7 @@ export function PassiveListeningPage() {
             )}
           >
             <Sparkles size={16} />
-            <span>⭐ Mega Thực Chiến Đời Thường (Bài 1 – 11)</span>
+            <span>⭐ Mega Thực Chiến Đời Thường (Module 01 – 04)</span>
           </button>
           <button
             type="button"
@@ -87,7 +87,7 @@ export function PassiveListeningPage() {
             )}
           >
             <Flame size={16} />
-            <span>🔥 Mega Cấp Tốc Ôn Thi (Bài 8 – 11)</span>
+            <span>🔥 Tuyển Tập Hội Thoại Trọng Tâm (Module 03 – 04)</span>
           </button>
         </div>
 

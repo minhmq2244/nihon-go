@@ -8,11 +8,10 @@ import { Jp } from '../components/Jp'
 import type { Unit } from '../types'
 
 const PRESETS = [
-  { id: 'exam', label: '🔥 Cấp tốc ôn thi (Bài 8 - 11)', ids: ['b08', 'b09', 'b10', 'b11'] },
-  { id: 'tap1', label: 'Tập 1 (Bài 1 - 5)', ids: ['b01', 'b02', 'b03', 'b04', 'b05'] },
-  { id: 'tap2', label: 'Tập 2 (Bài 6 - 11)', ids: ['b06', 'b07', 'b08', 'b09', 'b10', 'b11'] },
-  { id: 'all-basic', label: 'Tất cả bài học (Bài 1 - 11)', ids: ['b01', 'b02', 'b03', 'b04', 'b05', 'b06', 'b07', 'b08', 'b09', 'b10', 'b11'] },
-  { id: 'chude', label: 'Chuyên đề (CD00 - CD09)', ids: ['cd00', 'cd01', 'cd02', 'cd03', 'cd04', 'cd05', 'cd06', 'cd07', 'cd08', 'cd09'] },
+  { id: 'exam', label: '🔥 Kanji Trọng Tâm Giao Tiếp (Module 03 – 04)', ids: ['b08', 'b09', 'b10', 'b11'] },
+  { id: 'tap1', label: 'Chặng 1: Thực Chiến Đời Sống (Module 01 – 04)', ids: ['b01', 'b02', 'b03', 'b04', 'b05', 'b06', 'b07', 'b08', 'b09', 'b10', 'b11'] },
+  { id: 'chude', label: 'Chặng 2: Bứt Phá N4+ (Module 05 – 14)', ids: ['cd00', 'cd01', 'cd02', 'cd03', 'cd04', 'cd05', 'cd06', 'cd07', 'cd08', 'cd09'] },
+  { id: 'all-basic', label: 'Toàn Bộ 14 Modules (299 Chữ Hán)', ids: ['b01', 'b02', 'b03', 'b04', 'b05', 'b06', 'b07', 'b08', 'b09', 'b10', 'b11', 'cd00', 'cd01', 'cd02', 'cd03', 'cd04', 'cd05', 'cd06', 'cd07', 'cd08', 'cd09'] },
 ]
 
 export function KanjiReviewPage() {

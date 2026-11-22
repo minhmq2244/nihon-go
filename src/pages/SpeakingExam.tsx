@@ -666,7 +666,7 @@ export function SpeakingExamDetail({ exam }: { exam: SpeakingExam }) {
               ★
             </span>
             <h3 className="text-lg sm:text-xl font-bold tracking-tight text-ink">
-              Câu hỏi phỏng vấn tự do (Free Q&A · Trọng tâm Bài 8 - 11)
+              Câu hỏi phỏng vấn tự do (Free Q&A · Trọng tâm Giao tiếp Đời sống)
             </h3>
           </div>
 
@@ -784,7 +784,7 @@ export function SpeakingExamPage() {
             20 Bộ Đề Thi Nói JPD133 (Chuẩn Demo 2025)
           </h1>
           <p className="text-sm sm:text-base text-sub leading-relaxed font-medium">
-            Mô phỏng chuẩn xác định dạng phòng thi thực tế: Phần 1 Đọc đoạn văn (Kanji Bài 1–11, từ Katakana khó đọc) + 2 câu hỏi đọc hiểu; Phần 2 Miêu tả tranh liên hoàn 3 bước + 2 câu hỏi phỏng vấn tự do trọng tâm ngữ pháp <strong>Bài 8 đến Bài 11</strong>.
+            Mô phỏng chuẩn xác định dạng phòng thi thực tế: Phần 1 Đọc đoạn văn (Kanji và từ vựng nâng cao) + 2 câu hỏi đọc hiểu; Phần 2 Miêu tả tranh liên hoàn 3 bước + 2 câu hỏi phỏng vấn tự do trọng tâm ngữ pháp <strong>Giao tiếp đời sống thực tế</strong>.
           </p>
         </div>
 

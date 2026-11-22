@@ -53,7 +53,7 @@ export function Review() {
         <Empty title="Chưa có câu sai nào cần ôn 🎉">
           Hãy luyện ở các bài —{' '}
           <Link className="text-accent underline" to="/units">
-            vào Học theo bài
+            vào Lộ trình Modules
           </Link>
           .
         </Empty>

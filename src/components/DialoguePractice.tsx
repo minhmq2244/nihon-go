@@ -341,7 +341,7 @@ function Prepare({ d }: { d: Dialogue }) {
         <div className="mt-3 grid gap-4 md:grid-cols-2">
           {d.vocab && d.vocab.length > 0 && (
             <div>
-              <p className="mb-1 text-sm font-semibold text-accent">Từ mới (ngoài Bài 1–11)</p>
+              <p className="mb-1 text-sm font-semibold text-accent">Từ vựng & Mẫu câu mở rộng thực tế</p>
               <ul className="space-y-1">
                 {d.vocab.map((v, i) => (
                   <li key={i} className="flex flex-wrap items-center gap-x-2">

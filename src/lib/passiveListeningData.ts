@@ -33,18 +33,18 @@ export const PASSIVE_PLAYLISTS: PassivePlaylist[] = [
   {
   "id": "mega-b01-b11",
   "title": "MEGA MIX · 実践生活会話（じっせんせいかつかいわ）",
-  "titleVn": "MEGA MIX · Đại Tổng Ôn Thực Chiến Đời Thường (Bài 1 – 11)",
-  "description": "Trường đoạn nghe thụ động dài hơn 40 phút liên tục, chuyển hóa trọn vẹn ngữ pháp, từ vựng và phản xạ của Bài 1 đến Bài 11 thành 4 siêu kịch bản chân thực ngoài đời: Trường học, Konbini, Tàu điện nhịp sống & Nhà trọ.",
+  "titleVn": "MEGA MIX · Chặng 1: Thực Chiến Đời Sống (Module 01 – 04)",
+  "description": "Trường đoạn nghe thụ động dài hơn 40 phút liên tục, chuyển hóa trọn vẹn kiến thức thành 4 kịch bản thực tế ngoài đời: Học đường & Bạn bè, Chiến thần Konbini, Tàu điện nhịp sống & Nhà trọ tự lập.",
   "category": "topic",
-  "badge": "⭐ ĐẠI TỔNG ÔN ĐỜI THƯỜNG (BÀI 1–11)",
+  "badge": "⭐ THỰC CHIẾN ĐỜI SỐNG (MODULE 01–04)",
   "accentColor": "from-emerald-500/20 to-teal-500/10 border-emerald-500/40 text-emerald-600",
   "tracks": [
     {
       "id": "track-mega-campus",
       "title": "学校（がっこう）の 1日（いちにち）と 新（あたら）しい 友達（ともだち）",
-      "titleVn": "Trường học, Giờ giải lao & Làm quen bạn mới (Bài 1, 2, 3, 5, 8, 9, 10)",
+      "titleVn": "Module 01: Trường học, Giờ giải lao & Làm quen bạn mới",
       "category": "topic",
-      "tag": "Siêu Kịch Bản 1 · Đời sống học đường",
+      "tag": "Module 01 · Đời sống học đường",
       "lines": [
         {
           "speaker": "健太",
@@ -241,9 +241,9 @@ export const PASSIVE_PLAYLISTS: PassivePlaylist[] = [
     {
       "id": "track-mega-konbini",
       "title": "戦神（せんしん）コンビニと 街（まち）の 買（か）い物（もの）",
-      "titleVn": "Chiến thần Konbini & Ăn uống đường phố (Bài 2, 6, 10, 11)",
+      "titleVn": "Module 02: Chiến thần Konbini & Mua sắm đời sống",
       "category": "topic",
-      "tag": "Siêu Kịch Bản 2 · Mua sắm & Ăn uống",
+      "tag": "Module 02 · Mua sắm & Ẩm thực",
       "lines": [
         {
           "speaker": "あなた",
@@ -440,9 +440,9 @@ export const PASSIVE_PLAYLISTS: PassivePlaylist[] = [
     {
       "id": "track-mega-routine",
       "title": "毎日の生活（せいかつ）リズムと 週末（しゅうまつ）の 約束（やくそく）",
-      "titleVn": "Nhịp sống hàng ngày, Tàu điện & Hẹn cuối tuần (Bài 3, 4, 5, 6, 11)",
+      "titleVn": "Module 03: Nhịp sống hàng ngày, Tàu điện & Hẹn cuối tuần",
       "category": "topic",
-      "tag": "Siêu Kịch Bản 3 · Lịch trình & Đi lại",
+      "tag": "Module 03 · Lịch trình & Đi lại",
       "lines": [
         {
           "speaker": "リン",
@@ -604,9 +604,9 @@ export const PASSIVE_PLAYLISTS: PassivePlaylist[] = [
     {
       "id": "track-mega-dorm",
       "title": "アパートの 暮（く）らしと 助（たす）け合（あ）い",
-      "titleVn": "Nhà trọ, Mượn đồ & Sinh hoạt tự lập (Bài 7, 8, 10, 11)",
+      "titleVn": "Module 04: Nhà trọ, Mượn đồ & Sinh hoạt tự lập",
       "category": "topic",
-      "tag": "Siêu Kịch Bản 4 · Phòng ốc & Tự lập",
+      "tag": "Module 04 · Phòng ốc & Tự lập",
       "lines": [
         {
           "speaker": "大輔",

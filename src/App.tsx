@@ -11,6 +11,7 @@ import { SpeedSpeakingPage } from './pages/SpeedSpeaking'
 import { SpeakingExamPage } from './pages/SpeakingExam'
 import { PassiveListeningPage } from './pages/PassiveListening'
 import { KanjiReviewPage } from './pages/KanjiReviewPage'
+import { ModuleDetailPage } from './pages/ModuleDetailPage'
 import { SettingsPage } from './pages/Settings'
 import { Review } from './pages/Review'
 import { Loading } from './components/ui'
@@ -56,6 +57,9 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="units" element={<Units />} />
+          <Route path="modules" element={<Navigate to="/units" replace />} />
+          <Route path="module/:id" element={<ModuleDetailPage />} />
+          <Route path="module/:id/:tab" element={<ModuleDetailPage />} />
           <Route path="kanji" element={<KanjiReviewPage />} />
           <Route path="u/:id" element={<Navigate to="ly-thuyet" replace />} />
           <Route path="u/:id/:tab" element={<UnitPage />} />
