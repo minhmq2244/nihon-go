@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Flame,
   Headphones,
@@ -10,10 +11,14 @@ import {
   Store,
   Clock,
   ListMusic,
+  Sparkles,
+  Mic,
+  ArrowRight,
 } from 'lucide-react'
 import {
   getExamPlaylists,
   getMegaMixPlaylist,
+  getMegaRealLifePlaylist,
   getTopicPlaylists,
 } from '../lib/passiveListeningData'
 import { usePassivePlayer } from '../store/passivePlayer'
@@ -21,7 +26,8 @@ import { Card, cx } from '../components/ui'
 import { Jp } from '../components/Jp'
 
 export function PassiveListeningPage() {
-  const [activeTab, setActiveTab] = useState<'exam' | 'topic'>('exam')
+  const [activeTab, setActiveTab] = useState<'topic' | 'exam'>('topic')
+  const [megaMode, setMegaMode] = useState<'life' | 'exam'>('life')
   const currentPlaylist = usePassivePlayer((s) => s.playlist)
   const isPlaying = usePassivePlayer((s) => s.isPlaying)
   const trackIndex = usePassivePlayer((s) => s.trackIndex)
@@ -29,11 +35,13 @@ export function PassiveListeningPage() {
   const togglePlay = usePassivePlayer((s) => s.togglePlay)
   const setIsExpanded = usePassivePlayer((s) => s.setIsExpanded)
 
-  const megaMix = getMegaMixPlaylist()
+  const megaLife = getMegaRealLifePlaylist()
+  const megaExam = getMegaMixPlaylist()
+  const activeMega = megaMode === 'life' ? megaLife : megaExam
   const examPlaylists = getExamPlaylists()
   const topicPlaylists = getTopicPlaylists()
 
-  const isMegaPlaying = currentPlaylist?.id === megaMix.id && isPlaying
+  const isMegaPlaying = currentPlaylist?.id === activeMega.id && isPlaying
 
   return (
     <div className="space-y-8 pb-20">
@@ -53,84 +61,166 @@ export function PassiveListeningPage() {
         </p>
       </div>
 
-      {/* Featured Mega Mix Banner Card (Cấp tốc phục vụ kỳ thi Bài 8-11) */}
-      <Card className="relative overflow-hidden border-2 border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-orange-500/10 p-6 sm:p-7 shadow-md">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-black uppercase tracking-wider shadow-xs">
-              <Flame size={14} />
-              <span>Đề xuất cấp tốc cho kỳ thi</span>
+      {/* Featured Mega Mix Switcher & Card */}
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setMegaMode('life')}
+            className={cx(
+              'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-extrabold transition cursor-pointer',
+              megaMode === 'life'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'bg-surface border border-line text-sub hover:text-ink',
+            )}
+          >
+            <Sparkles size={16} />
+            <span>⭐ Mega Thực Chiến Đời Thường (Bài 1 – 11)</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setMegaMode('exam')}
+            className={cx(
+              'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-extrabold transition cursor-pointer',
+              megaMode === 'exam'
+                ? 'bg-amber-500 text-black shadow-md'
+                : 'bg-surface border border-line text-sub hover:text-ink',
+            )}
+          >
+            <Flame size={16} />
+            <span>🔥 Mega Cấp Tốc Ôn Thi (Bài 8 – 11)</span>
+          </button>
+        </div>
+
+        <Card
+          className={cx(
+            'relative overflow-hidden border-2 p-6 sm:p-7 shadow-md transition-all',
+            megaMode === 'life'
+              ? 'border-emerald-500/40 bg-gradient-to-br from-emerald-500/15 via-surface to-teal-500/10'
+              : 'border-amber-500/40 bg-gradient-to-br from-amber-500/15 via-surface to-orange-500/10',
+          )}
+        >
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="space-y-2 max-w-2xl">
+              <div
+                className={cx(
+                  'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider shadow-xs',
+                  megaMode === 'life' ? 'bg-emerald-600 text-white' : 'bg-amber-500 text-black',
+                )}
+              >
+                {megaMode === 'life' ? <Sparkles size={14} /> : <Flame size={14} />}
+                <span>{activeMega.badge}</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-ink">
+                {activeMega.titleVn}
+              </h2>
+              <p className="text-sm sm:text-base text-sub leading-relaxed font-medium">
+                {activeMega.description}
+              </p>
+              <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-sub font-semibold">
+                <span className="flex items-center gap-1">
+                  <ListMusic size={14} className={megaMode === 'life' ? 'text-emerald-500' : 'text-amber-500'} />
+                  <span>{activeMega.tracks.length} trường đoạn liên hoàn</span>
+                </span>
+                <span>·</span>
+                <span className="flex items-center gap-1">
+                  <Clock size={14} className={megaMode === 'life' ? 'text-emerald-500' : 'text-amber-500'} />
+                  <span>Khoảng 45 phút nghe</span>
+                </span>
+                <span>·</span>
+                <span className="flex items-center gap-1">
+                  <Languages size={14} className={megaMode === 'life' ? 'text-emerald-500' : 'text-amber-500'} />
+                  <span>Hỗ trợ Song ngữ & Chạy chữ Spotify</span>
+                </span>
+              </div>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-ink">
-              {megaMix.titleVn}
-            </h2>
-            <p className="text-sm sm:text-base text-sub leading-relaxed font-medium">
-              {megaMix.description}
-            </p>
-            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-sub font-semibold">
-              <span className="flex items-center gap-1">
-                <ListMusic size={14} className="text-amber-500" />
-                <span>{megaMix.tracks.length} track liên hoàn</span>
-              </span>
-              <span>·</span>
-              <span className="flex items-center gap-1">
-                <Clock size={14} className="text-amber-500" />
-                <span>Khoảng 40 phút nghe</span>
-              </span>
-              <span>·</span>
-              <span className="flex items-center gap-1">
-                <Languages size={14} className="text-amber-500" />
-                <span>Hỗ trợ Song ngữ & Chạy chữ Spotify</span>
-              </span>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  if (currentPlaylist?.id === activeMega.id) {
+                    togglePlay()
+                  } else {
+                    playPlaylist(activeMega, 0)
+                  }
+                }}
+                className={cx(
+                  'flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-extrabold text-base shadow-lg transition-all active:scale-95 cursor-pointer',
+                  megaMode === 'life'
+                    ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/25'
+                    : 'bg-amber-500 hover:bg-amber-400 text-black shadow-amber-500/25',
+                )}
+              >
+                {isMegaPlaying ? <Pause size={20} /> : <Play size={20} className={megaMode === 'life' ? 'fill-white' : 'fill-black'} />}
+                <span>{isMegaPlaying ? 'Tạm dừng nghe' : 'Phát Mega Mix ngay'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (currentPlaylist?.id !== activeMega.id) playPlaylist(activeMega, 0)
+                  setIsExpanded(true)
+                }}
+                className="px-4 py-3 rounded-2xl border border-line bg-surface/80 hover:bg-surface text-ink text-sm font-bold transition cursor-pointer"
+              >
+                Xem lời thoại Spotify
+              </button>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                if (currentPlaylist?.id === megaMix.id) {
-                  togglePlay()
-                } else {
-                  playPlaylist(megaMix, 0)
-                }
-              }}
-              className="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-base shadow-lg shadow-amber-500/25 transition-all active:scale-95 cursor-pointer"
-            >
-              {isMegaPlaying ? <Pause size={20} /> : <Play size={20} className="fill-black" />}
-              <span>{isMegaPlaying ? 'Tạm dừng nghe' : 'Phát Mega Mix ngay'}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                if (currentPlaylist?.id !== megaMix.id) playPlaylist(megaMix, 0)
-                setIsExpanded(true)
-              }}
-              className="px-4 py-3 rounded-2xl border border-amber-500/50 bg-surface/80 hover:bg-surface text-ink text-sm font-bold transition cursor-pointer"
-            >
-              Xem lời thoại đồng bộ
-            </button>
+          {/* Quick list of tracks inside this Mega Mix with direct Play & Interactive Roleplay links */}
+          <div className="mt-6 pt-5 border-t border-line/60">
+            <p className="text-xs font-bold uppercase tracking-wider text-sub mb-3">
+              Các trường đoạn trong Mega Mix (Bấm để nghe hoặc vào Luyện tương tác):
+            </p>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {activeMega.tracks.map((t, idx) => {
+                const isThisTrackPlaying = currentPlaylist?.id === activeMega.id && trackIndex === idx && isPlaying
+                return (
+                  <div
+                    key={t.id}
+                    className={cx(
+                      'flex items-center justify-between gap-3 p-3 rounded-xl border transition',
+                      currentPlaylist?.id === activeMega.id && trackIndex === idx
+                        ? 'bg-emerald-500/10 border-emerald-500/50 text-ink'
+                        : 'bg-surface/60 border-line hover:border-line/80 text-sub',
+                    )}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => playPlaylist(activeMega, idx)}
+                      className="flex items-center gap-2.5 text-left flex-1 min-w-0 cursor-pointer"
+                    >
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted text-xs font-bold text-ink">
+                        {isThisTrackPlaying ? <Volume2 size={15} className="text-emerald-500 animate-pulse" /> : idx + 1}
+                      </div>
+                      <div className="truncate">
+                        <p className="text-sm font-bold text-ink truncate">{t.titleVn}</p>
+                        <p className="text-xs text-sub truncate">{t.tag}</p>
+                      </div>
+                    </button>
+
+                    {megaMode === 'life' && (
+                      <Link
+                        to={`/kaiwa/cd00/${idx}`}
+                        className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 px-2.5 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 transition shrink-0"
+                        title="Vào luyện Shadowing / Nhập vai đối đáp 4 bước"
+                      >
+                        <Mic size={12} />
+                        <span>Luyện vai</span>
+                      </Link>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
 
       {/* Two Channels Switcher Tabs */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveTab('exam')}
-            className={cx(
-              'flex items-center gap-2 px-4 py-2 rounded-xl text-sm sm:text-base font-bold transition cursor-pointer',
-              activeTab === 'exam'
-                ? 'bg-amber-500 text-black shadow-xs'
-                : 'bg-muted text-sub hover:text-ink hover:bg-muted/80',
-            )}
-          >
-            <BookOpen size={16} />
-            <span>Kênh 1: Ôn thi theo bài (Bài 8 – 11)</span>
-          </button>
-
           <button
             type="button"
             onClick={() => setActiveTab('topic')}
@@ -142,7 +232,21 @@ export function PassiveListeningPage() {
             )}
           >
             <Store size={16} />
-            <span>Kênh 2: Chủ đề đời sống thực tế ({topicPlaylists.length} chủ đề)</span>
+            <span>Kênh 1: Chủ đề đời sống thực tế ({topicPlaylists.length} chủ đề)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('exam')}
+            className={cx(
+              'flex items-center gap-2 px-4 py-2 rounded-xl text-sm sm:text-base font-bold transition cursor-pointer',
+              activeTab === 'exam'
+                ? 'bg-amber-500 text-black shadow-xs'
+                : 'bg-muted text-sub hover:text-ink hover:bg-muted/80',
+            )}
+          >
+            <BookOpen size={16} />
+            <span>Kênh 2: Ôn thi theo bài ({examPlaylists.length} bài)</span>
           </button>
         </div>
 
@@ -153,9 +257,8 @@ export function PassiveListeningPage() {
 
       {/* Playlists Grid */}
       <div className="grid gap-5 md:grid-cols-2">
-        {(activeTab === 'exam' ? examPlaylists : topicPlaylists).map((pl) => {
+        {(activeTab === 'topic' ? topicPlaylists : examPlaylists).map((pl) => {
           const isThisActive = currentPlaylist?.id === pl.id
-          const isThisPlaying = isThisActive && isPlaying
 
           return (
             <Card
@@ -197,7 +300,7 @@ export function PassiveListeningPage() {
                   Nội dung danh sách phát:
                 </p>
                 <div className="space-y-1">
-                  {pl.tracks.slice(0, 3).map((t, idx) => (
+                  {pl.tracks.slice(0, 4).map((t, idx) => (
                     <div
                       key={t.id}
                       onClick={() => playPlaylist(pl, idx)}
@@ -216,45 +319,34 @@ export function PassiveListeningPage() {
                       )}
                     </div>
                   ))}
-                  {pl.tracks.length > 3 && (
+                  {pl.tracks.length > 4 && (
                     <p className="text-[11px] text-sub/60 pl-1.5">
-                      + thêm {pl.tracks.length - 3} track đàm thoại khác...
+                      + thêm {pl.tracks.length - 4} track đối thoại khác...
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Action Controls */}
-              <div className="pt-3 border-t border-line/60 flex items-center justify-between gap-2">
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => {
-                    if (isThisActive) {
-                      togglePlay()
-                    } else {
-                      playPlaylist(pl, 0)
-                    }
-                  }}
-                  className={cx(
-                    'flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition shadow-xs cursor-pointer',
-                    isThisPlaying
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20',
-                  )}
+                  onClick={() => playPlaylist(pl, 0)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition cursor-pointer"
                 >
-                  {isThisPlaying ? <Pause size={16} /> : <Play size={16} />}
-                  <span>{isThisPlaying ? 'Tạm dừng' : 'Bật playlist này'}</span>
+                  <Play size={14} className="fill-white" />
+                  <span>Phát danh sách</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => {
-                    if (!isThisActive) playPlaylist(pl, 0)
+                    if (currentPlaylist?.id !== pl.id) playPlaylist(pl, 0)
                     setIsExpanded(true)
                   }}
-                  className="px-3 py-1.5 rounded-xl border border-line hover:bg-muted text-xs font-semibold text-sub transition cursor-pointer"
+                  className="text-xs sm:text-sm font-semibold text-sub hover:text-ink transition cursor-pointer"
                 >
-                  Xem lời thoại
+                  Mở trình phát lời →
                 </button>
               </div>
             </Card>

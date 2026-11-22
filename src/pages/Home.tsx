@@ -167,17 +167,17 @@ export function Home() {
           <Card className="h-full p-5 sm:p-6 transition-all border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-surface to-surface hover:border-emerald-500 hover:shadow-lg">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider">
-                <Headphones size={13} /> Mới: Nghe thụ động
+                <Headphones size={13} /> Mới: Mega Bài 1–11
               </span>
               <span className="text-xs text-sub font-semibold group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition flex items-center gap-1">
-                Bật nghe ngay <ArrowRight size={14} />
+                Nghe ngay <ArrowRight size={14} />
               </span>
             </div>
             <h3 className="mt-3 text-xl font-bold text-ink group-hover:text-emerald-600 transition">
-              🎧 Nghe thụ động (Passive Listening)
+              🎧 Giao tiếp Đời thường (Bài 1–11)
             </h3>
             <p className="mt-1 text-sm text-sub">
-              Mega Mix ôn thi Bài 8-11 liên tục & 10 chủ đề đời sống thực tế kèm trình phát lời đồng bộ kiểu Spotify.
+              Đại tổng ôn thực chiến: 4 siêu kịch bản dày dặn (Trường học, Konbini, Tàu điện, Nhà trọ) kèm chạy chữ Spotify và chế độ nhập vai.
             </p>
           </Card>
         </Link>
