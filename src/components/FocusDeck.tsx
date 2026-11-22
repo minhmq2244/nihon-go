@@ -278,8 +278,6 @@ export function FocusDeck<T>({
     return () => window.removeEventListener('keydown', onKey)
   }, [showPickerModal])
 
-  if (!items.length) return null
-
   // Filter items for modal
   const indexedItems = useMemo(() => items.map((item, index) => ({ item, index })), [items])
   const filteredList = useMemo(() => {
@@ -291,6 +289,8 @@ export function FocusDeck<T>({
     }
     return indexedItems
   }, [indexedItems, filterTab, marks, keyOf])
+
+  if (!items.length) return null
 
   const renderPickerModal = () => (
     <div
