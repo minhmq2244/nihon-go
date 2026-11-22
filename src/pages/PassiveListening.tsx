@@ -13,7 +13,6 @@ import {
   ListMusic,
   Sparkles,
   Mic,
-  ArrowRight,
 } from 'lucide-react'
 import {
   getExamPlaylists,

@@ -14,7 +14,7 @@ import {
   Home as HomeIcon,
   BookOpen,
 } from 'lucide-react'
-import { VOL_NAMES, useIndex, unitLabel } from '../lib/data'
+import { useIndex, unitLabel } from '../lib/data'
 import { useUnitProgress } from '../lib/progressInfo'
 import { useProgress } from '../store/progress'
 import type { UnitMeta } from '../types'
@@ -244,7 +244,7 @@ export function Units() {
             </p>
           </div>
           <div className="flex gap-2.5">
-            <Button size="sm" variant="outline" onClick={() => setOverview(!overview)}>
+            <Button size="sm" variant="ghost" onClick={() => setOverview(!overview)}>
               {overview ? 'Ẩn' : 'Xem'} bảng phủ kiến thức
             </Button>
             <Link to="/exams/t4">
