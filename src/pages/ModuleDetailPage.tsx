@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, NavLink, useParams } from 'react-router-dom'
 import {
-  ArrowLeft,
   Check,
   CheckCircle2,
   Headphones,
@@ -11,10 +10,9 @@ import {
   Sparkles,
   Volume2,
   X,
-  Zap,
 } from 'lucide-react'
 import { Jp } from '../components/Jp'
-import { Button, Card, Empty, SpeakButton, cx } from '../components/ui'
+import { Button, Card, Chip, Empty, SpeakButton, cx } from '../components/ui'
 import { getModuleById, REAL_LIFE_MODULES } from '../lib/modulesData'
 import { usePassivePlayer } from '../store/passivePlayer'
 import { getPlaylistById } from '../lib/passiveListeningData'
@@ -22,51 +20,69 @@ import { DialoguePractice } from '../components/DialoguePractice'
 import { speak, stopSpeaking } from '../lib/speech'
 import type { Dialogue } from '../types'
 
-type MainTabKey = 'ly-thuyet' | 'listening' | 'dialogue' | 'quiz'
+export interface ModuleSection {
+  id: string
+  label: string
+  hint: string
+  tabs: readonly string[]
+  extra?: boolean
+}
+
+// The 6 standard sections matching UnitPage.tsx exactly:
+// 1. Học (Lý thuyết, Thẻ từ vựng)
+// 2. Luyện nghe (3 nấc thang: Từ & cụm -> Câu -> Hội thoại)
+// 3. Luyện nói (Phản xạ câu)
+// 4. Hội thoại (Kaiwa 4 bước)
+// 5. Đọc hiểu (Bài đọc ngữ cảnh)
+// 6. Bài tập thêm (Kiểm tra & Speed Quiz)
+export const MODULE_SECTIONS: readonly ModuleSection[] = [
+  { id: 'hoc', label: 'Học', hint: 'Lý thuyết và từ vựng', tabs: ['ly-thuyet', 'the', 'vocab', 'kanji', 'grammar'] },
+  { id: 'luyen-nghe', label: 'Luyện nghe', hint: '3 nấc: từ, câu, hội thoại', tabs: ['luyen-nghe', 'listening'] },
+  { id: 'luyen-noi', label: 'Luyện nói', hint: 'Phản xạ nói câu', tabs: ['luyen-noi', 'speaking'] },
+  { id: 'hoi-thoai', label: 'Hội thoại', hint: 'Kaiwa 4 bước theo tình huống', tabs: ['hoi-thoai', 'dialogue', 'kaiwa'] },
+  { id: 'doc', label: 'Đọc hiểu', hint: 'Bài đọc và hỏi đáp', tabs: ['doc'] },
+  { id: 'them', label: 'Bài tập thêm', hint: 'Ôn tập & Speed Quiz', tabs: ['kiem-tra', 'quiz'], extra: true },
+]
 
 export function ModuleDetailPage() {
   const { id = 'mod-01', tab = 'ly-thuyet' } = useParams()
-
-  // Map any alias or legacy tab to the unified 4-pillar ladder
-  const activeTab: MainTabKey = useMemo(() => {
-    if (['vocab', 'kanji', 'grammar', 'ly-thuyet'].includes(tab)) return 'ly-thuyet'
-    if (['listening', 'luyen-nghe'].includes(tab)) return 'listening'
-    if (['dialogue', 'kaiwa', 'hoi-thoai'].includes(tab)) return 'dialogue'
-    if (['quiz', 'kiem-tra'].includes(tab)) return 'quiz'
-    return 'ly-thuyet'
-  }, [tab])
-
-  // Sub-anchor for Theory Tab (1. Từ vựng -> 2. Kanji -> 3. Ngữ pháp)
-  const [theorySubStep, setTheorySubStep] = useState<'all' | 'vocab' | 'kanji' | 'grammar'>(() => {
-    if (tab === 'kanji') return 'kanji'
-    if (tab === 'grammar') return 'grammar'
-    if (tab === 'vocab') return 'vocab'
-    return 'all'
-  })
-
   const moduleData = getModuleById(id)
   const playPlaylist = usePassivePlayer((s) => s.playPlaylist)
 
-  // Sub-states for Vocab
+  // Map any tab to section
+  const currentSection = useMemo(() => {
+    const sec = MODULE_SECTIONS.find((s) => (s.tabs as readonly string[]).includes(tab))
+    return sec ?? MODULE_SECTIONS[0]
+  }, [tab])
+
+  // Sub-tab under "Học": 'ly-thuyet' or 'the' (flashcard)
+  const currentSubTab = tab === 'the' ? 'the' : 'ly-thuyet'
+
+  // Theory Tab States (like TheoryTab.tsx)
+  const [hideMean, setHideMean] = useState<boolean>(false)
+  const [hideWord, setHideWord] = useState<boolean>(false)
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [showMeaning, setShowMeaning] = useState<boolean>(true)
-  const [showWord, setShowWord] = useState<boolean>(true)
-  const [flashcardMode, setFlashcardMode] = useState<boolean>(false)
+
+  // Flashcard Tab States
   const [fcIndex, setFcIndex] = useState<number>(0)
   const [fcFlipped, setFcFlipped] = useState<boolean>(false)
 
-  // Sub-states for Luyện Nghe (3-level ladder)
+  // Luyện Nghe States (3 nấc thang: Từ & cụm -> Câu -> Hội thoại)
   const [listenLevel, setListenLevel] = useState<1 | 2 | 3>(1)
   const [listenIndex, setListenIndex] = useState<number>(0)
   const [listenRevealed, setListenRevealed] = useState<boolean>(false)
   const [listenSpeechRate, setListenSpeechRate] = useState<number>(1.0)
   const [listenMarks, setListenMarks] = useState<Record<string, 'ok' | 'bad'>>({})
 
-  // Listening Level 3 (Q&A) selection
+  // Luyện Nghe Level 3 Q&A States
   const [listeningAnswers, setListeningAnswers] = useState<Record<string, number>>({})
   const [listeningRevealedQA, setListeningRevealedQA] = useState<Record<string, boolean>>({})
 
-  // Sub-states for Quiz
+  // Luyện Nói (Speed Speaking) States
+  const [speakIndex, setSpeakIndex] = useState<number>(0)
+  const [speakRevealed, setSpeakRevealed] = useState<boolean>(false)
+
+  // Quiz States
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({})
   const [quizSubmitted, setQuizSubmitted] = useState<Record<string, boolean>>({})
 
@@ -126,35 +142,61 @@ export function ModuleDetailPage() {
     }
   }
 
-  // Handler for big play button in listening
+  // Handler for play audio
   const playCurrentListenItem = (text: string) => {
     stopSpeaking()
     void speak(text, { rate: listenSpeechRate })
   }
 
+  // Smooth scroll handler for sidebar links
+  const scrollTo = (e: React.MouseEvent, secId: string) => {
+    e.preventDefault()
+    document.getElementById(`sec-${secId}`)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
-    <div className="space-y-8 pb-16">
-      {/* 1. Header Bar: Breadcrumb + Module Prev/Next */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link
-          to="/units"
-          className="inline-flex items-center gap-1.5 text-sm sm:text-base font-bold text-sub hover:text-accent transition"
-        >
-          <ArrowLeft size={16} /> Lộ trình Module Thực Chiến
-        </Link>
-        <div className="flex items-center gap-2">
+    <div className="space-y-6 pb-20">
+      {/* 1. Top Header: Breadcrumb & Title Bar (Identical to UnitPage.tsx) */}
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <Link
+            to="/units"
+            className="inline-flex items-center gap-1 text-base font-semibold text-sub hover:text-accent transition"
+          >
+            ← Tất cả bài học
+          </Link>
+          <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold leading-tight text-ink">
+            <span className="mr-3 rounded-xl bg-accent-soft px-3 py-1 text-base sm:text-lg font-bold text-accent align-middle">
+              MODULE {moduleData.num} · N5
+            </span>
+            <Jp text={moduleData.titleJp} />
+          </h1>
+          <p className="mt-1.5 text-base sm:text-lg text-sub font-medium">{moduleData.titleVn} — {moduleData.subtitle}</p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-base font-semibold">
+          <button
+            type="button"
+            onClick={handleOpenPassivePlayer}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1.5 text-sm font-bold hover:bg-emerald-500/20 active:scale-95 transition cursor-pointer"
+            title="Bật nghe thụ động Spotify cho bài này"
+          >
+            <Headphones size={16} /> Nghe thụ động Spotify
+          </button>
           {prevModule && (
-            <Link to={`/module/${prevModule.id}/${activeTab}`}>
-              <Button size="sm" variant="ghost">
-                ← M0{prevModule.num}
-              </Button>
+            <Link
+              className="rounded-lg bg-surface border border-line px-3 py-1.5 text-sub hover:border-accent hover:text-accent transition text-sm"
+              to={`/module/${prevModule.id}/${tab}`}
+            >
+              ← M0{prevModule.num}
             </Link>
           )}
           {nextModule && (
-            <Link to={`/module/${nextModule.id}/${activeTab}`}>
-              <Button size="sm" variant="ghost">
-                M0{nextModule.num} →
-              </Button>
+            <Link
+              className="rounded-lg bg-surface border border-line px-3 py-1.5 text-sub hover:border-accent hover:text-accent transition text-sm"
+              to={`/module/${nextModule.id}/${tab}`}
+            >
+              M0{nextModule.num} →
             </Link>
           )}
         </div>
@@ -176,7 +218,7 @@ export function ModuleDetailPage() {
             return (
               <Link
                 key={m.id}
-                to={`/module/${m.id}/${activeTab}`}
+                to={`/module/${m.id}/${tab}`}
                 className={cx(
                   'flex flex-col items-center justify-center p-3 rounded-2xl border-2 text-center transition-all cursor-pointer shadow-xs',
                   isCurrent
@@ -199,204 +241,204 @@ export function ModuleDetailPage() {
         </div>
       </div>
 
-      {/* 3. Hero Module Banner */}
-      <div className={cx('rounded-3xl border-2 p-6 sm:p-8 shadow-sm bg-gradient-to-br', moduleData.accentColor)}>
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-3 max-w-3xl">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface text-ink text-xs font-black uppercase tracking-wider shadow-xs border border-line">
-                <Sparkles size={13} className="text-accent" /> {moduleData.badge}
-              </span>
-              <span className="rounded-full bg-surface/80 px-3 py-1 text-xs font-bold text-sub border border-line">
-                ⏱️ {moduleData.estimatedHours}
-              </span>
-            </div>
-
-            <h1 className="text-2xl sm:text-4xl font-black text-ink tracking-tight leading-snug">
-              {moduleData.titleVn}
-            </h1>
-            <p className="text-lg sm:text-xl font-bold text-sub">
-              <Jp text={moduleData.titleJp} />
-            </p>
-            <p className="text-base text-sub leading-relaxed">{moduleData.subtitle}</p>
-          </div>
-
-          <div className="flex flex-col gap-2.5 sm:items-end">
-            <Button
-              variant="cta"
-              size="md"
-              onClick={handleOpenPassivePlayer}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-md"
-            >
-              <Headphones size={18} /> Nghe thụ động Spotify
-            </Button>
-            <span className="text-xs text-sub font-semibold">Tự động phát lời đồng bộ 2 giọng nam nữ</span>
-          </div>
-        </div>
-
-        {/* 4 Pillars Summary */}
-        <div className="mt-6 pt-6 border-t border-line/60 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="bg-surface/70 rounded-2xl p-3 border border-line text-center">
-            <span className="text-xs font-bold text-sub block">📚 1. Lý thuyết tổng hợp</span>
-            <span className="text-lg font-extrabold text-ink">Từ vựng · Kanji · Ngữ pháp</span>
-          </div>
-          <div className="bg-surface/70 rounded-2xl p-3 border border-line text-center">
-            <span className="text-xs font-bold text-sub block">🎧 2. Luyện nghe phản xạ</span>
-            <span className="text-lg font-extrabold text-ink">3 Nấc thang chuẩn</span>
-          </div>
-          <div className="bg-surface/70 rounded-2xl p-3 border border-line text-center">
-            <span className="text-xs font-bold text-sub block">💬 3. Hội thoại Kaiwa</span>
-            <span className="text-lg font-extrabold text-ink">4 Bước nhập vai</span>
-          </div>
-          <div className="bg-surface/70 rounded-2xl p-3 border border-line text-center">
-            <span className="text-xs font-bold text-sub block">⚡ 4. Ôn tập & Quiz</span>
-            <span className="text-lg font-extrabold text-ink">{moduleData.quiz.length} câu phản xạ</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Sticky Tab Navigation Bar: Sequential Learning Ladder */}
-      <nav className="sticky top-16 z-20 -mx-4 border-b border-line bg-bg/95 px-4 py-2.5 backdrop-blur-md shadow-xs">
-        <div className="flex gap-2 overflow-x-auto pb-1 items-center">
-          {[
-            {
-              key: 'ly-thuyet' as MainTabKey,
-              label: '📚 1. Lý thuyết (Từ vựng · Kanji · Ngữ pháp)',
-              badge: `${moduleData.vocab.length} từ + ${moduleData.kanji.length} kanji + ${moduleData.grammar.length} mẫu`,
-            },
-            {
-              key: 'listening' as MainTabKey,
-              label: '🎧 2. Luyện nghe (3 Nấc thang)',
-              badge: '3 nấc phản xạ',
-            },
-            {
-              key: 'dialogue' as MainTabKey,
-              label: '💬 3. Hội thoại Kaiwa (4 Bước)',
-              badge: `${moduleData.dialogue.lines.length} lượt thoại`,
-            },
-            {
-              key: 'quiz' as MainTabKey,
-              label: '⚡ 4. Ôn tập & Quiz',
-              badge: `${moduleData.quiz.length} câu`,
-            },
-          ].map((t) => {
-            const isActive = activeTab === t.key
+      {/* 3. Sticky 6-Section Navigation Bar (Exact same layout as user's screenshot) */}
+      <nav className="no-print sticky top-16 z-20 -mx-4 border-b border-line bg-bg/95 px-4 py-3 backdrop-blur-md shadow-xs">
+        <div className="grid grid-cols-6 gap-1 sm:gap-2">
+          {MODULE_SECTIONS.map((sec, i) => {
+            const active = sec.id === currentSection.id
+            const targetTab = sec.tabs[0]
             return (
               <Link
-                key={t.key}
-                to={`/module/${moduleData.id}/${t.key}`}
+                key={sec.id}
+                to={`/module/${moduleData.id}/${targetTab}`}
+                title={sec.hint}
                 className={cx(
-                  'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-extrabold whitespace-nowrap transition cursor-pointer',
-                  isActive
+                  'flex min-w-0 flex-col items-center gap-1 rounded-xl px-1 py-2 text-center transition lg:flex-row lg:justify-center lg:gap-2 lg:px-2',
+                  active
                     ? 'bg-accent text-white shadow-sm'
-                    : 'bg-surface border border-line text-sub hover:text-ink hover:border-accent/40',
+                    : sec.extra
+                      ? 'border border-dashed border-line text-sub hover:border-accent/50 hover:text-ink'
+                      : 'bg-surface text-ink ring-1 ring-line hover:ring-accent/40',
                 )}
               >
-                <span>{t.label}</span>
                 <span
                   className={cx(
-                    'px-2 py-0.5 rounded-full text-xs font-black',
-                    isActive ? 'bg-white/25 text-white' : 'bg-muted text-sub',
+                    'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-bold',
+                    active ? 'bg-white/25 text-white' : 'bg-muted text-sub',
                   )}
                 >
-                  {t.badge}
+                  {sec.extra ? '+' : i + 1}
+                </span>
+                <span className={cx('text-xs leading-tight sm:text-sm', active ? 'font-bold' : 'font-semibold')}>
+                  {sec.label}
                 </span>
               </Link>
             )
           })}
         </div>
+
+        {/* Sub-tabs under "1. Học" (Lý thuyết ● and Thẻ từ vựng) */}
+        {currentSection.id === 'hoc' && (
+          <div className="mt-2.5 flex gap-1 overflow-x-auto [scrollbar-width:none]">
+            <NavLink
+              to={`/module/${moduleData.id}/ly-thuyet`}
+              className={cx(
+                'shrink-0 rounded-lg px-3 py-1.5 text-[15px] transition font-semibold cursor-pointer flex items-center gap-1.5',
+                currentSubTab === 'ly-thuyet'
+                  ? 'bg-accent-soft font-bold text-accent'
+                  : 'text-sub hover:bg-muted hover:text-ink',
+              )}
+            >
+              <span>Lý thuyết</span>
+              <span className="inline-block h-2 w-2 rounded-full bg-accent" />
+            </NavLink>
+            <NavLink
+              to={`/module/${moduleData.id}/the`}
+              className={cx(
+                'shrink-0 rounded-lg px-3 py-1.5 text-[15px] transition font-semibold cursor-pointer',
+                currentSubTab === 'the'
+                  ? 'bg-accent-soft font-bold text-accent'
+                  : 'text-sub hover:bg-muted hover:text-ink',
+              )}
+            >
+              Thẻ từ vựng
+            </NavLink>
+          </div>
+        )}
       </nav>
 
-      {/* ============================================================ */}
-      {/* NẤC THANG 1: LÝ THUYẾT THEO NẤC THANG CHUẨN (TỪ VỰNG -> KANJI -> NGỮ PHÁP) */}
-      {/* ============================================================ */}
-      {activeTab === 'ly-thuyet' && (
-        <section className="space-y-10">
-          {/* Sub-ladder Jump Selector Bar */}
-          <div className="sticky top-28 z-10 bg-surface/90 backdrop-blur-md p-3 rounded-2xl border border-line shadow-xs flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-black uppercase tracking-wider text-accent mr-1">
-                LÝ THUYẾT NẤC THANG:
-              </span>
-              {[
-                { id: 'all' as const, label: '📖 Toàn bộ Lý thuyết' },
-                { id: 'vocab' as const, label: `📝 1. Từ vựng (${moduleData.vocab.length})` },
-                { id: 'kanji' as const, label: `🀄 2. Kanji (${moduleData.kanji.length})` },
-                { id: 'grammar' as const, label: `📐 3. Ngữ pháp (${moduleData.grammar.length})` },
-              ].map((step) => (
-                <button
-                  key={step.id}
-                  type="button"
-                  onClick={() => setTheorySubStep(step.id)}
-                  className={cx(
-                    'px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer',
-                    theorySubStep === step.id
-                      ? 'bg-accent text-white shadow-xs'
-                      : 'bg-muted text-sub hover:text-ink',
-                  )}
+      {/* ======================================================================= */}
+      {/* 4. TAB 1: HỌC - SUB-TAB: LÝ THUYẾT (Exact same 2-column format as TheoryTab) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'hoc' && currentSubTab === 'ly-thuyet' && (
+        <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+          {/* Left Column: Aside Sidebar Outline Navigation (Exact match to screenshot) */}
+          <aside className="no-print hidden lg:block">
+            <div className="sticky top-32 space-y-1.5 text-base">
+              <a
+                href="#sec-overview"
+                onClick={(e) => scrollTo(e, 'overview')}
+                className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition"
+              >
+                1. Mục tiêu
+              </a>
+              <div className="space-y-1">
+                <a
+                  href="#sec-vocab"
+                  onClick={(e) => scrollTo(e, 'vocab')}
+                  className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition"
                 >
-                  {step.label}
-                </button>
-              ))}
+                  2. Từ vựng theo tình huống ({moduleData.vocab.length} từ – M0{moduleData.num})
+                </a>
+              </div>
+              <div className="space-y-1">
+                <a
+                  href="#sec-kanji"
+                  onClick={(e) => scrollTo(e, 'kanji')}
+                  className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition"
+                >
+                  3. Kanji ({moduleData.kanji.length} chữ: Chuẩn N5/N4)
+                </a>
+                <a
+                  href="#sec-kanji-readings"
+                  onClick={(e) => scrollTo(e, 'kanji')}
+                  className="ml-3 flex items-center gap-1.5 rounded-lg bg-accent-soft/60 px-2.5 py-1 text-xs font-bold text-accent hover:bg-accent hover:text-white transition"
+                >
+                  <span>📖 Từ ghép & Luyện đọc</span>
+                </a>
+              </div>
+              <a
+                href="#sec-grammar"
+                onClick={(e) => scrollTo(e, 'grammar')}
+                className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition"
+              >
+                4. Ngữ pháp ({moduleData.grammar.length} cấu trúc trọng tâm)
+              </a>
+              <a
+                href="#sec-phrases"
+                onClick={(e) => scrollTo(e, 'phrases')}
+                className="block rounded-lg px-3 py-1.5 text-sub hover:bg-muted hover:text-ink font-medium transition"
+              >
+                5. Mẫu câu theo vai (Tình huống thực tế)
+              </a>
+            </div>
+          </aside>
+
+          {/* Right Column: Main Content Cards (Exact match to screenshot) */}
+          <div className="min-w-0 space-y-6">
+            {/* Card 1: Overview Scope Card (Format giống hệt screenshot) */}
+            <Card className="p-6">
+              <div className="text-base text-sub leading-relaxed space-y-2">
+                <p>
+                  <strong className="text-ink">Phạm vi: </strong>
+                  Tổng ôn {moduleData.titleVn} · {moduleData.grammar.map((g) => g.title).join(' · ')} · {moduleData.vocab.length} từ mới · {moduleData.kanji.length} kanji mới
+                </p>
+                <p className="text-sm">
+                  <strong className="text-ink">Ghi chú: </strong>
+                  Toàn bộ chữ Hán đều được chuẩn hóa nằm trong phạm vi N5/N4. Các từ vựng ngoài N4 đều được ghi bằng chữ Hiragana/Katakana chuẩn bản xứ để không gây gánh nặng học tập.
+                </p>
+              </div>
+              <p className="mt-3 text-sm font-medium text-sub">
+                💡 Mẹo: bấm vào từ tiếng Nhật trong bảng từ vựng để nghe phát âm.
+              </p>
+            </Card>
+
+            {/* Card 2: Special Focus Banner (Like Verbs banner in screenshot) */}
+            <Card className="border-2 border-emerald-500/40 bg-gradient-to-r from-emerald-500/10 to-surface p-5 flex flex-wrap items-center justify-between gap-4 shadow-xs">
+              <div>
+                <span className="inline-block rounded-full bg-emerald-600 text-white text-xs font-bold px-2.5 py-0.5 mb-1.5">
+                  Thực hành nấc thang
+                </span>
+                <h3 className="text-lg font-extrabold text-ink">
+                  Luyện Nghe 3 Nấc Thang & Hội Thoại Kaiwa 4 Bước
+                </h3>
+                <p className="text-sm text-sub mt-0.5">
+                  Học xong lý thuyết hãy lên nấc thang luyện nghe bắt tai và nhập vai phản xạ tự nhiên.
+                </p>
+              </div>
+              <Link
+                to={`/module/${moduleData.id}/luyen-nghe`}
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white shadow-xs hover:bg-emerald-500 transition cursor-pointer"
+              >
+                Vào luyện nghe ngay →
+              </Link>
+            </Card>
+
+            {/* 1. MỤC TIÊU */}
+            <div id="sec-overview" className="scroll-mt-32">
+              <Card className="p-6 sm:p-7 space-y-3">
+                <h2 className="text-2xl font-bold text-ink">1. Mục tiêu</h2>
+                <div className="space-y-2 text-base text-sub leading-relaxed">
+                  <p>• Làm chủ toàn diện ngữ cảnh giao tiếp: <strong className="text-ink">{moduleData.subtitle}</strong>.</p>
+                  <p>• Nắm chắc {moduleData.vocab.length} từ vựng then chốt và {moduleData.kanji.length} chữ Hán N5/N4 thông dụng.</p>
+                  <p>• Vận dụng linh hoạt {moduleData.grammar.length} cấu trúc ngữ pháp vào đối đáp đời thường không cần dịch nhẩm.</p>
+                </div>
+              </Card>
             </div>
 
-            {/* Quick action buttons like old format: Che từ, Che nghĩa */}
-            {(theorySubStep === 'all' || theorySubStep === 'vocab') && (
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowMeaning(!showMeaning)}
-                  className={cx(
-                    'px-2.5 py-1 rounded-lg border text-xs font-bold transition cursor-pointer',
-                    !showMeaning ? 'border-accent bg-accent/15 text-accent' : 'border-line text-sub hover:text-ink',
-                  )}
-                >
-                  {showMeaning ? 'Che nghĩa' : 'Hiện nghĩa'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowWord(!showWord)}
-                  className={cx(
-                    'px-2.5 py-1 rounded-lg border text-xs font-bold transition cursor-pointer',
-                    !showWord ? 'border-accent bg-accent/15 text-accent' : 'border-line text-sub hover:text-ink',
-                  )}
-                >
-                  {showWord ? 'Che từ' : 'Hiện từ'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFlashcardMode(!flashcardMode)
-                    setFcIndex(0)
-                    setFcFlipped(false)
-                  }}
-                  className={cx(
-                    'px-2.5 py-1 rounded-lg text-xs font-extrabold transition cursor-pointer flex items-center gap-1',
-                    flashcardMode ? 'bg-amber-500 text-black' : 'border border-line text-sub hover:text-ink',
-                  )}
-                >
-                  <Zap size={13} />
-                  <span>{flashcardMode ? 'Bảng từ' : 'Flashcard'}</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* 1.1 TỪ VỰNG TRỌNG TÂM */}
-          {(theorySubStep === 'all' || theorySubStep === 'vocab') && (
-            <div id="sec-vocab" className="space-y-5">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
-                <div className="space-y-1">
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-black uppercase">
-                    Nấc 1 · Từ vựng thực tế đời thường
-                  </span>
-                  <h2 className="text-2xl font-black text-ink">
-                    Bảng Từ Vựng Trọng Tâm ({moduleData.vocab.length} từ)
-                  </h2>
+            {/* 2. TỪ VỰNG THEO TÌNH HUỐNG */}
+            <div id="sec-vocab" className="scroll-mt-32">
+              <Card className="p-6 sm:p-7 space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
+                  <div>
+                    <h2 className="text-2xl font-bold text-ink">
+                      2. Từ vựng theo tình huống ({moduleData.vocab.length} từ – M0{moduleData.num})
+                    </h2>
+                    <p className="text-sm text-sub">Bấm vào từ tiếng Nhật để nghe giọng đọc bản xứ.</p>
+                  </div>
+                  <div className="no-print flex gap-2">
+                    <Chip active={hideMean} onClick={() => setHideMean(!hideMean)}>
+                      Che nghĩa
+                    </Chip>
+                    <Chip active={hideWord} onClick={() => setHideWord(!hideWord)}>
+                      Che từ
+                    </Chip>
+                  </div>
                 </div>
 
                 {/* Categories filter */}
                 <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-xs font-bold text-sub mr-1">Chủ đề:</span>
                   {categories.map((c) => (
                     <button
                       key={c}
@@ -413,308 +455,364 @@ export function ModuleDetailPage() {
                     </button>
                   ))}
                 </div>
-              </div>
 
-              {/* Flashcard Mode */}
-              {flashcardMode ? (
-                <div className="max-w-xl mx-auto space-y-4">
-                  <div className="flex items-center justify-between text-sm font-bold text-sub">
-                    <span>
-                      Thẻ {fcIndex + 1} / {filteredVocab.length}
-                    </span>
-                    <span className="text-xs bg-muted px-2.5 py-1 rounded-full">
-                      {filteredVocab[fcIndex]?.category}
-                    </span>
-                  </div>
+                {(hideMean || hideWord) && (
+                  <p className="text-sm text-accent font-semibold">💡 Bấm vào ô bị che để xem đáp án.</p>
+                )}
 
-                  <div
-                    onClick={() => setFcFlipped(!fcFlipped)}
-                    className="h-64 rounded-3xl border-2 border-accent/40 bg-gradient-to-br from-surface to-accent/5 p-8 flex flex-col items-center justify-center text-center cursor-pointer shadow-lg hover:border-accent transition select-none"
-                  >
-                    {!fcFlipped ? (
-                      <div className="space-y-4">
-                        <p className="text-3xl sm:text-4xl font-black text-ink">
-                          <Jp text={filteredVocab[fcIndex]?.jp || ''} />
-                        </p>
-                        <p className="text-sm font-mono text-sub">{filteredVocab[fcIndex]?.romaji}</p>
-                        <p className="text-xs font-semibold text-accent mt-4">👉 Chạm để lật xem nghĩa</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <p className="text-2xl sm:text-3xl font-extrabold text-ink">
-                          {filteredVocab[fcIndex]?.vn}
-                        </p>
-                        {filteredVocab[fcIndex]?.example && (
-                          <div className="mt-4 pt-4 border-t border-line/60 text-left">
-                            <p className="text-sm font-bold text-accent">
-                              <Jp text={filteredVocab[fcIndex].example!.jp} />
-                            </p>
-                            <p className="text-xs text-sub">{filteredVocab[fcIndex].example!.vn}</p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                {/* Vocab List Table Layout */}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {filteredVocab.map((v) => {
+                    const [wordRevealed, setWordRevealed] = useState(false)
+                    const [meanRevealed, setMeanRevealed] = useState(false)
 
-                  <div className="flex items-center justify-between gap-3">
-                    <Button
-                      size="md"
-                      variant="ghost"
-                      disabled={fcIndex === 0}
-                      onClick={() => {
-                        setFcIndex((prev) => Math.max(0, prev - 1))
-                        setFcFlipped(false)
-                      }}
-                    >
-                      ← Thẻ trước
-                    </Button>
+                    const isWordHidden = hideWord && !wordRevealed
+                    const isMeanHidden = hideMean && !meanRevealed
 
-                    <SpeakButton text={filteredVocab[fcIndex]?.jp || ''} />
-
-                    <Button
-                      size="md"
-                      variant="primary"
-                      onClick={() => {
-                        if (fcIndex < filteredVocab.length - 1) {
-                          setFcIndex((prev) => prev + 1)
-                          setFcFlipped(false)
-                        } else {
-                          setFlashcardMode(false)
-                        }
-                      }}
-                    >
-                      {fcIndex < filteredVocab.length - 1 ? 'Thẻ tiếp theo →' : 'Hoàn thành 🎉'}
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                /* Vocab Cards List (Format chuẩn nấc thang như cũ) */
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {filteredVocab.map((v) => (
-                    <Card key={v.id} className="p-5 flex flex-col justify-between space-y-3 hover:border-accent/40 transition">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-muted text-sub">
+                    return (
+                      <div
+                        key={v.id}
+                        className="rounded-xl border border-line bg-surface p-4 flex flex-col justify-between space-y-2 hover:border-accent/40 transition"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-muted text-sub">
                             {v.category}
                           </span>
                           <SpeakButton text={v.jp} />
                         </div>
 
-                        {showWord ? (
-                          <>
-                            <p className="text-xl sm:text-2xl font-black text-ink">
-                              <Jp text={v.jp} />
+                        <div className="space-y-1">
+                          {isWordHidden ? (
+                            <div
+                              onClick={() => setWordRevealed(true)}
+                              className="py-2 bg-muted/60 rounded-lg text-center text-xs font-bold text-sub cursor-pointer hover:bg-muted"
+                            >
+                              [Bấm để xem từ]
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => void speak(v.jp)}
+                              className="text-left group cursor-pointer"
+                            >
+                              <p className="text-xl sm:text-2xl font-black text-ink group-hover:text-accent transition">
+                                <Jp text={v.jp} />
+                              </p>
+                              <p className="text-xs font-mono text-sub">{v.romaji}</p>
+                            </button>
+                          )}
+
+                          {isMeanHidden ? (
+                            <div
+                              onClick={() => setMeanRevealed(true)}
+                              className="py-1.5 bg-muted/60 rounded-lg text-center text-xs font-semibold text-sub cursor-pointer hover:bg-muted"
+                            >
+                              [Bấm để xem nghĩa]
+                            </div>
+                          ) : (
+                            <p className="text-base font-bold text-ink/90 pt-1 border-t border-line/40">
+                              {v.vn}
                             </p>
-                            <p className="text-xs font-mono text-sub">{v.romaji}</p>
-                          </>
-                        ) : (
-                          <div
-                            onClick={() => setShowWord(true)}
-                            className="py-3 px-4 bg-muted/60 rounded-xl text-center text-xs text-sub font-bold cursor-pointer hover:bg-muted"
-                          >
-                            [Chạm để hiện từ tiếng Nhật]
-                          </div>
-                        )}
+                          )}
+                        </div>
 
-                        {showMeaning ? (
-                          <p className="text-base font-bold text-ink/90 pt-1 border-t border-line/40">
-                            {v.vn}
-                          </p>
-                        ) : (
-                          <div
-                            onClick={() => setShowMeaning(true)}
-                            className="py-2 px-3 bg-muted/60 rounded-lg text-center text-xs text-sub font-semibold cursor-pointer hover:bg-muted"
-                          >
-                            [Chạm để hiện nghĩa]
+                        {v.example && (
+                          <div className="pt-2 border-t border-line/40 text-xs text-sub space-y-1 bg-muted/20 p-2 rounded-lg">
+                            <div className="flex items-start justify-between gap-1">
+                              <span className="font-bold text-accent">
+                                <Jp text={v.example.jp} />
+                              </span>
+                              <SpeakButton text={v.example.jp} className="h-5 w-5" />
+                            </div>
+                            <p className="text-sub/90">{v.example.vn}</p>
                           </div>
                         )}
                       </div>
-
-                      {v.example && (
-                        <div className="pt-2 border-t border-line/50 text-xs text-sub space-y-1 bg-muted/30 p-2.5 rounded-xl">
-                          <div className="flex items-start justify-between gap-1">
-                            <span className="font-bold text-accent">
-                              <Jp text={v.example.jp} />
-                            </span>
-                            <SpeakButton text={v.example.jp} className="h-6 w-6" />
-                          </div>
-                          <p className="text-sub/90">{v.example.vn}</p>
-                        </div>
-                      )}
-                    </Card>
-                  ))}
+                    )
+                  })}
                 </div>
-              )}
+              </Card>
             </div>
-          )}
 
-          {/* 1.2 KANJI THỰC CHIẾN (CHUẨN N5/N4) */}
-          {(theorySubStep === 'all' || theorySubStep === 'kanji') && (
-            <div id="sec-kanji" className="space-y-5 pt-6 border-t border-line">
-              <div className="space-y-1 border-b border-line pb-3">
-                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 text-xs font-black uppercase">
-                  Nấc 2 · Chữ Hán & Từ Ghép Đời Sống
-                </span>
-                <h2 className="text-2xl font-black text-ink">
-                  12 Chữ Hán Kanji Trọng Tâm (Chuẩn N5/N4)
-                </h2>
-                <p className="text-sm text-sub">
-                  Mỗi chữ đi kèm âm Hán Việt, số nét và các từ ghép thực chiến hay gặp ngoài đời.
-                </p>
-              </div>
+            {/* 3. KANJI THỰC CHIẾN (CHUẨN N5/N4) */}
+            <div id="sec-kanji" className="scroll-mt-32">
+              <Card className="p-6 sm:p-7 space-y-5">
+                <div className="border-b border-line pb-3">
+                  <h2 className="text-2xl font-bold text-ink">
+                    3. Kanji ({moduleData.kanji.length} chữ: Chuẩn N5/N4)
+                  </h2>
+                  <p className="text-sm text-sub">Chữ Hán đơn kèm các từ ghép thực tế đời thường.</p>
+                </div>
 
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {moduleData.kanji.map((k) => (
-                  <Card key={k.char} className="p-5 space-y-4 hover:border-amber-500/40 transition">
-                    <div className="flex items-start justify-between gap-3 border-b border-line pb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="h-16 w-16 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center text-4xl font-black text-amber-600 dark:text-amber-400 shadow-xs">
-                          {k.char}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {moduleData.kanji.map((k) => (
+                    <div
+                      key={k.char}
+                      className="rounded-2xl border border-line bg-surface p-4 space-y-3 hover:border-amber-500/40 transition"
+                    >
+                      <div className="flex items-start justify-between gap-2 border-b border-line pb-2.5">
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => void speak(k.char)}
+                            className="h-14 w-14 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-3xl font-black text-amber-600 dark:text-amber-400 hover:scale-105 active:scale-95 transition cursor-pointer"
+                          >
+                            {k.char}
+                          </button>
+                          <div>
+                            <p className="text-lg font-black text-ink">{k.hanviet}</p>
+                            <p className="text-xs text-sub">{k.strokes} nét · {k.meaning}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-xl font-black text-ink">{k.hanviet}</p>
-                          <p className="text-xs text-sub">{k.strokes} nét</p>
-                          <p className="text-xs font-semibold text-accent mt-0.5">{k.meaning}</p>
-                        </div>
+                        <SpeakButton text={k.char} />
                       </div>
-                      <SpeakButton text={k.char} />
-                    </div>
 
-                    <div className="rounded-xl bg-muted/60 p-2.5 text-xs space-y-1">
-                      <p className="font-mono text-sub">
-                        <span className="font-bold text-ink">Âm: </span>
-                        {k.onkun}
-                      </p>
-                    </div>
+                      <div className="rounded-lg bg-muted/60 p-2 text-xs">
+                        <p className="font-mono text-sub">
+                          <span className="font-bold text-ink">Âm: </span>{k.onkun}
+                        </p>
+                      </div>
 
-                    <div className="space-y-2">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-sub block">
-                        Từ ghép thực chiến:
-                      </span>
-                      <div className="space-y-1.5">
+                      <div className="space-y-1.5 text-xs">
+                        <span className="font-bold text-sub uppercase tracking-wider block text-[10px]">
+                          Từ ghép thực tế:
+                        </span>
                         {k.compounds.map((comp, compIdx) => (
                           <div
                             key={compIdx}
-                            className="flex items-center justify-between text-xs p-2 rounded-lg bg-surface border border-line"
+                            className="flex items-center justify-between p-1.5 rounded-lg bg-muted/30 border border-line/60"
                           >
                             <div>
-                              <span className="font-bold text-ink mr-2">
+                              <span className="font-bold text-ink mr-1.5">
                                 <Jp text={comp.jp} />
                               </span>
                               <span className="text-sub">({comp.vn})</span>
                             </div>
-                            <SpeakButton text={comp.jp} className="h-6 w-6" />
+                            <SpeakButton text={comp.jp} className="h-5 w-5" />
                           </div>
                         ))}
                       </div>
                     </div>
-                  </Card>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </Card>
             </div>
-          )}
 
-          {/* 1.3 NGỮ PHÁP TRỌNG TÂM */}
-          {(theorySubStep === 'all' || theorySubStep === 'grammar') && (
-            <div id="sec-grammar" className="space-y-5 pt-6 border-t border-line">
-              <div className="space-y-1 border-b border-line pb-3">
-                <span className="px-2.5 py-0.5 rounded-full bg-accent-soft text-accent text-xs font-black uppercase">
-                  Nấc 3 · Cấu Trúc Ngữ Pháp Ứng Dụng
-                </span>
-                <h2 className="text-2xl font-black text-ink">
-                  5 Cấu Trúc Ngữ Pháp Đời Thường (Tokyo Real-life)
-                </h2>
-                <p className="text-sm text-sub">
-                  Kèm công thức ghép từ, giải thích dễ hiểu, mẹo văn nói đời thường và ví dụ âm thanh.
-                </p>
-              </div>
+            {/* 4. NGỮ PHÁP TRỌNG TÂM */}
+            <div id="sec-grammar" className="scroll-mt-32">
+              <Card className="p-6 sm:p-7 space-y-6">
+                <div className="border-b border-line pb-3">
+                  <h2 className="text-2xl font-bold text-ink">
+                    4. Ngữ pháp ({moduleData.grammar.length} cấu trúc trọng tâm)
+                  </h2>
+                  <p className="text-sm text-sub">Công thức ghép từ, ý nghĩa, giải thích cách dùng và câu ví dụ âm thanh.</p>
+                </div>
 
-              <div className="grid gap-6">
-                {moduleData.grammar.map((g, idx) => (
-                  <Card key={g.id} className="p-6 sm:p-7 space-y-4 border-2 hover:border-accent/30 transition">
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="h-8 w-8 rounded-xl bg-accent text-white font-black text-sm flex items-center justify-center">
-                          #{idx + 1}
+                <div className="space-y-6">
+                  {moduleData.grammar.map((g, idx) => (
+                    <div
+                      key={g.id}
+                      className="rounded-2xl border border-line bg-surface p-5 space-y-3.5 hover:border-accent/40 transition"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="h-7 w-7 rounded-lg bg-accent text-white font-black text-xs flex items-center justify-center">
+                            #{idx + 1}
+                          </span>
+                          <h3 className="text-xl font-black text-ink">{g.title}</h3>
+                        </div>
+                        <span className="px-2.5 py-0.5 rounded-full bg-accent-soft text-accent text-xs font-extrabold uppercase">
+                          Trọng tâm
                         </span>
-                        <h3 className="text-xl sm:text-2xl font-black text-ink">{g.title}</h3>
                       </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-extrabold uppercase">
-                        Cấu trúc trọng tâm
-                      </span>
-                    </div>
 
-                    <div className="rounded-2xl bg-muted/60 p-4 border border-line">
-                      <span className="text-xs font-bold uppercase tracking-wider text-sub block mb-1">
-                        📐 Công thức ghép từ:
-                      </span>
-                      <p className="text-base sm:text-lg font-mono font-bold text-ink">{g.formula}</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="text-base sm:text-lg font-bold text-ink">
-                        <span className="text-sub">Ý nghĩa: </span> {g.meaning}
-                      </p>
-                      <p className="text-sm sm:text-base text-sub leading-relaxed">{g.usageNote}</p>
-                    </div>
-
-                    <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 space-y-1">
-                      <div className="flex items-center gap-1.5 text-xs font-black uppercase text-amber-600 dark:text-amber-400">
-                        <Lightbulb size={16} /> Bật mí văn nói đời thường ngoài đời
+                      <div className="rounded-xl bg-muted/60 p-3 border border-line">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-sub block mb-0.5">
+                          📐 Công thức:
+                        </span>
+                        <p className="text-base font-mono font-bold text-ink">{g.formula}</p>
                       </div>
-                      <p className="text-sm sm:text-base font-medium text-ink leading-relaxed">
-                        {g.spokenTip}
-                      </p>
-                    </div>
 
-                    <div className="space-y-3 pt-2">
-                      <span className="text-xs font-bold uppercase tracking-wider text-sub block">
-                        Ví dụ hội thoại thực tế:
-                      </span>
-                      <div className="grid gap-2.5">
-                        {g.examples.map((ex, exIdx) => (
-                          <div
-                            key={exIdx}
-                            className="rounded-xl bg-surface border border-line p-3 flex items-start justify-between gap-3"
-                          >
-                            <div className="space-y-1">
-                              <p className="text-base sm:text-lg font-bold text-ink">
-                                <Jp text={ex.jp} />
-                              </p>
-                              <p className="text-sm text-sub">{ex.vn}</p>
+                      <div className="space-y-1.5 text-base">
+                        <p className="font-bold text-ink">
+                          <span className="text-sub">Ý nghĩa: </span> {g.meaning}
+                        </p>
+                        <p className="text-sm text-sub leading-relaxed">{g.usageNote}</p>
+                      </div>
+
+                      <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 space-y-1">
+                        <div className="flex items-center gap-1.5 text-xs font-black uppercase text-amber-600 dark:text-amber-400">
+                          <Lightbulb size={15} /> Bật mí văn nói đời thường ngoài đời:
+                        </div>
+                        <p className="text-sm font-medium text-ink leading-relaxed">
+                          {g.spokenTip}
+                        </p>
+                      </div>
+
+                      <div className="space-y-2 pt-1">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-sub block">
+                          Ví dụ hội thoại thực tế:
+                        </span>
+                        <div className="grid gap-2">
+                          {g.examples.map((ex, exIdx) => (
+                            <div
+                              key={exIdx}
+                              className="rounded-xl bg-muted/30 border border-line p-3 flex items-start justify-between gap-3"
+                            >
+                              <div className="space-y-0.5">
+                                <p className="text-base font-bold text-ink">
+                                  <Jp text={ex.jp} />
+                                </p>
+                                <p className="text-xs text-sub">{ex.vn}</p>
+                              </div>
+                              <SpeakButton text={ex.jp} />
                             </div>
-                            <SpeakButton text={ex.jp} />
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </Card>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </Card>
             </div>
-          )}
 
-          {/* Bottom CTA to move to Stage 2: Luyện nghe */}
-          <div className="pt-6 border-t border-line text-center">
-            <Link to={`/module/${moduleData.id}/listening`}>
-              <Button variant="primary" size="lg" className="shadow-md">
-                Lên nấc thang 2: Luyện nghe phản xạ (3 Nấc) 🎧 →
-              </Button>
-            </Link>
+            {/* 5. MẪU CÂU THEO VAI */}
+            <div id="sec-phrases" className="scroll-mt-32">
+              <Card className="p-6 sm:p-7 space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
+                  <div>
+                    <h2 className="text-2xl font-bold text-ink">5. Mẫu câu theo vai (Tình huống thực tế)</h2>
+                    <p className="text-sm text-sub">{moduleData.dialogue.title} · {moduleData.dialogue.scene}</p>
+                  </div>
+                  <Link
+                    to={`/module/${moduleData.id}/hoi-thoai`}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-3 py-1.5 text-xs font-bold text-white hover:brightness-110 transition cursor-pointer"
+                  >
+                    Vào luyện Kaiwa 4 bước →
+                  </Link>
+                </div>
+
+                <div className="space-y-2.5">
+                  {moduleData.dialogue.lines.map((l, lIdx) => (
+                    <div
+                      key={lIdx}
+                      className="p-3.5 rounded-xl border border-line bg-surface flex items-start justify-between gap-3"
+                    >
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-accent">
+                          {l.name ?? l.speaker}:
+                        </span>
+                        <p className="text-lg font-bold text-ink leading-relaxed">
+                          <Jp text={l.jp} />
+                        </p>
+                        <p className="text-sm text-sub">{l.vn}</p>
+                      </div>
+                      <SpeakButton text={l.jp} />
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+
+            {/* Bottom Next Step Link */}
+            <div className="pt-6 border-t border-line text-center">
+              <Link to={`/module/${moduleData.id}/luyen-nghe`}>
+                <Button variant="primary" size="lg" className="shadow-md">
+                  Chuyển sang 2. Luyện nghe (3 Nấc thang) 🎧 →
+                </Button>
+              </Link>
+            </div>
           </div>
-        </section>
+        </div>
       )}
 
-      {/* ============================================================ */}
-      {/* NẤC THANG 2: LUYỆN NGHE THEO CƠ CHẾ NẤC THANG CHUẨN (LISTEN PRACTICE) */}
-      {/* ============================================================ */}
-      {activeTab === 'listening' && (
+      {/* ======================================================================= */}
+      {/* 4. TAB 1: HỌC - SUB-TAB: THẺ TỪ VỰNG (FLASHCARD) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'hoc' && currentSubTab === 'the' && (
+        <div className="max-w-xl mx-auto space-y-4">
+          <div className="flex items-center justify-between text-sm font-bold text-sub">
+            <span>
+              Thẻ {fcIndex + 1} / {moduleData.vocab.length}
+            </span>
+            <span className="text-xs bg-muted px-2.5 py-1 rounded-full">
+              {moduleData.vocab[fcIndex]?.category}
+            </span>
+          </div>
+
+          <div
+            onClick={() => setFcFlipped(!fcFlipped)}
+            className="h-64 rounded-3xl border-2 border-accent/40 bg-gradient-to-br from-surface to-accent/5 p-8 flex flex-col items-center justify-center text-center cursor-pointer shadow-lg hover:border-accent transition select-none"
+          >
+            {!fcFlipped ? (
+              <div className="space-y-4">
+                <p className="text-3xl sm:text-4xl font-black text-ink">
+                  <Jp text={moduleData.vocab[fcIndex]?.jp || ''} />
+                </p>
+                <p className="text-sm font-mono text-sub">{moduleData.vocab[fcIndex]?.romaji}</p>
+                <p className="text-xs font-semibold text-accent mt-4">👉 Chạm để lật xem nghĩa</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-2xl sm:text-3xl font-extrabold text-ink">
+                  {moduleData.vocab[fcIndex]?.vn}
+                </p>
+                {moduleData.vocab[fcIndex]?.example && (
+                  <div className="mt-4 pt-4 border-t border-line/60 text-left">
+                    <p className="text-sm font-bold text-accent">
+                      <Jp text={moduleData.vocab[fcIndex].example!.jp} />
+                    </p>
+                    <p className="text-xs text-sub">{moduleData.vocab[fcIndex].example!.vn}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <Button
+              size="md"
+              variant="ghost"
+              disabled={fcIndex === 0}
+              onClick={() => {
+                setFcIndex((prev) => Math.max(0, prev - 1))
+                setFcFlipped(false)
+              }}
+            >
+              ← Thẻ trước
+            </Button>
+
+            <SpeakButton text={moduleData.vocab[fcIndex]?.jp || ''} />
+
+            <Button
+              size="md"
+              variant="primary"
+              onClick={() => {
+                if (fcIndex < moduleData.vocab.length - 1) {
+                  setFcIndex((prev) => prev + 1)
+                  setFcFlipped(false)
+                } else {
+                  setFcIndex(0)
+                  setFcFlipped(false)
+                }
+              }}
+            >
+              {fcIndex < moduleData.vocab.length - 1 ? 'Thẻ tiếp theo →' : 'Luyện lại từ đầu 🔄'}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================================= */}
+      {/* 5. TAB 2: LUYỆN NGHE (3 NẤC THANG CHUẨN CƠ CHẾ CŨ) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'luyen-nghe' && (
         <section className="space-y-6 max-w-3xl mx-auto">
-          {/* Level Switcher (3 Nấc Thang Luyện Nghe) */}
+          {/* Level Switcher */}
           <div className="bg-surface p-4 rounded-2xl border border-line space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
               <span className="text-xs font-black uppercase tracking-wider text-accent">
-                🎧 CƠ CHẾ LUYỆN NGHE 3 NẤC THANG (GIỮ NGUYÊN FORMAT CHUẨN)
+                🎧 CƠ CHẾ LUYỆN NGHE 3 NẤC THANG
               </span>
               <div className="flex items-center gap-1 text-xs text-sub">
                 <span>Tốc độ phát:</span>
@@ -784,10 +882,9 @@ export function ModuleDetailPage() {
                 >
                   <Play size={36} className="fill-white ml-1" />
                 </button>
-                <p className="text-xs text-sub font-semibold mt-3">Bấm vào loa để nghe từ</p>
+                <p className="text-xs text-sub font-semibold mt-3">Từ này nghĩa là gì? Bấm vào loa để nghe</p>
               </div>
 
-              {/* Reveal text / furigana */}
               {listenRevealed ? (
                 <div className="space-y-2 pt-2 border-t border-line/60 animate-in fade-in">
                   <p className="text-3xl font-black text-ink">
@@ -804,12 +901,11 @@ export function ModuleDetailPage() {
                     onClick={() => setListenRevealed(true)}
                     className="border border-line font-bold"
                   >
-                    Bật phụ đề kiểm tra
+                    Xem từ & Bật phụ đề
                   </Button>
                 </div>
               )}
 
-              {/* Rate buttons (Nghe ra rồi vs Chưa nghe ra) */}
               <div className="pt-4 border-t border-line/60 flex items-center justify-center gap-3">
                 <Button
                   variant="bad"
@@ -859,7 +955,6 @@ export function ModuleDetailPage() {
                 <span className="px-2.5 py-0.5 rounded-full bg-muted">Mẫu ngữ pháp đời thường</span>
               </div>
 
-              {/* Big Play Button */}
               <div className="py-4">
                 <button
                   type="button"
@@ -869,10 +964,9 @@ export function ModuleDetailPage() {
                 >
                   <Play size={36} className="fill-white ml-1" />
                 </button>
-                <p className="text-xs text-sub font-semibold mt-3">Nghe cả câu và đoán ý nghĩa</p>
+                <p className="text-xs text-sub font-semibold mt-3">Bạn bắt được những từ nào? Nghe và đoán ý</p>
               </div>
 
-              {/* Reveal text / furigana */}
               {listenRevealed ? (
                 <div className="space-y-2 pt-2 border-t border-line/60 animate-in fade-in">
                   <p className="text-2xl sm:text-3xl font-black text-ink leading-relaxed">
@@ -893,7 +987,6 @@ export function ModuleDetailPage() {
                 </div>
               )}
 
-              {/* Rate buttons */}
               <div className="pt-4 border-t border-line/60 flex items-center justify-center gap-3">
                 <Button
                   variant="bad"
@@ -929,10 +1022,9 @@ export function ModuleDetailPage() {
             </Card>
           )}
 
-          {/* Level 3: Luyện nghe Hội thoại thực tế & Tình huống Q&A */}
+          {/* Level 3: Luyện nghe Hội thoại & Hỏi đáp Q&A */}
           {listenLevel === 3 && (
             <div className="space-y-6">
-              {/* Dialogue focus player card */}
               <Card className="p-8 text-center space-y-6 border-2 shadow-sm">
                 <div className="flex items-center justify-between text-xs font-bold text-sub">
                   <span>
@@ -1089,21 +1181,97 @@ export function ModuleDetailPage() {
           )}
 
           <div className="pt-4 text-center">
-            <Link to={`/module/${moduleData.id}/dialogue`}>
+            <Link to={`/module/${moduleData.id}/hoi-thoai`}>
               <Button variant="primary" size="lg" className="shadow-md">
-                Lên nấc thang 3: Luyện Hội thoại Kaiwa 4 Bước 💬 →
+                Lên nấc thang 4: Hội thoại Kaiwa (4 Bước) 💬 →
               </Button>
             </Link>
           </div>
         </section>
       )}
 
-      {/* ============================================================ */}
-      {/* NẤC THANG 3: HỘI THOẠI THỰC CHIẾN (KAIWA IMMERSION 4 BƯỚC CHUẨN) */}
-      {/* ============================================================ */}
-      {activeTab === 'dialogue' && dialogueForPractice && (
+      {/* ======================================================================= */}
+      {/* 6. TAB 3: LUYỆN NÓI (SPEAK PRACTICE) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'luyen-noi' && (
+        <section className="space-y-6 max-w-3xl mx-auto">
+          <Card className="p-8 text-center space-y-6 border-2 shadow-sm">
+            <div className="flex items-center justify-between text-xs font-bold text-sub">
+              <span>
+                Mẫu câu {speakIndex + 1} / {sentenceList.length}
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full bg-muted">Luyện phản xạ nói đa tốc độ</span>
+            </div>
+
+            <div className="py-4">
+              <button
+                type="button"
+                onClick={() => playCurrentListenItem(sentenceList[speakIndex]?.jp || '')}
+                className="h-24 w-24 rounded-full bg-accent hover:bg-accent/90 text-white flex items-center justify-center mx-auto shadow-xl hover:scale-105 active:scale-95 transition cursor-pointer"
+                title="Bấm để nghe mẫu câu"
+              >
+                <Play size={36} className="fill-white ml-1" />
+              </button>
+              <p className="text-xs text-sub font-semibold mt-3">Nghe và nhại theo thật to chuẩn ngữ điệu</p>
+            </div>
+
+            {speakRevealed ? (
+              <div className="space-y-2 pt-2 border-t border-line/60 animate-in fade-in">
+                <p className="text-2xl sm:text-3xl font-black text-ink leading-relaxed">
+                  <Jp text={sentenceList[speakIndex]?.jp || ''} />
+                </p>
+                <p className="text-base sm:text-lg font-bold text-accent">{sentenceList[speakIndex]?.vn}</p>
+              </div>
+            ) : (
+              <div className="pt-2">
+                <Button
+                  variant="ghost"
+                  size="md"
+                  onClick={() => setSpeakRevealed(true)}
+                  className="border border-line font-bold"
+                >
+                  Hiện mẫu câu để luyện nói
+                </Button>
+              </div>
+            )}
+
+            <div className="pt-4 border-t border-line/60 flex items-center justify-between gap-3">
+              <Button
+                variant="ghost"
+                size="md"
+                disabled={speakIndex === 0}
+                onClick={() => {
+                  setSpeakIndex((prev) => Math.max(0, prev - 1))
+                  setSpeakRevealed(false)
+                }}
+              >
+                ← Câu trước
+              </Button>
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => {
+                  if (speakIndex < sentenceList.length - 1) {
+                    setSpeakIndex((prev) => prev + 1)
+                    setSpeakRevealed(false)
+                  } else {
+                    setSpeakIndex(0)
+                    setSpeakRevealed(false)
+                  }
+                }}
+              >
+                {speakIndex < sentenceList.length - 1 ? 'Câu tiếp theo →' : 'Luyện lại từ đầu 🔄'}
+              </Button>
+            </div>
+          </Card>
+        </section>
+      )}
+
+      {/* ======================================================================= */}
+      {/* 7. TAB 4: HỘI THOẠI KAIWA (4 BƯỚC NHẬP VAI CHUẨN) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'hoi-thoai' && dialogueForPractice && (
         <section className="space-y-6 max-w-4xl mx-auto">
-          {/* Header Card */}
           <div className="rounded-3xl border-2 border-emerald-500/40 bg-gradient-to-br from-emerald-500/15 via-surface to-teal-500/10 p-6 sm:p-7 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -1124,25 +1292,57 @@ export function ModuleDetailPage() {
             </div>
           </div>
 
-          {/* Genuine 4-Step Kaiwa Mechanism Component */}
           <Card className="p-6 sm:p-7 shadow-sm">
             <DialoguePractice key={dialogueForPractice.id} d={dialogueForPractice} />
           </Card>
 
           <div className="pt-4 text-center">
-            <Link to={`/module/${moduleData.id}/quiz`}>
+            <Link to={`/module/${moduleData.id}/kiem-tra`}>
               <Button variant="primary" size="lg" className="shadow-md">
-                Lên nấc thang 4: Ôn tập & Speed Quiz kiểm tra ⚡ →
+                Lên nấc thang tiếp theo: Bài tập thêm & Speed Quiz ⚡ →
               </Button>
             </Link>
           </div>
         </section>
       )}
 
-      {/* ============================================================ */}
-      {/* NẤC THANG 4: ÔN TẬP & SPEED QUIZ (REVIEW & SPEED DRILL) */}
-      {/* ============================================================ */}
-      {activeTab === 'quiz' && (
+      {/* ======================================================================= */}
+      {/* 8. TAB 5: ĐỌC HIỂU (READING TAB) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'doc' && (
+        <section className="space-y-6 max-w-3xl mx-auto">
+          <Card className="p-6 sm:p-8 space-y-6">
+            <div className="border-b border-line pb-4">
+              <span className="text-xs font-black uppercase tracking-wider text-accent">
+                📖 BÀI ĐỌC HIỂU NGỮ CẢNH THỰC TẾ
+              </span>
+              <h3 className="mt-1 text-2xl font-black text-ink">{moduleData.titleVn}</h3>
+              <p className="text-sm text-sub mt-1">Đọc đoạn văn tổng hợp từ vựng và Kanji của bài học.</p>
+            </div>
+
+            <div className="rounded-2xl bg-muted/30 border border-line p-5 space-y-4 text-lg leading-loose text-ink">
+              <p>
+                <Jp text={moduleData.titleJp} />。
+                {moduleData.dialogue.lines.map((l) => l.jp).join(' ')}
+              </p>
+            </div>
+
+            <div className="pt-4 flex justify-between items-center">
+              <Link to={`/module/${moduleData.id}/hoi-thoai`}>
+                <Button variant="ghost">← Luyện Hội thoại</Button>
+              </Link>
+              <Link to={`/module/${moduleData.id}/kiem-tra`}>
+                <Button variant="primary">Làm kiểm tra cuối bài →</Button>
+              </Link>
+            </div>
+          </Card>
+        </section>
+      )}
+
+      {/* ======================================================================= */}
+      {/* 9. TAB 6: BÀI TẬP THÊM / KIỂM TRA (SPEED QUIZ) */}
+      {/* ======================================================================= */}
+      {currentSection.id === 'them' && (
         <section className="space-y-6 max-w-3xl mx-auto">
           <div className="bg-surface p-5 rounded-2xl border border-line flex flex-wrap items-center justify-between gap-3">
             <div>
