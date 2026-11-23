@@ -79,7 +79,7 @@ export function Home() {
 
       {/* Main Feature Hero Banner */}
       <div className="grid gap-5 md:grid-cols-3">
-        <Link to="/module/mod-01/vocab" className="md:col-span-2">
+        <Link to="/module/mod-01/hoi-thoai" className="md:col-span-2">
           <div className="h-full rounded-3xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 p-6 sm:p-8 text-white shadow-lg transition-all hover:shadow-xl hover:brightness-105 flex flex-col justify-between">
             <div>
               <div className="flex flex-wrap items-center gap-2">
@@ -87,14 +87,14 @@ export function Home() {
                   ⭐ LỘ TRÌNH 14 MODULE THỰC CHIẾN
                 </span>
                 <span className="rounded-lg bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
-                  Chuẩn hóa N5 → N4+ Thương mại
+                  N5 còn lại → Bứt phá N4+
                 </span>
               </div>
               <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-black leading-snug tracking-tight">
                 Giao Tiếp Thực Chiến Đời Sống Tại Nhật
               </h2>
               <p className="mt-1.5 text-base sm:text-lg text-white/90 font-medium">
-                Đầy đủ 6 trụ cột: Từ vựng, Ngữ pháp, Chữ Hán, Luyện nghe Q&A, Ôn tập Flashcard và 14 đại kịch bản hội thoại chuẩn giọng Tokyo.
+                Tích hợp sâu: Kịch bản hội thoại dài đa vai, từ lóng đời thường (sokka, sonanda, majide...), đối chiếu Tameguchi vs Keigo và tra từ nhanh.
               </p>
             </div>
             <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
@@ -121,6 +121,109 @@ export function Home() {
           </p>
         </Card>
       </div>
+
+      {/* 3 Priority Modules for Du Học Sinh (Trường học, Konbini, Mua sắm) */}
+      <section className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-accent/15 text-accent border border-accent/30">
+                ⭐ ƯU TIÊN SỐ 1 CHO DU HỌC SINH
+              </span>
+              <span className="text-xs font-bold text-sub">Thực chiến sinh tồn tại Nhật</span>
+            </div>
+            <h2 className="mt-1 text-2xl font-black text-ink">
+              Bộ 3 Chủ Đề Giao Tiếp Cốt Lõi
+            </h2>
+          </div>
+          <Link
+            to="/units"
+            className="text-sm font-bold text-accent hover:underline flex items-center gap-1"
+          >
+            Xem tất cả 14 Modules <ArrowRight size={15} />
+          </Link>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          {/* Module 01 */}
+          <Link to="/module/mod-01/hoi-thoai" className="group">
+            <Card className="h-full p-5 sm:p-6 transition-all border-emerald-500/40 bg-gradient-to-br from-emerald-500/10 via-surface to-surface hover:border-emerald-500 hover:shadow-lg flex flex-col justify-between space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                    MODULE 01 · HỌC ĐƯỜNG
+                  </span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                    Làm quen & Bạn bè
+                  </span>
+                </div>
+                <h3 className="text-xl font-black text-ink group-hover:text-emerald-600 transition">
+                  Giao Tiếp Học Đường & Kết Bạn Mới
+                </h3>
+                <p className="text-sm text-sub leading-relaxed">
+                  Làm quen, mượn đồ, đổi LINE, mẹo nói Tameguchi, thán từ đời thường: <em>sokka, sonanda, majide...</em>
+                </p>
+              </div>
+              <div className="pt-2 border-t border-line/60 flex items-center justify-between text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                <span>Vào hội thoại ngay</span>
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+
+          {/* Module 02 */}
+          <Link to="/module/mod-02/hoi-thoai" className="group">
+            <Card className="h-full p-5 sm:p-6 transition-all border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-surface to-surface hover:border-amber-500 hover:shadow-lg flex flex-col justify-between space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                    MODULE 02 · KONBINI
+                  </span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-300">
+                    Cửa hàng tiện lợi
+                  </span>
+                </div>
+                <h3 className="text-xl font-black text-ink group-hover:text-amber-600 transition">
+                  Chiến Thần Konbini & Đồ Ăn Nhanh
+                </h3>
+                <p className="text-sm text-sub leading-relaxed">
+                  Hâm nóng cơm bento, đũa 1膳, từ chối túi nilon nhã nhặn, gọi gà chiên nóng ở quầy và thanh toán PayPay.
+                </p>
+              </div>
+              <div className="pt-2 border-t border-line/60 flex items-center justify-between text-xs font-bold text-amber-600 dark:text-amber-400">
+                <span>Vào hội thoại ngay</span>
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+
+          {/* Module 03 */}
+          <Link to="/module/mod-03/hoi-thoai" className="group">
+            <Card className="h-full p-5 sm:p-6 transition-all border-sky-500/40 bg-gradient-to-br from-sky-500/10 via-surface to-surface hover:border-sky-500 hover:shadow-lg flex flex-col justify-between space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                    MODULE 03 · SIÊU THỊ & MUA SẮM
+                  </span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-700 dark:text-sky-300">
+                    Săn đồ giảm giá
+                  </span>
+                </div>
+                <h3 className="text-xl font-black text-ink group-hover:text-sky-600 transition">
+                  Siêu Thị Săn Hàng Nửa Giá (半額) & Đô Thị
+                </h3>
+                <p className="text-sm text-sub leading-relaxed">
+                  Bí kíp săn tem nửa giá (hangaku), dùng quầy tự thanh toán, đi tàu điện Tokyo và hẹn hò cuối tuần.
+                </p>
+              </div>
+              <div className="pt-2 border-t border-line/60 flex items-center justify-between text-xs font-bold text-sky-600 dark:text-sky-400">
+                <span>Vào hội thoại ngay</span>
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </Card>
+          </Link>
+        </div>
+      </section>
 
       {/* 4 High-Impact Quick Cards (Standardized Commercial Labels) */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

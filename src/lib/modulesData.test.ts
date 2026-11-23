@@ -129,4 +129,35 @@ describe('modulesData - Standardized 14 Modules Architecture', () => {
       }
     })
   })
+
+  it('validates Priority Modules (01, 02, 03) contain rich colloquial nuances and quick-lookup keywords', () => {
+    const m1 = getModuleById('mod-01')!
+    const m2 = getModuleById('mod-02')!
+    const m3 = getModuleById('mod-03')!
+
+    // Module 01: School & Friends - must have colloquial particles like 'そうなんだ', 'マジで', 'タメ口'
+    const m1Text = m1.dialogue.lines.map((l) => l.jp).join(' ')
+    expect(m1Text).toContain('そうなんだ')
+    expect(m1Text).toContain('マジで')
+    expect(m1Text).toContain('タメ口')
+    expect(m1.dialogue.lines.some((l) => l.nuances && l.nuances.length > 0)).toBe(true)
+    expect(m1.dialogue.lines.some((l) => l.keywords && l.keywords.length > 0)).toBe(true)
+    expect(m1.dialogue.lines.some((l) => Boolean(l.politeJp))).toBe(true)
+
+    // Module 02: Konbini - must have heated bento, chopsticks, plastic bag refusal
+    const m2Text = m2.dialogue.lines.map((l) => l.jp).join(' ')
+    expect(m2Text).toContain('温（あたた）めますか')
+    expect(m2Text).toContain('1膳（いちぜん）')
+    expect(m2Text).toContain('結構（けっこう）です')
+    expect(m2.dialogue.lines.some((l) => l.nuances && l.nuances.length > 0)).toBe(true)
+    expect(m2.dialogue.lines.some((l) => l.keywords && l.keywords.length > 0)).toBe(true)
+
+    // Module 03: Supermarket & Urban Life - must have hangaku (50% off sticker) and train transfer
+    const m3Text = m3.dialogue.lines.map((l) => l.jp).join(' ')
+    expect(m3Text).toContain('スーパー')
+    expect(m3Text).toContain('半額（はんがく）')
+    expect(m3Text).toContain('乗（の）り換（か）える')
+    expect(m3.dialogue.lines.some((l) => l.nuances && l.nuances.length > 0)).toBe(true)
+    expect(m3.dialogue.lines.some((l) => l.keywords && l.keywords.length > 0)).toBe(true)
+  })
 })

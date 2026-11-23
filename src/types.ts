@@ -157,12 +157,32 @@ export interface GrammarPractice {
   sets: DrillSet[]
 }
 
+export interface NuanceItem {
+  phrase: string
+  meaning: string
+  tip: string
+}
+
+export interface KeywordItem {
+  word: string
+  furigana?: string
+  hanviet?: string
+  meaning: string
+  type?: string
+  example?: string
+}
+
 export interface Line {
   speaker: string // A, B, N...
   name?: string
+  role?: string // e.g. "Bạn cùng lớp", "Nhân viên Konbini", "Du học sinh", "Thầy giáo"
+  avatar?: string
   jp: string
   vn: string
   note?: string // key chunk explanation
+  politeJp?: string // version for polite comparison
+  nuances?: NuanceItem[] // colloquial nuances breakdown (sokka, sonanda, etc.)
+  keywords?: KeywordItem[] // interactive words for quick lookup
   alts?: string[] // natural alternatives (Kaiwa summary)
   task?: string // blind roleplay mission (VN)
   /** Speaking roleplay: answer in your own words; the line is only a model. */

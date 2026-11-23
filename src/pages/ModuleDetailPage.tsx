@@ -19,6 +19,7 @@ import { getPlaylistById } from '../lib/passiveListeningData'
 import { DialoguePractice } from '../components/DialoguePractice'
 import { speak, stopSpeaking } from '../lib/speech'
 import type { Dialogue } from '../types'
+import { LongDialogueViewer } from '../components/LongDialogueViewer'
 
 export interface ModuleSection {
   id: string
@@ -28,26 +29,27 @@ export interface ModuleSection {
   extra?: boolean
 }
 
-// The 6 standard sections matching UnitPage.tsx exactly:
-// 1. Học (Lý thuyết, Thẻ từ vựng)
-// 2. Luyện nghe (3 nấc thang: Từ & cụm -> Câu -> Hội thoại)
-// 3. Luyện nói (Phản xạ câu)
-// 4. Hội thoại (Kaiwa 4 bước)
+// The 6 standard sections:
+// 1. Hội thoại (Kịch bản thực chiến & Khẩu ngữ đời thường)
+// 2. Học (Lý thuyết, Thẻ từ vựng, Kanji)
+// 3. Luyện nghe (3 nấc thang: Từ & cụm -> Câu -> Hội thoại)
+// 4. Luyện nói (Phản xạ câu)
 // 5. Đọc hiểu (Bài đọc ngữ cảnh)
 // 6. Bài tập thêm (Kiểm tra & Speed Quiz)
 export const MODULE_SECTIONS: readonly ModuleSection[] = [
+  { id: 'hoi-thoai', label: 'Hội thoại', hint: 'Kịch bản thực chiến & Khẩu ngữ', tabs: ['hoi-thoai', 'dialogue', 'kaiwa'] },
   { id: 'hoc', label: 'Học', hint: 'Lý thuyết và từ vựng', tabs: ['ly-thuyet', 'the', 'vocab', 'kanji', 'grammar'] },
   { id: 'luyen-nghe', label: 'Luyện nghe', hint: '3 nấc: từ, câu, hội thoại', tabs: ['luyen-nghe', 'listening'] },
   { id: 'luyen-noi', label: 'Luyện nói', hint: 'Phản xạ nói câu', tabs: ['luyen-noi', 'speaking'] },
-  { id: 'hoi-thoai', label: 'Hội thoại', hint: 'Kaiwa 4 bước theo tình huống', tabs: ['hoi-thoai', 'dialogue', 'kaiwa'] },
   { id: 'doc', label: 'Đọc hiểu', hint: 'Bài đọc và hỏi đáp', tabs: ['doc'] },
   { id: 'them', label: 'Bài tập thêm', hint: 'Ôn tập & Speed Quiz', tabs: ['kiem-tra', 'quiz'], extra: true },
 ]
 
 export function ModuleDetailPage() {
-  const { id = 'mod-01', tab = 'ly-thuyet' } = useParams()
+  const { id = 'mod-01', tab = 'hoi-thoai' } = useParams()
   const moduleData = getModuleById(id)
   const playPlaylist = usePassivePlayer((s) => s.playPlaylist)
+  const [dialogueViewMode, setDialogueViewMode] = useState<'stream' | 'practice'>('stream')
 
   // Map any tab to section
   const currentSection = useMemo(() => {
@@ -1268,38 +1270,63 @@ export function ModuleDetailPage() {
       )}
 
       {/* ======================================================================= */}
-      {/* 7. TAB 4: HỘI THOẠI KAIWA (4 BƯỚC NHẬP VAI CHUẨN) */}
+      {/* 7. TAB 1: HỘI THOẠI THỰC CHIẾN (LONG DIALOGUE & KAIWA) */}
       {/* ======================================================================= */}
-      {currentSection.id === 'hoi-thoai' && dialogueForPractice && (
+      {currentSection.id === 'hoi-thoai' && (
         <section className="space-y-6 max-w-4xl mx-auto">
-          <div className="rounded-3xl border-2 border-emerald-500/40 bg-gradient-to-br from-emerald-500/15 via-surface to-teal-500/10 p-6 sm:p-7 space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span className="px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-black uppercase tracking-wider">
-                  💬 KAIWA 4 BƯỚC: NGHE → SHADOWING → ĐÓNG VAI GỢI Ý → ĐÓNG VAI CHE CHỮ
-                </span>
-                <h3 className="mt-2 text-2xl font-black text-ink">{moduleData.dialogue.title}</h3>
-                <p className="mt-1 text-sm text-sub leading-relaxed">{moduleData.dialogue.scene}</p>
-              </div>
-              <Button
-                variant="cta"
-                size="md"
-                onClick={handleOpenPassivePlayer}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-md shrink-0"
+          {/* Sub-mode Switcher */}
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-surface border border-line shadow-xs">
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-muted/80">
+              <button
+                type="button"
+                onClick={() => setDialogueViewMode('stream')}
+                className={cx(
+                  'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer flex items-center gap-1.5',
+                  dialogueViewMode === 'stream'
+                    ? 'bg-accent text-white shadow-xs'
+                    : 'text-sub hover:text-ink',
+                )}
               >
-                <Headphones size={18} /> Nghe thụ động Spotify
-              </Button>
+                <span>💬 Kịch bản hội thoại dài (Toggles & Nuance)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDialogueViewMode('practice')}
+                className={cx(
+                  'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition cursor-pointer flex items-center gap-1.5',
+                  dialogueViewMode === 'practice'
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'text-sub hover:text-ink',
+                )}
+              >
+                <span>🎭 Luyện nhập vai 4 bước</span>
+              </button>
             </div>
+
+            <Button
+              variant="cta"
+              size="sm"
+              onClick={handleOpenPassivePlayer}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-xs"
+            >
+              <Headphones size={15} /> Nghe thụ động Spotify
+            </Button>
           </div>
 
-          <Card className="p-6 sm:p-7 shadow-sm">
-            <DialoguePractice key={dialogueForPractice.id} d={dialogueForPractice} />
-          </Card>
+          {dialogueViewMode === 'stream' ? (
+            <LongDialogueViewer dialogue={moduleData.dialogue} />
+          ) : (
+            dialogueForPractice && (
+              <Card className="p-6 sm:p-7 shadow-sm">
+                <DialoguePractice key={dialogueForPractice.id} d={dialogueForPractice} />
+              </Card>
+            )
+          )}
 
           <div className="pt-4 text-center">
-            <Link to={`/module/${moduleData.id}/kiem-tra`}>
+            <Link to={`/module/${moduleData.id}/ly-thuyet`}>
               <Button variant="primary" size="lg" className="shadow-md">
-                Lên nấc thang tiếp theo: Bài tập thêm & Speed Quiz ⚡ →
+                Chuyển sang Từ vựng & Ngữ pháp bài học 📚 →
               </Button>
             </Link>
           </div>
